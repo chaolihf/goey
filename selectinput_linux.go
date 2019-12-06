@@ -1,73 +1,64 @@
 package goey
 
 import (
-	"unsafe"
+	"bytes"
 
 	"bitbucket.org/rj/goey/base"
-	"github.com/gotk3/gotk3/glib"
-	"github.com/gotk3/gotk3/gtk"
+	"bitbucket.org/rj/goey/internal/gtk"
 )
 
 type selectinputElement struct {
 	Control
 
 	onChange func(int)
-	shChange glib.SignalHandle
-	onFocus  focusSlot
-	onBlur   blurSlot
+	onFocus  func()
+	onBlur   func()
+}
+
+func (w *SelectInput) serializeItems() string {
+	buffer := bytes.Buffer{}
+
+	for _, v := range w.Items {
+		buffer.WriteString(v)
+		buffer.WriteByte(0)
+	}
+	buffer.WriteByte(0)
+
+	return buffer.String()
 }
 
 func (w *SelectInput) mount(parent base.Control) (base.Element, error) {
-	control, err := gtk.ComboBoxTextNew()
-	if err != nil {
-		return nil, err
-	}
-	parent.Handle.Add(control)
-	for _, v := range w.Items {
-		control.AppendText(v)
-	}
-	if !w.Unset {
-		control.SetActive(w.Value)
-	}
-	control.SetCanFocus(true)
-	control.SetSensitive(!w.Disabled)
+	control := gtk.MountCombobox(parent.Handle, w.serializeItems(),
+		w.Value, w.Unset, w.Disabled,
+		w.OnChange != nil, w.OnFocus != nil, w.OnBlur != nil)
 
 	retval := &selectinputElement{
-		Control:  Control{&control.Widget},
+		Control:  Control{control},
 		onChange: w.OnChange,
+		onFocus:  w.OnFocus,
+		onBlur:   w.OnBlur,
 	}
-
-	control.Connect("destroy", selectinputOnDestroy, retval)
-	retval.shChange = setSignalHandler(&control.Widget, 0, w.OnChange != nil, "changed", selectinputOnChanged, retval)
-	if child, err := control.GetChild(); err == nil {
-		child.SetCanFocus(true)
-		retval.onFocus.Set(child, w.OnFocus)
-		retval.onBlur.Set(child, w.OnBlur)
-	}
-	control.Show()
+	gtk.RegisterWidget(control, retval)
 
 	return retval, nil
 }
 
-func selectinputOnChanged(widget *gtk.ComboBoxText, mounted *selectinputElement) {
-	if mounted.onChange == nil {
-		return
+func (w *selectinputElement) OnChange(value int) {
+	if w.onChange != nil {
+		w.onChange(value)
 	}
-
-	mounted.onChange(widget.GetActive())
 }
 
-func selectinputOnDestroy(widget *gtk.ComboBoxText, mounted *selectinputElement) {
-	mounted.handle = nil
+func (w *selectinputElement) OnFocus() {
+	w.onFocus()
 }
 
-func (w *selectinputElement) comboboxtext() *gtk.ComboBoxText {
-	return (*gtk.ComboBoxText)(unsafe.Pointer(w.handle))
+func (w *selectinputElement) OnBlur() {
+	w.onBlur()
 }
 
 func (w *selectinputElement) Props() base.Widget {
-
-	value := w.comboboxtext().GetActive()
+	value := gtk.ComboboxValue(w.handle)
 	unset := value < 0
 	if unset {
 		value = 0
@@ -77,68 +68,36 @@ func (w *selectinputElement) Props() base.Widget {
 		Items:    w.propsItems(),
 		Value:    int(value),
 		Unset:    unset,
-		Disabled: !w.comboboxtext().GetSensitive(),
+		Disabled: !gtk.WidgetSensitive(w.handle),
 		OnChange: w.onChange,
-		OnFocus:  w.onFocus.callback,
-		OnBlur:   w.onBlur.callback,
+		OnFocus:  w.onFocus,
+		OnBlur:   w.onBlur,
 	}
-
 }
 
 func (w *selectinputElement) propsItems() []string {
-	// Get the model for the combobox, which contains the list of items.
-	model, err := w.comboboxtext().GetModel()
-	if err != nil {
-		return nil
-	}
+	count := gtk.ComboboxItemCount(w.handle)
 
-	// Iterate through the list.  The model can in principle hold a tree, but
-	// that won't occur within the combobox.
 	items := []string{}
-	for iter, ok := model.GetIterFirst(); ok; ok = model.IterNext(iter) {
-		v, err := model.GetValue(iter, 0)
-		if err != nil {
-			return nil
-		}
-		vs, err := v.GetString()
-		if err != nil {
-			return nil
-		}
-		items = append(items, vs)
+	for i := uint(0); i < count; i++ {
+		items = append(items, gtk.ComboboxItem(w.handle, i))
 	}
 
 	return items
 }
 
 func (w *selectinputElement) TakeFocus() bool {
-	widget, err := w.comboboxtext().GetChild()
-	if err != nil {
-		return false
-	}
-
-	control := Control{widget}
+	control := Control{gtk.ComboboxChild(w.handle)}
 	return control.TakeFocus()
 }
 
 func (w *selectinputElement) updateProps(data *SelectInput) error {
-	cbt := w.comboboxtext()
-
 	w.onChange = nil // temporarily break OnChange to prevent event
-	// Todo, can we avoid rebuilding the list?
-	cbt.RemoveAll()
-	for _, v := range data.Items {
-		cbt.AppendText(v)
-	}
-	if !data.Unset {
-		cbt.SetActive(data.Value)
-	}
+	gtk.ComboboxUpdate(w.handle, data.serializeItems(), data.Value, data.Unset, data.Disabled,
+		data.OnChange != nil, data.OnFocus != nil, data.OnBlur != nil)
 
-	cbt.SetSensitive(!data.Disabled)
 	w.onChange = data.OnChange
-	w.shChange = setSignalHandler(&cbt.Widget, w.shChange, data.OnChange != nil, "changed", selectinputOnChanged, w)
-	if child, err := cbt.GetChild(); err == nil {
-		w.onFocus.Set(child, data.OnFocus)
-		w.onBlur.Set(child, data.OnBlur)
-	}
+	w.onFocus = data.OnFocus
+	w.onBlur = data.OnBlur
 	return nil
 }

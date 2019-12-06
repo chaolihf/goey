@@ -3,6 +3,7 @@ package goey
 import (
 	"image"
 	"image/draw"
+	"errors"
 	"unsafe"
 
 	"bitbucket.org/rj/goey/base"
@@ -54,7 +55,7 @@ func imageToBitmap(prop image.Image) (win.HBITMAP, []uint8, error) {
 		// Create the bitmap
 		hbitmap := win.CreateBitmap(int32(img.Rect.Dx()), int32(img.Rect.Dy()), 4, 8, unsafe.Pointer(&buffer[0]))
 		if hbitmap == 0 {
-			panic("Error in CreateBitmap")
+			return 0, nil, errors.New("call to CreateBitmap failed")
 		}
 		return hbitmap, buffer, nil
 	}
@@ -71,7 +72,7 @@ func imageToBitmap(prop image.Image) (win.HBITMAP, []uint8, error) {
 	// Create the bitmap
 	hbitmap := win.CreateBitmap(int32(img.Rect.Dx()), int32(img.Rect.Dy()), 4, 8, unsafe.Pointer(&img.Pix[0]))
 	if hbitmap == 0 {
-		panic("Error in CreateBitmap")
+		return 0, nil, errors.New("call to CreateBitmap failed")
 	}
 	return hbitmap, img.Pix, nil
 }
@@ -120,6 +121,9 @@ func (w *Img) mount(parent base.Control) (base.Element, error) {
 	// Create the control
 	const STYLE = win.WS_CHILD | win.WS_VISIBLE | win.SS_BITMAP | win.SS_LEFT
 	hwnd, _, err := createControlWindow(0, &staticClassName[0], "", STYLE, parent.HWnd)
+	if err!=nil {
+		return nil, err
+	}
 	win.SendMessage(hwnd, win2.STM_SETIMAGE, win.IMAGE_BITMAP, uintptr(hbitmap))
 
 	retval := &imgElement{

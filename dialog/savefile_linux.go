@@ -1,34 +1,30 @@
 package dialog
 
 import (
-	"github.com/gotk3/gotk3/gtk"
+	"bitbucket.org/rj/goey/internal/gtk"
 )
 
 func (m *SaveFile) show() (string, error) {
-	dlg, err := gtk.FileChooserDialogNewWith2Buttons(m.title, m.parent, gtk.FILE_CHOOSER_ACTION_SAVE, "_Save", gtk.RESPONSE_ACCEPT, "_Cancel", gtk.RESPONSE_CANCEL)
-	if err != nil {
-		return "", err
-	}
-	activeDialogForTesting = &dlg.Dialog
+	dlg := gtk.MountSaveDialog(m.parent, m.title, m.filename)
+	activeDialogForTesting = dlg
 	defer func() {
-		activeDialogForTesting = nil
-		dlg.Destroy()
+		activeDialogForTesting = 0
+		gtk.WidgetClose(dlg)
 	}()
 
 	for _, v := range m.filters {
-		addFilterToDialog(dlg, v.name, v.pattern)
+		gtk.DialogAddFilter( dlg, v.name, v.pattern )
 	}
 
-	dlg.SetFilename(m.filename)
-	rc := dlg.Run()
-	if gtk.ResponseType(rc) != gtk.RESPONSE_ACCEPT {
+	rc := gtk.DialogRun(dlg)
+	if rc != gtk.DialogResponseAccept() {
 		return "", nil
 	}
-	return dlg.GetFilename(), nil
+	return gtk.DialogGetFilename(dlg), nil
 }
 
 // WithParent sets the parent of the dialog box.
-func (m *SaveFile) WithParent(parent *gtk.Window) *SaveFile {
+func (m *SaveFile) WithParent(parent uintptr) *SaveFile {
 	m.parent = parent
 	return m
 }

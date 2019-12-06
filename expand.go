@@ -10,7 +10,7 @@ var (
 
 // Expand wraps another widget to indicate that the widget should expand to
 // occupy any available space in a HBox or VBox.  When used in any other
-// context, the widget will be ignored, and behaviour delegated to the child
+// context, the widget will be ignored, and behavior delegated to the child
 // widget.
 //
 // In an HBox or VBox, the widget will be positioned according to the rules

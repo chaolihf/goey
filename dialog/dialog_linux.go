@@ -3,17 +3,16 @@ package dialog
 import (
 	"time"
 
-	"bitbucket.org/rj/goey/internal/syscall"
+	"bitbucket.org/rj/goey/internal/gtk"
 	"bitbucket.org/rj/goey/loop"
-	"github.com/gotk3/gotk3/gtk"
 )
 
 type dialogImpl struct {
-	parent *gtk.Window
+	parent uintptr
 }
 
 var (
-	activeDialogForTesting *gtk.Dialog
+	activeDialogForTesting uintptr
 )
 
 func typeKeys(text string) chan error {
@@ -25,13 +24,13 @@ func typeKeys(text string) chan error {
 		time.Sleep(500 * time.Millisecond)
 		for _, r := range text {
 			loop.Do(func() error {
-				syscall.WidgetSendKey(&activeDialogForTesting.Widget, r, 0, 0)
+				gtk.WidgetSendKey(activeDialogForTesting, uint(r), false)
 				return nil
 			})
 			time.Sleep(50 * time.Millisecond)
 
 			loop.Do(func() error {
-				syscall.WidgetSendKey(&activeDialogForTesting.Widget, r, 0, 1)
+				gtk.WidgetSendKey(activeDialogForTesting, uint(r), true)
 				return nil
 			})
 			time.Sleep(50 * time.Millisecond)

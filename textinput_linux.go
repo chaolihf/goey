@@ -1,124 +1,77 @@
 package goey
 
 import (
-	"unsafe"
-
 	"bitbucket.org/rj/goey/base"
-	"github.com/gotk3/gotk3/glib"
-	"github.com/gotk3/gotk3/gtk"
+	"bitbucket.org/rj/goey/internal/gtk"
 )
 
 type textinputElement struct {
 	Control
 
 	onChange   func(string)
-	shChange   glib.SignalHandle
-	onFocus    focusSlot
-	onBlur     blurSlot
+	onFocus    func()
+	onBlur     func()
 	onEnterKey func(string)
-	shEnterKey glib.SignalHandle
 }
 
 func (w *TextInput) mount(parent base.Control) (base.Element, error) {
-	control, err := gtk.EntryNew()
-	if err != nil {
-		return nil, err
-	}
-	parent.Handle.Add(control)
-	control.SetText(w.Value)
-	control.SetPlaceholderText(w.Placeholder)
-	control.SetSensitive(!w.Disabled)
-	control.SetVisibility(!w.Password)
-	control.SetEditable(!w.ReadOnly)
+	control := gtk.MountTextbox(parent.Handle, w.Value, w.Placeholder, w.Disabled, w.Password, w.ReadOnly,
+		w.OnChange != nil, w.OnFocus != nil, w.OnBlur != nil, w.OnEnterKey != nil)
 
 	retval := &textinputElement{
-		Control:    Control{&control.Widget},
+		Control:    Control{control},
 		onChange:   w.OnChange,
+		onFocus:    w.OnFocus,
+		onBlur:     w.OnBlur,
 		onEnterKey: w.OnEnterKey,
 	}
-
-	control.Connect("destroy", textinputOnDestroy, retval)
-	retval.shChange = setSignalHandler(&control.Widget, 0, retval.onChange != nil, "changed", textinputOnChanged, retval)
-	retval.onFocus.Set(&control.Widget, w.OnFocus)
-	retval.onBlur.Set(&control.Widget, w.OnBlur)
-	retval.shEnterKey = setSignalHandler(&control.Widget, 0, retval.onEnterKey != nil, "activate", textinputOnActivate, retval)
-	control.Show()
+	gtk.RegisterWidget(control, retval)
 
 	return retval, nil
 }
 
-func textinputOnActivate(obj *glib.Object, mounted *textinputElement) {
-	// Not sure why, but the widget comes into this callback as a glib.Object,
-	// and not the gtk.Entry.  Need to wrap the value.  This pokes into the internals
-	// of the gtk package.
-	widget := gtk.Entry{gtk.Widget{glib.InitiallyUnowned{obj}}, gtk.Editable{obj}}
-	text, err := widget.GetText()
-	if err != nil {
-		// TODO:  What is the correct reporting here
-		return
+func (w *textinputElement) OnChange(value string) {
+	if w.onChange != nil {
+		w.onChange(value)
 	}
-	mounted.onEnterKey(text)
 }
 
-func textinputOnChanged(widget *gtk.Entry, mounted *textinputElement) {
-	if mounted.onChange == nil {
-		return
-	}
-
-	text, err := widget.GetText()
-	if err != nil {
-		// TODO:  What is the correct reporting here
-		return
-	}
-	mounted.onChange(text)
+func (w *textinputElement) OnFocus() {
+	w.onFocus()
 }
 
-func textinputOnDestroy(widget *gtk.Entry, mounted *textinputElement) {
-	mounted.handle = nil
+func (w *textinputElement) OnBlur() {
+	w.onBlur()
 }
 
-func (w *textinputElement) entry() *gtk.Entry {
-	return (*gtk.Entry)(unsafe.Pointer(w.handle))
+func (w *textinputElement) OnEnterKey(value string) {
+	w.onEnterKey(value)
 }
 
 func (w *textinputElement) Props() base.Widget {
-	entry := w.entry()
-	value, err := entry.GetText()
-	if err != nil {
-		panic("could not get text, " + err.Error())
-	}
-	placeholder, err := entry.GetPlaceholderText()
-	if err != nil {
-		panic("could not get placeholder text, " + err.Error())
-	}
-
 	return &TextInput{
-		Value:       value,
-		Disabled:    !entry.GetSensitive(),
-		Placeholder: placeholder,
-		Password:    !entry.GetVisibility(),
-		ReadOnly:    !entry.GetEditable(),
+		Value:       gtk.TextboxText(w.handle),
+		Placeholder: gtk.TextboxPlaceholder(w.handle),
+		Disabled:    !gtk.WidgetSensitive(w.handle),
+		Password:    gtk.TextboxPassword(w.handle),
+		ReadOnly:    gtk.TextboxReadOnly(w.handle),
 		OnChange:    w.onChange,
-		OnFocus:     w.onFocus.callback,
-		OnBlur:      w.onBlur.callback,
+		OnFocus:     w.onFocus,
+		OnBlur:      w.onBlur,
 		OnEnterKey:  w.onEnterKey,
 	}
 }
 
 func (w *textinputElement) updateProps(data *TextInput) error {
-	entry := w.entry()
 	w.onChange = nil // temporarily break OnChange to prevent event
-	entry.SetText(data.Value)
-	entry.SetEditable(!data.ReadOnly)
-	entry.SetPlaceholderText(data.Placeholder)
-	entry.SetSensitive(!data.Disabled)
-	entry.SetVisibility(!data.Password)
+	gtk.TextboxUpdate(w.handle, data.Value, data.Placeholder, data.Disabled,
+		data.Password, data.ReadOnly,
+		data.OnChange != nil, data.OnFocus != nil, data.OnBlur != nil, data.OnEnterKey != nil)
+
 	w.onChange = data.OnChange
-	w.shChange = setSignalHandler(&entry.Widget, w.shChange, data.OnChange != nil, "changed", textinputOnChanged, w)
-	w.onFocus.Set(&entry.Widget, data.OnFocus)
-	w.onBlur.Set(&entry.Widget, data.OnBlur)
+	w.onFocus = data.OnFocus
+	w.onBlur = data.OnBlur
 	w.onEnterKey = data.OnEnterKey
-	w.shEnterKey = setSignalHandler(&entry.Widget, w.shEnterKey, data.OnEnterKey != nil, "activate", textinputOnActivate, w)
 
 	return nil
 }

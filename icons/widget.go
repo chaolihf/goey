@@ -19,7 +19,7 @@ var (
 )
 
 func init() {
-	err := error(nil)
+	var err error
 	assets.font, err = truetype.Parse(file0[:])
 	if err != nil {
 		panic("internal error: failed to parse embedded truetype file")

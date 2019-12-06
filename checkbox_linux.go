@@ -1,99 +1,72 @@
 package goey
 
 import (
-	"unsafe"
-
 	"bitbucket.org/rj/goey/base"
-	"github.com/gotk3/gotk3/glib"
-	"github.com/gotk3/gotk3/gtk"
+	"bitbucket.org/rj/goey/internal/gtk"
 )
 
 type checkboxElement struct {
 	Control
 
 	onChange func(bool)
-	shClick  glib.SignalHandle
-	onFocus  focusSlot
-	onBlur   blurSlot
+	onFocus  func()
+	onBlur   func()
 }
 
 func (w *Checkbox) mount(parent base.Control) (base.Element, error) {
 	// Create the control
-	control, err := gtk.CheckButtonNewWithLabel(w.Text)
-	if err != nil {
-		return nil, err
-	}
-	parent.Handle.Add(control)
-
-	// Update properties on the control
-	control.SetActive(w.Value)
-	control.SetSensitive(!w.Disabled)
-	control.Show()
+	control := gtk.MountCheckbox(parent.Handle, w.Value, w.Text, w.Disabled,
+		w.OnChange != nil, w.OnFocus != nil, w.OnBlur != nil)
 
 	// Create the element
 	retval := &checkboxElement{
-		Control:  Control{&control.Widget},
+		Control:  Control{control},
 		onChange: w.OnChange,
+		onFocus:  w.OnFocus,
+		onBlur:   w.OnBlur,
 	}
-
-	// Connect all callbacks for the events
-	control.Connect("destroy", checkboxOnDestroy, retval)
-	retval.shClick = setSignalHandler(&control.Widget, 0, w.OnChange != nil, "clicked", checkboxOnClick, retval)
-	retval.onFocus.Set(&control.Widget, w.OnFocus)
-	retval.onBlur.Set(&control.Widget, w.OnBlur)
+	gtk.RegisterWidget(control, retval)
 
 	return retval, nil
 }
 
-func checkboxOnClick(widget *gtk.CheckButton, mounted *checkboxElement) {
-	if mounted.onChange == nil {
-		return
-	}
-
-	mounted.onChange(widget.GetActive())
-}
-
-func checkboxOnDestroy(widget *gtk.CheckButton, mounted *checkboxElement) {
-	mounted.handle = nil
-}
-
-func (w *checkboxElement) checkbutton() *gtk.CheckButton {
-	return (*gtk.CheckButton)(unsafe.Pointer(w.handle))
-}
-
 func (w *checkboxElement) Click() {
-	w.checkbutton().Clicked()
+	gtk.CheckboxClick(w.handle)
+}
+
+func (w *checkboxElement) OnChange(value bool) {
+	if w.onChange != nil {
+		w.onChange(value)
+	}
+}
+
+func (w *checkboxElement) OnFocus() {
+	w.onFocus()
+}
+
+func (w *checkboxElement) OnBlur() {
+	w.onBlur()
 }
 
 func (w *checkboxElement) Props() base.Widget {
-	checkbutton := w.checkbutton()
-	text, err := checkbutton.GetLabel()
-	if err != nil {
-		panic("Could not get label: " + err.Error())
-	}
-
 	return &Checkbox{
-		Value:    checkbutton.GetActive(),
-		Text:     text,
-		Disabled: !checkbutton.GetSensitive(),
+		Value:    gtk.CheckboxValue(w.handle),
+		Text:     gtk.ButtonText(w.handle),
+		Disabled: !gtk.WidgetSensitive(w.handle),
 		OnChange: w.onChange,
-		OnFocus:  w.onFocus.callback,
-		OnBlur:   w.onBlur.callback,
+		OnFocus:  w.onFocus,
+		OnBlur:   w.onBlur,
 	}
 }
 
 func (w *checkboxElement) updateProps(data *Checkbox) error {
-	checkbutton := w.checkbutton()
-
 	w.onChange = nil // temporarily break OnChange to prevent event
-	checkbutton.SetLabel(data.Text)
-	checkbutton.SetActive(data.Value)
-	checkbutton.SetSensitive(!data.Disabled)
+	gtk.CheckboxUpdate(w.handle, data.Value, data.Text, data.Disabled,
+		data.OnChange != nil, data.OnFocus != nil, data.OnBlur != nil)
 
 	w.onChange = data.OnChange
-	w.shClick = setSignalHandler(&checkbutton.Widget, w.shClick, data.OnChange != nil, "clicked", checkboxOnClick, w)
-	w.onFocus.Set(&checkbutton.Widget, data.OnFocus)
-	w.onBlur.Set(&checkbutton.Widget, data.OnBlur)
+	w.onFocus = data.OnFocus
+	w.onBlur = data.OnBlur
 
 	return nil
 }

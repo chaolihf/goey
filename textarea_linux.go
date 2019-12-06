@@ -2,107 +2,32 @@ package goey
 
 import (
 	"bitbucket.org/rj/goey/base"
-	"bitbucket.org/rj/goey/internal/syscall"
-	"github.com/gotk3/gotk3/glib"
-	"github.com/gotk3/gotk3/gtk"
+	"bitbucket.org/rj/goey/internal/gtk"
 )
 
 type textareaElement struct {
-	handle *gtk.TextView
-	buffer *gtk.TextBuffer
-	frame  *gtk.ScrolledWindow
+	Control
 
 	minLines int
 	onChange func(string)
-	shChange glib.SignalHandle
-	onFocus  focusSlot
-	onBlur   blurSlot
+	onFocus  func()
+	onBlur   func()
 }
 
 func (w *TextArea) mount(parent base.Control) (base.Element, error) {
-	buffer, err := gtk.TextBufferNew(nil)
-	if err != nil {
-		return nil, err
-	}
-	buffer.SetText(w.Value)
-
-	control, err := gtk.TextViewNewWithBuffer(buffer)
-	if err != nil {
-		buffer.Unref()
-		return nil, err
-	}
-	control.SetLeftMargin(3)
-	control.SetRightMargin(3)
-	control.SetMarginTop(3)    // missing function SetTopMargin
-	control.SetMarginBottom(3) // missing function SetBottomMargin
-	control.SetWrapMode(gtk.WRAP_WORD)
-	control.SetSensitive(!w.Disabled)
-
-	swindow, err := gtk.ScrolledWindowNew(nil, nil)
-	if err != nil {
-		control.RefSink()
-		control.Destroy()
-		control.Unref()
-		return nil, err
-	}
-	swindow.Add(control)
-	swindow.SetPolicy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
-	swindow.SetShadowType(gtk.SHADOW_IN)
-	swindow.SetVExpand(true)
-	parent.Handle.Add(swindow)
+	control := gtk.MountTextarea(parent.Handle, w.Value, w.Disabled, w.ReadOnly,
+		w.OnChange != nil, w.OnFocus != nil, w.OnBlur != nil)
 
 	retval := &textareaElement{
-		handle:   control,
-		buffer:   buffer,
-		frame:    swindow,
-		onChange: w.OnChange,
+		Control:  Control{control},
 		minLines: minlinesDefault(w.MinLines),
+		onChange: w.OnChange,
+		onFocus:  w.OnFocus,
+		onBlur:   w.OnBlur,
 	}
-
-	control.Connect("destroy", textareaOnDestroy, retval)
-	if w.OnChange != nil {
-		sh, err := buffer.Connect("changed", textareaOnChanged, retval)
-		if err != nil {
-			panic("Failed to connect 'changed' event")
-		}
-		retval.shChange = sh
-	}
-	retval.onFocus.Set(&control.Widget, w.OnFocus)
-	retval.onBlur.Set(&control.Widget, w.OnBlur)
-	swindow.ShowAll()
+	gtk.RegisterWidget(control, retval)
 
 	return retval, nil
-}
-
-func textareaOnChanged(buffer *gtk.TextBuffer, mounted *textareaElement) {
-	if mounted.onChange == nil {
-		return
-	}
-
-	text, err := buffer.GetText(buffer.GetStartIter(), buffer.GetEndIter(), true)
-	if err != nil {
-		// TODO:  What is the correct reporting here
-		return
-	}
-	mounted.onChange(text)
-}
-
-func textareaOnDestroy(widget *gtk.TextView, mounted *textareaElement) {
-	mounted.handle = nil
-}
-
-func (w *textareaElement) Close() {
-	if w.handle != nil {
-		w.frame.Destroy()
-		w.buffer.Unref()
-		w.handle = nil
-		w.frame = nil
-		w.buffer = nil
-	}
-}
-
-func (w *textareaElement) Handle() *gtk.Widget {
-	return &w.handle.Widget
 }
 
 func (w *textareaElement) Layout(bc base.Constraints) base.Size {
@@ -113,7 +38,7 @@ func (w *textareaElement) Layout(bc base.Constraints) base.Size {
 			return bc.Constrain(base.Size{width, height})
 		}
 
-		_, width := w.handle.GetPreferredWidth()
+		width := gtk.WidgetNaturalWidth(w.handle)
 		height := w.MinIntrinsicHeight(base.Inf)
 		return bc.Constrain(base.Size{
 			base.FromPixelsX(width),
@@ -134,84 +59,68 @@ func (w *textareaElement) MinIntrinsicHeight(width base.Length) base.Length {
 	minHeight := 23*DIP + lineHeight.Scale(w.minLines-1, 1)
 
 	if width != base.Inf {
-		height, _ := syscall.WidgetGetPreferredHeightForWidth(&w.frame.Widget, width.PixelsX())
+		height := gtk.WidgetMinHeightForWidth(w.handle, width.PixelsX())
 		return max(minHeight, base.FromPixelsY(height))
 	}
-	height, _ := w.frame.GetPreferredHeight()
+	height := gtk.WidgetMinHeight(w.handle)
 	return max(minHeight, base.FromPixelsY(height))
 }
 
 func (w *textareaElement) MinIntrinsicWidth(base.Length) base.Length {
-	width, _ := w.frame.GetPreferredWidth()
+	width := gtk.WidgetMinWidth(w.handle)
 	return base.FromPixelsX(width)
 }
 
-func (w *textareaElement) Props() base.Widget {
-	buffer, err := w.handle.GetBuffer()
-	if err != nil {
-		panic("count not get buffer, " + err.Error())
-	}
-	value, err := buffer.GetText(buffer.GetStartIter(), buffer.GetEndIter(), true)
-	if err != nil {
-		panic("could not get text, " + err.Error())
-	}
-	return &TextArea{
-		Value:    value,
-		Disabled: !w.handle.GetSensitive(),
-		MinLines: w.minLines,
-		OnChange: w.onChange,
-		OnFocus:  w.onFocus.callback,
-		OnBlur:   w.onBlur.callback,
+func (w *textareaElement) OnChange(value string) {
+	if w.onChange != nil {
+		w.onChange(value)
 	}
 }
 
-func (w *textareaElement) SetBounds(bounds base.Rectangle) {
-	pixels := bounds.Pixels()
-	syscall.SetBounds(&w.frame.Widget, pixels.Min.X, pixels.Min.Y, pixels.Dx(), pixels.Dy())
+func (w *textareaElement) OnFocus() {
+	w.onFocus()
+}
+
+func (w *textareaElement) OnBlur() {
+	w.onBlur()
+}
+
+func (w *textareaElement) OnEnterKey(value string) {
+	// Not supported by GTK.
+	// This event will never occur
+}
+
+func (w *textareaElement) Props() base.Widget {
+	return &TextArea{
+		Value:    gtk.TextareaText(w.handle),
+		Disabled: !gtk.WidgetSensitive(gtk.TextareaTextview(w.handle)),
+		ReadOnly: gtk.TextareaReadOnly(w.handle),
+		MinLines: w.minLines,
+		OnChange: w.onChange,
+		OnFocus:  w.onFocus,
+		OnBlur:   w.onBlur,
+	}
 }
 
 func (w *textareaElement) TakeFocus() bool {
-	control := Control{&w.handle.Widget}
+	control := Control{gtk.TextareaTextview(w.handle)}
 	return control.TakeFocus()
 }
 
 func (w *textareaElement) TypeKeys(text string) chan error {
-	control := Control{&w.handle.Widget}
+	control := Control{gtk.TextareaTextview(w.handle)}
 	return control.TypeKeys(text)
 }
 
 func (w *textareaElement) updateProps(data *TextArea) error {
-	// TextView will send a 'changed' event, even if the new value is the
-	// same.  To stop an infinite loop, we need to protect by checking
-	// ourselves.
-	buffer, err := w.handle.GetBuffer()
-	if err != nil {
-		return err
-	}
-	oldText, err := buffer.GetText(buffer.GetStartIter(), buffer.GetEndIter(), true)
-	if err != nil {
-		return err
-	}
-	if data.Value != oldText {
-		w.onChange = nil // temporarily break OnChange to prevent event
-		buffer.SetText(data.Value)
-	}
-	w.handle.SetSensitive(!data.Disabled)
+	w.onChange = nil // temporarily break OnChange to prevent event
+	gtk.TextareaUpdate(w.handle, data.Value, data.Disabled, data.ReadOnly,
+		data.OnChange != nil, data.OnFocus != nil, data.OnBlur != nil)
 
 	w.minLines = data.MinLines
 	w.onChange = data.OnChange
-	if data.OnChange != nil && w.shChange == 0 {
-		sh, err := buffer.Connect("changed", textareaOnChanged, w)
-		if err != nil {
-			panic("Failed to connect 'changed' event")
-		}
-		w.shChange = sh
-	} else if data.OnChange == nil && w.shChange != 0 {
-		buffer.HandlerDisconnect(w.shChange)
-		w.shChange = 0
-	}
-	w.onFocus.Set(&w.handle.Widget, data.OnFocus)
-	w.onBlur.Set(&w.handle.Widget, data.OnBlur)
+	w.onFocus = data.OnFocus
+	w.onBlur = data.OnBlur
 
 	return nil
 }

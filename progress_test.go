@@ -12,7 +12,7 @@ func TestProgressMount(t *testing.T) {
 		&Progress{Value: 0},
 		&Progress{Value: 0},
 		&Progress{Value: 100},
-		&Slider{Value: 500, Max: 1000},
+		&Progress{Value: 500, Max: 1000},
 	)
 }
 

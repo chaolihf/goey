@@ -1,7 +1,5 @@
 package base
 
-import "github.com/gotk3/gotk3/gtk"
-
 // Control is an opaque type used as a platform-specific handle to a control
 // created using the platform GUI.  As an example, this will refer to a HWND
 // when targeting Windows, but a *GtkContainer when targeting GTK.
@@ -10,7 +8,7 @@ import "github.com/gotk3/gotk3/gtk"
 //
 // Any methods on this type will be platform specific.
 type Control struct {
-	Handle *gtk.Container
+	Handle uintptr
 }
 
 // NativeElement contains platform-specific methods that all widgets

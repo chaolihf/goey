@@ -59,7 +59,7 @@ func selectImage(index int) (image.Image, string) {
 }
 
 func main() {
-	err := error(nil)
+	var err error
 	gopher, err = loadImage("gopher.png")
 	if err != nil {
 		fmt.Println("Error: ", err)

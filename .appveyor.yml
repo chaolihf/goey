@@ -13,9 +13,9 @@ init:
 - sh: Xvfb :1 -screen 0 1024x768x24 &
 - sh: go version
 clone_script:
-- cmd: hg clone https://bitbucket.org/rj/goey %APPVEYOR_BUILD_FOLDER%/src/bitbucket.org/rj/goey
+- cmd: git clone https://bitbucket.org/rj/goey %APPVEYOR_BUILD_FOLDER%/src/bitbucket.org/rj/goey
 - cmd: set GOPATH=%APPVEYOR_BUILD_FOLDER%
-- sh: hg clone https://bitbucket.org/rj/goey ${APPVEYOR_BUILD_FOLDER}/src/bitbucket.org/rj/goey
+- sh: git clone https://bitbucket.org/rj/goey ${APPVEYOR_BUILD_FOLDER}/src/bitbucket.org/rj/goey
 - sh: export GOPATH=${APPVEYOR_BUILD_FOLDER}
 install:
 - cmd: go get -d bitbucket.org/rj/goey
@@ -23,8 +23,8 @@ install:
 - sh: go get -d bitbucket.org/rj/goey
 - sh: go get -d bitbucket.org/rj/goey/icons
 build_script:
-- cmd: go install -v bitbucket.org/rj/goey/...
-- sh: go install -v bitbucket.org/rj/goey/...
+- cmd: go install -v bitbucket.org/rj/goey/ bitbucket.org/rj/goey/example/...
+- sh: go install -v bitbucket.org/rj/goey/ bitbucket.org/rj/goey/example/...
 test_script:
 - cmd: go test -v bitbucket.org/rj/goey/base
 - cmd: go test -v bitbucket.org/rj/goey/loop

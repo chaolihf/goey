@@ -38,8 +38,8 @@ On Ubuntu:
 
 ### MacOS
 
-There is a in-progress port for Cocoa.  It is currently being developped using 
-GNUstep on Linux, but has been developped based on documentation from Apple.
+There is a in-progress port for Cocoa.  It is currently being developed using 
+GNUstep on Linux, but has been developed based on documentation from Apple.
 All controls, except for the date control (which is not available in GNUstep),
 are implemented.  However, additional testing, especially on Darwin, is still
 required.

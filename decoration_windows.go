@@ -144,7 +144,7 @@ func (w *decorationElement) Close() {
 func (w *decorationElement) props() *Decoration {
 	// TODO:  Can we determine the color of the brush or pen?  That would allow
 	// to verify that the change has propagated right down to the WIN32
-	// API.  This code won't detect if their is skew between the colours stored
+	// API.  This code won't detect if their is skew between the colors stored
 	// in fill and stroke and the GDI resource hbrush and hpen.
 
 	return &Decoration{

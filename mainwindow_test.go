@@ -38,7 +38,7 @@ func ExampleNewWindow() {
 
 			// Note:  No work after this call to Do, since the call to Run may be
 			// terminated when the call to Do returns.
-			loop.Do(func() error {
+			_ = loop.Do(func() error {
 				mw.Close()
 				return nil
 			})
@@ -74,13 +74,13 @@ func ExampleWindow_Message() {
 		// directly.
 		go func() {
 			// Show the error message.
-			loop.Do(func() error {
+			_ = loop.Do(func() error {
 				return mw.Message("This is an example message.").WithInfo().Show()
 			})
 
 			// Note:  No work after this call to Do, since the call to Run may be
 			// terminated when the call to Do returns.
-			loop.Do(func() error {
+			_ = loop.Do(func() error {
 				mw.Close()
 				return nil
 			})

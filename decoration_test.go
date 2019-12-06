@@ -43,7 +43,7 @@ func TestDecorationMount(t *testing.T) {
 		&Decoration{Child: child, Stroke: black},
 		&Decoration{Child: child, Stroke: white},
 		&Decoration{Child: child, Stroke: red},
-		&Decoration{Child: child, Fill: black, Stroke: white, Radius: 4 * DIP, Insets: DefaultInsets()},
+		&Decoration{Child: child, Fill: black, Stroke: white, Radius: 8 * DIP, Insets: DefaultInsets()},
 		&Decoration{Child: child, Fill: white, Stroke: black},
 		&Decoration{Child: child, Fill: red},
 	)
@@ -88,7 +88,8 @@ func TestDecorationUpdate(t *testing.T) {
 func TestDecorationMinIntrinsicSize(t *testing.T) {
 	size1 := base.Size{10 * DIP, 20 * DIP}
 	size2 := base.Size{15 * DIP, 25 * DIP}
-	sizeZ := base.Size{}
+	sizeZ := base.Size{0, 0}
+	sizeMin := base.Size{base.FromPixelsX(2), base.FromPixelsY(2)}
 	insets := Insets{1 * DIP, 2 * DIP, 3 * DIP, 4 * DIP}
 
 	cases := []struct {
@@ -98,7 +99,7 @@ func TestDecorationMinIntrinsicSize(t *testing.T) {
 	}{
 		{size1, Insets{}, size1},
 		{size2, Insets{}, size2},
-		{sizeZ, Insets{}, sizeZ},
+		{sizeZ, Insets{}, sizeMin},
 		{size1, insets, base.Size{16 * DIP, 24 * DIP}},
 		{size2, insets, base.Size{21 * DIP, 29 * DIP}},
 		{sizeZ, insets, base.Size{6 * DIP, 4 * DIP}},
@@ -114,7 +115,7 @@ func TestDecorationMinIntrinsicSize(t *testing.T) {
 			t.Errorf("Case %d: Returned min intrinsic width does not match, got %v, want %v", i, out, v.out.Width)
 		}
 		if out := elem.MinIntrinsicHeight(base.Inf); out != v.out.Height {
-			t.Errorf("Case %d: Returned min intrinsic width does not match, got %v, want %v", i, out, v.out.Height)
+			t.Errorf("Case %d: Returned min intrinsic height does not match, got %v, want %v", i, out, v.out.Height)
 		}
 	}
 }

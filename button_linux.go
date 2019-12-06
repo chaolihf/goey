@@ -1,86 +1,69 @@
 package goey
 
 import (
-	"unsafe"
-
 	"bitbucket.org/rj/goey/base"
-	"github.com/gotk3/gotk3/gdk"
-	"github.com/gotk3/gotk3/gtk"
+	"bitbucket.org/rj/goey/internal/gtk"
 )
 
 type buttonElement struct {
 	Control
 
-	onClick clickSlot
-	onFocus focusSlot
-	onBlur  blurSlot
+	onClick func()
+	onFocus func()
+	onBlur  func()
 }
 
 func (w *Button) mount(parent base.Control) (base.Element, error) {
 	// Create the control
-	control, err := gtk.ButtonNewWithLabel(w.Text)
-	if err != nil {
-		return nil, err
-	}
-	control.AddEvents(int(gdk.FOCUS_CHANGE_MASK))
-	parent.Handle.Add(control)
-
-	// Update properties on the control
-	control.SetSensitive(!w.Disabled)
-	control.SetCanDefault(w.Default)
-	control.Show()
+	handle := gtk.MountButton(parent.Handle, w.Text, w.Disabled, w.Default,
+		w.OnClick != nil, w.OnFocus != nil, w.OnBlur != nil)
 
 	// Create the element
 	retval := &buttonElement{
-		Control: Control{&control.Widget},
+		Control: Control{handle},
+		onClick: w.OnClick,
+		onFocus: w.OnFocus,
+		onBlur:  w.OnBlur,
 	}
-
-	// Connect all callbacks for the events
-	control.Connect("destroy", buttonOnDestroy, retval)
-	retval.onClick.Set(&control.Widget, w.OnClick)
-	retval.onFocus.Set(&control.Widget, w.OnFocus)
-	retval.onBlur.Set(&control.Widget, w.OnBlur)
+	gtk.RegisterWidget(handle, retval)
 
 	return retval, nil
 }
 
-func buttonOnDestroy(widget *gtk.Button, mounted *buttonElement) {
-	mounted.handle = nil
-}
-
-func (w *buttonElement) button() *gtk.Button {
-	return (*gtk.Button)(unsafe.Pointer(w.handle))
-}
-
 func (w *buttonElement) Click() {
-	w.button().Clicked()
+	gtk.ButtonClick(w.handle)
+}
+
+func (w *buttonElement) OnClick() {
+	w.onClick()
+}
+
+func (w *buttonElement) OnFocus() {
+	w.onFocus()
+}
+
+func (w *buttonElement) OnBlur() {
+	w.onBlur()
 }
 
 func (w *buttonElement) Props() base.Widget {
-	button := w.button()
-	text, err := button.GetLabel()
-	if err != nil {
-		panic("Could not get label: " + err.Error())
-	}
-
 	return &Button{
-		Text:     text,
-		Disabled: !button.GetSensitive(),
-		Default:  button.GetCanDefault(),
-		OnClick:  w.onClick.callback,
-		OnFocus:  w.onFocus.callback,
-		OnBlur:   w.onBlur.callback,
+		Text:     gtk.ButtonText(w.handle),
+		Disabled: !gtk.WidgetSensitive(w.handle),
+		Default:  gtk.WidgetCanDefault(w.handle),
+		OnClick:  w.onClick,
+		OnFocus:  w.onFocus,
+		OnBlur:   w.onBlur,
 	}
 }
 
 func (w *buttonElement) updateProps(data *Button) error {
-	button := w.button()
-	button.SetLabel(data.Text)
-	button.SetSensitive(!data.Disabled)
-	button.SetCanDefault(data.Default)
-	w.onClick.Set(w.handle, data.OnClick)
-	w.onFocus.Set(w.handle, data.OnFocus)
-	w.onBlur.Set(w.handle, data.OnBlur)
+	gtk.ButtonUpdate(w.handle, data.Text, data.Disabled, data.Default,
+		data.OnClick != nil, data.OnFocus != nil, data.OnBlur != nil)
+
+	w.onClick = data.OnClick
+	w.onFocus = data.OnFocus
+	w.onBlur = data.OnBlur
 
 	return nil
 }

@@ -230,7 +230,7 @@ func (w *windowImpl) close() {
 	// destroyed in the Win32 system
 	if w.hWnd != 0 {
 		// There is a heseinbug with the kill focus message when destroying
-		// windows.  To get consistent behaviour, we can remove focus before
+		// windows.  To get consistent behavior, we can remove focus before
 		// destroying the window.
 		focus := win.GetFocus()
 		if focus != 0 {

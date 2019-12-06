@@ -50,7 +50,7 @@ func (w *Tabs) mount(parent base.Control) (base.Element, error) {
 
 	child := base.Element(nil)
 	if len(w.Children) > 0 {
-		err := error(nil)
+		var err error
 		if w.Value >= 0 {
 			child, err = base.Mount(base.Control{hwnd}, w.Children[w.Value].Child)
 		} else {
@@ -282,7 +282,7 @@ func tabsBackgroundBrush(hwnd win.HWND, hdc win.HDC) (win.HBRUSH, bool, error) {
 	if !tabs.hbrushFlag {
 		tabs.hbrushFlag = true
 
-		// Is the current bitmap a constant colour in the client area
+		// Is the current bitmap a constant color in the client area
 		win.SendMessage(hwnd, win.TCM_ADJUSTRECT, win.FALSE, uintptr(unsafe.Pointer(&cr)))
 		if clr := win.GetPixel(cdc, cr.Left, cr.Top); clr == 0 {
 			// Don't believe it.  Windows lies.

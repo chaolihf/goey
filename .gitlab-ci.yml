@@ -1,0 +1,192 @@
+before_script: &before_script_all
+  - cat /etc/*-release
+  - if [ -x "$(command -v go)" ]; then go version; fi;
+  - if [ -n "$APT_GET" ]; then apt-get update -qq -y; apt-get install -qq -y $APT_GET; fi;
+  - if [ -n "$DISPLAY" ]; then Xvfb $DISPLAY -screen 0 1024x768x24 & fi;
+
+golang-1.13:
+  image: golang:1.13
+  stage: build
+  variables:
+    DISPLAY: ":1"
+    APT_GET: "libgtk-3-dev xvfb"
+  script:
+    - go build . ./example/...
+    - go test ./base ./loop .
+
+golang-1.12:
+  image: golang:1.12
+  stage: build
+  variables:
+    DISPLAY: ":1"
+    APT_GET: "libgtk-3-dev xvfb"
+  script:
+    - go build . ./example/...
+    - go test ./base ./loop .
+
+golang-1.11:
+  image: golang:1.11
+  stage: build
+  variables:
+    DISPLAY: ":1"
+    APT_GET: "libgtk-3-dev xvfb"
+  script:
+    - go build . ./example/...
+    - go test ./base ./loop .
+
+golang-1.10:
+  image: golang:1.10
+  stage: build
+  variables:
+    GOPATH: $CI_BUILDS_DIR
+    GIT_CLONE_PATH: $CI_BUILDS_DIR/src/bitbucket.org/rj/goey
+    DISPLAY: ":1"
+    APT_GET: "libgtk-3-dev xvfb"
+  script:
+    - go get bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
+    - go build bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
+    - go test ./base ./loop .
+
+golang-1.9:
+  image: golang:1.9
+  stage: build
+  variables:
+    GOPATH: $CI_BUILDS_DIR
+    GIT_CLONE_PATH: $CI_BUILDS_DIR/src/bitbucket.org/rj/goey
+    DISPLAY: ":1"
+    APT_GET: "libgtk-3-dev xvfb"
+  script:
+    - go get bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
+    - go build bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
+    - go test ./base ./loop .
+
+golang-1.8:
+  image: golang:1.8
+  stage: build
+  variables:
+    GOPATH: $CI_BUILDS_DIR
+    GIT_CLONE_PATH: $CI_BUILDS_DIR/src/bitbucket.org/rj/goey
+    DISPLAY: ":1"
+    APT_GET: "libgtk-3-dev xvfb"
+  script:
+    - go get bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
+    - go build bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
+    - go test ./base ./loop .
+
+test:
+  image: golang:1.12
+  stage: test
+  variables:
+    GOPATH: $CI_BUILDS_DIR
+    GIT_CLONE_PATH: $CI_BUILDS_DIR/src/bitbucket.org/rj/goey
+    DISPLAY: ":1"
+    APT_GET: "libgtk-3-dev xvfb"
+  before_script:
+    - *before_script_all
+    - mkdir -p .cache/github.com
+    - mv .cache/github.com $GOPATH/src/
+  after_script:
+    - mv $GOPATH/src/github.com .cache/
+  script:
+    - go get bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
+    - go test -coverprofile=cover.out -v ./base ./loop .
+    - go tool cover -html=cover.out -o=cover.html
+    - go vet -composites=false .
+    - go get -u github.com/gordonklaus/ineffassign
+    - go install github.com/gordonklaus/ineffassign
+    - $GOPATH/bin/ineffassign .
+    - go get -u github.com/client9/misspell/cmd/misspell
+    - go install github.com/client9/misspell/cmd/misspell
+    - $GOPATH/bin/misspell -locale US *.go *.md
+    - go get -u github.com/securego/gosec/cmd/gosec
+    - go install github.com/securego/gosec/cmd/gosec
+    - $GOPATH/bin/gosec -exclude=G104,G304 ./...
+  cache:
+    key: test
+    paths:
+      - .cache/github.com/
+  except:
+    - tags
+  artifacts:
+    paths:
+      - cover.html
+
+test-windows:
+  image: golang:1.12
+  stage: test
+  variables:
+    GOPATH: $CI_BUILDS_DIR
+    GIT_CLONE_PATH: $CI_BUILDS_DIR/src/bitbucket.org/rj/goey
+    DISPLAY: ":1"
+    APT_GET: "wine64 wine-binfmt xvfb"
+    GOOS: windows
+  before_script:
+    - *before_script_all
+    - mkdir -p .cache/github.com
+    - mv .cache/github.com $GOPATH/src/
+  after_script:
+    - mv $GOPATH/src/github.com .cache/
+  script:
+    - go get bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
+    - go build bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
+    - go test -c ./base
+    - wine64 ./base.test.exe -test.v
+    - go test -c ./loop
+    - wine64 ./loop.test.exe -test.v
+    - go test -c .
+    - wine64 ./goey.test.exe -test.v -test.short
+  cache:
+    key: test
+    paths:
+      - .cache/github.com/
+  except:
+    - tags
+  allow_failure: true
+  artifacts:
+    paths:
+      - cover.html
+
+lint:
+  image: golang:1.12
+  stage: test
+  variables:
+    GOPATH: $CI_BUILDS_DIR
+    GIT_CLONE_PATH: $CI_BUILDS_DIR/src/bitbucket.org/rj/goey
+    APT_GET: "libgtk-3-dev"
+  before_script:
+    - *before_script_all
+    - mkdir -p .cache/pkg
+    - mv .cache/pkg $GOPATH/pkg
+  after_script:
+    - mv $GOPATH/pkg .cache/
+  script:
+    - go get bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
+    - cd ..
+    - GO111MODULE=on go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.17.1
+    - GO111MODULE=on go install github.com/golangci/golangci-lint/cmd/golangci-lint
+    - cd $GIT_CLONE_PATH
+    - $GOPATH/bin/golangci-lint run -v .
+  cache:
+    key: lint
+    paths:
+      - .cache/pkg/
+  except:
+    - tags
+  allow_failure: true
+
+include:
+  template: SAST.gitlab-ci.yml
+
+pages:
+  stage: deploy
+  dependencies:
+    - test
+  script:
+    - mkdir ./public
+    - mv cover.html ./public
+  only:
+    - master
+  artifacts:
+    paths:
+      - public
+

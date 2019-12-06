@@ -1,47 +1,30 @@
 package dialog
 
 import (
-	"github.com/gotk3/gotk3/gtk"
+	"bitbucket.org/rj/goey/internal/gtk"
 )
 
 func (m *OpenFile) show() (string, error) {
-	dlg, err := gtk.FileChooserDialogNewWith2Buttons(m.title, m.parent, gtk.FILE_CHOOSER_ACTION_OPEN, "_Open", gtk.RESPONSE_ACCEPT, "_Cancel", gtk.RESPONSE_CANCEL)
-	if err != nil {
-		return "", err
-	}
-	activeDialogForTesting = &dlg.Dialog
+	dlg := gtk.MountOpenDialog(m.parent, m.title, m.filename)
+	activeDialogForTesting = dlg
 	defer func() {
-		activeDialogForTesting = nil
-		dlg.Destroy()
+		activeDialogForTesting = 0
+		gtk.WidgetClose(dlg)
 	}()
 
 	for _, v := range m.filters {
-		addFilterToDialog(dlg, v.name, v.pattern)
+		gtk.DialogAddFilter( dlg, v.name, v.pattern )
 	}
 
-	dlg.SetFilename(m.filename)
-	rc := dlg.Run()
-	if gtk.ResponseType(rc) != gtk.RESPONSE_ACCEPT {
+	rc := gtk.DialogRun(dlg)
+	if rc != gtk.DialogResponseAccept() {
 		return "", nil
 	}
-	return dlg.GetFilename(), nil
-}
-
-func addFilterToDialog(dlg *gtk.FileChooserDialog, name, pattern string) error {
-	filter, err := gtk.FileFilterNew()
-	if err != nil {
-		return err
-	}
-	defer filter.Unref()
-
-	filter.SetName(name)
-	filter.AddPattern(pattern)
-	dlg.AddFilter(filter)
-	return nil
+	return gtk.DialogGetFilename(dlg), nil
 }
 
 // WithParent sets the parent of the dialog box.
-func (m *OpenFile) WithParent(parent *gtk.Window) *OpenFile {
+func (m *OpenFile) WithParent(parent uintptr) *OpenFile {
 	m.parent = parent
 	return m
 }

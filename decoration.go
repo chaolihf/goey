@@ -17,8 +17,8 @@ var (
 // padding will be added between the border of the decoration and the child
 // element as specified by the field Insets.
 type Decoration struct {
-	Fill   color.RGBA  // Background colour used to fill interior.
-	Stroke color.RGBA  // Stroke colour used to draw outline.
+	Fill   color.RGBA  // Background color used to fill interior.
+	Stroke color.RGBA  // Stroke color used to draw outline.
 	Insets Insets      // Space between border of the decoration and the child element.
 	Radius base.Length // Radius of the widgets corners.
 	Child  base.Widget // Child widget.
@@ -48,19 +48,22 @@ func (w *decorationElement) Layout(bc base.Constraints) base.Size {
 	innerConstraints := bc.Inset(hinset, vinset)
 	w.childSize = w.child.Layout(innerConstraints)
 	return base.Size{
-		w.childSize.Width + hinset,
-		w.childSize.Height + vinset,
+		max(w.childSize.Width+hinset, base.FromPixelsX(2)),
+		max(w.childSize.Height+vinset, base.FromPixelsY(2)),
 	}
 }
 
 func (w *decorationElement) MinIntrinsicHeight(width base.Length) base.Length {
 	vinset := w.insets.Top + w.insets.Bottom
-	return w.child.MinIntrinsicHeight(width) + vinset
+	return max(w.child.MinIntrinsicHeight(width)+vinset,
+		base.FromPixelsX(2))
 }
 
 func (w *decorationElement) MinIntrinsicWidth(height base.Length) base.Length {
 	hinset := w.insets.Left + w.insets.Right
-	return w.child.MinIntrinsicWidth(height) + hinset
+	return max(w.child.MinIntrinsicWidth(height)+hinset,
+		base.FromPixelsY(2))
+
 }
 
 func (w *decorationElement) UpdateProps(data base.Widget) error {
