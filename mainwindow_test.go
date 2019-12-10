@@ -102,10 +102,10 @@ func testingWindow(t *testing.T, action func(*testing.T, *Window)) {
 		// production code, but we can be a little paranoid here.
 		mw, err := NewWindow(t.Name(), nil)
 		if err != nil {
-			t.Fatalf("Failed to create window, %s", err)
+			t.Fatalf("failed to create window: %s", err)
 		}
 		if mw == nil {
-			t.Fatalf("Unexpected nil for window")
+			t.Fatalf("unexpected nil for window")
 		}
 
 		go func() {
@@ -114,10 +114,13 @@ func testingWindow(t *testing.T, action func(*testing.T, *Window)) {
 
 			// Note:  No work after this call to Do, since the call to Run may be
 			// terminated when the call to Do returns.
-			loop.Do(func() error {
+			err := loop.Do(func() error {
 				mw.Close()
 				return nil
 			})
+			if err != nil {
+				t.Fatalf("call to 'loop.Do' failed: %s", err)
+			}
 		}()
 
 		return nil
