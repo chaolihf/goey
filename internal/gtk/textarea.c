@@ -71,7 +71,7 @@ extern void *mountTextarea( void *parent, char const *text, bool disabled,
 
     gtk_text_view_set_left_margin( GTK_TEXT_VIEW( w ), 3 );
     gtk_text_view_set_right_margin( GTK_TEXT_VIEW( w ), 3 );
-    #if GTK_CHECK_VERSION(3,18,0)
+    #if GTK_CHECK_VERSION( 3, 18, 0 )
     gtk_text_view_set_top_margin( GTK_TEXT_VIEW( w ), 3 );
     gtk_text_view_set_bottom_margin( GTK_TEXT_VIEW( w ), 3 );
     #endif

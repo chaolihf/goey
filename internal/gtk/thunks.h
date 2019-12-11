@@ -42,6 +42,9 @@ extern void windowShow( void *window );
 extern void windowSetDefaultSize( void *window, int width, int height );
 extern void windowSetIcon( void *window, unsigned char const *data, int width,
                            int height, int rowStride );
+extern void *windowScreenshot( void *window, void **data, size_t *datLen,
+                               bool *haveAlpha, int *width, int *height,
+                               unsigned *stride );
 
 extern unsigned dialogRun( void *dialog );
 extern void dialogAddFilter( void *dialog, char const *name,

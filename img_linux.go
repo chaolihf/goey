@@ -77,8 +77,8 @@ func (w *imgElement) PropsImage() image.Image {
 		}
 	}
 
-	// Need munge the pixel data into the correct format
-	// Convert RGB to RGBA
+	// Need munge the pixel data into the correct format.
+	// Convert RGB to RGBA.
 	pix := gtk.ImageImageData(w.handle)
 	newpix := make([]byte, height*width*4)
 	for y := 0; y < height; y++ {

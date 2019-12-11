@@ -138,26 +138,36 @@ func (w *windowImpl) savefiledialog(m *dialog.SaveFile) {
 }
 
 // Screenshot returns an image of the window, as displayed on screen.
-/*func (w *windowImpl) Screenshot() (image.Image, error) {
-	screen, err := w.handle.GetScreen()
-	if err != nil {
-		return nil, err
+func (w *windowImpl) Screenshot() (image.Image, error) {
+	pix, hasAlpha, width, height, stride := gtk.WindowScreenshot(w.handle)
+
+	if hasAlpha {
+
+		return &image.RGBA{
+			Pix:    pix,
+			Stride: stride,
+			Rect:   image.Rect(0, 0, width, height),
+		}, nil
 	}
 
-	rw, err := screen.GetRootWindow()
-	if err != nil {
-		return nil, err
+	newpix := make([]byte, height*width*4)
+	for y := 0; y < height; y++ {
+		for x := 0; x < width; x++ {
+			newpix[y*width*4+x*4+0] = pix[y*stride+x*3+0]
+			newpix[y*width*4+x*4+1] = pix[y*stride+x*3+1]
+			newpix[y*width*4+x*4+2] = pix[y*stride+x*3+2]
+			newpix[y*width*4+x*4+3] = 0xff
+		}
 	}
 
-	pixbuf := syscall.PixbufGetFromWindow(rw, w.handle)
-	if pixbuf == nil {
-		panic("nil pointer")
-	}
-
-	// Convert the pixbuf to a image.Image.
-	img := pixbufToImage(pixbuf)
-	return img, nil
-}*/
+	// Note:  stride of the new image data does not match data returned
+	// from Pixbuf.
+	return &image.RGBA{
+		Pix:    newpix,
+		Stride: width * 4,
+		Rect:   image.Rect(0, 0, width, height),
+	}, nil
+}
 
 func get_vscrollbar_width(window uintptr) (base.Length, error) {
 	if vscrollbarWidth != 0 {

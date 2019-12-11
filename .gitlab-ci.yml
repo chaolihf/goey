@@ -81,6 +81,7 @@ test:
     GIT_CLONE_PATH: $CI_BUILDS_DIR/src/bitbucket.org/rj/goey
     DISPLAY: ":1"
     APT_GET: "libgtk-3-dev xvfb"
+    SCREENSHOTS: "onebutton twofields decoration colour"
   before_script:
     - *before_script_all
     - mkdir -p .cache/github.com
@@ -101,6 +102,9 @@ test:
     - go get -u github.com/securego/gosec/cmd/gosec
     - go install github.com/securego/gosec/cmd/gosec
     - $GOPATH/bin/gosec -exclude=G104,G304 ./...
+    - mkdir ./images
+    - for elem in $SCREENSHOTS; do go build -v bitbucket.org/rj/goey/example/$elem; done
+    - for elem in $SCREENSHOTS; do GOEY_SCREENSHOT=./images/${elem}_linux.png ./$elem; done
   cache:
     key: test
     paths:
@@ -110,6 +114,7 @@ test:
   artifacts:
     paths:
       - cover.html
+      - images/
 
 test-windows:
   image: golang:1.12
@@ -135,6 +140,8 @@ test-windows:
     - wine64 ./loop.test.exe -test.v
     - go test -c .
     - wine64 ./goey.test.exe -test.v -test.short
+    - mkdir images
+    - GOEY_SCREENSHOT=./images/onebutton_wine.png wine64 ./example/onebutton/onebutton.exe
   cache:
     key: test
     paths:
@@ -145,6 +152,7 @@ test-windows:
   artifacts:
     paths:
       - cover.html
+      - images
 
 lint:
   image: golang:1.12
@@ -184,6 +192,7 @@ pages:
   script:
     - mkdir ./public
     - mv cover.html ./public
+    - mv images/*.png ./public
   only:
     - master
   artifacts:

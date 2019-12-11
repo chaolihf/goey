@@ -9,7 +9,7 @@ native platform.
 
 [![Documentation](https://godoc.org/bitbucket.org/rj/goey?status.svg)](http://godoc.org/bitbucket.org/rj/goey)
 [![Go Report Card](https://goreportcard.com/badge/bitbucket.org/rj/goey)](https://goreportcard.com/report/bitbucket.org/rj/goey) 
-[![Windows Build Status](https://ci.appveyor.com/api/projects/status/bitbucket/rj/goey?branch=default&svg=true)](https://ci.appveyor.com/project/rj/goey) 
+[![Windows Build Status](https://ci.appveyor.com/api/projects/status/3n6qnl555b5sho70?svg=true)](https://ci.appveyor.com/project/rj/goey) 
 
 ## Install
 
