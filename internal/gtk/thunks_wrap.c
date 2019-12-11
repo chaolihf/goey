@@ -231,7 +231,7 @@ static void* Swig_malloc(int c) {
 extern "C" {
 #endif
 
-void _wrap_Swig_free_gtk_831706b8873fd4e8(void *_swig_go_0) {
+void _wrap_Swig_free_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   
   arg1 = *(void **)&_swig_go_0; 
@@ -241,7 +241,7 @@ void _wrap_Swig_free_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-void *_wrap_Swig_malloc_gtk_831706b8873fd4e8(intgo _swig_go_0) {
+void *_wrap_Swig_malloc_gtk_0b05487f82a429b0(intgo _swig_go_0) {
   int arg1 ;
   void *result = 0 ;
   void *_swig_go_result;
@@ -254,7 +254,7 @@ void *_wrap_Swig_malloc_gtk_831706b8873fd4e8(intgo _swig_go_0) {
 }
 
 
-void _wrap_widgetClose_gtk_831706b8873fd4e8(void *_swig_go_0) {
+void _wrap_widgetClose_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   
   arg1 = *(void **)&_swig_go_0; 
@@ -264,7 +264,7 @@ void _wrap_widgetClose_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-bool _wrap_widgetCanFocus_gtk_831706b8873fd4e8(void *_swig_go_0) {
+bool _wrap_widgetCanFocus_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   bool result;
   bool _swig_go_result;
@@ -277,7 +277,7 @@ bool _wrap_widgetCanFocus_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-void _wrap_widgetGrabFocus_gtk_831706b8873fd4e8(void *_swig_go_0) {
+void _wrap_widgetGrabFocus_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   
   arg1 = *(void **)&_swig_go_0; 
@@ -287,7 +287,7 @@ void _wrap_widgetGrabFocus_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-bool _wrap_widgetIsFocus_gtk_831706b8873fd4e8(void *_swig_go_0) {
+bool _wrap_widgetIsFocus_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   bool result;
   bool _swig_go_result;
@@ -300,7 +300,7 @@ bool _wrap_widgetIsFocus_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-void _wrap_widgetSendKey_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swig_go_1, bool _swig_go_2) {
+void _wrap_widgetSendKey_gtk_0b05487f82a429b0(void *_swig_go_0, intgo _swig_go_1, bool _swig_go_2) {
   void *arg1 = (void *) 0 ;
   unsigned int arg2 ;
   bool arg3 ;
@@ -314,7 +314,7 @@ void _wrap_widgetSendKey_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swig_go_1
 }
 
 
-intgo _wrap_widgetMinHeight_gtk_831706b8873fd4e8(void *_swig_go_0) {
+intgo _wrap_widgetMinHeight_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   int result;
   intgo _swig_go_result;
@@ -327,7 +327,7 @@ intgo _wrap_widgetMinHeight_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-intgo _wrap_widgetMinHeightForWidth_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swig_go_1) {
+intgo _wrap_widgetMinHeightForWidth_gtk_0b05487f82a429b0(void *_swig_go_0, intgo _swig_go_1) {
   void *arg1 = (void *) 0 ;
   int arg2 ;
   int result;
@@ -342,7 +342,7 @@ intgo _wrap_widgetMinHeightForWidth_gtk_831706b8873fd4e8(void *_swig_go_0, intgo
 }
 
 
-intgo _wrap_widgetNaturalHeight_gtk_831706b8873fd4e8(void *_swig_go_0) {
+intgo _wrap_widgetNaturalHeight_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   int result;
   intgo _swig_go_result;
@@ -355,7 +355,7 @@ intgo _wrap_widgetNaturalHeight_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-intgo _wrap_widgetNaturalHeightForWidth_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swig_go_1) {
+intgo _wrap_widgetNaturalHeightForWidth_gtk_0b05487f82a429b0(void *_swig_go_0, intgo _swig_go_1) {
   void *arg1 = (void *) 0 ;
   int arg2 ;
   int result;
@@ -370,7 +370,7 @@ intgo _wrap_widgetNaturalHeightForWidth_gtk_831706b8873fd4e8(void *_swig_go_0, i
 }
 
 
-intgo _wrap_widgetMinWidth_gtk_831706b8873fd4e8(void *_swig_go_0) {
+intgo _wrap_widgetMinWidth_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   int result;
   intgo _swig_go_result;
@@ -383,7 +383,7 @@ intgo _wrap_widgetMinWidth_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-intgo _wrap_widgetNaturalWidth_gtk_831706b8873fd4e8(void *_swig_go_0) {
+intgo _wrap_widgetNaturalWidth_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   int result;
   intgo _swig_go_result;
@@ -396,7 +396,7 @@ intgo _wrap_widgetNaturalWidth_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-intgo _wrap_widgetNaturalWidthForHeight_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swig_go_1) {
+intgo _wrap_widgetNaturalWidthForHeight_gtk_0b05487f82a429b0(void *_swig_go_0, intgo _swig_go_1) {
   void *arg1 = (void *) 0 ;
   int arg2 ;
   int result;
@@ -411,7 +411,7 @@ intgo _wrap_widgetNaturalWidthForHeight_gtk_831706b8873fd4e8(void *_swig_go_0, i
 }
 
 
-void _wrap_widgetSetBounds_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swig_go_1, intgo _swig_go_2, intgo _swig_go_3, intgo _swig_go_4) {
+void _wrap_widgetSetBounds_gtk_0b05487f82a429b0(void *_swig_go_0, intgo _swig_go_1, intgo _swig_go_2, intgo _swig_go_3, intgo _swig_go_4) {
   void *arg1 = (void *) 0 ;
   int arg2 ;
   int arg3 ;
@@ -429,7 +429,7 @@ void _wrap_widgetSetBounds_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swig_go
 }
 
 
-bool _wrap_widgetSensitive_gtk_831706b8873fd4e8(void *_swig_go_0) {
+bool _wrap_widgetSensitive_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   bool result;
   bool _swig_go_result;
@@ -442,7 +442,7 @@ bool _wrap_widgetSensitive_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-bool _wrap_widgetCanDefault_gtk_831706b8873fd4e8(void *_swig_go_0) {
+bool _wrap_widgetCanDefault_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   bool result;
   bool _swig_go_result;
@@ -455,7 +455,7 @@ bool _wrap_widgetCanDefault_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-void _wrap_widgetSetSizeRequest_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swig_go_1, intgo _swig_go_2) {
+void _wrap_widgetSetSizeRequest_gtk_0b05487f82a429b0(void *_swig_go_0, intgo _swig_go_1, intgo _swig_go_2) {
   void *arg1 = (void *) 0 ;
   int arg2 ;
   int arg3 ;
@@ -469,7 +469,7 @@ void _wrap_widgetSetSizeRequest_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _sw
 }
 
 
-void *_wrap_mountWindow_gtk_831706b8873fd4e8(_gostring_ _swig_go_0) {
+void *_wrap_mountWindow_gtk_0b05487f82a429b0(_gostring_ _swig_go_0) {
   char *arg1 = (char *) 0 ;
   void *result = 0 ;
   void *_swig_go_result;
@@ -487,7 +487,7 @@ void *_wrap_mountWindow_gtk_831706b8873fd4e8(_gostring_ _swig_go_0) {
 }
 
 
-void *_wrap_windowScrolledWindow_gtk_831706b8873fd4e8(void *_swig_go_0) {
+void *_wrap_windowScrolledWindow_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   void *result = 0 ;
   void *_swig_go_result;
@@ -500,7 +500,7 @@ void *_wrap_windowScrolledWindow_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-void *_wrap_windowLayout_gtk_831706b8873fd4e8(void *_swig_go_0) {
+void *_wrap_windowLayout_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   void *result = 0 ;
   void *_swig_go_result;
@@ -513,7 +513,7 @@ void *_wrap_windowLayout_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-void _wrap_windowSetLayoutSize_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swig_go_1, intgo _swig_go_2) {
+void _wrap_windowSetLayoutSize_gtk_0b05487f82a429b0(void *_swig_go_0, intgo _swig_go_1, intgo _swig_go_2) {
   void *arg1 = (void *) 0 ;
   unsigned int arg2 ;
   unsigned int arg3 ;
@@ -527,7 +527,7 @@ void _wrap_windowSetLayoutSize_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swi
 }
 
 
-_gostring_ _wrap_windowTitle_gtk_831706b8873fd4e8(void *_swig_go_0) {
+_gostring_ _wrap_windowTitle_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   char *result = 0 ;
   _gostring_ _swig_go_result;
@@ -540,7 +540,7 @@ _gostring_ _wrap_windowTitle_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-void _wrap_windowSetTitle_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _swig_go_1) {
+void _wrap_windowSetTitle_gtk_0b05487f82a429b0(void *_swig_go_0, _gostring_ _swig_go_1) {
   void *arg1 = (void *) 0 ;
   char *arg2 = (char *) 0 ;
   
@@ -557,7 +557,7 @@ void _wrap_windowSetTitle_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _swi
 }
 
 
-intgo _wrap_windowVScrollbarWidth_gtk_831706b8873fd4e8(void *_swig_go_0) {
+intgo _wrap_windowVScrollbarWidth_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   unsigned int result;
   intgo _swig_go_result;
@@ -570,7 +570,20 @@ intgo _wrap_windowVScrollbarWidth_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-void _wrap_windowShowScrollbars_gtk_831706b8873fd4e8(void *_swig_go_0, bool _swig_go_1, bool _swig_go_2) {
+intgo _wrap_windowHScrollbarHeight_gtk_0b05487f82a429b0(void *_swig_go_0) {
+  void *arg1 = (void *) 0 ;
+  unsigned int result;
+  intgo _swig_go_result;
+  
+  arg1 = *(void **)&_swig_go_0; 
+  
+  result = (unsigned int)windowHScrollbarHeight(arg1);
+  _swig_go_result = result; 
+  return _swig_go_result;
+}
+
+
+void _wrap_windowShowScrollbars_gtk_0b05487f82a429b0(void *_swig_go_0, bool _swig_go_1, bool _swig_go_2) {
   void *arg1 = (void *) 0 ;
   bool arg2 ;
   bool arg3 ;
@@ -584,7 +597,7 @@ void _wrap_windowShowScrollbars_gtk_831706b8873fd4e8(void *_swig_go_0, bool _swi
 }
 
 
-void _wrap_windowShow_gtk_831706b8873fd4e8(void *_swig_go_0) {
+void _wrap_windowShow_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   
   arg1 = *(void **)&_swig_go_0; 
@@ -594,7 +607,7 @@ void _wrap_windowShow_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-void _wrap_windowSetDefaultSize_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swig_go_1, intgo _swig_go_2) {
+void _wrap_windowSetDefaultSize_gtk_0b05487f82a429b0(void *_swig_go_0, intgo _swig_go_1, intgo _swig_go_2) {
   void *arg1 = (void *) 0 ;
   int arg2 ;
   int arg3 ;
@@ -608,7 +621,7 @@ void _wrap_windowSetDefaultSize_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _sw
 }
 
 
-void _wrap_windowSetIcon_gtk_831706b8873fd4e8(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2, intgo _swig_go_3, intgo _swig_go_4) {
+void _wrap_windowSetIcon_gtk_0b05487f82a429b0(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2, intgo _swig_go_3, intgo _swig_go_4) {
   void *arg1 = (void *) 0 ;
   unsigned char *arg2 = (unsigned char *) 0 ;
   int arg3 ;
@@ -626,7 +639,7 @@ void _wrap_windowSetIcon_gtk_831706b8873fd4e8(void *_swig_go_0, char *_swig_go_1
 }
 
 
-intgo _wrap_dialogRun_gtk_831706b8873fd4e8(void *_swig_go_0) {
+intgo _wrap_dialogRun_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   unsigned int result;
   intgo _swig_go_result;
@@ -639,7 +652,7 @@ intgo _wrap_dialogRun_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-void _wrap_dialogAddFilter_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
+void _wrap_dialogAddFilter_gtk_0b05487f82a429b0(void *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
   void *arg1 = (void *) 0 ;
   char *arg2 = (char *) 0 ;
   char *arg3 = (char *) 0 ;
@@ -663,7 +676,7 @@ void _wrap_dialogAddFilter_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _sw
 }
 
 
-intgo _wrap_dialogResponseAccept_gtk_831706b8873fd4e8() {
+intgo _wrap_dialogResponseAccept_gtk_0b05487f82a429b0() {
   unsigned int result;
   intgo _swig_go_result;
   
@@ -674,7 +687,7 @@ intgo _wrap_dialogResponseAccept_gtk_831706b8873fd4e8() {
 }
 
 
-intgo _wrap_dialogResponseCancel_gtk_831706b8873fd4e8() {
+intgo _wrap_dialogResponseCancel_gtk_0b05487f82a429b0() {
   unsigned int result;
   intgo _swig_go_result;
   
@@ -685,7 +698,7 @@ intgo _wrap_dialogResponseCancel_gtk_831706b8873fd4e8() {
 }
 
 
-void *_wrap_mountMessageDialog_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _swig_go_1, intgo _swig_go_2, _gostring_ _swig_go_3) {
+void *_wrap_mountMessageDialog_gtk_0b05487f82a429b0(void *_swig_go_0, _gostring_ _swig_go_1, intgo _swig_go_2, _gostring_ _swig_go_3) {
   void *arg1 = (void *) 0 ;
   char *arg2 = (char *) 0 ;
   unsigned int arg3 ;
@@ -714,7 +727,7 @@ void *_wrap_mountMessageDialog_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_
 }
 
 
-intgo _wrap_messageDialogWithError_gtk_831706b8873fd4e8() {
+intgo _wrap_messageDialogWithError_gtk_0b05487f82a429b0() {
   unsigned int result;
   intgo _swig_go_result;
   
@@ -725,7 +738,7 @@ intgo _wrap_messageDialogWithError_gtk_831706b8873fd4e8() {
 }
 
 
-intgo _wrap_messageDialogWithWarn_gtk_831706b8873fd4e8() {
+intgo _wrap_messageDialogWithWarn_gtk_0b05487f82a429b0() {
   unsigned int result;
   intgo _swig_go_result;
   
@@ -736,7 +749,7 @@ intgo _wrap_messageDialogWithWarn_gtk_831706b8873fd4e8() {
 }
 
 
-intgo _wrap_messageDialogWithInfo_gtk_831706b8873fd4e8() {
+intgo _wrap_messageDialogWithInfo_gtk_0b05487f82a429b0() {
   unsigned int result;
   intgo _swig_go_result;
   
@@ -747,7 +760,7 @@ intgo _wrap_messageDialogWithInfo_gtk_831706b8873fd4e8() {
 }
 
 
-void *_wrap_mountOpenDialog_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
+void *_wrap_mountOpenDialog_gtk_0b05487f82a429b0(void *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
   void *arg1 = (void *) 0 ;
   char *arg2 = (char *) 0 ;
   char *arg3 = (char *) 0 ;
@@ -774,7 +787,7 @@ void *_wrap_mountOpenDialog_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _s
 }
 
 
-void *_wrap_mountSaveDialog_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
+void *_wrap_mountSaveDialog_gtk_0b05487f82a429b0(void *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2) {
   void *arg1 = (void *) 0 ;
   char *arg2 = (char *) 0 ;
   char *arg3 = (char *) 0 ;
@@ -801,7 +814,7 @@ void *_wrap_mountSaveDialog_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _s
 }
 
 
-_gostring_ _wrap_dialogGetFilename_gtk_831706b8873fd4e8(void *_swig_go_0) {
+_gostring_ _wrap_dialogGetFilename_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   char *result = 0 ;
   _gostring_ _swig_go_result;
@@ -814,7 +827,7 @@ _gostring_ _wrap_dialogGetFilename_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-void *_wrap_mountButton_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _swig_go_1, bool _swig_go_2, bool _swig_go_3, bool _swig_go_4, bool _swig_go_5, bool _swig_go_6) {
+void *_wrap_mountButton_gtk_0b05487f82a429b0(void *_swig_go_0, _gostring_ _swig_go_1, bool _swig_go_2, bool _swig_go_3, bool _swig_go_4, bool _swig_go_5, bool _swig_go_6) {
   void *arg1 = (void *) 0 ;
   char *arg2 = (char *) 0 ;
   bool arg3 ;
@@ -844,7 +857,7 @@ void *_wrap_mountButton_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _swig_
 }
 
 
-void _wrap_buttonUpdate_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _swig_go_1, bool _swig_go_2, bool _swig_go_3, bool _swig_go_4, bool _swig_go_5, bool _swig_go_6) {
+void _wrap_buttonUpdate_gtk_0b05487f82a429b0(void *_swig_go_0, _gostring_ _swig_go_1, bool _swig_go_2, bool _swig_go_3, bool _swig_go_4, bool _swig_go_5, bool _swig_go_6) {
   void *arg1 = (void *) 0 ;
   char *arg2 = (char *) 0 ;
   bool arg3 ;
@@ -871,7 +884,7 @@ void _wrap_buttonUpdate_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _swig_
 }
 
 
-void _wrap_buttonClick_gtk_831706b8873fd4e8(void *_swig_go_0) {
+void _wrap_buttonClick_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   
   arg1 = *(void **)&_swig_go_0; 
@@ -881,7 +894,7 @@ void _wrap_buttonClick_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-_gostring_ _wrap_buttonText_gtk_831706b8873fd4e8(void *_swig_go_0) {
+_gostring_ _wrap_buttonText_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   char *result = 0 ;
   _gostring_ _swig_go_result;
@@ -894,7 +907,7 @@ _gostring_ _wrap_buttonText_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-void *_wrap_mountLabel_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _swig_go_1) {
+void *_wrap_mountLabel_gtk_0b05487f82a429b0(void *_swig_go_0, _gostring_ _swig_go_1) {
   void *arg1 = (void *) 0 ;
   char *arg2 = (char *) 0 ;
   void *result = 0 ;
@@ -914,7 +927,7 @@ void *_wrap_mountLabel_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _swig_g
 }
 
 
-void _wrap_labelUpdate_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _swig_go_1) {
+void _wrap_labelUpdate_gtk_0b05487f82a429b0(void *_swig_go_0, _gostring_ _swig_go_1) {
   void *arg1 = (void *) 0 ;
   char *arg2 = (char *) 0 ;
   
@@ -931,7 +944,7 @@ void _wrap_labelUpdate_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _swig_g
 }
 
 
-_gostring_ _wrap_labelText_gtk_831706b8873fd4e8(void *_swig_go_0) {
+_gostring_ _wrap_labelText_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   char *result = 0 ;
   _gostring_ _swig_go_result;
@@ -944,7 +957,7 @@ _gostring_ _wrap_labelText_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-void *_wrap_mountCheckbox_gtk_831706b8873fd4e8(void *_swig_go_0, bool _swig_go_1, _gostring_ _swig_go_2, bool _swig_go_3, bool _swig_go_4, bool _swig_go_5, bool _swig_go_6) {
+void *_wrap_mountCheckbox_gtk_0b05487f82a429b0(void *_swig_go_0, bool _swig_go_1, _gostring_ _swig_go_2, bool _swig_go_3, bool _swig_go_4, bool _swig_go_5, bool _swig_go_6) {
   void *arg1 = (void *) 0 ;
   bool arg2 ;
   char *arg3 = (char *) 0 ;
@@ -974,7 +987,7 @@ void *_wrap_mountCheckbox_gtk_831706b8873fd4e8(void *_swig_go_0, bool _swig_go_1
 }
 
 
-void _wrap_checkboxUpdate_gtk_831706b8873fd4e8(void *_swig_go_0, bool _swig_go_1, _gostring_ _swig_go_2, bool _swig_go_3, bool _swig_go_4, bool _swig_go_5, bool _swig_go_6) {
+void _wrap_checkboxUpdate_gtk_0b05487f82a429b0(void *_swig_go_0, bool _swig_go_1, _gostring_ _swig_go_2, bool _swig_go_3, bool _swig_go_4, bool _swig_go_5, bool _swig_go_6) {
   void *arg1 = (void *) 0 ;
   bool arg2 ;
   char *arg3 = (char *) 0 ;
@@ -1001,7 +1014,7 @@ void _wrap_checkboxUpdate_gtk_831706b8873fd4e8(void *_swig_go_0, bool _swig_go_1
 }
 
 
-void _wrap_checkboxClick_gtk_831706b8873fd4e8(void *_swig_go_0) {
+void _wrap_checkboxClick_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   
   arg1 = *(void **)&_swig_go_0; 
@@ -1011,7 +1024,7 @@ void _wrap_checkboxClick_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-bool _wrap_checkboxValue_gtk_831706b8873fd4e8(void *_swig_go_0) {
+bool _wrap_checkboxValue_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   bool result;
   bool _swig_go_result;
@@ -1024,7 +1037,7 @@ bool _wrap_checkboxValue_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-void *_wrap_mountTextbox_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, bool _swig_go_3, bool _swig_go_4, bool _swig_go_5, bool _swig_go_6, bool _swig_go_7, bool _swig_go_8, bool _swig_go_9) {
+void *_wrap_mountTextbox_gtk_0b05487f82a429b0(void *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, bool _swig_go_3, bool _swig_go_4, bool _swig_go_5, bool _swig_go_6, bool _swig_go_7, bool _swig_go_8, bool _swig_go_9) {
   void *arg1 = (void *) 0 ;
   char *arg2 = (char *) 0 ;
   char *arg3 = (char *) 0 ;
@@ -1065,7 +1078,7 @@ void *_wrap_mountTextbox_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _swig
 }
 
 
-void _wrap_textboxUpdate_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, bool _swig_go_3, bool _swig_go_4, bool _swig_go_5, bool _swig_go_6, bool _swig_go_7, bool _swig_go_8, bool _swig_go_9) {
+void _wrap_textboxUpdate_gtk_0b05487f82a429b0(void *_swig_go_0, _gostring_ _swig_go_1, _gostring_ _swig_go_2, bool _swig_go_3, bool _swig_go_4, bool _swig_go_5, bool _swig_go_6, bool _swig_go_7, bool _swig_go_8, bool _swig_go_9) {
   void *arg1 = (void *) 0 ;
   char *arg2 = (char *) 0 ;
   char *arg3 = (char *) 0 ;
@@ -1103,7 +1116,7 @@ void _wrap_textboxUpdate_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _swig
 }
 
 
-_gostring_ _wrap_textboxText_gtk_831706b8873fd4e8(void *_swig_go_0) {
+_gostring_ _wrap_textboxText_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   char *result = 0 ;
   _gostring_ _swig_go_result;
@@ -1116,7 +1129,7 @@ _gostring_ _wrap_textboxText_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-_gostring_ _wrap_textboxPlaceholder_gtk_831706b8873fd4e8(void *_swig_go_0) {
+_gostring_ _wrap_textboxPlaceholder_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   char *result = 0 ;
   _gostring_ _swig_go_result;
@@ -1129,7 +1142,7 @@ _gostring_ _wrap_textboxPlaceholder_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-bool _wrap_textboxPassword_gtk_831706b8873fd4e8(void *_swig_go_0) {
+bool _wrap_textboxPassword_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   bool result;
   bool _swig_go_result;
@@ -1142,7 +1155,7 @@ bool _wrap_textboxPassword_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-bool _wrap_textboxReadOnly_gtk_831706b8873fd4e8(void *_swig_go_0) {
+bool _wrap_textboxReadOnly_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   bool result;
   bool _swig_go_result;
@@ -1155,7 +1168,7 @@ bool _wrap_textboxReadOnly_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-void *_wrap_mountTextarea_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _swig_go_1, bool _swig_go_2, bool _swig_go_3, bool _swig_go_4, bool _swig_go_5, bool _swig_go_6) {
+void *_wrap_mountTextarea_gtk_0b05487f82a429b0(void *_swig_go_0, _gostring_ _swig_go_1, bool _swig_go_2, bool _swig_go_3, bool _swig_go_4, bool _swig_go_5, bool _swig_go_6) {
   void *arg1 = (void *) 0 ;
   char *arg2 = (char *) 0 ;
   bool arg3 ;
@@ -1185,7 +1198,7 @@ void *_wrap_mountTextarea_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _swi
 }
 
 
-void _wrap_textareaUpdate_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _swig_go_1, bool _swig_go_2, bool _swig_go_3, bool _swig_go_4, bool _swig_go_5, bool _swig_go_6) {
+void _wrap_textareaUpdate_gtk_0b05487f82a429b0(void *_swig_go_0, _gostring_ _swig_go_1, bool _swig_go_2, bool _swig_go_3, bool _swig_go_4, bool _swig_go_5, bool _swig_go_6) {
   void *arg1 = (void *) 0 ;
   char *arg2 = (char *) 0 ;
   bool arg3 ;
@@ -1212,7 +1225,7 @@ void _wrap_textareaUpdate_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _swi
 }
 
 
-_gostring_ _wrap_textareaText_gtk_831706b8873fd4e8(void *_swig_go_0) {
+_gostring_ _wrap_textareaText_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   char *result = 0 ;
   _gostring_ _swig_go_result;
@@ -1226,7 +1239,7 @@ _gostring_ _wrap_textareaText_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-_gostring_ _wrap_textareaPlaceholder_gtk_831706b8873fd4e8(void *_swig_go_0) {
+_gostring_ _wrap_textareaPlaceholder_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   char *result = 0 ;
   _gostring_ _swig_go_result;
@@ -1239,7 +1252,7 @@ _gostring_ _wrap_textareaPlaceholder_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-bool _wrap_textareaReadOnly_gtk_831706b8873fd4e8(void *_swig_go_0) {
+bool _wrap_textareaReadOnly_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   bool result;
   bool _swig_go_result;
@@ -1252,7 +1265,7 @@ bool _wrap_textareaReadOnly_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-void *_wrap_textareaTextview_gtk_831706b8873fd4e8(void *_swig_go_0) {
+void *_wrap_textareaTextview_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   void *result = 0 ;
   void *_swig_go_result;
@@ -1265,7 +1278,7 @@ void *_wrap_textareaTextview_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-void *_wrap_mountParagraph_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _swig_go_1, char _swig_go_2) {
+void *_wrap_mountParagraph_gtk_0b05487f82a429b0(void *_swig_go_0, _gostring_ _swig_go_1, char _swig_go_2) {
   void *arg1 = (void *) 0 ;
   char *arg2 = (char *) 0 ;
   char arg3 ;
@@ -1287,7 +1300,7 @@ void *_wrap_mountParagraph_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _sw
 }
 
 
-void _wrap_paragraphUpdate_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _swig_go_1, char _swig_go_2) {
+void _wrap_paragraphUpdate_gtk_0b05487f82a429b0(void *_swig_go_0, _gostring_ _swig_go_1, char _swig_go_2) {
   void *arg1 = (void *) 0 ;
   char *arg2 = (char *) 0 ;
   char arg3 ;
@@ -1306,7 +1319,7 @@ void _wrap_paragraphUpdate_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _sw
 }
 
 
-_gostring_ _wrap_paragraphText_gtk_831706b8873fd4e8(void *_swig_go_0) {
+_gostring_ _wrap_paragraphText_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   char *result = 0 ;
   _gostring_ _swig_go_result;
@@ -1319,7 +1332,7 @@ _gostring_ _wrap_paragraphText_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-char _wrap_paragraphAlign_gtk_831706b8873fd4e8(void *_swig_go_0) {
+char _wrap_paragraphAlign_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   char result;
   char _swig_go_result;
@@ -1332,7 +1345,7 @@ char _wrap_paragraphAlign_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-void _wrap_paragraphSetText_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _swig_go_1) {
+void _wrap_paragraphSetText_gtk_0b05487f82a429b0(void *_swig_go_0, _gostring_ _swig_go_1) {
   void *arg1 = (void *) 0 ;
   char *arg2 = (char *) 0 ;
   
@@ -1349,7 +1362,7 @@ void _wrap_paragraphSetText_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _s
 }
 
 
-void *_wrap_mountProgressbar_gtk_831706b8873fd4e8(void *_swig_go_0, double _swig_go_1) {
+void *_wrap_mountProgressbar_gtk_0b05487f82a429b0(void *_swig_go_0, double _swig_go_1) {
   void *arg1 = (void *) 0 ;
   double arg2 ;
   void *result = 0 ;
@@ -1364,7 +1377,7 @@ void *_wrap_mountProgressbar_gtk_831706b8873fd4e8(void *_swig_go_0, double _swig
 }
 
 
-void _wrap_progressbarUpdate_gtk_831706b8873fd4e8(void *_swig_go_0, double _swig_go_1) {
+void _wrap_progressbarUpdate_gtk_0b05487f82a429b0(void *_swig_go_0, double _swig_go_1) {
   void *arg1 = (void *) 0 ;
   double arg2 ;
   
@@ -1376,7 +1389,7 @@ void _wrap_progressbarUpdate_gtk_831706b8873fd4e8(void *_swig_go_0, double _swig
 }
 
 
-double _wrap_progressbarValue_gtk_831706b8873fd4e8(void *_swig_go_0) {
+double _wrap_progressbarValue_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   double result;
   double _swig_go_result;
@@ -1389,7 +1402,7 @@ double _wrap_progressbarValue_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-void *_wrap_mountSlider_gtk_831706b8873fd4e8(void *_swig_go_0, double _swig_go_1, bool _swig_go_2, double _swig_go_3, double _swig_go_4, bool _swig_go_5, bool _swig_go_6, bool _swig_go_7) {
+void *_wrap_mountSlider_gtk_0b05487f82a429b0(void *_swig_go_0, double _swig_go_1, bool _swig_go_2, double _swig_go_3, double _swig_go_4, bool _swig_go_5, bool _swig_go_6, bool _swig_go_7) {
   void *arg1 = (void *) 0 ;
   double arg2 ;
   bool arg3 ;
@@ -1416,7 +1429,7 @@ void *_wrap_mountSlider_gtk_831706b8873fd4e8(void *_swig_go_0, double _swig_go_1
 }
 
 
-void _wrap_sliderUpdate_gtk_831706b8873fd4e8(void *_swig_go_0, double _swig_go_1, bool _swig_go_2, double _swig_go_3, double _swig_go_4, bool _swig_go_5, bool _swig_go_6, bool _swig_go_7) {
+void _wrap_sliderUpdate_gtk_0b05487f82a429b0(void *_swig_go_0, double _swig_go_1, bool _swig_go_2, double _swig_go_3, double _swig_go_4, bool _swig_go_5, bool _swig_go_6, bool _swig_go_7) {
   void *arg1 = (void *) 0 ;
   double arg2 ;
   bool arg3 ;
@@ -1440,7 +1453,7 @@ void _wrap_sliderUpdate_gtk_831706b8873fd4e8(void *_swig_go_0, double _swig_go_1
 }
 
 
-double _wrap_sliderValue_gtk_831706b8873fd4e8(void *_swig_go_0) {
+double _wrap_sliderValue_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   double result;
   double _swig_go_result;
@@ -1453,7 +1466,7 @@ double _wrap_sliderValue_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-void *_wrap_mountHR_gtk_831706b8873fd4e8(void *_swig_go_0) {
+void *_wrap_mountHR_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   void *result = 0 ;
   void *_swig_go_result;
@@ -1466,7 +1479,7 @@ void *_wrap_mountHR_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-void *_wrap_mountImage_gtk_831706b8873fd4e8(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2, intgo _swig_go_3, intgo _swig_go_4) {
+void *_wrap_mountImage_gtk_0b05487f82a429b0(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2, intgo _swig_go_3, intgo _swig_go_4) {
   void *arg1 = (void *) 0 ;
   unsigned char *arg2 = (unsigned char *) 0 ;
   int arg3 ;
@@ -1487,7 +1500,7 @@ void *_wrap_mountImage_gtk_831706b8873fd4e8(void *_swig_go_0, char *_swig_go_1, 
 }
 
 
-void *_wrap_imageUpdate_gtk_831706b8873fd4e8(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2, intgo _swig_go_3, intgo _swig_go_4) {
+void *_wrap_imageUpdate_gtk_0b05487f82a429b0(void *_swig_go_0, char *_swig_go_1, intgo _swig_go_2, intgo _swig_go_3, intgo _swig_go_4) {
   void *arg1 = (void *) 0 ;
   unsigned char *arg2 = (unsigned char *) 0 ;
   int arg3 ;
@@ -1508,7 +1521,7 @@ void *_wrap_imageUpdate_gtk_831706b8873fd4e8(void *_swig_go_0, char *_swig_go_1,
 }
 
 
-intgo _wrap_imageColorSpace_gtk_831706b8873fd4e8(void *_swig_go_0) {
+intgo _wrap_imageColorSpace_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   unsigned int result;
   intgo _swig_go_result;
@@ -1521,7 +1534,7 @@ intgo _wrap_imageColorSpace_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-bool _wrap_imageHasAlpha_gtk_831706b8873fd4e8(void *_swig_go_0) {
+bool _wrap_imageHasAlpha_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   bool result;
   bool _swig_go_result;
@@ -1534,7 +1547,7 @@ bool _wrap_imageHasAlpha_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-intgo _wrap_imageImageWidth_gtk_831706b8873fd4e8(void *_swig_go_0) {
+intgo _wrap_imageImageWidth_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   unsigned int result;
   intgo _swig_go_result;
@@ -1547,7 +1560,7 @@ intgo _wrap_imageImageWidth_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-intgo _wrap_imageImageHeight_gtk_831706b8873fd4e8(void *_swig_go_0) {
+intgo _wrap_imageImageHeight_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   unsigned int result;
   intgo _swig_go_result;
@@ -1560,7 +1573,7 @@ intgo _wrap_imageImageHeight_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-intgo _wrap_imageImageStride_gtk_831706b8873fd4e8(void *_swig_go_0) {
+intgo _wrap_imageImageStride_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   unsigned int result;
   intgo _swig_go_result;
@@ -1573,7 +1586,7 @@ intgo _wrap_imageImageStride_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-void *_wrap_mountDecoration_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swig_go_1, intgo _swig_go_2, intgo _swig_go_3) {
+void *_wrap_mountDecoration_gtk_0b05487f82a429b0(void *_swig_go_0, intgo _swig_go_1, intgo _swig_go_2, intgo _swig_go_3) {
   void *arg1 = (void *) 0 ;
   unsigned int arg2 ;
   unsigned int arg3 ;
@@ -1592,7 +1605,7 @@ void *_wrap_mountDecoration_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swig_g
 }
 
 
-void _wrap_decorationUpdate_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swig_go_1, intgo _swig_go_2, intgo _swig_go_3) {
+void _wrap_decorationUpdate_gtk_0b05487f82a429b0(void *_swig_go_0, intgo _swig_go_1, intgo _swig_go_2, intgo _swig_go_3) {
   void *arg1 = (void *) 0 ;
   unsigned int arg2 ;
   unsigned int arg3 ;
@@ -1608,7 +1621,7 @@ void _wrap_decorationUpdate_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swig_g
 }
 
 
-intgo _wrap_decorationFill_gtk_831706b8873fd4e8(void *_swig_go_0) {
+intgo _wrap_decorationFill_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   unsigned int result;
   intgo _swig_go_result;
@@ -1621,7 +1634,7 @@ intgo _wrap_decorationFill_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-intgo _wrap_decorationStroke_gtk_831706b8873fd4e8(void *_swig_go_0) {
+intgo _wrap_decorationStroke_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   unsigned int result;
   intgo _swig_go_result;
@@ -1634,7 +1647,7 @@ intgo _wrap_decorationStroke_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-intgo _wrap_decorationRadius_gtk_831706b8873fd4e8(void *_swig_go_0) {
+intgo _wrap_decorationRadius_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   int result;
   intgo _swig_go_result;
@@ -1647,7 +1660,7 @@ intgo _wrap_decorationRadius_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-void _wrap_decorationSetRadius_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swig_go_1) {
+void _wrap_decorationSetRadius_gtk_0b05487f82a429b0(void *_swig_go_0, intgo _swig_go_1) {
   void *arg1 = (void *) 0 ;
   int arg2 ;
   
@@ -1659,7 +1672,7 @@ void _wrap_decorationSetRadius_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swi
 }
 
 
-void *_wrap_mountCombobox_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _swig_go_1, intgo _swig_go_2, bool _swig_go_3, bool _swig_go_4, bool _swig_go_5, bool _swig_go_6, bool _swig_go_7) {
+void *_wrap_mountCombobox_gtk_0b05487f82a429b0(void *_swig_go_0, _gostring_ _swig_go_1, intgo _swig_go_2, bool _swig_go_3, bool _swig_go_4, bool _swig_go_5, bool _swig_go_6, bool _swig_go_7) {
   void *arg1 = (void *) 0 ;
   char *arg2 = (char *) 0 ;
   int arg3 ;
@@ -1691,7 +1704,7 @@ void *_wrap_mountCombobox_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _swi
 }
 
 
-void _wrap_comboboxUpdate_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _swig_go_1, intgo _swig_go_2, bool _swig_go_3, bool _swig_go_4, bool _swig_go_5, bool _swig_go_6, bool _swig_go_7) {
+void _wrap_comboboxUpdate_gtk_0b05487f82a429b0(void *_swig_go_0, _gostring_ _swig_go_1, intgo _swig_go_2, bool _swig_go_3, bool _swig_go_4, bool _swig_go_5, bool _swig_go_6, bool _swig_go_7) {
   void *arg1 = (void *) 0 ;
   char *arg2 = (char *) 0 ;
   int arg3 ;
@@ -1720,7 +1733,7 @@ void _wrap_comboboxUpdate_gtk_831706b8873fd4e8(void *_swig_go_0, _gostring_ _swi
 }
 
 
-void *_wrap_comboboxChild_gtk_831706b8873fd4e8(void *_swig_go_0) {
+void *_wrap_comboboxChild_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   void *result = 0 ;
   void *_swig_go_result;
@@ -1733,7 +1746,7 @@ void *_wrap_comboboxChild_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-intgo _wrap_comboboxItemCount_gtk_831706b8873fd4e8(void *_swig_go_0) {
+intgo _wrap_comboboxItemCount_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   unsigned int result;
   intgo _swig_go_result;
@@ -1746,7 +1759,7 @@ intgo _wrap_comboboxItemCount_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-_gostring_ _wrap_comboboxItem_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swig_go_1) {
+_gostring_ _wrap_comboboxItem_gtk_0b05487f82a429b0(void *_swig_go_0, intgo _swig_go_1) {
   void *arg1 = (void *) 0 ;
   unsigned int arg2 ;
   char *result = 0 ;
@@ -1761,7 +1774,7 @@ _gostring_ _wrap_comboboxItem_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swig
 }
 
 
-intgo _wrap_comboboxValue_gtk_831706b8873fd4e8(void *_swig_go_0) {
+intgo _wrap_comboboxValue_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   int result;
   intgo _swig_go_result;
@@ -1774,7 +1787,7 @@ intgo _wrap_comboboxValue_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-void *_wrap_mountTabs_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swig_go_1, _gostring_ _swig_go_2, bool _swig_go_3) {
+void *_wrap_mountTabs_gtk_0b05487f82a429b0(void *_swig_go_0, intgo _swig_go_1, _gostring_ _swig_go_2, bool _swig_go_3) {
   void *arg1 = (void *) 0 ;
   int arg2 ;
   char *arg3 = (char *) 0 ;
@@ -1798,7 +1811,7 @@ void *_wrap_mountTabs_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swig_go_1, _
 }
 
 
-void _wrap_tabsUpdate_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swig_go_1, _gostring_ _swig_go_2, bool _swig_go_3) {
+void _wrap_tabsUpdate_gtk_0b05487f82a429b0(void *_swig_go_0, intgo _swig_go_1, _gostring_ _swig_go_2, bool _swig_go_3) {
   void *arg1 = (void *) 0 ;
   int arg2 ;
   char *arg3 = (char *) 0 ;
@@ -1819,7 +1832,7 @@ void _wrap_tabsUpdate_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swig_go_1, _
 }
 
 
-void *_wrap_tabsGetTabParent_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swig_go_1) {
+void *_wrap_tabsGetTabParent_gtk_0b05487f82a429b0(void *_swig_go_0, intgo _swig_go_1) {
   void *arg1 = (void *) 0 ;
   int arg2 ;
   void *result = 0 ;
@@ -1834,7 +1847,7 @@ void *_wrap_tabsGetTabParent_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swig_
 }
 
 
-intgo _wrap_tabsItemCount_gtk_831706b8873fd4e8(void *_swig_go_0) {
+intgo _wrap_tabsItemCount_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   int result;
   intgo _swig_go_result;
@@ -1847,7 +1860,7 @@ intgo _wrap_tabsItemCount_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-_gostring_ _wrap_tabsItemCaption_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swig_go_1) {
+_gostring_ _wrap_tabsItemCaption_gtk_0b05487f82a429b0(void *_swig_go_0, intgo _swig_go_1) {
   void *arg1 = (void *) 0 ;
   int arg2 ;
   char *result = 0 ;
@@ -1862,7 +1875,7 @@ _gostring_ _wrap_tabsItemCaption_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _s
 }
 
 
-void *_wrap_mountIntInput_gtk_831706b8873fd4e8(void *_swig_go_0, long long _swig_go_1, _gostring_ _swig_go_2, bool _swig_go_3, long long _swig_go_4, long long _swig_go_5, bool _swig_go_6, bool _swig_go_7, bool _swig_go_8, bool _swig_go_9) {
+void *_wrap_mountIntInput_gtk_0b05487f82a429b0(void *_swig_go_0, long long _swig_go_1, _gostring_ _swig_go_2, bool _swig_go_3, long long _swig_go_4, long long _swig_go_5, bool _swig_go_6, bool _swig_go_7, bool _swig_go_8, bool _swig_go_9) {
   void *arg1 = (void *) 0 ;
   long arg2 ;
   char *arg3 = (char *) 0 ;
@@ -1898,7 +1911,7 @@ void *_wrap_mountIntInput_gtk_831706b8873fd4e8(void *_swig_go_0, long long _swig
 }
 
 
-void _wrap_intinputUpdate_gtk_831706b8873fd4e8(void *_swig_go_0, long long _swig_go_1, _gostring_ _swig_go_2, bool _swig_go_3, long long _swig_go_4, long long _swig_go_5, bool _swig_go_6, bool _swig_go_7, bool _swig_go_8, bool _swig_go_9) {
+void _wrap_intinputUpdate_gtk_0b05487f82a429b0(void *_swig_go_0, long long _swig_go_1, _gostring_ _swig_go_2, bool _swig_go_3, long long _swig_go_4, long long _swig_go_5, bool _swig_go_6, bool _swig_go_7, bool _swig_go_8, bool _swig_go_9) {
   void *arg1 = (void *) 0 ;
   long arg2 ;
   char *arg3 = (char *) 0 ;
@@ -1931,7 +1944,7 @@ void _wrap_intinputUpdate_gtk_831706b8873fd4e8(void *_swig_go_0, long long _swig
 }
 
 
-long long _wrap_intinputValue_gtk_831706b8873fd4e8(void *_swig_go_0) {
+long long _wrap_intinputValue_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   long result;
   long long _swig_go_result;
@@ -1944,7 +1957,7 @@ long long _wrap_intinputValue_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-double _wrap_intinputMin_gtk_831706b8873fd4e8(void *_swig_go_0) {
+double _wrap_intinputMin_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   double result;
   double _swig_go_result;
@@ -1957,7 +1970,7 @@ double _wrap_intinputMin_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-double _wrap_intinputMax_gtk_831706b8873fd4e8(void *_swig_go_0) {
+double _wrap_intinputMax_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   double result;
   double _swig_go_result;
@@ -1970,7 +1983,7 @@ double _wrap_intinputMax_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-void *_wrap_mountDateInput_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swig_go_1, intgo _swig_go_2, intgo _swig_go_3, bool _swig_go_4, bool _swig_go_5, bool _swig_go_6, bool _swig_go_7) {
+void *_wrap_mountDateInput_gtk_0b05487f82a429b0(void *_swig_go_0, intgo _swig_go_1, intgo _swig_go_2, intgo _swig_go_3, bool _swig_go_4, bool _swig_go_5, bool _swig_go_6, bool _swig_go_7) {
   void *arg1 = (void *) 0 ;
   int arg2 ;
   unsigned int arg3 ;
@@ -1997,7 +2010,7 @@ void *_wrap_mountDateInput_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swig_go
 }
 
 
-void _wrap_dateInputUpdate_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swig_go_1, intgo _swig_go_2, intgo _swig_go_3, bool _swig_go_4, bool _swig_go_5, bool _swig_go_6, bool _swig_go_7) {
+void _wrap_dateInputUpdate_gtk_0b05487f82a429b0(void *_swig_go_0, intgo _swig_go_1, intgo _swig_go_2, intgo _swig_go_3, bool _swig_go_4, bool _swig_go_5, bool _swig_go_6, bool _swig_go_7) {
   void *arg1 = (void *) 0 ;
   int arg2 ;
   unsigned int arg3 ;
@@ -2021,7 +2034,7 @@ void _wrap_dateInputUpdate_gtk_831706b8873fd4e8(void *_swig_go_0, intgo _swig_go
 }
 
 
-intgo _wrap_dateInputYear_gtk_831706b8873fd4e8(void *_swig_go_0) {
+intgo _wrap_dateInputYear_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   int result;
   intgo _swig_go_result;
@@ -2034,7 +2047,7 @@ intgo _wrap_dateInputYear_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-intgo _wrap_dateInputMonth_gtk_831706b8873fd4e8(void *_swig_go_0) {
+intgo _wrap_dateInputMonth_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   unsigned int result;
   intgo _swig_go_result;
@@ -2047,7 +2060,7 @@ intgo _wrap_dateInputMonth_gtk_831706b8873fd4e8(void *_swig_go_0) {
 }
 
 
-intgo _wrap_dateInputDay_gtk_831706b8873fd4e8(void *_swig_go_0) {
+intgo _wrap_dateInputDay_gtk_0b05487f82a429b0(void *_swig_go_0) {
   void *arg1 = (void *) 0 ;
   unsigned int result;
   intgo _swig_go_result;

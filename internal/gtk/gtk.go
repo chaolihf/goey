@@ -77,115 +77,116 @@ typedef _gostring_ swig_type_46;
 typedef long long swig_type_47;
 typedef long long swig_type_48;
 typedef long long swig_type_49;
-extern void _wrap_Swig_free_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern uintptr_t _wrap_Swig_malloc_gtk_831706b8873fd4e8(swig_intgo arg1);
-extern void _wrap_widgetClose_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern _Bool _wrap_widgetCanFocus_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern void _wrap_widgetGrabFocus_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern _Bool _wrap_widgetIsFocus_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern void _wrap_widgetSendKey_gtk_831706b8873fd4e8(uintptr_t arg1, swig_intgo arg2, _Bool arg3);
-extern swig_intgo _wrap_widgetMinHeight_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern swig_intgo _wrap_widgetMinHeightForWidth_gtk_831706b8873fd4e8(uintptr_t arg1, swig_intgo arg2);
-extern swig_intgo _wrap_widgetNaturalHeight_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern swig_intgo _wrap_widgetNaturalHeightForWidth_gtk_831706b8873fd4e8(uintptr_t arg1, swig_intgo arg2);
-extern swig_intgo _wrap_widgetMinWidth_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern swig_intgo _wrap_widgetNaturalWidth_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern swig_intgo _wrap_widgetNaturalWidthForHeight_gtk_831706b8873fd4e8(uintptr_t arg1, swig_intgo arg2);
-extern void _wrap_widgetSetBounds_gtk_831706b8873fd4e8(uintptr_t arg1, swig_intgo arg2, swig_intgo arg3, swig_intgo arg4, swig_intgo arg5);
-extern _Bool _wrap_widgetSensitive_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern _Bool _wrap_widgetCanDefault_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern void _wrap_widgetSetSizeRequest_gtk_831706b8873fd4e8(uintptr_t arg1, swig_intgo arg2, swig_intgo arg3);
-extern uintptr_t _wrap_mountWindow_gtk_831706b8873fd4e8(swig_type_1 arg1);
-extern uintptr_t _wrap_windowScrolledWindow_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern uintptr_t _wrap_windowLayout_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern void _wrap_windowSetLayoutSize_gtk_831706b8873fd4e8(uintptr_t arg1, swig_intgo arg2, swig_intgo arg3);
-extern swig_type_2 _wrap_windowTitle_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern void _wrap_windowSetTitle_gtk_831706b8873fd4e8(uintptr_t arg1, swig_type_3 arg2);
-extern swig_intgo _wrap_windowVScrollbarWidth_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern void _wrap_windowShowScrollbars_gtk_831706b8873fd4e8(uintptr_t arg1, _Bool arg2, _Bool arg3);
-extern void _wrap_windowShow_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern void _wrap_windowSetDefaultSize_gtk_831706b8873fd4e8(uintptr_t arg1, swig_intgo arg2, swig_intgo arg3);
-extern void _wrap_windowSetIcon_gtk_831706b8873fd4e8(uintptr_t arg1, swig_voidp arg2, swig_intgo arg3, swig_intgo arg4, swig_intgo arg5);
-extern swig_intgo _wrap_dialogRun_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern void _wrap_dialogAddFilter_gtk_831706b8873fd4e8(uintptr_t arg1, swig_type_4 arg2, swig_type_5 arg3);
-extern swig_intgo _wrap_dialogResponseAccept_gtk_831706b8873fd4e8(void);
-extern swig_intgo _wrap_dialogResponseCancel_gtk_831706b8873fd4e8(void);
-extern uintptr_t _wrap_mountMessageDialog_gtk_831706b8873fd4e8(uintptr_t arg1, swig_type_6 arg2, swig_intgo arg3, swig_type_7 arg4);
-extern swig_intgo _wrap_messageDialogWithError_gtk_831706b8873fd4e8(void);
-extern swig_intgo _wrap_messageDialogWithWarn_gtk_831706b8873fd4e8(void);
-extern swig_intgo _wrap_messageDialogWithInfo_gtk_831706b8873fd4e8(void);
-extern uintptr_t _wrap_mountOpenDialog_gtk_831706b8873fd4e8(uintptr_t arg1, swig_type_8 arg2, swig_type_9 arg3);
-extern uintptr_t _wrap_mountSaveDialog_gtk_831706b8873fd4e8(uintptr_t arg1, swig_type_10 arg2, swig_type_11 arg3);
-extern swig_type_12 _wrap_dialogGetFilename_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern uintptr_t _wrap_mountButton_gtk_831706b8873fd4e8(uintptr_t arg1, swig_type_13 arg2, _Bool arg3, _Bool arg4, _Bool arg5, _Bool arg6, _Bool arg7);
-extern void _wrap_buttonUpdate_gtk_831706b8873fd4e8(uintptr_t arg1, swig_type_14 arg2, _Bool arg3, _Bool arg4, _Bool arg5, _Bool arg6, _Bool arg7);
-extern void _wrap_buttonClick_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern swig_type_15 _wrap_buttonText_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern uintptr_t _wrap_mountLabel_gtk_831706b8873fd4e8(uintptr_t arg1, swig_type_16 arg2);
-extern void _wrap_labelUpdate_gtk_831706b8873fd4e8(uintptr_t arg1, swig_type_17 arg2);
-extern swig_type_18 _wrap_labelText_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern uintptr_t _wrap_mountCheckbox_gtk_831706b8873fd4e8(uintptr_t arg1, _Bool arg2, swig_type_19 arg3, _Bool arg4, _Bool arg5, _Bool arg6, _Bool arg7);
-extern void _wrap_checkboxUpdate_gtk_831706b8873fd4e8(uintptr_t arg1, _Bool arg2, swig_type_20 arg3, _Bool arg4, _Bool arg5, _Bool arg6, _Bool arg7);
-extern void _wrap_checkboxClick_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern _Bool _wrap_checkboxValue_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern uintptr_t _wrap_mountTextbox_gtk_831706b8873fd4e8(uintptr_t arg1, swig_type_21 arg2, swig_type_22 arg3, _Bool arg4, _Bool arg5, _Bool arg6, _Bool arg7, _Bool arg8, _Bool arg9, _Bool arg10);
-extern void _wrap_textboxUpdate_gtk_831706b8873fd4e8(uintptr_t arg1, swig_type_23 arg2, swig_type_24 arg3, _Bool arg4, _Bool arg5, _Bool arg6, _Bool arg7, _Bool arg8, _Bool arg9, _Bool arg10);
-extern swig_type_25 _wrap_textboxText_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern swig_type_26 _wrap_textboxPlaceholder_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern _Bool _wrap_textboxPassword_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern _Bool _wrap_textboxReadOnly_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern uintptr_t _wrap_mountTextarea_gtk_831706b8873fd4e8(uintptr_t arg1, swig_type_27 arg2, _Bool arg3, _Bool arg4, _Bool arg5, _Bool arg6, _Bool arg7);
-extern void _wrap_textareaUpdate_gtk_831706b8873fd4e8(uintptr_t arg1, swig_type_28 arg2, _Bool arg3, _Bool arg4, _Bool arg5, _Bool arg6, _Bool arg7);
-extern swig_type_29 _wrap_textareaText_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern swig_type_30 _wrap_textareaPlaceholder_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern _Bool _wrap_textareaReadOnly_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern uintptr_t _wrap_textareaTextview_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern uintptr_t _wrap_mountParagraph_gtk_831706b8873fd4e8(uintptr_t arg1, swig_type_31 arg2, char arg3);
-extern void _wrap_paragraphUpdate_gtk_831706b8873fd4e8(uintptr_t arg1, swig_type_32 arg2, char arg3);
-extern swig_type_33 _wrap_paragraphText_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern char _wrap_paragraphAlign_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern void _wrap_paragraphSetText_gtk_831706b8873fd4e8(uintptr_t arg1, swig_type_34 arg2);
-extern uintptr_t _wrap_mountProgressbar_gtk_831706b8873fd4e8(uintptr_t arg1, double arg2);
-extern void _wrap_progressbarUpdate_gtk_831706b8873fd4e8(uintptr_t arg1, double arg2);
-extern double _wrap_progressbarValue_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern uintptr_t _wrap_mountSlider_gtk_831706b8873fd4e8(uintptr_t arg1, double arg2, _Bool arg3, double arg4, double arg5, _Bool arg6, _Bool arg7, _Bool arg8);
-extern void _wrap_sliderUpdate_gtk_831706b8873fd4e8(uintptr_t arg1, double arg2, _Bool arg3, double arg4, double arg5, _Bool arg6, _Bool arg7, _Bool arg8);
-extern double _wrap_sliderValue_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern uintptr_t _wrap_mountHR_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern uintptr_t _wrap_mountImage_gtk_831706b8873fd4e8(uintptr_t arg1, swig_voidp arg2, swig_intgo arg3, swig_intgo arg4, swig_intgo arg5);
-extern uintptr_t _wrap_imageUpdate_gtk_831706b8873fd4e8(uintptr_t arg1, swig_voidp arg2, swig_intgo arg3, swig_intgo arg4, swig_intgo arg5);
-extern swig_intgo _wrap_imageColorSpace_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern _Bool _wrap_imageHasAlpha_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern swig_intgo _wrap_imageImageWidth_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern swig_intgo _wrap_imageImageHeight_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern swig_intgo _wrap_imageImageStride_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern uintptr_t _wrap_mountDecoration_gtk_831706b8873fd4e8(uintptr_t arg1, swig_intgo arg2, swig_intgo arg3, swig_intgo arg4);
-extern void _wrap_decorationUpdate_gtk_831706b8873fd4e8(uintptr_t arg1, swig_intgo arg2, swig_intgo arg3, swig_intgo arg4);
-extern swig_intgo _wrap_decorationFill_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern swig_intgo _wrap_decorationStroke_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern swig_intgo _wrap_decorationRadius_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern void _wrap_decorationSetRadius_gtk_831706b8873fd4e8(uintptr_t arg1, swig_intgo arg2);
-extern uintptr_t _wrap_mountCombobox_gtk_831706b8873fd4e8(uintptr_t arg1, swig_type_35 arg2, swig_intgo arg3, _Bool arg4, _Bool arg5, _Bool arg6, _Bool arg7, _Bool arg8);
-extern void _wrap_comboboxUpdate_gtk_831706b8873fd4e8(uintptr_t arg1, swig_type_36 arg2, swig_intgo arg3, _Bool arg4, _Bool arg5, _Bool arg6, _Bool arg7, _Bool arg8);
-extern uintptr_t _wrap_comboboxChild_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern swig_intgo _wrap_comboboxItemCount_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern swig_type_37 _wrap_comboboxItem_gtk_831706b8873fd4e8(uintptr_t arg1, swig_intgo arg2);
-extern swig_intgo _wrap_comboboxValue_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern uintptr_t _wrap_mountTabs_gtk_831706b8873fd4e8(uintptr_t arg1, swig_intgo arg2, swig_type_38 arg3, _Bool arg4);
-extern void _wrap_tabsUpdate_gtk_831706b8873fd4e8(uintptr_t arg1, swig_intgo arg2, swig_type_39 arg3, _Bool arg4);
-extern uintptr_t _wrap_tabsGetTabParent_gtk_831706b8873fd4e8(uintptr_t arg1, swig_intgo arg2);
-extern swig_intgo _wrap_tabsItemCount_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern swig_type_40 _wrap_tabsItemCaption_gtk_831706b8873fd4e8(uintptr_t arg1, swig_intgo arg2);
-extern uintptr_t _wrap_mountIntInput_gtk_831706b8873fd4e8(uintptr_t arg1, swig_type_41 arg2, swig_type_42 arg3, _Bool arg4, swig_type_43 arg5, swig_type_44 arg6, _Bool arg7, _Bool arg8, _Bool arg9, _Bool arg10);
-extern void _wrap_intinputUpdate_gtk_831706b8873fd4e8(uintptr_t arg1, swig_type_45 arg2, swig_type_46 arg3, _Bool arg4, swig_type_47 arg5, swig_type_48 arg6, _Bool arg7, _Bool arg8, _Bool arg9, _Bool arg10);
-extern swig_type_49 _wrap_intinputValue_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern double _wrap_intinputMin_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern double _wrap_intinputMax_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern uintptr_t _wrap_mountDateInput_gtk_831706b8873fd4e8(uintptr_t arg1, swig_intgo arg2, swig_intgo arg3, swig_intgo arg4, _Bool arg5, _Bool arg6, _Bool arg7, _Bool arg8);
-extern void _wrap_dateInputUpdate_gtk_831706b8873fd4e8(uintptr_t arg1, swig_intgo arg2, swig_intgo arg3, swig_intgo arg4, _Bool arg5, _Bool arg6, _Bool arg7, _Bool arg8);
-extern swig_intgo _wrap_dateInputYear_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern swig_intgo _wrap_dateInputMonth_gtk_831706b8873fd4e8(uintptr_t arg1);
-extern swig_intgo _wrap_dateInputDay_gtk_831706b8873fd4e8(uintptr_t arg1);
+extern void _wrap_Swig_free_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern uintptr_t _wrap_Swig_malloc_gtk_0b05487f82a429b0(swig_intgo arg1);
+extern void _wrap_widgetClose_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern _Bool _wrap_widgetCanFocus_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern void _wrap_widgetGrabFocus_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern _Bool _wrap_widgetIsFocus_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern void _wrap_widgetSendKey_gtk_0b05487f82a429b0(uintptr_t arg1, swig_intgo arg2, _Bool arg3);
+extern swig_intgo _wrap_widgetMinHeight_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern swig_intgo _wrap_widgetMinHeightForWidth_gtk_0b05487f82a429b0(uintptr_t arg1, swig_intgo arg2);
+extern swig_intgo _wrap_widgetNaturalHeight_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern swig_intgo _wrap_widgetNaturalHeightForWidth_gtk_0b05487f82a429b0(uintptr_t arg1, swig_intgo arg2);
+extern swig_intgo _wrap_widgetMinWidth_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern swig_intgo _wrap_widgetNaturalWidth_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern swig_intgo _wrap_widgetNaturalWidthForHeight_gtk_0b05487f82a429b0(uintptr_t arg1, swig_intgo arg2);
+extern void _wrap_widgetSetBounds_gtk_0b05487f82a429b0(uintptr_t arg1, swig_intgo arg2, swig_intgo arg3, swig_intgo arg4, swig_intgo arg5);
+extern _Bool _wrap_widgetSensitive_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern _Bool _wrap_widgetCanDefault_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern void _wrap_widgetSetSizeRequest_gtk_0b05487f82a429b0(uintptr_t arg1, swig_intgo arg2, swig_intgo arg3);
+extern uintptr_t _wrap_mountWindow_gtk_0b05487f82a429b0(swig_type_1 arg1);
+extern uintptr_t _wrap_windowScrolledWindow_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern uintptr_t _wrap_windowLayout_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern void _wrap_windowSetLayoutSize_gtk_0b05487f82a429b0(uintptr_t arg1, swig_intgo arg2, swig_intgo arg3);
+extern swig_type_2 _wrap_windowTitle_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern void _wrap_windowSetTitle_gtk_0b05487f82a429b0(uintptr_t arg1, swig_type_3 arg2);
+extern swig_intgo _wrap_windowVScrollbarWidth_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern swig_intgo _wrap_windowHScrollbarHeight_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern void _wrap_windowShowScrollbars_gtk_0b05487f82a429b0(uintptr_t arg1, _Bool arg2, _Bool arg3);
+extern void _wrap_windowShow_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern void _wrap_windowSetDefaultSize_gtk_0b05487f82a429b0(uintptr_t arg1, swig_intgo arg2, swig_intgo arg3);
+extern void _wrap_windowSetIcon_gtk_0b05487f82a429b0(uintptr_t arg1, swig_voidp arg2, swig_intgo arg3, swig_intgo arg4, swig_intgo arg5);
+extern swig_intgo _wrap_dialogRun_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern void _wrap_dialogAddFilter_gtk_0b05487f82a429b0(uintptr_t arg1, swig_type_4 arg2, swig_type_5 arg3);
+extern swig_intgo _wrap_dialogResponseAccept_gtk_0b05487f82a429b0(void);
+extern swig_intgo _wrap_dialogResponseCancel_gtk_0b05487f82a429b0(void);
+extern uintptr_t _wrap_mountMessageDialog_gtk_0b05487f82a429b0(uintptr_t arg1, swig_type_6 arg2, swig_intgo arg3, swig_type_7 arg4);
+extern swig_intgo _wrap_messageDialogWithError_gtk_0b05487f82a429b0(void);
+extern swig_intgo _wrap_messageDialogWithWarn_gtk_0b05487f82a429b0(void);
+extern swig_intgo _wrap_messageDialogWithInfo_gtk_0b05487f82a429b0(void);
+extern uintptr_t _wrap_mountOpenDialog_gtk_0b05487f82a429b0(uintptr_t arg1, swig_type_8 arg2, swig_type_9 arg3);
+extern uintptr_t _wrap_mountSaveDialog_gtk_0b05487f82a429b0(uintptr_t arg1, swig_type_10 arg2, swig_type_11 arg3);
+extern swig_type_12 _wrap_dialogGetFilename_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern uintptr_t _wrap_mountButton_gtk_0b05487f82a429b0(uintptr_t arg1, swig_type_13 arg2, _Bool arg3, _Bool arg4, _Bool arg5, _Bool arg6, _Bool arg7);
+extern void _wrap_buttonUpdate_gtk_0b05487f82a429b0(uintptr_t arg1, swig_type_14 arg2, _Bool arg3, _Bool arg4, _Bool arg5, _Bool arg6, _Bool arg7);
+extern void _wrap_buttonClick_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern swig_type_15 _wrap_buttonText_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern uintptr_t _wrap_mountLabel_gtk_0b05487f82a429b0(uintptr_t arg1, swig_type_16 arg2);
+extern void _wrap_labelUpdate_gtk_0b05487f82a429b0(uintptr_t arg1, swig_type_17 arg2);
+extern swig_type_18 _wrap_labelText_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern uintptr_t _wrap_mountCheckbox_gtk_0b05487f82a429b0(uintptr_t arg1, _Bool arg2, swig_type_19 arg3, _Bool arg4, _Bool arg5, _Bool arg6, _Bool arg7);
+extern void _wrap_checkboxUpdate_gtk_0b05487f82a429b0(uintptr_t arg1, _Bool arg2, swig_type_20 arg3, _Bool arg4, _Bool arg5, _Bool arg6, _Bool arg7);
+extern void _wrap_checkboxClick_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern _Bool _wrap_checkboxValue_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern uintptr_t _wrap_mountTextbox_gtk_0b05487f82a429b0(uintptr_t arg1, swig_type_21 arg2, swig_type_22 arg3, _Bool arg4, _Bool arg5, _Bool arg6, _Bool arg7, _Bool arg8, _Bool arg9, _Bool arg10);
+extern void _wrap_textboxUpdate_gtk_0b05487f82a429b0(uintptr_t arg1, swig_type_23 arg2, swig_type_24 arg3, _Bool arg4, _Bool arg5, _Bool arg6, _Bool arg7, _Bool arg8, _Bool arg9, _Bool arg10);
+extern swig_type_25 _wrap_textboxText_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern swig_type_26 _wrap_textboxPlaceholder_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern _Bool _wrap_textboxPassword_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern _Bool _wrap_textboxReadOnly_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern uintptr_t _wrap_mountTextarea_gtk_0b05487f82a429b0(uintptr_t arg1, swig_type_27 arg2, _Bool arg3, _Bool arg4, _Bool arg5, _Bool arg6, _Bool arg7);
+extern void _wrap_textareaUpdate_gtk_0b05487f82a429b0(uintptr_t arg1, swig_type_28 arg2, _Bool arg3, _Bool arg4, _Bool arg5, _Bool arg6, _Bool arg7);
+extern swig_type_29 _wrap_textareaText_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern swig_type_30 _wrap_textareaPlaceholder_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern _Bool _wrap_textareaReadOnly_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern uintptr_t _wrap_textareaTextview_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern uintptr_t _wrap_mountParagraph_gtk_0b05487f82a429b0(uintptr_t arg1, swig_type_31 arg2, char arg3);
+extern void _wrap_paragraphUpdate_gtk_0b05487f82a429b0(uintptr_t arg1, swig_type_32 arg2, char arg3);
+extern swig_type_33 _wrap_paragraphText_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern char _wrap_paragraphAlign_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern void _wrap_paragraphSetText_gtk_0b05487f82a429b0(uintptr_t arg1, swig_type_34 arg2);
+extern uintptr_t _wrap_mountProgressbar_gtk_0b05487f82a429b0(uintptr_t arg1, double arg2);
+extern void _wrap_progressbarUpdate_gtk_0b05487f82a429b0(uintptr_t arg1, double arg2);
+extern double _wrap_progressbarValue_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern uintptr_t _wrap_mountSlider_gtk_0b05487f82a429b0(uintptr_t arg1, double arg2, _Bool arg3, double arg4, double arg5, _Bool arg6, _Bool arg7, _Bool arg8);
+extern void _wrap_sliderUpdate_gtk_0b05487f82a429b0(uintptr_t arg1, double arg2, _Bool arg3, double arg4, double arg5, _Bool arg6, _Bool arg7, _Bool arg8);
+extern double _wrap_sliderValue_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern uintptr_t _wrap_mountHR_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern uintptr_t _wrap_mountImage_gtk_0b05487f82a429b0(uintptr_t arg1, swig_voidp arg2, swig_intgo arg3, swig_intgo arg4, swig_intgo arg5);
+extern uintptr_t _wrap_imageUpdate_gtk_0b05487f82a429b0(uintptr_t arg1, swig_voidp arg2, swig_intgo arg3, swig_intgo arg4, swig_intgo arg5);
+extern swig_intgo _wrap_imageColorSpace_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern _Bool _wrap_imageHasAlpha_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern swig_intgo _wrap_imageImageWidth_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern swig_intgo _wrap_imageImageHeight_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern swig_intgo _wrap_imageImageStride_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern uintptr_t _wrap_mountDecoration_gtk_0b05487f82a429b0(uintptr_t arg1, swig_intgo arg2, swig_intgo arg3, swig_intgo arg4);
+extern void _wrap_decorationUpdate_gtk_0b05487f82a429b0(uintptr_t arg1, swig_intgo arg2, swig_intgo arg3, swig_intgo arg4);
+extern swig_intgo _wrap_decorationFill_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern swig_intgo _wrap_decorationStroke_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern swig_intgo _wrap_decorationRadius_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern void _wrap_decorationSetRadius_gtk_0b05487f82a429b0(uintptr_t arg1, swig_intgo arg2);
+extern uintptr_t _wrap_mountCombobox_gtk_0b05487f82a429b0(uintptr_t arg1, swig_type_35 arg2, swig_intgo arg3, _Bool arg4, _Bool arg5, _Bool arg6, _Bool arg7, _Bool arg8);
+extern void _wrap_comboboxUpdate_gtk_0b05487f82a429b0(uintptr_t arg1, swig_type_36 arg2, swig_intgo arg3, _Bool arg4, _Bool arg5, _Bool arg6, _Bool arg7, _Bool arg8);
+extern uintptr_t _wrap_comboboxChild_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern swig_intgo _wrap_comboboxItemCount_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern swig_type_37 _wrap_comboboxItem_gtk_0b05487f82a429b0(uintptr_t arg1, swig_intgo arg2);
+extern swig_intgo _wrap_comboboxValue_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern uintptr_t _wrap_mountTabs_gtk_0b05487f82a429b0(uintptr_t arg1, swig_intgo arg2, swig_type_38 arg3, _Bool arg4);
+extern void _wrap_tabsUpdate_gtk_0b05487f82a429b0(uintptr_t arg1, swig_intgo arg2, swig_type_39 arg3, _Bool arg4);
+extern uintptr_t _wrap_tabsGetTabParent_gtk_0b05487f82a429b0(uintptr_t arg1, swig_intgo arg2);
+extern swig_intgo _wrap_tabsItemCount_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern swig_type_40 _wrap_tabsItemCaption_gtk_0b05487f82a429b0(uintptr_t arg1, swig_intgo arg2);
+extern uintptr_t _wrap_mountIntInput_gtk_0b05487f82a429b0(uintptr_t arg1, swig_type_41 arg2, swig_type_42 arg3, _Bool arg4, swig_type_43 arg5, swig_type_44 arg6, _Bool arg7, _Bool arg8, _Bool arg9, _Bool arg10);
+extern void _wrap_intinputUpdate_gtk_0b05487f82a429b0(uintptr_t arg1, swig_type_45 arg2, swig_type_46 arg3, _Bool arg4, swig_type_47 arg5, swig_type_48 arg6, _Bool arg7, _Bool arg8, _Bool arg9, _Bool arg10);
+extern swig_type_49 _wrap_intinputValue_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern double _wrap_intinputMin_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern double _wrap_intinputMax_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern uintptr_t _wrap_mountDateInput_gtk_0b05487f82a429b0(uintptr_t arg1, swig_intgo arg2, swig_intgo arg3, swig_intgo arg4, _Bool arg5, _Bool arg6, _Bool arg7, _Bool arg8);
+extern void _wrap_dateInputUpdate_gtk_0b05487f82a429b0(uintptr_t arg1, swig_intgo arg2, swig_intgo arg3, swig_intgo arg4, _Bool arg5, _Bool arg6, _Bool arg7, _Bool arg8);
+extern swig_intgo _wrap_dateInputYear_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern swig_intgo _wrap_dateInputMonth_gtk_0b05487f82a429b0(uintptr_t arg1);
+extern swig_intgo _wrap_dateInputDay_gtk_0b05487f82a429b0(uintptr_t arg1);
 #undef intgo
 */
 import "C"
@@ -220,37 +221,37 @@ func swigCopyString(s string) string {
 
 func Swig_free(arg1 uintptr) {
 	_swig_i_0 := arg1
-	C._wrap_Swig_free_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0))
+	C._wrap_Swig_free_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0))
 }
 
 func Swig_malloc(arg1 int) (_swig_ret uintptr) {
 	var swig_r uintptr
 	_swig_i_0 := arg1
-	swig_r = (uintptr)(C._wrap_Swig_malloc_gtk_831706b8873fd4e8(C.swig_intgo(_swig_i_0)))
+	swig_r = (uintptr)(C._wrap_Swig_malloc_gtk_0b05487f82a429b0(C.swig_intgo(_swig_i_0)))
 	return swig_r
 }
 
 func WidgetClose(arg1 uintptr) {
 	_swig_i_0 := arg1
-	C._wrap_widgetClose_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0))
+	C._wrap_widgetClose_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0))
 }
 
 func WidgetCanFocus(arg1 uintptr) (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	swig_r = (bool)(C._wrap_widgetCanFocus_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (bool)(C._wrap_widgetCanFocus_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func WidgetGrabFocus(arg1 uintptr) {
 	_swig_i_0 := arg1
-	C._wrap_widgetGrabFocus_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0))
+	C._wrap_widgetGrabFocus_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0))
 }
 
 func WidgetIsFocus(arg1 uintptr) (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	swig_r = (bool)(C._wrap_widgetIsFocus_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (bool)(C._wrap_widgetIsFocus_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
@@ -258,13 +259,13 @@ func WidgetSendKey(arg1 uintptr, arg2 uint, arg3 bool) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
-	C._wrap_widgetSendKey_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), C._Bool(_swig_i_2))
+	C._wrap_widgetSendKey_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), C._Bool(_swig_i_2))
 }
 
 func WidgetMinHeight(arg1 uintptr) (_swig_ret int) {
 	var swig_r int
 	_swig_i_0 := arg1
-	swig_r = (int)(C._wrap_widgetMinHeight_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (int)(C._wrap_widgetMinHeight_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
@@ -272,14 +273,14 @@ func WidgetMinHeightForWidth(arg1 uintptr, arg2 int) (_swig_ret int) {
 	var swig_r int
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r = (int)(C._wrap_widgetMinHeightForWidth_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1)))
+	swig_r = (int)(C._wrap_widgetMinHeightForWidth_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1)))
 	return swig_r
 }
 
 func WidgetNaturalHeight(arg1 uintptr) (_swig_ret int) {
 	var swig_r int
 	_swig_i_0 := arg1
-	swig_r = (int)(C._wrap_widgetNaturalHeight_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (int)(C._wrap_widgetNaturalHeight_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
@@ -287,21 +288,21 @@ func WidgetNaturalHeightForWidth(arg1 uintptr, arg2 int) (_swig_ret int) {
 	var swig_r int
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r = (int)(C._wrap_widgetNaturalHeightForWidth_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1)))
+	swig_r = (int)(C._wrap_widgetNaturalHeightForWidth_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1)))
 	return swig_r
 }
 
 func WidgetMinWidth(arg1 uintptr) (_swig_ret int) {
 	var swig_r int
 	_swig_i_0 := arg1
-	swig_r = (int)(C._wrap_widgetMinWidth_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (int)(C._wrap_widgetMinWidth_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func WidgetNaturalWidth(arg1 uintptr) (_swig_ret int) {
 	var swig_r int
 	_swig_i_0 := arg1
-	swig_r = (int)(C._wrap_widgetNaturalWidth_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (int)(C._wrap_widgetNaturalWidth_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
@@ -309,7 +310,7 @@ func WidgetNaturalWidthForHeight(arg1 uintptr, arg2 int) (_swig_ret int) {
 	var swig_r int
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r = (int)(C._wrap_widgetNaturalWidthForHeight_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1)))
+	swig_r = (int)(C._wrap_widgetNaturalWidthForHeight_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1)))
 	return swig_r
 }
 
@@ -319,20 +320,20 @@ func WidgetSetBounds(arg1 uintptr, arg2 int, arg3 int, arg4 int, arg5 int) {
 	_swig_i_2 := arg3
 	_swig_i_3 := arg4
 	_swig_i_4 := arg5
-	C._wrap_widgetSetBounds_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), C.swig_intgo(_swig_i_2), C.swig_intgo(_swig_i_3), C.swig_intgo(_swig_i_4))
+	C._wrap_widgetSetBounds_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), C.swig_intgo(_swig_i_2), C.swig_intgo(_swig_i_3), C.swig_intgo(_swig_i_4))
 }
 
 func WidgetSensitive(arg1 uintptr) (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	swig_r = (bool)(C._wrap_widgetSensitive_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (bool)(C._wrap_widgetSensitive_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func WidgetCanDefault(arg1 uintptr) (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	swig_r = (bool)(C._wrap_widgetCanDefault_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (bool)(C._wrap_widgetCanDefault_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
@@ -340,13 +341,13 @@ func WidgetSetSizeRequest(arg1 uintptr, arg2 int, arg3 int) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
-	C._wrap_widgetSetSizeRequest_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), C.swig_intgo(_swig_i_2))
+	C._wrap_widgetSetSizeRequest_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), C.swig_intgo(_swig_i_2))
 }
 
 func MountWindow(arg1 string) (_swig_ret uintptr) {
 	var swig_r uintptr
 	_swig_i_0 := arg1
-	swig_r = (uintptr)(C._wrap_mountWindow_gtk_831706b8873fd4e8(*(*C.swig_type_1)(unsafe.Pointer(&_swig_i_0))))
+	swig_r = (uintptr)(C._wrap_mountWindow_gtk_0b05487f82a429b0(*(*C.swig_type_1)(unsafe.Pointer(&_swig_i_0))))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg1
 	}
@@ -356,14 +357,14 @@ func MountWindow(arg1 string) (_swig_ret uintptr) {
 func WindowScrolledWindow(arg1 uintptr) (_swig_ret uintptr) {
 	var swig_r uintptr
 	_swig_i_0 := arg1
-	swig_r = (uintptr)(C._wrap_windowScrolledWindow_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (uintptr)(C._wrap_windowScrolledWindow_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func WindowLayout(arg1 uintptr) (_swig_ret uintptr) {
 	var swig_r uintptr
 	_swig_i_0 := arg1
-	swig_r = (uintptr)(C._wrap_windowLayout_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (uintptr)(C._wrap_windowLayout_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
@@ -371,13 +372,13 @@ func WindowSetLayoutSize(arg1 uintptr, arg2 uint, arg3 uint) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
-	C._wrap_windowSetLayoutSize_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), C.swig_intgo(_swig_i_2))
+	C._wrap_windowSetLayoutSize_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), C.swig_intgo(_swig_i_2))
 }
 
 func WindowTitle(arg1 uintptr) (_swig_ret string) {
 	var swig_r string
 	_swig_i_0 := arg1
-	swig_r_p := C._wrap_windowTitle_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0))
+	swig_r_p := C._wrap_windowTitle_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
  swig_r_1 = swigCopyString(swig_r) 
@@ -387,7 +388,7 @@ func WindowTitle(arg1 uintptr) (_swig_ret string) {
 func WindowSetTitle(arg1 uintptr, arg2 string) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_windowSetTitle_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), *(*C.swig_type_3)(unsafe.Pointer(&_swig_i_1)))
+	C._wrap_windowSetTitle_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), *(*C.swig_type_3)(unsafe.Pointer(&_swig_i_1)))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -396,7 +397,14 @@ func WindowSetTitle(arg1 uintptr, arg2 string) {
 func WindowVScrollbarWidth(arg1 uintptr) (_swig_ret uint) {
 	var swig_r uint
 	_swig_i_0 := arg1
-	swig_r = (uint)(C._wrap_windowVScrollbarWidth_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (uint)(C._wrap_windowVScrollbarWidth_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
+	return swig_r
+}
+
+func WindowHScrollbarHeight(arg1 uintptr) (_swig_ret uint) {
+	var swig_r uint
+	_swig_i_0 := arg1
+	swig_r = (uint)(C._wrap_windowHScrollbarHeight_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
@@ -404,19 +412,19 @@ func WindowShowScrollbars(arg1 uintptr, arg2 bool, arg3 bool) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
-	C._wrap_windowShowScrollbars_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C._Bool(_swig_i_1), C._Bool(_swig_i_2))
+	C._wrap_windowShowScrollbars_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C._Bool(_swig_i_1), C._Bool(_swig_i_2))
 }
 
 func WindowShow(arg1 uintptr) {
 	_swig_i_0 := arg1
-	C._wrap_windowShow_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0))
+	C._wrap_windowShow_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0))
 }
 
 func WindowSetDefaultSize(arg1 uintptr, arg2 int, arg3 int) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
-	C._wrap_windowSetDefaultSize_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), C.swig_intgo(_swig_i_2))
+	C._wrap_windowSetDefaultSize_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), C.swig_intgo(_swig_i_2))
 }
 
 func WindowSetIcon(arg1 uintptr, arg2 *byte, arg3 int, arg4 int, arg5 int) {
@@ -425,13 +433,13 @@ func WindowSetIcon(arg1 uintptr, arg2 *byte, arg3 int, arg4 int, arg5 int) {
 	_swig_i_2 := arg3
 	_swig_i_3 := arg4
 	_swig_i_4 := arg5
-	C._wrap_windowSetIcon_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C.swig_voidp(_swig_i_1), C.swig_intgo(_swig_i_2), C.swig_intgo(_swig_i_3), C.swig_intgo(_swig_i_4))
+	C._wrap_windowSetIcon_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C.swig_voidp(_swig_i_1), C.swig_intgo(_swig_i_2), C.swig_intgo(_swig_i_3), C.swig_intgo(_swig_i_4))
 }
 
 func DialogRun(arg1 uintptr) (_swig_ret uint) {
 	var swig_r uint
 	_swig_i_0 := arg1
-	swig_r = (uint)(C._wrap_dialogRun_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (uint)(C._wrap_dialogRun_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
@@ -439,7 +447,7 @@ func DialogAddFilter(arg1 uintptr, arg2 string, arg3 string) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
-	C._wrap_dialogAddFilter_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), *(*C.swig_type_4)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_5)(unsafe.Pointer(&_swig_i_2)))
+	C._wrap_dialogAddFilter_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), *(*C.swig_type_4)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_5)(unsafe.Pointer(&_swig_i_2)))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -450,13 +458,13 @@ func DialogAddFilter(arg1 uintptr, arg2 string, arg3 string) {
 
 func DialogResponseAccept() (_swig_ret uint) {
 	var swig_r uint
-	swig_r = (uint)(C._wrap_dialogResponseAccept_gtk_831706b8873fd4e8())
+	swig_r = (uint)(C._wrap_dialogResponseAccept_gtk_0b05487f82a429b0())
 	return swig_r
 }
 
 func DialogResponseCancel() (_swig_ret uint) {
 	var swig_r uint
-	swig_r = (uint)(C._wrap_dialogResponseCancel_gtk_831706b8873fd4e8())
+	swig_r = (uint)(C._wrap_dialogResponseCancel_gtk_0b05487f82a429b0())
 	return swig_r
 }
 
@@ -466,7 +474,7 @@ func MountMessageDialog(arg1 uintptr, arg2 string, arg3 uint, arg4 string) (_swi
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
 	_swig_i_3 := arg4
-	swig_r = (uintptr)(C._wrap_mountMessageDialog_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), *(*C.swig_type_6)(unsafe.Pointer(&_swig_i_1)), C.swig_intgo(_swig_i_2), *(*C.swig_type_7)(unsafe.Pointer(&_swig_i_3))))
+	swig_r = (uintptr)(C._wrap_mountMessageDialog_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), *(*C.swig_type_6)(unsafe.Pointer(&_swig_i_1)), C.swig_intgo(_swig_i_2), *(*C.swig_type_7)(unsafe.Pointer(&_swig_i_3))))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -478,19 +486,19 @@ func MountMessageDialog(arg1 uintptr, arg2 string, arg3 uint, arg4 string) (_swi
 
 func MessageDialogWithError() (_swig_ret uint) {
 	var swig_r uint
-	swig_r = (uint)(C._wrap_messageDialogWithError_gtk_831706b8873fd4e8())
+	swig_r = (uint)(C._wrap_messageDialogWithError_gtk_0b05487f82a429b0())
 	return swig_r
 }
 
 func MessageDialogWithWarn() (_swig_ret uint) {
 	var swig_r uint
-	swig_r = (uint)(C._wrap_messageDialogWithWarn_gtk_831706b8873fd4e8())
+	swig_r = (uint)(C._wrap_messageDialogWithWarn_gtk_0b05487f82a429b0())
 	return swig_r
 }
 
 func MessageDialogWithInfo() (_swig_ret uint) {
 	var swig_r uint
-	swig_r = (uint)(C._wrap_messageDialogWithInfo_gtk_831706b8873fd4e8())
+	swig_r = (uint)(C._wrap_messageDialogWithInfo_gtk_0b05487f82a429b0())
 	return swig_r
 }
 
@@ -499,7 +507,7 @@ func MountOpenDialog(arg1 uintptr, arg2 string, arg3 string) (_swig_ret uintptr)
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
-	swig_r = (uintptr)(C._wrap_mountOpenDialog_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), *(*C.swig_type_8)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_9)(unsafe.Pointer(&_swig_i_2))))
+	swig_r = (uintptr)(C._wrap_mountOpenDialog_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), *(*C.swig_type_8)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_9)(unsafe.Pointer(&_swig_i_2))))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -514,7 +522,7 @@ func MountSaveDialog(arg1 uintptr, arg2 string, arg3 string) (_swig_ret uintptr)
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
-	swig_r = (uintptr)(C._wrap_mountSaveDialog_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), *(*C.swig_type_10)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_11)(unsafe.Pointer(&_swig_i_2))))
+	swig_r = (uintptr)(C._wrap_mountSaveDialog_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), *(*C.swig_type_10)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_11)(unsafe.Pointer(&_swig_i_2))))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -527,7 +535,7 @@ func MountSaveDialog(arg1 uintptr, arg2 string, arg3 string) (_swig_ret uintptr)
 func DialogGetFilename(arg1 uintptr) (_swig_ret string) {
 	var swig_r string
 	_swig_i_0 := arg1
-	swig_r_p := C._wrap_dialogGetFilename_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0))
+	swig_r_p := C._wrap_dialogGetFilename_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
  swig_r_1 = swigCopyString(swig_r) 
@@ -543,7 +551,7 @@ func MountButton(arg1 uintptr, arg2 string, arg3 bool, arg4 bool, arg5 bool, arg
 	_swig_i_4 := arg5
 	_swig_i_5 := arg6
 	_swig_i_6 := arg7
-	swig_r = (uintptr)(C._wrap_mountButton_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), *(*C.swig_type_13)(unsafe.Pointer(&_swig_i_1)), C._Bool(_swig_i_2), C._Bool(_swig_i_3), C._Bool(_swig_i_4), C._Bool(_swig_i_5), C._Bool(_swig_i_6)))
+	swig_r = (uintptr)(C._wrap_mountButton_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), *(*C.swig_type_13)(unsafe.Pointer(&_swig_i_1)), C._Bool(_swig_i_2), C._Bool(_swig_i_3), C._Bool(_swig_i_4), C._Bool(_swig_i_5), C._Bool(_swig_i_6)))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -558,7 +566,7 @@ func ButtonUpdate(arg1 uintptr, arg2 string, arg3 bool, arg4 bool, arg5 bool, ar
 	_swig_i_4 := arg5
 	_swig_i_5 := arg6
 	_swig_i_6 := arg7
-	C._wrap_buttonUpdate_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), *(*C.swig_type_14)(unsafe.Pointer(&_swig_i_1)), C._Bool(_swig_i_2), C._Bool(_swig_i_3), C._Bool(_swig_i_4), C._Bool(_swig_i_5), C._Bool(_swig_i_6))
+	C._wrap_buttonUpdate_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), *(*C.swig_type_14)(unsafe.Pointer(&_swig_i_1)), C._Bool(_swig_i_2), C._Bool(_swig_i_3), C._Bool(_swig_i_4), C._Bool(_swig_i_5), C._Bool(_swig_i_6))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -566,13 +574,13 @@ func ButtonUpdate(arg1 uintptr, arg2 string, arg3 bool, arg4 bool, arg5 bool, ar
 
 func ButtonClick(arg1 uintptr) {
 	_swig_i_0 := arg1
-	C._wrap_buttonClick_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0))
+	C._wrap_buttonClick_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0))
 }
 
 func ButtonText(arg1 uintptr) (_swig_ret string) {
 	var swig_r string
 	_swig_i_0 := arg1
-	swig_r_p := C._wrap_buttonText_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0))
+	swig_r_p := C._wrap_buttonText_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
  swig_r_1 = swigCopyString(swig_r) 
@@ -583,7 +591,7 @@ func MountLabel(arg1 uintptr, arg2 string) (_swig_ret uintptr) {
 	var swig_r uintptr
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r = (uintptr)(C._wrap_mountLabel_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), *(*C.swig_type_16)(unsafe.Pointer(&_swig_i_1))))
+	swig_r = (uintptr)(C._wrap_mountLabel_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), *(*C.swig_type_16)(unsafe.Pointer(&_swig_i_1))))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -593,7 +601,7 @@ func MountLabel(arg1 uintptr, arg2 string) (_swig_ret uintptr) {
 func LabelUpdate(arg1 uintptr, arg2 string) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_labelUpdate_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), *(*C.swig_type_17)(unsafe.Pointer(&_swig_i_1)))
+	C._wrap_labelUpdate_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), *(*C.swig_type_17)(unsafe.Pointer(&_swig_i_1)))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -602,7 +610,7 @@ func LabelUpdate(arg1 uintptr, arg2 string) {
 func LabelText(arg1 uintptr) (_swig_ret string) {
 	var swig_r string
 	_swig_i_0 := arg1
-	swig_r_p := C._wrap_labelText_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0))
+	swig_r_p := C._wrap_labelText_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
  swig_r_1 = swigCopyString(swig_r) 
@@ -618,7 +626,7 @@ func MountCheckbox(arg1 uintptr, arg2 bool, arg3 string, arg4 bool, arg5 bool, a
 	_swig_i_4 := arg5
 	_swig_i_5 := arg6
 	_swig_i_6 := arg7
-	swig_r = (uintptr)(C._wrap_mountCheckbox_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C._Bool(_swig_i_1), *(*C.swig_type_19)(unsafe.Pointer(&_swig_i_2)), C._Bool(_swig_i_3), C._Bool(_swig_i_4), C._Bool(_swig_i_5), C._Bool(_swig_i_6)))
+	swig_r = (uintptr)(C._wrap_mountCheckbox_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C._Bool(_swig_i_1), *(*C.swig_type_19)(unsafe.Pointer(&_swig_i_2)), C._Bool(_swig_i_3), C._Bool(_swig_i_4), C._Bool(_swig_i_5), C._Bool(_swig_i_6)))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg3
 	}
@@ -633,7 +641,7 @@ func CheckboxUpdate(arg1 uintptr, arg2 bool, arg3 string, arg4 bool, arg5 bool, 
 	_swig_i_4 := arg5
 	_swig_i_5 := arg6
 	_swig_i_6 := arg7
-	C._wrap_checkboxUpdate_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C._Bool(_swig_i_1), *(*C.swig_type_20)(unsafe.Pointer(&_swig_i_2)), C._Bool(_swig_i_3), C._Bool(_swig_i_4), C._Bool(_swig_i_5), C._Bool(_swig_i_6))
+	C._wrap_checkboxUpdate_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C._Bool(_swig_i_1), *(*C.swig_type_20)(unsafe.Pointer(&_swig_i_2)), C._Bool(_swig_i_3), C._Bool(_swig_i_4), C._Bool(_swig_i_5), C._Bool(_swig_i_6))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg3
 	}
@@ -641,13 +649,13 @@ func CheckboxUpdate(arg1 uintptr, arg2 bool, arg3 string, arg4 bool, arg5 bool, 
 
 func CheckboxClick(arg1 uintptr) {
 	_swig_i_0 := arg1
-	C._wrap_checkboxClick_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0))
+	C._wrap_checkboxClick_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0))
 }
 
 func CheckboxValue(arg1 uintptr) (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	swig_r = (bool)(C._wrap_checkboxValue_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (bool)(C._wrap_checkboxValue_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
@@ -663,7 +671,7 @@ func MountTextbox(arg1 uintptr, arg2 string, arg3 string, arg4 bool, arg5 bool, 
 	_swig_i_7 := arg8
 	_swig_i_8 := arg9
 	_swig_i_9 := arg10
-	swig_r = (uintptr)(C._wrap_mountTextbox_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), *(*C.swig_type_21)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_22)(unsafe.Pointer(&_swig_i_2)), C._Bool(_swig_i_3), C._Bool(_swig_i_4), C._Bool(_swig_i_5), C._Bool(_swig_i_6), C._Bool(_swig_i_7), C._Bool(_swig_i_8), C._Bool(_swig_i_9)))
+	swig_r = (uintptr)(C._wrap_mountTextbox_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), *(*C.swig_type_21)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_22)(unsafe.Pointer(&_swig_i_2)), C._Bool(_swig_i_3), C._Bool(_swig_i_4), C._Bool(_swig_i_5), C._Bool(_swig_i_6), C._Bool(_swig_i_7), C._Bool(_swig_i_8), C._Bool(_swig_i_9)))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -684,7 +692,7 @@ func TextboxUpdate(arg1 uintptr, arg2 string, arg3 string, arg4 bool, arg5 bool,
 	_swig_i_7 := arg8
 	_swig_i_8 := arg9
 	_swig_i_9 := arg10
-	C._wrap_textboxUpdate_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), *(*C.swig_type_23)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_24)(unsafe.Pointer(&_swig_i_2)), C._Bool(_swig_i_3), C._Bool(_swig_i_4), C._Bool(_swig_i_5), C._Bool(_swig_i_6), C._Bool(_swig_i_7), C._Bool(_swig_i_8), C._Bool(_swig_i_9))
+	C._wrap_textboxUpdate_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), *(*C.swig_type_23)(unsafe.Pointer(&_swig_i_1)), *(*C.swig_type_24)(unsafe.Pointer(&_swig_i_2)), C._Bool(_swig_i_3), C._Bool(_swig_i_4), C._Bool(_swig_i_5), C._Bool(_swig_i_6), C._Bool(_swig_i_7), C._Bool(_swig_i_8), C._Bool(_swig_i_9))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -696,7 +704,7 @@ func TextboxUpdate(arg1 uintptr, arg2 string, arg3 string, arg4 bool, arg5 bool,
 func TextboxText(arg1 uintptr) (_swig_ret string) {
 	var swig_r string
 	_swig_i_0 := arg1
-	swig_r_p := C._wrap_textboxText_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0))
+	swig_r_p := C._wrap_textboxText_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
  swig_r_1 = swigCopyString(swig_r) 
@@ -706,7 +714,7 @@ func TextboxText(arg1 uintptr) (_swig_ret string) {
 func TextboxPlaceholder(arg1 uintptr) (_swig_ret string) {
 	var swig_r string
 	_swig_i_0 := arg1
-	swig_r_p := C._wrap_textboxPlaceholder_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0))
+	swig_r_p := C._wrap_textboxPlaceholder_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
  swig_r_1 = swigCopyString(swig_r) 
@@ -716,14 +724,14 @@ func TextboxPlaceholder(arg1 uintptr) (_swig_ret string) {
 func TextboxPassword(arg1 uintptr) (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	swig_r = (bool)(C._wrap_textboxPassword_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (bool)(C._wrap_textboxPassword_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func TextboxReadOnly(arg1 uintptr) (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	swig_r = (bool)(C._wrap_textboxReadOnly_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (bool)(C._wrap_textboxReadOnly_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
@@ -736,7 +744,7 @@ func MountTextarea(arg1 uintptr, arg2 string, arg3 bool, arg4 bool, arg5 bool, a
 	_swig_i_4 := arg5
 	_swig_i_5 := arg6
 	_swig_i_6 := arg7
-	swig_r = (uintptr)(C._wrap_mountTextarea_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), *(*C.swig_type_27)(unsafe.Pointer(&_swig_i_1)), C._Bool(_swig_i_2), C._Bool(_swig_i_3), C._Bool(_swig_i_4), C._Bool(_swig_i_5), C._Bool(_swig_i_6)))
+	swig_r = (uintptr)(C._wrap_mountTextarea_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), *(*C.swig_type_27)(unsafe.Pointer(&_swig_i_1)), C._Bool(_swig_i_2), C._Bool(_swig_i_3), C._Bool(_swig_i_4), C._Bool(_swig_i_5), C._Bool(_swig_i_6)))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -751,7 +759,7 @@ func TextareaUpdate(arg1 uintptr, arg2 string, arg3 bool, arg4 bool, arg5 bool, 
 	_swig_i_4 := arg5
 	_swig_i_5 := arg6
 	_swig_i_6 := arg7
-	C._wrap_textareaUpdate_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), *(*C.swig_type_28)(unsafe.Pointer(&_swig_i_1)), C._Bool(_swig_i_2), C._Bool(_swig_i_3), C._Bool(_swig_i_4), C._Bool(_swig_i_5), C._Bool(_swig_i_6))
+	C._wrap_textareaUpdate_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), *(*C.swig_type_28)(unsafe.Pointer(&_swig_i_1)), C._Bool(_swig_i_2), C._Bool(_swig_i_3), C._Bool(_swig_i_4), C._Bool(_swig_i_5), C._Bool(_swig_i_6))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -760,7 +768,7 @@ func TextareaUpdate(arg1 uintptr, arg2 string, arg3 bool, arg4 bool, arg5 bool, 
 func TextareaText(arg1 uintptr) (_swig_ret string) {
 	var swig_r string
 	_swig_i_0 := arg1
-	swig_r_p := C._wrap_textareaText_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0))
+	swig_r_p := C._wrap_textareaText_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
  swig_r_1 = swigCopyString(swig_r) 
@@ -770,7 +778,7 @@ func TextareaText(arg1 uintptr) (_swig_ret string) {
 func TextareaPlaceholder(arg1 uintptr) (_swig_ret string) {
 	var swig_r string
 	_swig_i_0 := arg1
-	swig_r_p := C._wrap_textareaPlaceholder_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0))
+	swig_r_p := C._wrap_textareaPlaceholder_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
  swig_r_1 = swigCopyString(swig_r) 
@@ -780,14 +788,14 @@ func TextareaPlaceholder(arg1 uintptr) (_swig_ret string) {
 func TextareaReadOnly(arg1 uintptr) (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	swig_r = (bool)(C._wrap_textareaReadOnly_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (bool)(C._wrap_textareaReadOnly_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func TextareaTextview(arg1 uintptr) (_swig_ret uintptr) {
 	var swig_r uintptr
 	_swig_i_0 := arg1
-	swig_r = (uintptr)(C._wrap_textareaTextview_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (uintptr)(C._wrap_textareaTextview_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
@@ -796,7 +804,7 @@ func MountParagraph(arg1 uintptr, arg2 string, arg3 byte) (_swig_ret uintptr) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
-	swig_r = (uintptr)(C._wrap_mountParagraph_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), *(*C.swig_type_31)(unsafe.Pointer(&_swig_i_1)), C.char(_swig_i_2)))
+	swig_r = (uintptr)(C._wrap_mountParagraph_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), *(*C.swig_type_31)(unsafe.Pointer(&_swig_i_1)), C.char(_swig_i_2)))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -807,7 +815,7 @@ func ParagraphUpdate(arg1 uintptr, arg2 string, arg3 byte) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
-	C._wrap_paragraphUpdate_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), *(*C.swig_type_32)(unsafe.Pointer(&_swig_i_1)), C.char(_swig_i_2))
+	C._wrap_paragraphUpdate_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), *(*C.swig_type_32)(unsafe.Pointer(&_swig_i_1)), C.char(_swig_i_2))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -816,7 +824,7 @@ func ParagraphUpdate(arg1 uintptr, arg2 string, arg3 byte) {
 func ParagraphText(arg1 uintptr) (_swig_ret string) {
 	var swig_r string
 	_swig_i_0 := arg1
-	swig_r_p := C._wrap_paragraphText_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0))
+	swig_r_p := C._wrap_paragraphText_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
  swig_r_1 = swigCopyString(swig_r) 
@@ -826,14 +834,14 @@ func ParagraphText(arg1 uintptr) (_swig_ret string) {
 func ParagraphAlign(arg1 uintptr) (_swig_ret byte) {
 	var swig_r byte
 	_swig_i_0 := arg1
-	swig_r = (byte)(C._wrap_paragraphAlign_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (byte)(C._wrap_paragraphAlign_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func ParagraphSetText(arg1 uintptr, arg2 string) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_paragraphSetText_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), *(*C.swig_type_34)(unsafe.Pointer(&_swig_i_1)))
+	C._wrap_paragraphSetText_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), *(*C.swig_type_34)(unsafe.Pointer(&_swig_i_1)))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -843,20 +851,20 @@ func MountProgressbar(arg1 uintptr, arg2 float64) (_swig_ret uintptr) {
 	var swig_r uintptr
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r = (uintptr)(C._wrap_mountProgressbar_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C.double(_swig_i_1)))
+	swig_r = (uintptr)(C._wrap_mountProgressbar_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C.double(_swig_i_1)))
 	return swig_r
 }
 
 func ProgressbarUpdate(arg1 uintptr, arg2 float64) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_progressbarUpdate_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))
+	C._wrap_progressbarUpdate_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C.double(_swig_i_1))
 }
 
 func ProgressbarValue(arg1 uintptr) (_swig_ret float64) {
 	var swig_r float64
 	_swig_i_0 := arg1
-	swig_r = (float64)(C._wrap_progressbarValue_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (float64)(C._wrap_progressbarValue_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
@@ -870,7 +878,7 @@ func MountSlider(arg1 uintptr, arg2 float64, arg3 bool, arg4 float64, arg5 float
 	_swig_i_5 := arg6
 	_swig_i_6 := arg7
 	_swig_i_7 := arg8
-	swig_r = (uintptr)(C._wrap_mountSlider_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C.double(_swig_i_1), C._Bool(_swig_i_2), C.double(_swig_i_3), C.double(_swig_i_4), C._Bool(_swig_i_5), C._Bool(_swig_i_6), C._Bool(_swig_i_7)))
+	swig_r = (uintptr)(C._wrap_mountSlider_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C.double(_swig_i_1), C._Bool(_swig_i_2), C.double(_swig_i_3), C.double(_swig_i_4), C._Bool(_swig_i_5), C._Bool(_swig_i_6), C._Bool(_swig_i_7)))
 	return swig_r
 }
 
@@ -883,20 +891,20 @@ func SliderUpdate(arg1 uintptr, arg2 float64, arg3 bool, arg4 float64, arg5 floa
 	_swig_i_5 := arg6
 	_swig_i_6 := arg7
 	_swig_i_7 := arg8
-	C._wrap_sliderUpdate_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C.double(_swig_i_1), C._Bool(_swig_i_2), C.double(_swig_i_3), C.double(_swig_i_4), C._Bool(_swig_i_5), C._Bool(_swig_i_6), C._Bool(_swig_i_7))
+	C._wrap_sliderUpdate_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C.double(_swig_i_1), C._Bool(_swig_i_2), C.double(_swig_i_3), C.double(_swig_i_4), C._Bool(_swig_i_5), C._Bool(_swig_i_6), C._Bool(_swig_i_7))
 }
 
 func SliderValue(arg1 uintptr) (_swig_ret float64) {
 	var swig_r float64
 	_swig_i_0 := arg1
-	swig_r = (float64)(C._wrap_sliderValue_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (float64)(C._wrap_sliderValue_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func MountHR(arg1 uintptr) (_swig_ret uintptr) {
 	var swig_r uintptr
 	_swig_i_0 := arg1
-	swig_r = (uintptr)(C._wrap_mountHR_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (uintptr)(C._wrap_mountHR_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
@@ -907,7 +915,7 @@ func MountImage(arg1 uintptr, arg2 *byte, arg3 int, arg4 int, arg5 int) (_swig_r
 	_swig_i_2 := arg3
 	_swig_i_3 := arg4
 	_swig_i_4 := arg5
-	swig_r = (uintptr)(C._wrap_mountImage_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C.swig_voidp(_swig_i_1), C.swig_intgo(_swig_i_2), C.swig_intgo(_swig_i_3), C.swig_intgo(_swig_i_4)))
+	swig_r = (uintptr)(C._wrap_mountImage_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C.swig_voidp(_swig_i_1), C.swig_intgo(_swig_i_2), C.swig_intgo(_swig_i_3), C.swig_intgo(_swig_i_4)))
 	return swig_r
 }
 
@@ -918,42 +926,42 @@ func ImageUpdate(arg1 uintptr, arg2 *byte, arg3 int, arg4 int, arg5 int) (_swig_
 	_swig_i_2 := arg3
 	_swig_i_3 := arg4
 	_swig_i_4 := arg5
-	swig_r = (uintptr)(C._wrap_imageUpdate_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C.swig_voidp(_swig_i_1), C.swig_intgo(_swig_i_2), C.swig_intgo(_swig_i_3), C.swig_intgo(_swig_i_4)))
+	swig_r = (uintptr)(C._wrap_imageUpdate_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C.swig_voidp(_swig_i_1), C.swig_intgo(_swig_i_2), C.swig_intgo(_swig_i_3), C.swig_intgo(_swig_i_4)))
 	return swig_r
 }
 
 func ImageColorSpace(arg1 uintptr) (_swig_ret uint) {
 	var swig_r uint
 	_swig_i_0 := arg1
-	swig_r = (uint)(C._wrap_imageColorSpace_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (uint)(C._wrap_imageColorSpace_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func ImageHasAlpha(arg1 uintptr) (_swig_ret bool) {
 	var swig_r bool
 	_swig_i_0 := arg1
-	swig_r = (bool)(C._wrap_imageHasAlpha_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (bool)(C._wrap_imageHasAlpha_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func ImageImageWidth(arg1 uintptr) (_swig_ret uint) {
 	var swig_r uint
 	_swig_i_0 := arg1
-	swig_r = (uint)(C._wrap_imageImageWidth_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (uint)(C._wrap_imageImageWidth_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func ImageImageHeight(arg1 uintptr) (_swig_ret uint) {
 	var swig_r uint
 	_swig_i_0 := arg1
-	swig_r = (uint)(C._wrap_imageImageHeight_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (uint)(C._wrap_imageImageHeight_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func ImageImageStride(arg1 uintptr) (_swig_ret uint) {
 	var swig_r uint
 	_swig_i_0 := arg1
-	swig_r = (uint)(C._wrap_imageImageStride_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (uint)(C._wrap_imageImageStride_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
@@ -963,7 +971,7 @@ func MountDecoration(arg1 uintptr, arg2 uint, arg3 uint, arg4 int) (_swig_ret ui
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
 	_swig_i_3 := arg4
-	swig_r = (uintptr)(C._wrap_mountDecoration_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), C.swig_intgo(_swig_i_2), C.swig_intgo(_swig_i_3)))
+	swig_r = (uintptr)(C._wrap_mountDecoration_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), C.swig_intgo(_swig_i_2), C.swig_intgo(_swig_i_3)))
 	return swig_r
 }
 
@@ -972,34 +980,34 @@ func DecorationUpdate(arg1 uintptr, arg2 uint, arg3 uint, arg4 int) {
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
 	_swig_i_3 := arg4
-	C._wrap_decorationUpdate_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), C.swig_intgo(_swig_i_2), C.swig_intgo(_swig_i_3))
+	C._wrap_decorationUpdate_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), C.swig_intgo(_swig_i_2), C.swig_intgo(_swig_i_3))
 }
 
 func DecorationFill(arg1 uintptr) (_swig_ret uint) {
 	var swig_r uint
 	_swig_i_0 := arg1
-	swig_r = (uint)(C._wrap_decorationFill_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (uint)(C._wrap_decorationFill_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func DecorationStroke(arg1 uintptr) (_swig_ret uint) {
 	var swig_r uint
 	_swig_i_0 := arg1
-	swig_r = (uint)(C._wrap_decorationStroke_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (uint)(C._wrap_decorationStroke_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func DecorationRadius(arg1 uintptr) (_swig_ret int) {
 	var swig_r int
 	_swig_i_0 := arg1
-	swig_r = (int)(C._wrap_decorationRadius_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (int)(C._wrap_decorationRadius_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func DecorationSetRadius(arg1 uintptr, arg2 int) {
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	C._wrap_decorationSetRadius_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
+	C._wrap_decorationSetRadius_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
 }
 
 func MountCombobox(arg1 uintptr, arg2 string, arg3 int, arg4 bool, arg5 bool, arg6 bool, arg7 bool, arg8 bool) (_swig_ret uintptr) {
@@ -1012,7 +1020,7 @@ func MountCombobox(arg1 uintptr, arg2 string, arg3 int, arg4 bool, arg5 bool, ar
 	_swig_i_5 := arg6
 	_swig_i_6 := arg7
 	_swig_i_7 := arg8
-	swig_r = (uintptr)(C._wrap_mountCombobox_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), *(*C.swig_type_35)(unsafe.Pointer(&_swig_i_1)), C.swig_intgo(_swig_i_2), C._Bool(_swig_i_3), C._Bool(_swig_i_4), C._Bool(_swig_i_5), C._Bool(_swig_i_6), C._Bool(_swig_i_7)))
+	swig_r = (uintptr)(C._wrap_mountCombobox_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), *(*C.swig_type_35)(unsafe.Pointer(&_swig_i_1)), C.swig_intgo(_swig_i_2), C._Bool(_swig_i_3), C._Bool(_swig_i_4), C._Bool(_swig_i_5), C._Bool(_swig_i_6), C._Bool(_swig_i_7)))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -1028,7 +1036,7 @@ func ComboboxUpdate(arg1 uintptr, arg2 string, arg3 int, arg4 bool, arg5 bool, a
 	_swig_i_5 := arg6
 	_swig_i_6 := arg7
 	_swig_i_7 := arg8
-	C._wrap_comboboxUpdate_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), *(*C.swig_type_36)(unsafe.Pointer(&_swig_i_1)), C.swig_intgo(_swig_i_2), C._Bool(_swig_i_3), C._Bool(_swig_i_4), C._Bool(_swig_i_5), C._Bool(_swig_i_6), C._Bool(_swig_i_7))
+	C._wrap_comboboxUpdate_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), *(*C.swig_type_36)(unsafe.Pointer(&_swig_i_1)), C.swig_intgo(_swig_i_2), C._Bool(_swig_i_3), C._Bool(_swig_i_4), C._Bool(_swig_i_5), C._Bool(_swig_i_6), C._Bool(_swig_i_7))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg2
 	}
@@ -1037,14 +1045,14 @@ func ComboboxUpdate(arg1 uintptr, arg2 string, arg3 int, arg4 bool, arg5 bool, a
 func ComboboxChild(arg1 uintptr) (_swig_ret uintptr) {
 	var swig_r uintptr
 	_swig_i_0 := arg1
-	swig_r = (uintptr)(C._wrap_comboboxChild_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (uintptr)(C._wrap_comboboxChild_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func ComboboxItemCount(arg1 uintptr) (_swig_ret uint) {
 	var swig_r uint
 	_swig_i_0 := arg1
-	swig_r = (uint)(C._wrap_comboboxItemCount_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (uint)(C._wrap_comboboxItemCount_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
@@ -1052,7 +1060,7 @@ func ComboboxItem(arg1 uintptr, arg2 uint) (_swig_ret string) {
 	var swig_r string
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r_p := C._wrap_comboboxItem_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
+	swig_r_p := C._wrap_comboboxItem_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
  swig_r_1 = swigCopyString(swig_r) 
@@ -1062,7 +1070,7 @@ func ComboboxItem(arg1 uintptr, arg2 uint) (_swig_ret string) {
 func ComboboxValue(arg1 uintptr) (_swig_ret int) {
 	var swig_r int
 	_swig_i_0 := arg1
-	swig_r = (int)(C._wrap_comboboxValue_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (int)(C._wrap_comboboxValue_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
@@ -1072,7 +1080,7 @@ func MountTabs(arg1 uintptr, arg2 int, arg3 string, arg4 bool) (_swig_ret uintpt
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
 	_swig_i_3 := arg4
-	swig_r = (uintptr)(C._wrap_mountTabs_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), *(*C.swig_type_38)(unsafe.Pointer(&_swig_i_2)), C._Bool(_swig_i_3)))
+	swig_r = (uintptr)(C._wrap_mountTabs_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), *(*C.swig_type_38)(unsafe.Pointer(&_swig_i_2)), C._Bool(_swig_i_3)))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg3
 	}
@@ -1084,7 +1092,7 @@ func TabsUpdate(arg1 uintptr, arg2 int, arg3 string, arg4 bool) {
 	_swig_i_1 := arg2
 	_swig_i_2 := arg3
 	_swig_i_3 := arg4
-	C._wrap_tabsUpdate_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), *(*C.swig_type_39)(unsafe.Pointer(&_swig_i_2)), C._Bool(_swig_i_3))
+	C._wrap_tabsUpdate_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), *(*C.swig_type_39)(unsafe.Pointer(&_swig_i_2)), C._Bool(_swig_i_3))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg3
 	}
@@ -1094,14 +1102,14 @@ func TabsGetTabParent(arg1 uintptr, arg2 int) (_swig_ret uintptr) {
 	var swig_r uintptr
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r = (uintptr)(C._wrap_tabsGetTabParent_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1)))
+	swig_r = (uintptr)(C._wrap_tabsGetTabParent_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1)))
 	return swig_r
 }
 
 func TabsItemCount(arg1 uintptr) (_swig_ret int) {
 	var swig_r int
 	_swig_i_0 := arg1
-	swig_r = (int)(C._wrap_tabsItemCount_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (int)(C._wrap_tabsItemCount_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
@@ -1109,7 +1117,7 @@ func TabsItemCaption(arg1 uintptr, arg2 int) (_swig_ret string) {
 	var swig_r string
 	_swig_i_0 := arg1
 	_swig_i_1 := arg2
-	swig_r_p := C._wrap_tabsItemCaption_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
+	swig_r_p := C._wrap_tabsItemCaption_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
  swig_r_1 = swigCopyString(swig_r) 
@@ -1128,7 +1136,7 @@ func MountIntInput(arg1 uintptr, arg2 int64, arg3 string, arg4 bool, arg5 int64,
 	_swig_i_7 := arg8
 	_swig_i_8 := arg9
 	_swig_i_9 := arg10
-	swig_r = (uintptr)(C._wrap_mountIntInput_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C.swig_type_41(_swig_i_1), *(*C.swig_type_42)(unsafe.Pointer(&_swig_i_2)), C._Bool(_swig_i_3), C.swig_type_43(_swig_i_4), C.swig_type_44(_swig_i_5), C._Bool(_swig_i_6), C._Bool(_swig_i_7), C._Bool(_swig_i_8), C._Bool(_swig_i_9)))
+	swig_r = (uintptr)(C._wrap_mountIntInput_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C.swig_type_41(_swig_i_1), *(*C.swig_type_42)(unsafe.Pointer(&_swig_i_2)), C._Bool(_swig_i_3), C.swig_type_43(_swig_i_4), C.swig_type_44(_swig_i_5), C._Bool(_swig_i_6), C._Bool(_swig_i_7), C._Bool(_swig_i_8), C._Bool(_swig_i_9)))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg3
 	}
@@ -1146,7 +1154,7 @@ func IntinputUpdate(arg1 uintptr, arg2 int64, arg3 string, arg4 bool, arg5 int64
 	_swig_i_7 := arg8
 	_swig_i_8 := arg9
 	_swig_i_9 := arg10
-	C._wrap_intinputUpdate_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C.swig_type_45(_swig_i_1), *(*C.swig_type_46)(unsafe.Pointer(&_swig_i_2)), C._Bool(_swig_i_3), C.swig_type_47(_swig_i_4), C.swig_type_48(_swig_i_5), C._Bool(_swig_i_6), C._Bool(_swig_i_7), C._Bool(_swig_i_8), C._Bool(_swig_i_9))
+	C._wrap_intinputUpdate_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C.swig_type_45(_swig_i_1), *(*C.swig_type_46)(unsafe.Pointer(&_swig_i_2)), C._Bool(_swig_i_3), C.swig_type_47(_swig_i_4), C.swig_type_48(_swig_i_5), C._Bool(_swig_i_6), C._Bool(_swig_i_7), C._Bool(_swig_i_8), C._Bool(_swig_i_9))
 	if Swig_escape_always_false {
 		Swig_escape_val = arg3
 	}
@@ -1155,21 +1163,21 @@ func IntinputUpdate(arg1 uintptr, arg2 int64, arg3 string, arg4 bool, arg5 int64
 func IntinputValue(arg1 uintptr) (_swig_ret int64) {
 	var swig_r int64
 	_swig_i_0 := arg1
-	swig_r = (int64)(C._wrap_intinputValue_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (int64)(C._wrap_intinputValue_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func IntinputMin(arg1 uintptr) (_swig_ret float64) {
 	var swig_r float64
 	_swig_i_0 := arg1
-	swig_r = (float64)(C._wrap_intinputMin_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (float64)(C._wrap_intinputMin_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func IntinputMax(arg1 uintptr) (_swig_ret float64) {
 	var swig_r float64
 	_swig_i_0 := arg1
-	swig_r = (float64)(C._wrap_intinputMax_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (float64)(C._wrap_intinputMax_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
@@ -1183,7 +1191,7 @@ func MountDateInput(arg1 uintptr, arg2 int, arg3 uint, arg4 uint, arg5 bool, arg
 	_swig_i_5 := arg6
 	_swig_i_6 := arg7
 	_swig_i_7 := arg8
-	swig_r = (uintptr)(C._wrap_mountDateInput_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), C.swig_intgo(_swig_i_2), C.swig_intgo(_swig_i_3), C._Bool(_swig_i_4), C._Bool(_swig_i_5), C._Bool(_swig_i_6), C._Bool(_swig_i_7)))
+	swig_r = (uintptr)(C._wrap_mountDateInput_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), C.swig_intgo(_swig_i_2), C.swig_intgo(_swig_i_3), C._Bool(_swig_i_4), C._Bool(_swig_i_5), C._Bool(_swig_i_6), C._Bool(_swig_i_7)))
 	return swig_r
 }
 
@@ -1196,27 +1204,27 @@ func DateInputUpdate(arg1 uintptr, arg2 int, arg3 uint, arg4 uint, arg5 bool, ar
 	_swig_i_5 := arg6
 	_swig_i_6 := arg7
 	_swig_i_7 := arg8
-	C._wrap_dateInputUpdate_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), C.swig_intgo(_swig_i_2), C.swig_intgo(_swig_i_3), C._Bool(_swig_i_4), C._Bool(_swig_i_5), C._Bool(_swig_i_6), C._Bool(_swig_i_7))
+	C._wrap_dateInputUpdate_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1), C.swig_intgo(_swig_i_2), C.swig_intgo(_swig_i_3), C._Bool(_swig_i_4), C._Bool(_swig_i_5), C._Bool(_swig_i_6), C._Bool(_swig_i_7))
 }
 
 func DateInputYear(arg1 uintptr) (_swig_ret int) {
 	var swig_r int
 	_swig_i_0 := arg1
-	swig_r = (int)(C._wrap_dateInputYear_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (int)(C._wrap_dateInputYear_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func DateInputMonth(arg1 uintptr) (_swig_ret uint) {
 	var swig_r uint
 	_swig_i_0 := arg1
-	swig_r = (uint)(C._wrap_dateInputMonth_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (uint)(C._wrap_dateInputMonth_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 
 func DateInputDay(arg1 uintptr) (_swig_ret uint) {
 	var swig_r uint
 	_swig_i_0 := arg1
-	swig_r = (uint)(C._wrap_dateInputDay_gtk_831706b8873fd4e8(C.uintptr_t(_swig_i_0)))
+	swig_r = (uint)(C._wrap_dateInputDay_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
 

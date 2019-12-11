@@ -9,16 +9,11 @@ import (
 	"bitbucket.org/rj/goey/loop"
 )
 
-var (
-	vscrollbarWidth base.Length
-)
-
 type windowImpl struct {
 	handle                  uintptr
 	scroll                  uintptr
 	layout                  uintptr
 	child                   base.Element
-	childMinSize            base.Size
 	horizontalScroll        bool
 	horizontalScrollVisible bool
 	verticalScroll          bool
@@ -169,16 +164,6 @@ func (w *windowImpl) Screenshot() (image.Image, error) {
 	}, nil
 }
 
-func get_vscrollbar_width(window uintptr) (base.Length, error) {
-	if vscrollbarWidth != 0 {
-		return vscrollbarWidth, nil
-	}
-
-	width := gtk.WindowVScrollbarWidth(window)
-	vscrollbarWidth = base.FromPixelsX(int(width))
-	return vscrollbarWidth, nil
-}
-
 func (w *windowImpl) setChildPost() {
 	// Redo the layout so the children are placed.
 	if w.child != nil {
@@ -278,12 +263,10 @@ func (w *windowImpl) updateWindowMinSize() {
 	// and scrollbars
 	dx, dy := 0, 0
 	if w.verticalScroll {
-		// TODO:  Measure scrollbar width
-		dx += 15
+		dx += int(gtk.WindowVScrollbarWidth(w.handle))
 	}
 	if w.horizontalScroll {
-		// TODO:  Measure scrollbar height
-		dy += 15
+		dy += int(gtk.WindowHScrollbarHeight(w.handle))
 	}
 
 	// If there is no child, then we just need enough space for the window chrome.

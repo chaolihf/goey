@@ -28,6 +28,7 @@ extern void windowSetLayoutSize(void* window, unsigned width, unsigned height);
 extern char const *windowTitle(void *window);
 extern void windowSetTitle( void* window, char const* text );
 extern unsigned windowVScrollbarWidth(void *window);
+extern unsigned windowHScrollbarHeight( void *window );
 extern void windowShowScrollbars(void* window, bool horz, bool vert);
 extern void windowShow(void* window);
 extern void windowSetDefaultSize(void *window, int width, int height);

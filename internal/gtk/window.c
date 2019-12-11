@@ -102,6 +102,24 @@ unsigned windowVScrollbarWidth( void *window )
     return nominal;
 }
 
+unsigned windowHScrollbarHeight( void *window )
+{
+    GtkWidget *oldChild = gtk_bin_get_child( GTK_BIN( window ) );
+    assert( oldChild );
+    gtk_container_remove( GTK_CONTAINER( window ), oldChild );
+
+    GtkWidget *sb = gtk_scrollbar_new( GTK_ORIENTATION_HORIZONTAL, NULL );
+    assert( sb );
+
+    gtk_container_add( GTK_CONTAINER( window ), sb );
+    gtk_widget_show( sb );
+    int min, nominal;
+    gtk_widget_get_preferred_height( sb, &min, &nominal );
+    gtk_widget_destroy( sb );
+    gtk_container_add( GTK_CONTAINER( window ), oldChild );
+    return nominal;
+}
+
 void windowShowScrollbars( void *window, bool horz, bool vert )
 {
     GtkWidget *ss = gtk_bin_get_child( GTK_BIN( window ) );
