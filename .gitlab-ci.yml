@@ -12,7 +12,7 @@ golang-1.13:
     APT_GET: "libgtk-3-dev xvfb"
   script:
     - go build . ./example/...
-    - go test ./base ./loop .
+    - go test ./base ./loop ./dialog .
 
 golang-1.12:
   image: golang:1.12
@@ -22,7 +22,7 @@ golang-1.12:
     APT_GET: "libgtk-3-dev xvfb"
   script:
     - go build . ./example/...
-    - go test ./base ./loop .
+    - go test ./base ./loop ./dialog .
 
 golang-1.11:
   image: golang:1.11
@@ -32,7 +32,7 @@ golang-1.11:
     APT_GET: "libgtk-3-dev xvfb"
   script:
     - go build . ./example/...
-    - go test ./base ./loop .
+    - go test ./base ./loop ./dialog .
 
 golang-1.10:
   image: golang:1.10
@@ -45,7 +45,7 @@ golang-1.10:
   script:
     - go get bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
     - go build bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
-    - go test ./base ./loop .
+    - go test ./base ./loop ./dialog .
 
 golang-1.9:
   image: golang:1.9
@@ -58,7 +58,7 @@ golang-1.9:
   script:
     - go get bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
     - go build bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
-    - go test ./base ./loop .
+    - go test ./base ./loop ./dialog .
 
 golang-1.8:
   image: golang:1.8
@@ -71,7 +71,7 @@ golang-1.8:
   script:
     - go get bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
     - go build bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
-    - go test ./base ./loop .
+    - go test ./base ./loop ./dialog .
 
 test:
   image: golang:1.12
@@ -89,7 +89,7 @@ test:
     - mv $GOPATH/src/github.com .cache/
   script:
     - go get bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
-    - go test -coverprofile=cover.out -v ./base ./loop .
+    - go test -coverprofile=cover.out -v ./base ./loop ./dialog .
     - go tool cover -html=cover.out -o=cover.html
     - go vet -composites=false .
     - go get -u github.com/gordonklaus/ineffassign
@@ -165,7 +165,7 @@ lint:
     - GO111MODULE=on go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.17.1
     - GO111MODULE=on go install github.com/golangci/golangci-lint/cmd/golangci-lint
     - cd $GIT_CLONE_PATH
-    - $GOPATH/bin/golangci-lint run -v .
+    - $GOPATH/bin/golangci-lint run -v --exclude=composites ./base ./loop .
   cache:
     key: lint
     paths:

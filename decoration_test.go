@@ -24,14 +24,6 @@ func (w *decorationElement) Props() base.Widget {
 	return widget
 }
 
-func decorationChildWidget(child base.Element) base.Widget {
-	if child == nil {
-		return nil
-	}
-
-	return child.(Proper).Props()
-}
-
 func TestDecorationMount(t *testing.T) {
 	child := &mock.Widget{Size: base.Size{15 * base.DIP, 15 * base.DIP}}
 
