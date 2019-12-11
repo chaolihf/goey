@@ -105,6 +105,8 @@ func (w *selectinputElement) MinIntrinsicWidth(height base.Length) base.Length {
 }
 
 func (w *selectinputElement) Props() base.Widget {
+	const CB_ERR = uintptr(0xFFFFFFFFFFFFFFFF)
+
 	length := win.SendMessage(w.hWnd, win.CB_GETCOUNT, 0, 0)
 	items := make([]string, int(length))
 	for i := range items {
@@ -119,7 +121,7 @@ func (w *selectinputElement) Props() base.Widget {
 	}
 	value := win.SendMessage(w.hWnd, win.CB_GETCURSEL, 0, 0)
 	unset := false
-	if value == 0xFFFFFFFF /*win.CB_ERR, but bug with extension*/ {
+	if value == CB_ERR /*win.CB_ERR, but bug with extension*/ {
 		value, unset = 0, true
 	}
 	return &SelectInput{
