@@ -170,7 +170,7 @@ lint:
     - GO111MODULE=on go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.21.0
     - GO111MODULE=on go install github.com/golangci/golangci-lint/cmd/golangci-lint
     - cd $GIT_CLONE_PATH
-    - $GOPATH/bin/golangci-lint run -v --exclude=composites --enable=interfacer,unconvert,prealloc ./base ./loop ./dialog .
+    - $GOPATH/bin/golangci-lint run -v --exclude=composites --exclude=".parent. is unused" --enable=interfacer,unconvert,prealloc ./base ./loop ./dialog .
   cache:
     key: lint
     paths:
