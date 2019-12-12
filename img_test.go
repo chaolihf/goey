@@ -33,15 +33,27 @@ func drawHorizontalRGB(img draw.Image) {
 	draw.Draw(img, image.Rect(0, dy*2/3, dx, dy), image.NewUniform(colors[2]), image.Point{}, draw.Src)
 }
 
+func drawVerticalGradient(img *image.Gray) {
+	h := img.Rect.Dy()
+	for i := img.Rect.Min.Y; i < img.Rect.Max.Y; i++ {
+		clr := (i - img.Rect.Min.Y) * 255 / h
+		for j := img.Rect.Min.X; j < img.Rect.Max.X; j++ {
+			img.Pix[img.PixOffset(j, i)] = uint8(clr)
+		}
+	}
+}
+
 func TestImgMount(t *testing.T) {
 	bounds := image.Rect(0, 0, 92, 92)
-	images := []draw.Image{image.NewRGBA(bounds), image.NewRGBA(bounds), image.NewRGBA(bounds), image.NewRGBA(bounds), image.NewRGBA(bounds), image.NewGray(bounds)}
+	images := []draw.Image{image.NewRGBA(bounds), image.NewRGBA(bounds), image.NewRGBA(bounds), image.NewRGBA(bounds), image.NewRGBA(bounds),
+		image.NewGray(bounds), image.NewGray(bounds)}
 	draw.Draw(images[0], bounds, image.NewUniform(color.RGBA{255, 255, 0, 255}), image.Point{}, draw.Src)
 	draw.Draw(images[1], bounds, image.NewUniform(color.RGBA{255, 0, 255, 255}), image.Point{}, draw.Src)
 	draw.Draw(images[2], bounds, image.NewUniform(color.RGBA{0, 255, 255, 255}), image.Point{}, draw.Src)
 	drawVerticalRGB(images[3])
 	drawHorizontalRGB(images[4])
 	draw.Draw(images[5], bounds, image.NewUniform(color.RGBA{128, 128, 128, 255}), image.Point{}, draw.Src)
+	drawVerticalGradient(images[6].(*image.Gray))
 
 	testingMountWidgets(t,
 		&Align{Child: &Img{Image: images[0], Width: 100 * DIP, Height: 10 * DIP}},
@@ -50,6 +62,7 @@ func TestImgMount(t *testing.T) {
 		&Align{Child: &Img{Image: images[3]}},
 		&Align{Child: &Img{Image: images[4]}},
 		&Align{Child: &Img{Image: images[5]}},
+		&Align{Child: &Img{Image: images[6]}},
 	)
 }
 
