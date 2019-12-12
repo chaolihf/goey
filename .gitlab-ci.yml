@@ -140,8 +140,6 @@ test-windows:
     - wine64 ./loop.test.exe -test.v
     - go test -c .
     - wine64 ./goey.test.exe -test.v -test.short
-    - mkdir images
-    - GOEY_SCREENSHOT=./images/onebutton_wine.png wine64 ./example/onebutton/onebutton.exe
   cache:
     key: test
     paths:
@@ -152,7 +150,6 @@ test-windows:
   artifacts:
     paths:
       - cover.html
-      - images
 
 lint:
   image: golang:1.12
