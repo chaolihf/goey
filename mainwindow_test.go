@@ -119,7 +119,11 @@ func testingWindow(t *testing.T, action func(*testing.T, *Window)) {
 				return nil
 			})
 			if err != nil {
-				t.Fatalf("call to 'loop.Do' failed: %s", err)
+				// Would like to report this error using t.Fatalf, but we are
+				// not in the same goroutine.  Could send a message using a
+				// channel, but if the call to Do failed, it is not certain that
+				// we closed the window, and could deadlock.
+				panic(err)
 			}
 		}()
 

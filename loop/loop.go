@@ -100,7 +100,7 @@ func Run(action func() error) error {
 // an error.  That error will be used to create a new panic within the
 // caller's goroutine.  If the program terminates because of that panic, there
 // will be two active goroutines in the stack trace.  One active goroutine will
-// be the GUI thread, where the panic originated, and a secton active goroutine
+// be the GUI thread, where the panic originated, and a second active goroutine
 // from caller's goroutine.
 func Do(action func() error) error {
 	// Check if the event loop is current running.
