@@ -41,7 +41,7 @@ func (m *OpenFile) show() (string, error) {
 
 func buildFilterString(filters []filter) *uint16 {
 	// If there are no filters, we want to return a nil pointer.
-	// This will let windows select appropriate default behaviour.
+	// This will let windows select appropriate default behavior.
 	if len(filters) == 0 {
 		return nil
 	}

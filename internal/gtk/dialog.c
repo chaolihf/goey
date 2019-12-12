@@ -35,7 +35,7 @@ void* mountMessageDialog( void* window, char const* title, unsigned icon,
         gtk_message_dialog_new( GTK_WINDOW( window ), GTK_DIALOG_MODAL, icon,
                                 GTK_BUTTONS_OK, "%s", text );
     assert( dialog );
-    gtk_window_set_title( GTK_WINDOW( window ), text );
+    gtk_window_set_title( GTK_WINDOW( dialog ), text );
     return dialog;
 }
 

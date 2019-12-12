@@ -24,6 +24,9 @@ func asyncTypeKeys(text string, initialWait time.Duration) <-chan error {
 		time.Sleep(initialWait)
 		for _, r := range text {
 			err := loop.Do(func() error {
+				if activeDialogForTesting == 0 {
+					panic("dialog is closed")
+				}
 				gtk.WidgetSendKey(activeDialogForTesting, uint(r), false)
 				return nil
 			})
@@ -34,7 +37,9 @@ func asyncTypeKeys(text string, initialWait time.Duration) <-chan error {
 			time.Sleep(50 * time.Millisecond)
 
 			err = loop.Do(func() error {
-				gtk.WidgetSendKey(activeDialogForTesting, uint(r), true)
+				if activeDialogForTesting != 0 {
+					gtk.WidgetSendKey(activeDialogForTesting, uint(r), true)
+				}
 				return nil
 			})
 			if err != nil {

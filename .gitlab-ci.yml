@@ -92,13 +92,13 @@ test:
     - go get bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
     - go test -coverprofile=cover.out -v ./base ./loop ./dialog .
     - go tool cover -html=cover.out -o=cover.html
-    - go vet -composites=false .
+    - go vet -composites=false ./base ./loop ./dialog .
     - go get -u github.com/gordonklaus/ineffassign
     - go install github.com/gordonklaus/ineffassign
     - $GOPATH/bin/ineffassign .
     - go get -u github.com/client9/misspell/cmd/misspell
     - go install github.com/client9/misspell/cmd/misspell
-    - $GOPATH/bin/misspell -locale US *.go *.md
+    - $GOPATH/bin/misspell -locale US *.go *.md base/*.go loop/*.go dialog/*.go
     - go get -u github.com/securego/gosec/cmd/gosec
     - go install github.com/securego/gosec/cmd/gosec
     - $GOPATH/bin/gosec -exclude=G104,G304 ./...

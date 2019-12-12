@@ -48,7 +48,7 @@ func asyncTypeKeys(text string, initialWait time.Duration) <-chan error {
 				}
 				return nil
 			})
-			if err!=nil {
+			if err != nil {
 				errs <- err
 			}
 			time.Sleep(10 * time.Millisecond)

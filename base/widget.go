@@ -1,7 +1,7 @@
 package base
 
 // Kind identifies the different kinds of widgets.  Most widgets have two
-// concrete types associated with their behaviour.  First, there is a type with data
+// concrete types associated with their behavior.  First, there is a type with data
 // to describe the widget when unmounted, which should implement the interface
 // Widget.  Second, there is a type with a handle to the windowing system when
 // mounted, which should implement the interface Element.  Automatic reconciliation

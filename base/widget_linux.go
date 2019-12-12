@@ -4,7 +4,7 @@ package base
 // created using the platform GUI.  As an example, this will refer to a HWND
 // when targeting Windows, but a *GtkContainer when targeting GTK.
 //
-// Unless developping new widgets, users should not need to use this type.
+// Unless developing new widgets, users should not need to use this type.
 //
 // Any methods on this type will be platform specific.
 type Control struct {

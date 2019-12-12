@@ -13,7 +13,7 @@ func (m *OpenFile) show() (string, error) {
 	}()
 
 	for _, v := range m.filters {
-		gtk.DialogAddFilter( dlg, v.name, v.pattern )
+		gtk.DialogAddFilter(dlg, v.name, v.pattern)
 	}
 
 	rc := gtk.DialogRun(dlg)

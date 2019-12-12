@@ -5,7 +5,7 @@ import (
 )
 
 func (m *Message) show() error {
-	dlg := gtk.MountMessageDialog(m.parent, m.title,m.icon, m.text)
+	dlg := gtk.MountMessageDialog(m.parent, m.title, m.icon, m.text)
 	activeDialogForTesting = dlg
 	defer func() {
 		activeDialogForTesting = 0
