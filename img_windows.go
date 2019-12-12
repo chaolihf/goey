@@ -1,9 +1,9 @@
 package goey
 
 import (
+	"errors"
 	"image"
 	"image/draw"
-	"errors"
 	"unsafe"
 
 	"bitbucket.org/rj/goey/base"
@@ -43,38 +43,39 @@ func imageToIcon(prop image.Image) (win.HICON, []uint8, error) {
 	return hicon, buffer, nil
 }
 
+func imageToBitmapRGBA(img *image.RGBA, pix []byte) (win.HBITMAP, error) {
+	// Need to convert RGBA to BGRA.
+	for i := 0; i < len(pix); i += 4 {
+		// swap the red and green bytes.
+		pix[i+0], pix[i+2] = pix[i+2], pix[i+0]
+	}
+
+	// The following call also works with 4 channels of 8-bits on a Windows
+	// machine, but fails on Wine.  Would like it to work on both to ease
+	// CI.
+	hbitmap := win.CreateBitmap(int32(img.Rect.Dx()), int32(img.Rect.Dy()), 1, 32, unsafe.Pointer(&pix[0]))
+	if hbitmap == 0 {
+		return 0, errors.New("call to CreateBitmap failed")
+	}
+	return hbitmap, nil
+}
+
 func imageToBitmap(prop image.Image) (win.HBITMAP, []uint8, error) {
 	if img, ok := prop.(*image.RGBA); ok {
 		// Create a copy of the backing for the pixel data
 		buffer := append([]uint8(nil), img.Pix...)
-		// Need to convert RGB to BGR
-		for i := 0; i < len(buffer); i += 4 {
-			buffer[i+0], buffer[i+2] = buffer[i+2], buffer[i+0]
-		}
-
-		// Create the bitmap
-		hbitmap := win.CreateBitmap(int32(img.Rect.Dx()), int32(img.Rect.Dy()), 4, 8, unsafe.Pointer(&buffer[0]))
-		if hbitmap == 0 {
-			return 0, nil, errors.New("call to CreateBitmap failed")
-		}
-		return hbitmap, buffer, nil
+		// Create the bitmap.
+		hbitmap, err := imageToBitmapRGBA(img, buffer)
+		return hbitmap, buffer, err
 	}
 
 	// Create a new image in RGBA format
 	bounds := prop.Bounds()
 	img := image.NewRGBA(bounds)
 	draw.Draw(img, bounds, prop, bounds.Min, draw.Src)
-	// Need to convert RGB to BGR
-	for i := 0; i < len(img.Pix); i += 4 {
-		img.Pix[i+0], img.Pix[i+2] = img.Pix[i+2], img.Pix[i+0]
-	}
-
 	// Create the bitmap
-	hbitmap := win.CreateBitmap(int32(img.Rect.Dx()), int32(img.Rect.Dy()), 4, 8, unsafe.Pointer(&img.Pix[0]))
-	if hbitmap == 0 {
-		return 0, nil, errors.New("call to CreateBitmap failed")
-	}
-	return hbitmap, img.Pix, nil
+	hbitmap, err := imageToBitmapRGBA(img, img.Pix)
+	return hbitmap, img.Pix, err
 }
 
 func bitmapToImage(hdc win.HDC, hbitmap win.HBITMAP) image.Image {
@@ -121,7 +122,7 @@ func (w *Img) mount(parent base.Control) (base.Element, error) {
 	// Create the control
 	const STYLE = win.WS_CHILD | win.WS_VISIBLE | win.SS_BITMAP | win.SS_LEFT
 	hwnd, _, err := createControlWindow(0, &staticClassName[0], "", STYLE, parent.HWnd)
-	if err!=nil {
+	if err != nil {
 		return nil, err
 	}
 	win.SendMessage(hwnd, win2.STM_SETIMAGE, win.IMAGE_BITMAP, uintptr(hbitmap))
