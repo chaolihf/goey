@@ -66,7 +66,7 @@ func (w *selectinputElement) Props() base.Widget {
 
 	return &SelectInput{
 		Items:    w.propsItems(),
-		Value:    int(value),
+		Value:    value,
 		Unset:    unset,
 		Disabled: !gtk.WidgetSensitive(w.handle),
 		OnChange: w.onChange,

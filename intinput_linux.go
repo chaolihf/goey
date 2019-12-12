@@ -68,7 +68,7 @@ func (w *intinputElement) OnEnterKey(value int64) {
 
 func (w *intinputElement) Props() base.Widget {
 	return &IntInput{
-		Value:       int64(gtk.IntinputValue(w.handle)),
+		Value:       gtk.IntinputValue(w.handle),
 		Placeholder: gtk.TextboxPlaceholder(w.handle),
 		Disabled:    !gtk.WidgetSensitive(w.handle),
 		Min:         toInt64(gtk.IntinputMin(w.handle)),

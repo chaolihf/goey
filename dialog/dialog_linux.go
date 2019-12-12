@@ -15,13 +15,13 @@ var (
 	activeDialogForTesting uintptr
 )
 
-func typeKeys(text string) chan error {
+func asyncTypeKeys(text string, initialWait time.Duration) chan error {
 	err := make(chan error, 1)
 
 	go func() {
 		defer close(err)
 
-		time.Sleep(500 * time.Millisecond)
+		time.Sleep(initialWait)
 		for _, r := range text {
 			loop.Do(func() error {
 				gtk.WidgetSendKey(activeDialogForTesting, uint(r), false)

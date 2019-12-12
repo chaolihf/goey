@@ -11,16 +11,13 @@ import (
 func getwd(t *testing.T) string {
 	path, err := os.Getwd()
 	if err != nil {
-		t.Fatalf("Could not determien the working directory, %s", err)
+		t.Fatalf("Could not determine the working directory, %s", err)
 	}
 	return path
 }
 
 func TestNewOpenFile(t *testing.T) {
-	wd, err := os.Getwd()
-	if err != nil {
-		t.Fatalf("Could not determine working directory, %s", err)
-	}
+	wd := getwd(t)
 
 	cases := []struct {
 		build    func() (string, error)
@@ -56,7 +53,7 @@ func TestNewOpenFile(t *testing.T) {
 		return nil
 	}
 
-	err = loop.Run(init)
+	err := loop.Run(init)
 	if err != nil {
 		t.Fatalf("Failed to run event loop, %s", err)
 	}

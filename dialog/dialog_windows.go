@@ -13,13 +13,13 @@ type dialogImpl struct {
 	hWnd win.HWND
 }
 
-func typeKeys(text string) chan error {
+func asyncTypeKeys(text string, initialWait time.Duration) chan error {
 	err := make(chan error, 1)
 
 	go func() {
 		defer close(err)
 
-		time.Sleep(1000 * time.Millisecond)
+		time.Sleep(initialWait)
 		for _, r := range text {
 			inp := [2]win.KEYBD_INPUT{
 				{win.INPUT_KEYBOARD, win.KEYBDINPUT{}},

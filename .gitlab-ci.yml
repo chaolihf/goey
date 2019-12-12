@@ -167,10 +167,10 @@ lint:
   script:
     - go get bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
     - cd ..
-    - GO111MODULE=on go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.17.1
+    - GO111MODULE=on go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.21.0
     - GO111MODULE=on go install github.com/golangci/golangci-lint/cmd/golangci-lint
     - cd $GIT_CLONE_PATH
-    - $GOPATH/bin/golangci-lint run -v --exclude=composites ./base ./loop .
+    - $GOPATH/bin/golangci-lint run -v --exclude=composites --enable=interfacer,unconvert,prealloc ./base ./loop ./dialog .
   cache:
     key: lint
     paths:

@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	asyncWait = 500 * time.Millisecond
+	asyncWait = 1000 * time.Millisecond
 )
 
 type durationValue time.Duration
@@ -29,22 +29,9 @@ func init() {
 }
 
 func asyncKeyEnter() {
-	go func() {
-		time.Sleep(asyncWait)
-		typeKeys("\n")
-	}()
+	asyncTypeKeys("\n", asyncWait)
 }
 
 func asyncKeyEscape() {
-	go func() {
-		time.Sleep(asyncWait)
-		typeKeys("\x1b")
-	}()
-}
-
-func asyncType(s string) {
-	go func() {
-		time.Sleep(asyncWait)
-		typeKeys(s)
-	}()
+	asyncTypeKeys("\x1b", asyncWait)
 }

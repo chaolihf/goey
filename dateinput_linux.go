@@ -52,7 +52,7 @@ func (w *dateinputElement) Props() base.Widget {
 	day := gtk.DateInputDay(w.handle)
 
 	return &DateInput{
-		Value:    time.Date(int(year), time.Month(month), int(day), 0, 0, 0, 0, time.Local),
+		Value:    time.Date(year, time.Month(month), int(day), 0, 0, 0, 0, time.Local),
 		Disabled: !gtk.WidgetSensitive(w.handle),
 		OnChange: w.onChange,
 		OnFocus:  w.onFocus,

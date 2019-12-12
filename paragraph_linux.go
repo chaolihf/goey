@@ -50,7 +50,7 @@ func (w *paragraphElement) MinIntrinsicWidth(height base.Length) base.Length {
 	}
 
 	width := gtk.WidgetNaturalWidth(w.handle)
-	return min(base.FromPixelsX(int(width)), w.minReflowWidth())
+	return min(base.FromPixelsX(width), w.minReflowWidth())
 }
 
 func (w *paragraphElement) updateProps(data *P) error {
