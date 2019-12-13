@@ -64,14 +64,14 @@ recognize by the go build program. Additionally, you could use build flags
 
 | Windows    | Linux (GTK)|
 |:----------:|:----------:|
-|![Screenshot](https://bitbucket.org/rj/goey/raw/default/example/onebutton/onebutton_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/default/example/onebutton/onebutton_linux.png)|
-|![Screenshot](https://bitbucket.org/rj/goey/raw/default/example/twofields/twofields_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/default/example/twofields/twofields_linux.png)|
-|![Screenshot](https://bitbucket.org/rj/goey/raw/default/example/decoration/decoration_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/default/example/decoration/decoration_linux.png)|
-|![Screenshot](https://bitbucket.org/rj/goey/raw/default/example/colour/colour_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/default/example/colour/colour_linux.png)|
-|![Screenshot](https://bitbucket.org/rj/goey/raw/default/example/feettometer/feettometer_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/default/example/feettometer/feettometer_linux.png)|
-|![Screenshot](https://bitbucket.org/rj/goey/raw/default/example/controls/controls1_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/default/example/controls/controls1_linux.png)|
-|![Screenshot](https://bitbucket.org/rj/goey/raw/default/example/controls/controls2_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/default/example/controls/controls2_linux.png)|
-|![Screenshot](https://bitbucket.org/rj/goey/raw/default/example/controls/controls3_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/default/example/controls/controls3_linux.png)|
+|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/onebutton/onebutton_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/onebutton/onebutton_linux.png)|
+|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/twofields/twofields_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/twofields/twofields_linux.png)|
+|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/decoration/decoration_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/decoration/decoration_linux.png)|
+|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/colour/colour_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/colour/colour_linux.png)|
+|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/feettometer/feettometer_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/feettometer/feettometer_linux.png)|
+|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/controls/controls1_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/controls/controls1_linux.png)|
+|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/controls/controls2_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/controls/controls2_linux.png)|
+|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/controls/controls3_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/controls/controls3_linux.png)|
 
 ## Contribute
 
