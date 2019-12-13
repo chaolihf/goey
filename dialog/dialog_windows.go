@@ -13,13 +13,13 @@ type dialogImpl struct {
 	hWnd win.HWND
 }
 
-func typeKeys(text string) chan error {
-	err := make(chan error, 1)
+func asyncTypeKeys(text string, initialWait time.Duration) <-chan error {
+	errs := make(chan error, 1)
 
 	go func() {
-		defer close(err)
+		defer close(errs)
 
-		time.Sleep(1000 * time.Millisecond)
+		time.Sleep(initialWait)
 		for _, r := range text {
 			inp := [2]win.KEYBD_INPUT{
 				{win.INPUT_KEYBOARD, win.KEYBDINPUT{}},
@@ -41,16 +41,19 @@ func typeKeys(text string) chan error {
 				inp[1].Ki.DwFlags = win.KEYEVENTF_UNICODE | win.KEYEVENTF_KEYUP
 			}
 
-			loop.Do(func() error {
+			err := loop.Do(func() error {
 				rc := win.SendInput(2, unsafe.Pointer(&inp), int32(unsafe.Sizeof(inp[0])))
 				if rc != 2 {
-					err <- fmt.Errorf("windows error, %x", win.GetLastError())
+					return fmt.Errorf("windows error, %x", win.GetLastError())
 				}
 				return nil
 			})
+			if err != nil {
+				errs <- err
+			}
 			time.Sleep(10 * time.Millisecond)
 		}
 	}()
 
-	return err
+	return errs
 }

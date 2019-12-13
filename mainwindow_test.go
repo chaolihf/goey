@@ -38,7 +38,7 @@ func ExampleNewWindow() {
 
 			// Note:  No work after this call to Do, since the call to Run may be
 			// terminated when the call to Do returns.
-			loop.Do(func() error {
+			_ = loop.Do(func() error {
 				mw.Close()
 				return nil
 			})
@@ -74,13 +74,13 @@ func ExampleWindow_Message() {
 		// directly.
 		go func() {
 			// Show the error message.
-			loop.Do(func() error {
+			_ = loop.Do(func() error {
 				return mw.Message("This is an example message.").WithInfo().Show()
 			})
 
 			// Note:  No work after this call to Do, since the call to Run may be
 			// terminated when the call to Do returns.
-			loop.Do(func() error {
+			_ = loop.Do(func() error {
 				mw.Close()
 				return nil
 			})
@@ -102,10 +102,10 @@ func testingWindow(t *testing.T, action func(*testing.T, *Window)) {
 		// production code, but we can be a little paranoid here.
 		mw, err := NewWindow(t.Name(), nil)
 		if err != nil {
-			t.Fatalf("Failed to create window, %s", err)
+			t.Fatalf("failed to create window: %s", err)
 		}
 		if mw == nil {
-			t.Fatalf("Unexpected nil for window")
+			t.Fatalf("unexpected nil for window")
 		}
 
 		go func() {
@@ -117,10 +117,17 @@ func testingWindow(t *testing.T, action func(*testing.T, *Window)) {
 
 			// Note:  No work after this call to Do, since the call to Run may be
 			// terminated when the call to Do returns.
-			loop.Do(func() error {
+			err := loop.Do(func() error {
 				mw.Close()
 				return nil
 			})
+			if err != nil {
+				// Would like to report this error using t.Fatalf, but we are
+				// not in the same goroutine.  Could send a message using a
+				// channel, but if the call to Do failed, it is not certain that
+				// we closed the window, and could deadlock.
+				panic(err)
+			}
 		}()
 
 		return nil

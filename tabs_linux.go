@@ -3,14 +3,14 @@
 package goey
 
 import (
-	"unsafe"
+	"bytes"
 
 	"bitbucket.org/rj/goey/base"
-	"github.com/gotk3/gotk3/gtk"
+	"bitbucket.org/rj/goey/internal/gtk"
 )
 
 type tabsElement struct {
-	handle   *gtk.Notebook
+	Control
 	value    int
 	child    base.Element
 	widgets  []TabItem
@@ -22,118 +22,66 @@ type tabsElement struct {
 	cachedTabsW  base.Length
 }
 
-func tabsAppendChildren(handle *gtk.Notebook, children []TabItem) error {
-	for _, v := range children {
-		// Every tab needs some contents.  We will use a layout so that we can
-		// custom layout of the controls.
-		contents, err := gtk.LayoutNew(nil, nil)
-		if err != nil {
-			return err
-		}
-
-		// Create a label for the tabs.
-		label, err := gtk.LabelNew(v.Caption)
-		if err != nil {
-			contents.Destroy()
-			return err
-		}
-
-		// Append the new page to the notebook.
-		handle.AppendPage(contents, label)
-		contents.Show()
-	}
-
-	return nil
-}
-
 func (w *Tabs) mount(parent base.Control) (base.Element, error) {
-	// Create the notebook control, and add tabs.
-	control, err := gtk.NotebookNew()
-	if err != nil {
-		return nil, err
-	}
-	err = tabsAppendChildren(control, w.Children)
-	if err != nil {
-		control.Destroy()
-		return nil, err
-	}
-	parent.Handle.Add(control)
+	control := gtk.MountTabs(parent.Handle, w.Value, w.serializeItems(),
+		w.OnChange != nil)
 
 	child := base.Element(nil)
 	if len(w.Children) > 0 {
-		parent := getTabParent(control, w.Value)
-		child_, err := base.Mount(parent, w.Children[w.Value].Child)
+		parent := gtk.TabsGetTabParent(control, w.Value)
+		child_, err := base.Mount(base.Control{parent}, w.Children[w.Value].Child)
 		if err != nil {
-			control.Destroy()
+			gtk.WidgetClose(control)
 			return nil, err
 		}
 		child = child_
-		control.SetCurrentPage(w.Value)
 	}
 
 	retval := &tabsElement{
-		handle:   control,
+		Control:  Control{control},
 		child:    child,
 		value:    w.Value,
 		widgets:  w.Children,
 		insets:   w.Insets,
 		onChange: w.OnChange,
 	}
-
-	control.Connect("destroy", tabsOnDestroy, retval)
-	control.Connect("switch-page", tabsOnSwitchPage, retval)
-	control.ShowAll()
+	gtk.RegisterWidget(control, retval)
 
 	return retval, nil
 }
 
-func tabsOnDestroy(widget *gtk.Notebook, mounted *tabsElement) {
-	mounted.handle = nil
+func (w *Tabs) serializeItems() string {
+	buffer := bytes.Buffer{}
+
+	for _, v := range w.Children {
+		buffer.WriteString(v.Caption)
+		buffer.WriteByte(0)
+	}
+	buffer.WriteByte(0)
+
+	return buffer.String()
 }
 
-func tabsOnSwitchPage(widget *gtk.Notebook, _ *gtk.Widget, page int, mounted *tabsElement) {
-	if page != mounted.value {
-		if mounted.onChange != nil {
-			mounted.onChange(page)
+func (w *tabsElement) OnChange(page int) {
+	if page != w.value {
+		if w.onChange != nil {
+			w.onChange(page)
 		}
-		if page != mounted.value {
-			mounted.mountPage(page)
-			mounted.value = page
+		if page != w.value {
+			// Not clear how a handle at this point should be handled.
+			// The widget is supposed to already be mounted, but we create and
+			// remove controls when the tab is changed.
+			// In practice, errors are very infrequent (never?).  GTK widgets
+			// will never fail to mount.
+			_ = w.mountPage(page)
+			w.value = page
 		}
-	}
-}
-
-func getTabLabel(book *gtk.Notebook, ndx int) *gtk.Label {
-	widget, err := book.GetNthPage(ndx)
-	if err != nil {
-		panic(err)
-	}
-	label, err := book.GetTabLabel(widget)
-	if err != nil {
-		panic(err)
-	}
-	return (*gtk.Label)(unsafe.Pointer(label))
-}
-
-func getTabParent(book *gtk.Notebook, ndx int) base.Control {
-	widget, err := book.GetNthPage(ndx)
-	if err != nil {
-		panic(err)
-	}
-	layout := (*gtk.Layout)(unsafe.Pointer(widget))
-	return base.Control{&layout.Container}
-}
-
-func (w *tabsElement) Close() {
-	if w.handle != nil {
-		w.handle.Destroy()
-		w.handle = nil
 	}
 }
 
 func (w *tabsElement) contentInsets() base.Point {
 	if w.cachedInsets.Y == 0 {
-		h1, _ := w.handle.GetPreferredHeight()
+		h1 := gtk.WidgetMinHeight(w.handle)
 		// How should the offset between the notebook widget and the contained
 		// page be measured?
 		w.cachedInsets = base.Point{
@@ -147,15 +95,15 @@ func (w *tabsElement) contentInsets() base.Point {
 
 func (w *tabsElement) controlTabsMinWidth() base.Length {
 	if w.cachedTabsW == 0 {
-		w1, _ := w.handle.GetPreferredWidth()
+		w1 := gtk.WidgetMinWidth(w.handle)
 		w.cachedTabsW = base.FromPixelsX(w1)
 	}
 	return w.cachedTabsW
 }
 
 func (w *tabsElement) mountPage(page int) error {
-	parent := getTabParent(w.handle, page)
-	child, err := w.widgets[page].Child.Mount(parent)
+	parent := gtk.TabsGetTabParent(w.handle, page)
+	child, err := w.widgets[page].Child.Mount(base.Control{parent})
 	if err != nil {
 		return err
 	}
@@ -173,25 +121,25 @@ func (w *tabsElement) mountPage(page int) error {
 }
 
 func (w *tabsElement) Props() base.Widget {
-	count := w.handle.GetNPages()
+	count := gtk.TabsItemCount(w.handle)
+
 	children := make([]TabItem, count)
 	for i := 0; i < count; i++ {
-		label := getTabLabel(w.handle, i)
-		text, _ := label.GetText()
-		children[i].Caption = text
+		children[i].Caption = gtk.TabsItemCaption(w.handle, i)
 		children[i].Child = w.widgets[i].Child
 	}
 
 	return &Tabs{
 		Value:    w.value,
 		Children: children,
+		Insets:   w.insets,
 		OnChange: w.onChange,
 	}
 }
 
 func (w *tabsElement) SetBounds(bounds base.Rectangle) {
-	handle := Control{&w.handle.Widget}
-	handle.SetBounds(bounds)
+	control := Control{w.handle}
+	control.SetBounds(bounds)
 
 	if w.child != nil {
 		// Determine the bounds for the child widget
@@ -214,42 +162,24 @@ func (w *tabsElement) SetBounds(bounds base.Rectangle) {
 }
 
 func (w *tabsElement) updateProps(data *Tabs) error {
-	if len(w.widgets) > len(data.Children) {
-		// Modify captions for existing tabs
-		for i, v := range data.Children {
-			label := getTabLabel(w.handle, i)
-			label.SetText(v.Caption)
-		}
-		// Remove excess tabs
-		for i := len(w.widgets); i > len(data.Children); i-- {
-			w.handle.RemovePage(i - 1)
-		}
-	} else {
-		// Modify captions for existing tabs
-		for i, v := range data.Children[:len(w.widgets)] {
-			label := getTabLabel(w.handle, i)
-			label.SetText(v.Caption)
-		}
-		// Append new tabs
-		err := tabsAppendChildren(w.handle, data.Children[len(w.widgets):])
-		if err != nil {
-			return err
-		}
-	}
+	gtk.TabsUpdate(w.handle, data.Value, data.serializeItems(),
+		data.OnChange != nil)
 	w.widgets = data.Children
 
 	// Update the selected widget
 	if data.Value == w.value {
-		w.mountPage(data.Value)
+		err := w.mountPage(data.Value)
+		if err!=nil {
+			return err
+		}
 	} else {
-		parent := getTabParent(w.handle, data.Value)
-		child, err := base.DiffChild(parent, w.child, data.Children[data.Value].Child)
+		parent := gtk.TabsGetTabParent(w.handle, data.Value)
+		child, err := base.DiffChild(base.Control{parent}, w.child, data.Children[data.Value].Child)
 		w.child = child
 		if err != nil {
 			return err
 		}
 
-		w.handle.SetCurrentPage(data.Value)
 		w.value = data.Value
 	}
 

@@ -51,7 +51,7 @@ func (*nilElement) Props() Widget {
 }
 
 func (*nilElement) SetBounds(Rectangle) {
-	return
+	// Do nothing
 }
 
 func (*nilElement) UpdateProps(data Widget) error {

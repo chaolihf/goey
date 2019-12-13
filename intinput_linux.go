@@ -3,88 +3,35 @@
 package goey
 
 import (
-	"strconv"
-	"unsafe"
-
 	"bitbucket.org/rj/goey/base"
-	"github.com/gotk3/gotk3/glib"
-	"github.com/gotk3/gotk3/gtk"
+	"bitbucket.org/rj/goey/internal/gtk"
 )
 
 type intinputElement struct {
 	Control
 
 	onChange   func(int64)
-	shChange   glib.SignalHandle
-	onFocus    focusSlot
-	onBlur     blurSlot
+	onFocus    func()
+	onBlur     func()
 	onEnterKey func(int64)
-	shEnterKey glib.SignalHandle
 }
 
 func (w *IntInput) mount(parent base.Control) (base.Element, error) {
-	// Create the control
-	control, err := gtk.SpinButtonNew(nil, 1, 0)
-	if err != nil {
-		return nil, err
-	}
-	parent.Handle.Add(control)
-
-	// Update properties on the control
-	control.SetRange(float64(w.Min), float64(w.Max))
-	control.SetValue(float64(w.Value))
-	control.SetIncrements(1, 10)
-	control.SetPlaceholderText(w.Placeholder)
-	control.SetSensitive(!w.Disabled)
+	control := gtk.MountIntInput(parent.Handle, w.Value, w.Placeholder, w.Disabled,
+		w.Min, w.Max,
+		w.OnChange != nil, w.OnFocus != nil, w.OnBlur != nil, w.OnEnterKey != nil)
 
 	// Create the element
 	retval := &intinputElement{
-		Control:    Control{&control.Widget},
+		Control:    Control{control},
 		onChange:   w.OnChange,
+		onFocus:    w.OnFocus,
+		onBlur:     w.OnBlur,
 		onEnterKey: w.OnEnterKey,
 	}
-
-	// Connect all callbacks for the events
-	control.Connect("destroy", intinputOnDestroy, retval)
-	retval.shChange = setSignalHandler(&control.Widget, 0, retval.onChange != nil, "value-changed", intinputOnChanged, retval)
-	retval.onFocus.Set(&control.Widget, w.OnFocus)
-	retval.onBlur.Set(&control.Widget, w.OnBlur)
-	retval.shEnterKey = setSignalHandler(&control.Widget, 0, retval.onEnterKey != nil, "activate", intinputOnActivate, retval)
-	control.Show()
+	gtk.RegisterWidget(control, retval)
 
 	return retval, nil
-}
-
-func intinputOnActivate(obj *glib.Object, mounted *intinputElement) {
-	// Not sure why, but the widget comes into this callback as a glib.Object,
-	// and not the gtk.SpinButton.  Need to wrap the value.  This pokes into the internals
-	// of the gtk package.
-	widget := gtk.SpinButton{gtk.Entry{gtk.Widget{glib.InitiallyUnowned{obj}}, gtk.Editable{obj}}}
-	text, _ := widget.GetText()
-	value, _ := strconv.ParseInt(text, 10, 64)
-	// What should be done with a parsing error.  The control should prevent
-	// that occurring.
-	mounted.onEnterKey(value)
-}
-
-func intinputOnChanged(widget *gtk.SpinButton, mounted *intinputElement) {
-	if mounted.onChange == nil {
-		return
-	}
-
-	text, _ := widget.GetText()
-	value, _ := strconv.ParseInt(text, 10, 64)
-	// What should be done with a parsing error.  The control should prevent
-	// that occurring.
-	mounted.onChange(value)
-}
-
-func intinputOnDestroy(widget *gtk.SpinButton, mounted *intinputElement) {
-	mounted.handle = nil
-}
-
-func (w *intinputElement) spinbutton() *gtk.SpinButton {
-	return (*gtk.SpinButton)(unsafe.Pointer(w.handle))
 }
 
 // Because GTK uses double (or float64 in Go) to store the range, it cannot
@@ -103,41 +50,42 @@ func toInt64(scale float64) int64 {
 	return a
 }
 
-func (w *intinputElement) Props() base.Widget {
-	button := w.spinbutton()
-
-	placeholder, err := button.GetPlaceholderText()
-	if err != nil {
-		panic("Could not get placeholder text: " + err.Error())
+func (w *intinputElement) OnChange(value int64) {
+	if w.onChange != nil {
+		w.onChange(value)
 	}
+}
 
+func (w *intinputElement) OnFocus() {
+	w.onFocus()
+}
+
+func (w *intinputElement) OnBlur() {
+	w.onBlur()
+}
+
+func (w *intinputElement) OnEnterKey(value int64) {
+	w.onEnterKey(value)
+}
+
+func (w *intinputElement) Props() base.Widget {
 	return &IntInput{
-		Value:       int64(button.GetValue()),
-		Placeholder: placeholder,
-		Disabled:    !button.GetSensitive(),
-		Min:         toInt64(button.GetAdjustment().GetLower()),
-		Max:         toInt64(button.GetAdjustment().GetUpper()),
+		Value:       gtk.IntinputValue(w.handle),
+		Placeholder: gtk.TextboxPlaceholder(w.handle),
+		Disabled:    !gtk.WidgetSensitive(w.handle),
+		Min:         toInt64(gtk.IntinputMin(w.handle)),
+		Max:         toInt64(gtk.IntinputMax(w.handle)),
 		OnChange:    w.onChange,
-		OnFocus:     w.onFocus.callback,
-		OnBlur:      w.onBlur.callback,
+		OnFocus:     w.onFocus,
+		OnBlur:      w.onBlur,
 		OnEnterKey:  w.onEnterKey,
 	}
 }
 
 func (w *intinputElement) updateProps(data *IntInput) error {
-	button := w.spinbutton()
-
-	w.onChange = nil // break OnChange to prevent event
-	button.SetRange(float64(data.Min), float64(data.Max))
-	button.SetValue(float64(data.Value))
-	button.SetPlaceholderText(data.Placeholder)
-	button.SetSensitive(!data.Disabled)
-	w.onChange = data.OnChange
-	w.shChange = setSignalHandler(&button.Widget, w.shChange, data.OnChange != nil, "value-changed", intinputOnChanged, w)
-	w.onFocus.Set(&button.Widget, data.OnFocus)
-	w.onBlur.Set(&button.Widget, data.OnBlur)
-	w.onEnterKey = data.OnEnterKey
-	w.shEnterKey = setSignalHandler(&button.Widget, w.shEnterKey, data.OnEnterKey != nil, "activate", intinputOnActivate, w)
+	gtk.IntinputUpdate(w.handle, data.Value, data.Placeholder, data.Disabled,
+		data.Min, data.Max,
+		data.OnChange != nil, data.OnFocus != nil, data.OnBlur != nil, data.OnEnterKey != nil)
 
 	return nil
 }

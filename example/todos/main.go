@@ -40,10 +40,6 @@ func update() {
 }
 
 func render() base.Widget {
-	labelText := "What needs to be done?"
-	if len(Model) > 0 {
-		labelText = labelText + "  (" + strconv.Itoa(len(Model)) + ")"
-	}
 	widgets := []base.Widget{
 		&goey.Label{Text: "What needs to be done:"},
 		&goey.TextInput{Placeholder: "Enter todo description.", OnEnterKey: onNewTodoItem},

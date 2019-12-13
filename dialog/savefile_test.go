@@ -1,7 +1,6 @@
 package dialog
 
 import (
-	"os"
 	"path/filepath"
 	"testing"
 
@@ -9,10 +8,7 @@ import (
 )
 
 func TestNewSaveFile(t *testing.T) {
-	wd, err := os.Getwd()
-	if err != nil {
-		t.Fatalf("Could not determine working directory, %s", err)
-	}
+	wd := getwd(t)
 
 	cases := []struct {
 		build    func() (string, error)
@@ -48,7 +44,7 @@ func TestNewSaveFile(t *testing.T) {
 		return nil
 	}
 
-	err = loop.Run(init)
+	err := loop.Run(init)
 	if err != nil {
 		t.Fatalf("Failed to run event loop, %s", err)
 	}

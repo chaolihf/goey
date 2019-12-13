@@ -9,7 +9,7 @@ native platform.
 
 [![Documentation](https://godoc.org/bitbucket.org/rj/goey?status.svg)](http://godoc.org/bitbucket.org/rj/goey)
 [![Go Report Card](https://goreportcard.com/badge/bitbucket.org/rj/goey)](https://goreportcard.com/report/bitbucket.org/rj/goey) 
-[![Windows Build Status](https://ci.appveyor.com/api/projects/status/bitbucket/rj/goey?branch=default&svg=true)](https://ci.appveyor.com/project/rj/goey) 
+[![Windows Build Status](https://ci.appveyor.com/api/projects/status/3n6qnl555b5sho70?svg=true)](https://ci.appveyor.com/project/rj/goey) 
 
 ## Install
 
@@ -38,8 +38,8 @@ On Ubuntu:
 
 ### MacOS
 
-There is a in-progress port for Cocoa.  It is currently being developped using 
-GNUstep on Linux, but has been developped based on documentation from Apple.
+There is a in-progress port for Cocoa.  It is currently being developed using 
+GNUstep on Linux, but has been developed based on documentation from Apple.
 All controls, except for the date control (which is not available in GNUstep),
 are implemented.  However, additional testing, especially on Darwin, is still
 required.

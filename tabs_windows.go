@@ -50,7 +50,7 @@ func (w *Tabs) mount(parent base.Control) (base.Element, error) {
 
 	child := base.Element(nil)
 	if len(w.Children) > 0 {
-		err := error(nil)
+		var err error
 		if w.Value >= 0 {
 			child, err = base.Mount(base.Control{hwnd}, w.Children[w.Value].Child)
 		} else {
@@ -282,9 +282,14 @@ func tabsBackgroundBrush(hwnd win.HWND, hdc win.HDC) (win.HBRUSH, bool, error) {
 	if !tabs.hbrushFlag {
 		tabs.hbrushFlag = true
 
-		// Is the current bitmap a constant colour in the client area
+		// Is the current bitmap a constant color in the client area
 		win.SendMessage(hwnd, win.TCM_ADJUSTRECT, win.FALSE, uintptr(unsafe.Pointer(&cr)))
-		if clr := win.GetPixel(cdc, cr.Left, cr.Top); clr == win.GetPixel(cdc, (cr.Left+cr.Right)/2, cr.Top) && clr == win.GetPixel(cdc, cr.Left, (cr.Top+cr.Bottom)/2) {
+		if clr := win.GetPixel(cdc, cr.Left, cr.Top); clr == 0 {
+			// Don't believe it.  Windows lies.
+			// We are running on windows without themes enabled.
+			tabs.hbrush = win.GetSysColorBrush(win.COLOR_3DFACE)
+			return tabs.hbrush, true, nil
+		} else if clr == win.GetPixel(cdc, (cr.Left+cr.Right)/2, cr.Top) && clr == win.GetPixel(cdc, cr.Left, (cr.Top+cr.Bottom)/2) {
 			hbrush := createBrush(color.RGBA{
 				R: uint8(clr & 0xFF),
 				G: uint8((clr >> 8) & 0xFF),

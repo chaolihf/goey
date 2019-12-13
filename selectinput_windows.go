@@ -119,7 +119,10 @@ func (w *selectinputElement) Props() base.Widget {
 	}
 	value := win.SendMessage(w.hWnd, win.CB_GETCURSEL, 0, 0)
 	unset := false
-	if value == 0xFFFFFFFF /*win.CB_ERR, but bug with extension*/ {
+	// Depending on platform, the value may be either a 32-bit or a 64-bit
+	// value, which somewhat complicates detecting CB_ERR.  The following
+	// test works in both cases.
+	if int32(value) == -1 /*win.CB_ERR, but bug with extension*/ {
 		value, unset = 0, true
 	}
 	return &SelectInput{

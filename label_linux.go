@@ -3,10 +3,8 @@
 package goey
 
 import (
-	"unsafe"
-
 	"bitbucket.org/rj/goey/base"
-	"github.com/gotk3/gotk3/gtk"
+	"bitbucket.org/rj/goey/internal/gtk"
 )
 
 type labelElement struct {
@@ -14,45 +12,21 @@ type labelElement struct {
 }
 
 func (w *Label) mount(parent base.Control) (base.Element, error) {
-	handle, err := gtk.LabelNew(w.Text)
-	if err != nil {
-		return nil, err
-	}
-	handle.SetSingleLineMode(false)
-	parent.Handle.Add(handle)
-	handle.SetJustify(gtk.JUSTIFY_LEFT)
-	handle.SetHAlign(gtk.ALIGN_START)
-	handle.SetLineWrap(false)
-	handle.Show()
+	handle := gtk.MountLabel(parent.Handle, w.Text)
 
-	retval := &labelElement{Control: Control{&handle.Widget}}
-	handle.Connect("destroy", labelOnDestroy, retval)
+	retval := &labelElement{Control: Control{handle}}
+	gtk.RegisterWidget(handle, retval)
 
 	return retval, nil
 }
 
-func labelOnDestroy(widget *gtk.Label, mounted *labelElement) {
-	mounted.handle = nil
-}
-
-func (w *labelElement) label() *gtk.Label {
-	return (*gtk.Label)(unsafe.Pointer(w.handle))
-}
-
 func (w *labelElement) Props() base.Widget {
-	label := w.label()
-	text, err := label.GetText()
-	if err != nil {
-		panic("Could not get text, " + err.Error())
-	}
-
 	return &Label{
-		Text: text,
+		Text: gtk.LabelText(w.handle),
 	}
 }
 
 func (w *labelElement) updateProps(data *Label) error {
-	label := w.label()
-	label.SetText(data.Text)
+	gtk.LabelUpdate(w.handle, data.Text)
 	return nil
 }

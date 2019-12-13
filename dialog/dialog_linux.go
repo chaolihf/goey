@@ -5,40 +5,52 @@ package dialog
 import (
 	"time"
 
-	"bitbucket.org/rj/goey/internal/syscall"
+	"bitbucket.org/rj/goey/internal/gtk"
 	"bitbucket.org/rj/goey/loop"
-	"github.com/gotk3/gotk3/gtk"
 )
 
 type dialogImpl struct {
-	parent *gtk.Window
+	parent uintptr
 }
 
 var (
-	activeDialogForTesting *gtk.Dialog
+	activeDialogForTesting uintptr
 )
 
-func typeKeys(text string) chan error {
-	err := make(chan error, 1)
+func asyncTypeKeys(text string, initialWait time.Duration) <-chan error {
+	errs := make(chan error, 1)
 
 	go func() {
-		defer close(err)
+		defer close(errs)
 
-		time.Sleep(500 * time.Millisecond)
+		time.Sleep(initialWait)
 		for _, r := range text {
-			loop.Do(func() error {
-				syscall.WidgetSendKey(&activeDialogForTesting.Widget, r, 0, 0)
+			err := loop.Do(func() error {
+				if activeDialogForTesting == 0 {
+					panic("dialog is closed")
+				}
+				gtk.WidgetSendKey(activeDialogForTesting, uint(r), false)
 				return nil
 			})
+			if err != nil {
+				errs <- err
+				return
+			}
 			time.Sleep(50 * time.Millisecond)
 
-			loop.Do(func() error {
-				syscall.WidgetSendKey(&activeDialogForTesting.Widget, r, 0, 1)
+			err = loop.Do(func() error {
+				if activeDialogForTesting != 0 {
+					gtk.WidgetSendKey(activeDialogForTesting, uint(r), true)
+				}
 				return nil
 			})
+			if err != nil {
+				errs <- err
+				return
+			}
 			time.Sleep(50 * time.Millisecond)
 		}
 	}()
 
-	return err
+	return errs
 }

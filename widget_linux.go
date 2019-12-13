@@ -6,11 +6,8 @@ import (
 	"time"
 
 	"bitbucket.org/rj/goey/base"
-	"bitbucket.org/rj/goey/internal/syscall"
+	"bitbucket.org/rj/goey/internal/gtk"
 	"bitbucket.org/rj/goey/loop"
-	"github.com/gotk3/gotk3/gdk"
-	"github.com/gotk3/gotk3/glib"
-	"github.com/gotk3/gotk3/gtk"
 )
 
 // Control is an opaque type used as a platform-specific handle to a control
@@ -21,61 +18,71 @@ import (
 //
 // Any method's on this type will be platform specific.
 type Control struct {
-	handle *gtk.Widget
+	handle uintptr
 }
 
 // Close removes the element from the GUI, and frees any associated resources.
 func (w *Control) Close() {
-	if w.handle != nil {
-		w.handle.Destroy()
-		w.handle = nil
+	if w.handle != 0 {
+		gtk.WidgetClose(w.handle)
+		w.handle = 0
 	}
 }
 
 // Handle returns the platform-native handle for the control.
-func (w *Control) Handle() *gtk.Widget {
+func (w *Control) Handle() uintptr {
 	return w.handle
+}
+
+func (w *Control) OnDestroy() {
+	w.handle = 0
 }
 
 // TakeFocus is a wrapper around GrabFocus.
 func (w *Control) TakeFocus() bool {
 	// Check that the control can grab focus
-	if !w.handle.GetCanFocus() {
+	if !gtk.WidgetCanFocus(w.handle) {
 		return false
 	}
 
-	w.handle.GrabFocus()
+	gtk.WidgetGrabFocus(w.handle)
 	// Note sure why the call to sleep is required, but there may be a debounce
 	// provided by the system.  Without this call to sleep, the controls never
 	// get the focus events.
 	time.Sleep(250 * time.Millisecond)
-	return w.handle.IsFocus()
+	return gtk.WidgetIsFocus(w.handle)
 }
 
 // TypeKeys sends events to the control as if the string was typed by a user.
 func (w *Control) TypeKeys(text string) chan error {
-	err := make(chan error, 1)
+	errs := make(chan error, 1)
 
 	go func() {
-		defer close(err)
+		defer close(errs)
 
 		time.Sleep(500 * time.Millisecond)
 		for _, r := range text {
-			loop.Do(func() error {
-				syscall.WidgetSendKey(w.handle, r, 0, 0)
+			err := loop.Do(func() error {
+				gtk.WidgetSendKey(w.handle, uint(r), false)
 				return nil
 			})
+			if err != nil {
+				errs <- err
+			}
 			time.Sleep(50 * time.Millisecond)
 
-			loop.Do(func() error {
-				syscall.WidgetSendKey(w.handle, r, 0, 1)
+			err = loop.Do(func() error {
+				gtk.WidgetSendKey(w.handle, uint(r), true)
 				return nil
 			})
+			if err != nil {
+				errs <- err
+			}
 			time.Sleep(50 * time.Millisecond)
 		}
 	}()
 
-	return err
+	return errs
 }
 
 // Layout determines the best size for an element that satisfies the
@@ -84,49 +91,42 @@ func (w *Control) Layout(bc base.Constraints) base.Size {
 	if !bc.HasBoundedWidth() && !bc.HasBoundedHeight() {
 		// No need to worry about breaking the constraints.  We can take as
 		// much space as desired.
-		_, width := w.handle.GetPreferredWidth()
-		_, height := w.handle.GetPreferredHeight()
+		width, height := gtk.WidgetNaturalSize(w.handle)
 		// Dimensions may need to be increased to meet minimums.
 		return bc.Constrain(base.Size{base.FromPixelsX(width), base.FromPixelsY(height)})
 	}
 	if !bc.HasBoundedHeight() {
 		// No need to worry about height.  Find the width that best meets the
 		// widgets preferred width.
-		_, width1 := w.handle.GetPreferredWidth()
+		width1 := gtk.WidgetNaturalWidth(w.handle)
 		width := bc.ConstrainWidth(base.FromPixelsX(width1))
 		// Get the best height for this width.
-		_, height := syscall.WidgetGetPreferredHeightForWidth(w.handle, width.PixelsX())
+		height := gtk.WidgetNaturalHeightForWidth(w.handle, width.PixelsX())
 		// Height may need to be increased to meet minimum.
 		return base.Size{width, bc.ConstrainHeight(base.FromPixelsY(height))}
 	}
 
 	// Not clear the following is the best general approach given GTK layout
 	// model.
-	height1, height2 := w.handle.GetPreferredHeight()
-	if height := base.FromPixelsY(height2); height < bc.Max.Height {
-		_, width := w.handle.GetPreferredWidth()
-		return bc.Constrain(base.Size{base.FromPixelsX(width), height})
-	}
-
-	_, width := w.handle.GetPreferredWidth()
-	return bc.Constrain(base.Size{base.FromPixelsX(width), base.FromPixelsX(height1)})
+	width, height := gtk.WidgetNaturalSize(w.handle)
+	return bc.Constrain(base.Size{base.FromPixelsX(width), base.FromPixelsY(height)})
 }
 
 // MinIntrinsicHeight returns the minimum height that this element requires
 // to be correctly displayed.
 func (w *Control) MinIntrinsicHeight(width base.Length) base.Length {
 	if width != base.Inf {
-		height, _ := syscall.WidgetGetPreferredHeightForWidth(w.handle, width.PixelsX())
+		height := gtk.WidgetMinHeightForWidth(w.handle, width.PixelsX())
 		return base.FromPixelsY(height)
 	}
-	height, _ := w.handle.GetPreferredHeight()
+	height := gtk.WidgetMinHeight(w.handle)
 	return base.FromPixelsY(height)
 }
 
 // MinIntrinsicWidth returns the minimum width that this element requires
 // to be correctly displayed.
 func (w *Control) MinIntrinsicWidth(base.Length) base.Length {
-	width, _ := w.handle.GetPreferredWidth()
+	width := gtk.WidgetMinWidth(w.handle)
 	return base.FromPixelsX(width)
 }
 
@@ -136,91 +136,5 @@ func (w *Control) SetBounds(bounds base.Rectangle) {
 	if pixels.Dx() <= 0 || pixels.Dy() <= 0 {
 		panic("internal error.  zero width or zero height bounds for control")
 	}
-	syscall.SetBounds(w.handle, pixels.Min.X, pixels.Min.Y, pixels.Dx(), pixels.Dy())
-}
-
-func setSignalHandler(control *gtk.Widget, sh glib.SignalHandle, ok bool, name string, thunk interface{}, userData interface{}) glib.SignalHandle {
-	if ok && sh == 0 {
-		sh, err := control.Connect(name, thunk, userData)
-		if err != nil {
-			panic("Failed to connect '" + name + "'.")
-		}
-		return sh
-	} else if !ok && sh != 0 {
-		control.HandlerDisconnect(sh)
-		return 0
-	}
-
-	return sh
-}
-
-type clickSlot struct {
-	callback func()
-	handle   glib.SignalHandle
-}
-
-func (c *clickSlot) Set(control *gtk.Widget, value func()) {
-	if value != nil && c.handle == 0 {
-		handle, err := control.Connect("clicked", clickSlotThunk, c)
-		if err != nil {
-			panic("Failed to connect 'clicked'.")
-		}
-		c.handle = handle
-	} else if value == nil && c.handle != 0 {
-		control.HandlerDisconnect(c.handle)
-		c.handle = 0
-	}
-	c.callback = value
-}
-
-func clickSlotThunk(widget interface{}, c *clickSlot) {
-	c.callback()
-}
-
-type focusSlot struct {
-	callback func()
-	handle   glib.SignalHandle
-}
-
-func (c *focusSlot) Set(control *gtk.Widget, value func()) {
-	if value != nil && c.handle == 0 {
-		handle, err := control.Connect("focus-in-event", focusSlotThunk, c)
-		if err != nil {
-			panic("Failed to connect 'focus-in-event'.")
-		}
-		c.handle = handle
-	} else if value == nil && c.handle != 0 {
-		control.HandlerDisconnect(c.handle)
-		c.handle = 0
-	}
-	c.callback = value
-}
-
-func focusSlotThunk(widget interface{}, event *gdk.Event, c *focusSlot) bool {
-	c.callback()
-	return false
-}
-
-type blurSlot struct {
-	callback func()
-	handle   glib.SignalHandle
-}
-
-func (c *blurSlot) Set(control *gtk.Widget, value func()) {
-	if value != nil && c.handle == 0 {
-		handle, err := control.Connect("focus-out-event", blurSlotThunk, c)
-		if err != nil {
-			panic("Failed to connect 'focus-out-event'.")
-		}
-		c.handle = handle
-	} else if value == nil && c.handle != 0 {
-		control.HandlerDisconnect(c.handle)
-		c.handle = 0
-	}
-	c.callback = value
-}
-
-func blurSlotThunk(widget interface{}, event *gdk.Event, c *focusSlot) bool {
-	c.callback()
-	return false
+	gtk.WidgetSetBounds(w.handle, pixels.Min.X, pixels.Min.Y, pixels.Dx(), pixels.Dy())
 }

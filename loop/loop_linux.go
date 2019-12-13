@@ -6,9 +6,8 @@ import (
 	"sync/atomic"
 	"testing"
 
+	"bitbucket.org/rj/goey/internal/gtkloop"
 	"bitbucket.org/rj/goey/internal/nopanic"
-	"bitbucket.org/rj/goey/internal/syscall"
-	"github.com/gotk3/gotk3/gtk"
 )
 
 const (
@@ -21,7 +20,7 @@ var (
 )
 
 func init() {
-	gtk.Init(nil)
+	gtkloop.Init()
 }
 
 func initRun() error {
@@ -41,7 +40,7 @@ func run() {
 	defer atomic.StoreUint32(&runLevel, 0)
 
 	// Start the GTK loop.
-	gtk.Main()
+	gtkloop.Run()
 }
 
 func runTesting(func() error) error {
@@ -57,12 +56,12 @@ func do(action func() error) error {
 	// idle callback is to ensure that the system is up and running
 	// before any new changes.
 	if atomic.LoadUint32(&runLevel) < 2 {
-		syscall.IdleAdd(func() {
+		gtkloop.IdleAdd(func() {
 			atomic.StoreUint32(&runLevel, 2)
 			err <- nopanic.Wrap(action)
 		})
 	} else {
-		syscall.MainContextInvoke(func() {
+		gtkloop.MainContextInvoke(func() {
 			err <- nopanic.Wrap(action)
 		})
 	}
@@ -72,7 +71,7 @@ func do(action func() error) error {
 }
 
 func stop() {
-	gtk.MainQuit()
+	gtkloop.Stop()
 }
 
 func testMain(m *testing.M) int {

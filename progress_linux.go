@@ -3,10 +3,8 @@
 package goey
 
 import (
-	"unsafe"
-
 	"bitbucket.org/rj/goey/base"
-	"github.com/gotk3/gotk3/gtk"
+	"bitbucket.org/rj/goey/internal/gtk"
 )
 
 type progressElement struct {
@@ -15,32 +13,16 @@ type progressElement struct {
 }
 
 func (w *Progress) mount(parent base.Control) (base.Element, error) {
-	control, err := gtk.ProgressBarNew()
-	if err != nil {
-		return nil, err
-	}
-
-	parent.Handle.Add(control)
-	control.SetFraction(float64(w.Value-w.Min) / float64(w.Max-w.Min))
+	control := gtk.MountProgressbar(parent.Handle, float64(w.Value-w.Min)/float64(w.Max-w.Min))
 
 	retval := &progressElement{
-		Control: Control{&control.Widget},
+		Control: Control{control},
 		min:     w.Min,
 		max:     w.Max,
 	}
-
-	control.Connect("destroy", progressOnDestroy, retval)
-	control.Show()
+	gtk.RegisterWidget(control, retval)
 
 	return retval, nil
-}
-
-func progressOnDestroy(widget *gtk.ProgressBar, mounted *progressElement) {
-	mounted.handle = nil
-}
-
-func (w *progressElement) progressbar() *gtk.ProgressBar {
-	return (*gtk.ProgressBar)(unsafe.Pointer(w.handle))
 }
 
 func (w *progressElement) Props() base.Widget {
@@ -52,19 +34,16 @@ func (w *progressElement) Props() base.Widget {
 		}
 	}
 
-	pb := w.progressbar()
-	value := pb.GetFraction()
 	return &Progress{
-		Value: w.min + int(float64(w.max-w.min)*value),
+		Value: w.min + int(float64(w.max-w.min)*gtk.ProgressbarValue(w.handle)),
 		Min:   w.min,
 		Max:   w.max,
 	}
 }
 
 func (w *progressElement) updateProps(data *Progress) error {
-	pb := w.progressbar()
 	w.min = data.Min
 	w.max = data.Max
-	pb.SetFraction(float64(data.Value-data.Min) / float64(data.Max-data.Min))
+	gtk.ProgressbarUpdate(w.handle,float64(data.Value-data.Min) / float64(data.Max-data.Min) )
 	return nil
 }

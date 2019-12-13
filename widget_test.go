@@ -73,7 +73,7 @@ func normalize(t *testing.T, rhs base.Widget) {
 }
 
 func equal(t *testing.T, lhs, rhs base.Widget) bool {
-	// Noramlize (or canonicalize) the props used to construct the element.
+	// Normalize (or canonicalize) the props used to construct the element.
 	normalize(t, rhs)
 	// Compare the widgets' properties.
 	return reflect.DeepEqual(lhs, rhs)

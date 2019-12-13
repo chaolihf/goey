@@ -1,6 +1,6 @@
 package dialog
 
-// Dialog contains some functionality used by all dialogs..
+// Dialog contains some functionality used by all dialog types.
 type Dialog struct {
 	dialogImpl
 	err error

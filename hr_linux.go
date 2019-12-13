@@ -4,7 +4,7 @@ package goey
 
 import (
 	"bitbucket.org/rj/goey/base"
-	"github.com/gotk3/gotk3/gtk"
+	"bitbucket.org/rj/goey/internal/gtk"
 )
 
 type hrElement struct {
@@ -12,22 +12,12 @@ type hrElement struct {
 }
 
 func (w *HR) mount(parent base.Control) (base.Element, error) {
-	control, err := gtk.SeparatorNew(gtk.ORIENTATION_HORIZONTAL)
-	if err != nil {
-		return nil, err
-	}
-	parent.Handle.Add(control)
+	control := gtk.MountHR(parent.Handle)
 
 	retval := &hrElement{
-		Control: Control{&control.Widget},
+		Control: Control{control},
 	}
-
-	control.Connect("destroy", hrOnDestroy, retval)
-	control.Show()
+	gtk.RegisterWidget(control,retval)
 
 	return retval, nil
-}
-
-func hrOnDestroy(widget *gtk.Separator, mounted *hrElement) {
-	mounted.handle = nil
 }

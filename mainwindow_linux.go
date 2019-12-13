@@ -7,85 +7,65 @@ import (
 
 	"bitbucket.org/rj/goey/base"
 	"bitbucket.org/rj/goey/dialog"
-	"bitbucket.org/rj/goey/internal/syscall"
+	"bitbucket.org/rj/goey/internal/gtk"
 	"bitbucket.org/rj/goey/loop"
-	"github.com/gotk3/gotk3/gdk"
-	"github.com/gotk3/gotk3/glib"
-	"github.com/gotk3/gotk3/gtk"
 )
-
-var (
-	vscrollbarWidth base.Length
-)
-
-func init() {
-	gtk.Init(nil)
-}
-
-func boolToPolicy(value bool) gtk.PolicyType {
-	if value {
-		return gtk.POLICY_ALWAYS
-	}
-	return gtk.POLICY_NEVER
-}
 
 type windowImpl struct {
-	handle                  *gtk.Window
-	scroll                  *gtk.ScrolledWindow
-	layout                  *gtk.Layout
+	handle                  uintptr
+	scroll                  uintptr
+	layout                  uintptr
 	child                   base.Element
-	childMinSize            base.Size
 	horizontalScroll        bool
 	horizontalScrollVisible bool
 	verticalScroll          bool
 	verticalScrollVisible   bool
 	onClosing               func() bool
-	shClosing               glib.SignalHandle
+	iconPix                 []byte
 }
 
 func newWindow(title string, child base.Widget) (*Window, error) {
 	// Create a new GTK window
-	app, err := gtk.WindowNew(gtk.WINDOW_TOPLEVEL)
-	if err != nil {
-		return nil, err
-	}
+	window := gtk.MountWindow(title)
 	loop.AddLockCount(1)
 
-	scroll, err := gtk.ScrolledWindowNew(nil, nil)
-	if err != nil {
-		return nil, err
-	}
-	scroll.SetPolicy(gtk.POLICY_NEVER, gtk.POLICY_NEVER)
-	app.Add(scroll)
-
-	layout, err := gtk.LayoutNew(nil, nil)
-	if err != nil {
-		return nil, err
-	}
-	scroll.Add(layout)
-
 	retval := &Window{windowImpl{
-		handle: app,
-		scroll: scroll,
-		layout: layout,
+		handle: window,
+		scroll: gtk.WindowScrolledWindow(window),
+		layout: gtk.WindowLayout(window),
 	}}
-	app.SetTitle(title)
-	app.SetBorderWidth(0)
-	app.Connect("destroy", mainwindowOnDestroy, retval)
-	app.Connect("size-allocate", mainwindowOnSizeAllocate, retval)
-	app.SetDefaultSize(func() (int, int) {
+	gtk.RegisterWidget(window, retval)
+	gtk.WindowSetDefaultSize(func() (uintptr, int, int) {
 		w, h := sizeDefaults()
-		return int(w), int(h)
+		return window, int(w), int(h)
 	}())
 
 	return retval, nil
 }
 
-func windowOnClosing(widget *gtk.Window, _ *gdk.Event, w *windowImpl) bool {
+func (w *windowImpl) OnDestroy() {
+	// Clear handle from the struct so that we dont' risk pointing to a
+	// non existent window.
+	w.handle = 0
+	w.scroll = 0
+	w.layout = 0
+	// Release lock count on the GUI event loop.
+	loop.AddLockCount(-1)
+
+}
+
+func (w *windowImpl) OnDeleteEvent() bool {
+	if w.onClosing == nil {
+		return false
+	}
 	return w.onClosing()
 }
 
 func (w *windowImpl) onSize() {
+	w.OnSizeAllocate(gtk.WindowSize(w.handle))
+}
+
+func (w *windowImpl) OnSizeAllocate(width, height int) {
 	if w.child == nil {
 		return
 	}
@@ -93,8 +73,6 @@ func (w *windowImpl) onSize() {
 	// Update the global DPI
 	base.DPI.X, base.DPI.Y = 96, 96
 
-	// Calculate the layout
-	width, height := w.handle.GetSize()
 	clientSize := base.Size{base.FromPixelsX(width), base.FromPixelsY(height)}
 	size := w.layoutChild(clientSize)
 	if w.horizontalScroll && w.verticalScroll {
@@ -104,14 +82,14 @@ func (w *windowImpl) onSize() {
 		// Adding horizontal scroll take vertical space, so we need to check
 		// again for vertical scroll.
 		if ok {
-			_, height := w.handle.GetSize()
+			_, height := gtk.WindowSize(w.handle)
 			w.showScrollV(size.Height, base.FromPixelsY(height))
 		}
 	} else if w.verticalScroll {
 		// Show scroll bars if necessary.
 		ok := w.showScrollV(size.Height, clientSize.Height)
 		if ok {
-			width, height := w.handle.GetSize()
+			width, height := gtk.WindowSize(w.handle)
 			clientSize := base.Size{base.FromPixelsX(width), base.FromPixelsY(height)}
 			size = w.layoutChild(clientSize)
 		}
@@ -119,14 +97,12 @@ func (w *windowImpl) onSize() {
 		// Show scroll bars if necessary.
 		ok := w.showScrollH(size.Width, clientSize.Width)
 		if ok {
-			width, height := w.handle.GetSize()
+			width, height := gtk.WindowSize(w.handle)
 			clientSize := base.Size{base.FromPixelsX(width), base.FromPixelsY(height)}
 			size = w.layoutChild(clientSize)
 		}
 	}
-	w.layout.SetSize(uint(size.Width.PixelsX()), uint(size.Height.PixelsY()))
-
-	// Set bounds on child control
+	gtk.WindowSetLayoutSize(w.handle, uint(size.Width.PixelsX()), uint(size.Height.PixelsY()))
 	bounds := base.Rectangle{
 		base.Point{}, base.Point{size.Width, size.Height},
 	}
@@ -134,19 +110,18 @@ func (w *windowImpl) onSize() {
 }
 
 func (w *windowImpl) control() base.Control {
-	return base.Control{&w.layout.Container}
+	return base.Control{w.layout}
 }
 
 func (w *windowImpl) close() {
-	if w.handle != nil {
-		w.handle.Destroy()
-		w.handle = nil
+	if w.handle != 0 {
+		gtk.WidgetClose(w.handle)
+		w.handle = 0
 	}
 }
 
 func (w *windowImpl) message(m *dialog.Message) {
-	title, _ := w.handle.GetTitle()
-	// TODO:  Error handling for above
+	title := gtk.WindowTitle(w.handle)
 	m.WithTitle(title)
 	m.WithParent(w.handle)
 }
@@ -161,49 +136,34 @@ func (w *windowImpl) savefiledialog(m *dialog.SaveFile) {
 
 // Screenshot returns an image of the window, as displayed on screen.
 func (w *windowImpl) Screenshot() (image.Image, error) {
-	screen, err := w.handle.GetScreen()
-	if err != nil {
-		return nil, err
+	pix, hasAlpha, width, height, stride := gtk.WindowScreenshot(w.handle)
+
+	if hasAlpha {
+
+		return &image.RGBA{
+			Pix:    pix,
+			Stride: stride,
+			Rect:   image.Rect(0, 0, width, height),
+		}, nil
 	}
 
-	rw, err := screen.GetRootWindow()
-	if err != nil {
-		return nil, err
+	newpix := make([]byte, height*width*4)
+	for y := 0; y < height; y++ {
+		for x := 0; x < width; x++ {
+			newpix[y*width*4+x*4+0] = pix[y*stride+x*3+0]
+			newpix[y*width*4+x*4+1] = pix[y*stride+x*3+1]
+			newpix[y*width*4+x*4+2] = pix[y*stride+x*3+2]
+			newpix[y*width*4+x*4+3] = 0xff
+		}
 	}
 
-	pixbuf := syscall.PixbufGetFromWindow(rw, w.handle)
-	if pixbuf == nil {
-		panic("nil pointer")
-	}
-
-	// Convert the pixbuf to a image.Image.
-	img := pixbufToImage(pixbuf)
-	return img, nil
-}
-
-func get_vscrollbar_width(window *gtk.Window) (base.Length, error) {
-	if vscrollbarWidth != 0 {
-		return vscrollbarWidth, nil
-	}
-
-	oldChild, err := window.GetChild()
-	if err != nil {
-		return 0, err
-	}
-	window.Remove(oldChild)
-
-	sb, err := gtk.ScrollbarNew(gtk.ORIENTATION_VERTICAL, nil)
-	if err != nil {
-		return 0, err
-	}
-
-	window.Add(sb)
-	sb.Show()
-	_, retval := sb.GetPreferredWidth()
-	sb.Destroy()
-	window.Add(oldChild)
-	vscrollbarWidth = base.FromPixelsX(retval)
-	return vscrollbarWidth, nil
+	// Note:  stride of the new image data does not match data returned
+	// from Pixbuf.
+	return &image.RGBA{
+		Pix:    newpix,
+		Stride: width * 4,
+		Rect:   image.Rect(0, 0, width, height),
+	}, nil
 }
 
 func (w *windowImpl) setChildPost() {
@@ -218,7 +178,7 @@ func (w *windowImpl) setChildPost() {
 		w.onSize()
 	} else {
 		// Ensure that the scrollbars are hidden.
-		w.scroll.SetPolicy(gtk.POLICY_NEVER, gtk.POLICY_NEVER)
+		gtk.WindowShowScrollbars(w.handle, false, false)
 	}
 }
 
@@ -226,7 +186,7 @@ func (w *windowImpl) setScroll(horz, vert bool) {
 	w.horizontalScroll = horz
 	w.verticalScroll = vert
 	// Hide the scrollbars as a reset
-	w.scroll.SetPolicy(gtk.POLICY_NEVER, gtk.POLICY_NEVER)
+	gtk.WindowShowScrollbars(w.handle, false, false)
 	w.horizontalScrollVisible = false
 	w.verticalScrollVisible = false
 	// Redo layout to account for new box constraints, and show
@@ -235,20 +195,20 @@ func (w *windowImpl) setScroll(horz, vert bool) {
 }
 
 func (w *windowImpl) show() {
-	w.handle.ShowAll()
+	gtk.WindowShow(w.handle)
 }
 
 func (w *windowImpl) showScrollH(width base.Length, clientWidth base.Length) bool {
 	if width > clientWidth {
 		if !w.horizontalScrollVisible {
 			// Show the scrollbar
-			w.scroll.SetPolicy(gtk.POLICY_ALWAYS, boolToPolicy(w.verticalScrollVisible))
+			gtk.WindowShowScrollbars(w.handle, true, w.verticalScrollVisible)
 			w.horizontalScrollVisible = true
 			return true
 		}
 	} else if w.horizontalScrollVisible {
 		// Remove the scroll bar
-		w.scroll.SetPolicy(gtk.POLICY_NEVER, boolToPolicy(w.verticalScrollVisible))
+		gtk.WindowShowScrollbars(w.handle, false, w.verticalScrollVisible)
 		w.horizontalScrollVisible = false
 		return true
 	}
@@ -260,13 +220,13 @@ func (w *windowImpl) showScrollV(height base.Length, clientHeight base.Length) b
 	if height > clientHeight {
 		if !w.verticalScrollVisible {
 			// Show the scrollbar
-			w.scroll.SetPolicy(boolToPolicy(w.horizontalScrollVisible), gtk.POLICY_ALWAYS)
+			gtk.WindowShowScrollbars(w.handle, w.horizontalScrollVisible, true)
 			w.verticalScrollVisible = true
 			return true
 		}
 	} else if w.verticalScrollVisible {
 		// Remove the scroll bar
-		w.scroll.SetPolicy(boolToPolicy(w.horizontalScrollVisible), gtk.POLICY_NEVER)
+		gtk.WindowShowScrollbars(w.handle, w.horizontalScrollVisible, false)
 		w.verticalScrollVisible = false
 		return true
 	}
@@ -275,26 +235,28 @@ func (w *windowImpl) showScrollV(height base.Length, clientHeight base.Length) b
 }
 
 func (w *windowImpl) setIcon(img image.Image) error {
-	pixbuf, _, err := imageToPixbuf(img)
-	if err != nil {
-		return err
+	if img == nil {
+		gtk.WindowSetIcon(w.handle, nil, 0, 0, 0)
+		w.iconPix = nil
 	}
-	w.handle.SetIcon(pixbuf)
+
+	rgba := imageToRGBA(img)
+	gtk.WindowSetIcon(w.handle, &rgba.Pix[0], rgba.Rect.Dx(), rgba.Rect.Dy(), rgba.Stride)
+	w.iconPix = rgba.Pix
 	return nil
 }
 
 func (w *windowImpl) setOnClosing(callback func() bool) {
 	w.onClosing = callback
-	w.shClosing = setSignalHandler(&w.handle.Widget, w.shClosing, callback != nil, "delete-event", windowOnClosing, w)
 }
 
 func (w *windowImpl) setTitle(value string) error {
-	w.handle.SetTitle(value)
+	gtk.WindowSetTitle(w.handle, value)
 	return nil
 }
 
 func (w *windowImpl) title() (string, error) {
-	return w.handle.GetTitle()
+	return gtk.WindowTitle(w.handle), nil
 }
 
 func (w *windowImpl) updateWindowMinSize() {
@@ -303,17 +265,15 @@ func (w *windowImpl) updateWindowMinSize() {
 	// and scrollbars
 	dx, dy := 0, 0
 	if w.verticalScroll {
-		// TODO:  Measure scrollbar width
-		dx += 15
+		dx += int(gtk.WindowVScrollbarWidth(w.handle))
 	}
 	if w.horizontalScroll {
-		// TODO:  Measure scrollbar height
-		dy += 15
+		dy += int(gtk.WindowHScrollbarHeight(w.handle))
 	}
 
 	// If there is no child, then we just need enough space for the window chrome.
 	if w.child == nil {
-		w.handle.SetSizeRequest(dx, dy)
+		gtk.WidgetSetSizeRequest(w.handle, dx, dy)
 		return
 	}
 
@@ -353,17 +313,5 @@ func (w *windowImpl) updateWindowMinSize() {
 		request.Y = limit
 	}
 
-	w.handle.SetSizeRequest(request.X, request.Y)
-}
-
-func mainwindowOnDestroy(widget *gtk.Window, mw *Window) {
-	// Clear handle from the struct so that we dont' risk pointing to a
-	// non existent window.
-	mw.handle = nil
-	// Release lock count on the GUI event loop.
-	loop.AddLockCount(-1)
-}
-
-func mainwindowOnSizeAllocate(widget *gtk.Window, rect uintptr, mw *Window) {
-	mw.onSize()
+	gtk.WidgetSetSizeRequest(w.handle, request.X, request.Y)
 }
