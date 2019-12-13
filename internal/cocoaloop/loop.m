@@ -1,5 +1,5 @@
+#include "loop.h"
 #include "_cgo_export.h"
-#include "cocoa.h"
 #import <Cocoa/Cocoa.h>
 #include <assert.h>
 

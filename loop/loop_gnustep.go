@@ -8,9 +8,9 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"bitbucket.org/rj/assert"
-	"bitbucket.org/rj/goey/cocoa"
+	"bitbucket.org/rj/goey/internal/cocoaloop"
 	"bitbucket.org/rj/goey/internal/nopanic"
+	"gitlab.com/stone.code/assert"
 )
 
 const (

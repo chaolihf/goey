@@ -6,7 +6,7 @@ import (
 	"image"
 
 	"bitbucket.org/rj/goey/base"
-	"bitbucket.org/rj/goey/cocoa"
+	"bitbucket.org/rj/goey/internal/cocoa"
 	"bitbucket.org/rj/goey/loop"
 	"bitbucket.org/rj/goey/dialog"
 )

@@ -4,7 +4,7 @@ package goey
 
 import (
 	"bitbucket.org/rj/goey/base"
-	"bitbucket.org/rj/goey/cocoa"
+	"bitbucket.org/rj/goey/internal/cocoa"
 )
 
 type checkboxElement struct {

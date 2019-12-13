@@ -3,7 +3,7 @@ package cocoa
 /*
 #cgo CFLAGS: -x objective-c -DNTRACE -I/usr/include/GNUstep
 #cgo LDFLAGS: -lgnustep-gui -lgnustep-base -lobjc
-#include "cocoa.h"
+#include "loop.h"
 */
 import "C"
 import "sync"

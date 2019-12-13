@@ -3,6 +3,7 @@ package loop
 import (
 	"sync/atomic"
 	"syscall"
+	"testing"
 	"unsafe"
 
 	"bitbucket.org/rj/goey/internal/nopanic"
@@ -67,6 +68,10 @@ func run() {
 	}
 }
 
+func runTesting(func() error) error {
+	panic("unreachable")
+}
+
 func do(action func() error) error {
 	// Marshal the action to the GUI thread, and collect the return value.
 	err := make(chan error, 1)
@@ -110,4 +115,10 @@ func postWindowProc(hwnd win.HWND, msg uint32, wParam uintptr, lParam uintptr) u
 
 	// Let the default window proc handle all other messages
 	return win.DefWindowProc(hwnd, msg, wParam, lParam)
+}
+
+func testMain(m *testing.M) int {
+	// On Windows, we need to be locked to a thread, but not to a particular
+	// thread.  No need for special coordination.
+	return m.Run()
 }

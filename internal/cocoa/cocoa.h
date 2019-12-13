@@ -17,13 +17,6 @@ typedef struct nscolor_tag {
 	uint8_t r, g, b, a;
 } nscolor_t;
 
-/* Event loop */
-extern void init( void );
-extern void run( void );
-extern void performOnMainThread( void );
-extern void stop( void );
-extern bool_t isMainThread( void );
-
 /* Message dialog */
 extern void messageDialog( void* window, char const* text, char const* title, char icon );
 extern char const* openPanel( void* window, char const* dir, char const* base );

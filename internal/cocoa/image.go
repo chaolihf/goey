@@ -60,7 +60,7 @@ func (w *ImageView) Image() image.Image {
 
 	if depth == 8 {
 		img := image.NewGray(image.Rect(0, 0, int(width), int(height)))
-		C.imageviewImageData(unsafe.Pointer(w), unsafe.Pointer(&img.Pix[0]), 8)
+		C.imageviewImageData(unsafe.Pointer(w), unsafe.Pointer(&img.Pix[0]))
 		return img
 	}
 	if depth == 32 {

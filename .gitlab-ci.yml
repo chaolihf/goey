@@ -125,12 +125,6 @@ test-windows:
     DISPLAY: ":1"
     APT_GET: "wine64 wine-binfmt xvfb"
     GOOS: windows
-  before_script:
-    - *before_script_all
-    - mkdir -p .cache/github.com
-    - mv .cache/github.com $GOPATH/src/
-  after_script:
-    - mv $GOPATH/src/github.com .cache/
   script:
     - go get bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
     - go build bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
@@ -140,13 +134,26 @@ test-windows:
     - wine64 ./loop.test.exe -test.v
     - go test -c .
     - wine64 ./goey.test.exe -test.v -test.short
-  cache:
-    key: test
-    paths:
-      - .cache/github.com/
   except:
     - tags
-  allow_failure: true
+  artifacts:
+    paths:
+      - cover.html
+
+test-gnustep:
+  image: golang:1.12
+  stage: test
+  variables:
+    GOPATH: $CI_BUILDS_DIR
+    GIT_CLONE_PATH: $CI_BUILDS_DIR/src/bitbucket.org/rj/goey
+    DISPLAY: ":1"
+    APT_GET: "gnustep-devel xvfb"
+  script:
+    - go get -tags gnustep bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
+    - go test -tags gnustep -coverprofile=cover.out -v ./base ./loop ./dialog .
+    - go tool cover -html=cover.out -o=cover.html
+  except:
+    - tags
   artifacts:
     paths:
       - cover.html
@@ -170,7 +177,7 @@ lint:
     - GO111MODULE=on go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.21.0
     - GO111MODULE=on go install github.com/golangci/golangci-lint/cmd/golangci-lint
     - cd $GIT_CLONE_PATH
-    - $GOPATH/bin/golangci-lint run -v --exclude=composites --enable=interfacer,unconvert,prealloc ./base ./loop ./dialog .
+    - $GOPATH/bin/golangci-lint run -v --exclude=composites --exclude=".parent. is unused" --enable=interfacer,unconvert,prealloc ./base ./loop ./dialog .
   cache:
     key: lint
     paths:

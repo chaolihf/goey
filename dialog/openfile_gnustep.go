@@ -3,7 +3,7 @@
 package dialog
 
 import (
-	"bitbucket.org/rj/goey/cocoa"
+	"bitbucket.org/rj/goey/internal/cocoa"
 )
 
 func (m *OpenFile) show() (string, error) {
