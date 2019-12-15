@@ -230,6 +230,54 @@ func TestDo(t *testing.T) {
 	}
 }
 
+func BenchmarkRunNoInit(b *testing.B) {
+	for i :=0; i<b.N; i++ {
+		err := Run(func() error{
+			return nil
+		})
+		if err!=nil {
+			b.Errorf("Call to Run failed: %s", err)
+		}
+	}
+}
+
+func BenchmarkRun(b *testing.B) {
+	init := func() error {
+		// Verify that the test is starting in the correct state.
+		if c := atomic.LoadInt32(&lockCount); c != 1 {
+			b.Errorf("Want lockCount==1, got lockCount==%d", c)
+			return nil
+		}
+
+		// Create window and verify.
+		// We need at least one window open to maintain GUI loop.
+		AddLockCount(1)
+		if c := atomic.LoadInt32(&lockCount); c != 2 {
+			b.Fatalf("Want lockCount==2, got lockCount==%d", c)
+		}
+
+		go func() {
+			// Close the window
+			err := Do(func() error {
+				AddLockCount(-1)
+				return nil
+			})
+			if err != nil {
+				b.Errorf("Error in Do, %s", err)
+			}
+		}()
+
+		return nil
+	}
+
+	for i :=0; i<b.N; i++ {
+		err := Run(init)
+		if err!=nil {
+			b.Errorf("Call to Run failed: %s", err)
+		}
+	}
+}
+
 func BenchmarkDo(b *testing.B) {
 	init := func() error {
 		// Verify that the test is starting in the correct state.
