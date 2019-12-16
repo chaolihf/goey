@@ -128,11 +128,11 @@ test-windows:
   script:
     - go get bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
     - go build bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
-    - go test -c ./base
+    - go test -c -coverprofile=cover.out ./base
     - wine64 ./base.test.exe -test.coverprofile=cover.out -test.v
-    - go test -c ./loop
+    - go test -c -coverprofile=cover.out ./loop
     - wine64 ./loop.test.exe -test.coverprofile=cover.out -test.v
-    - go test -c .
+    - go test -c -coverprofile=cover.out .
     - wine64 ./goey.test.exe -test.coverprofile=cover.out -test.v -test.short
     - go tool cover -html=cover.out -o=cover.html
   except:
@@ -148,9 +148,10 @@ test-cocoa:
     GOPATH: $CI_BUILDS_DIR
     GIT_CLONE_PATH: $CI_BUILDS_DIR/src/bitbucket.org/rj/goey
     DISPLAY: ":1"
-    APT_GET: "gnustep-devel xvfb"
+    APT_GET: "gnustep-devel xvfb fluxbox"
   script:
     - go get -tags cocoa bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
+    - fluxbox 2> nul &
     - go test -tags cocoa -coverprofile=cover.out -v ./base ./loop ./dialog .
     - go tool cover -html=cover.out -o=cover.html
   except:

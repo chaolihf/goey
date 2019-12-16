@@ -104,6 +104,19 @@ void init() {
 	assert( NSApp && ![NSApp isRunning] );
 }
 
+@interface GNOPObject : NSObject
+- (void)main;
+@end
+
+@implementation GNOPObject
+
+- (void)main {
+	// Do nothing.  This is a NOP action.
+	return;
+}
+
+@end
+
 void run() {
 	TRACE();
 
@@ -111,6 +124,15 @@ void run() {
 	assert( [NSThread isMainThread] );
 	assert( NSApp && ![NSApp isRunning] );
 	assert( pool );
+
+	// With user interaction, the event loop runs fine.  Without, it suspends,
+	// and then all events stop moving forward (at least on GNUstep).  Make sure
+	// there is a regular source of events to keep things moving along. 
+	[NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)0.0167
+	                                 target:[[GNOPObject alloc] init]
+	                               selector:@selector( main )
+	                               userInfo:nil
+	                                repeats:YES];
 
 	[NSApp activateIgnoringOtherApps:YES];
 	[NSApp run];
