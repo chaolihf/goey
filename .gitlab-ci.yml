@@ -129,18 +129,19 @@ test-windows:
     - go get bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
     - go build bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
     - go test -c ./base
-    - wine64 ./base.test.exe -test.v
+    - wine64 ./base.test.exe -coverprofile=cover.out -test.v
     - go test -c ./loop
-    - wine64 ./loop.test.exe -test.v
+    - wine64 ./loop.test.exe -coverprofile=cover.out -test.v
     - go test -c .
-    - wine64 ./goey.test.exe -test.v -test.short
+    - wine64 ./goey.test.exe -test.coverprofile=cover.out -test.v -test.short
+    - go tool cover -html=cover.out -o=cover.html
   except:
     - tags
   artifacts:
     paths:
       - cover.html
 
-test-gnustep:
+test-cocoa:
   image: golang:1.12
   stage: test
   variables:
@@ -149,8 +150,8 @@ test-gnustep:
     DISPLAY: ":1"
     APT_GET: "gnustep-devel xvfb"
   script:
-    - go get -tags gnustep bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
-    - go test -tags gnustep -coverprofile=cover.out -v ./base ./loop ./dialog .
+    - go get -tags cocoa bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
+    - go test -tags cocoa -coverprofile=cover.out -v ./base ./loop ./dialog .
     - go tool cover -html=cover.out -o=cover.html
   except:
     - tags
@@ -185,9 +186,6 @@ lint:
   except:
     - tags
   allow_failure: true
-
-include:
-  template: SAST.gitlab-ci.yml
 
 pages:
   stage: deploy
