@@ -15,7 +15,7 @@ func (w *HR) mount(parent base.Control) (base.Element, error) {
 	retval := &hrElement{
 		Control: Control{control},
 	}
-	gtk.RegisterWidget(control,retval)
+	gtk.RegisterWidget(control, retval)
 
 	return retval, nil
 }

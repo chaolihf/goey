@@ -50,8 +50,8 @@ func CurrentTime() Time {
 // This function should only be called from the GUI thread.
 func AddAnimation(elem Element) {
 	// Access the map of running animations should only happen on the GUI thread.
-	// No syncronization is required.
-	// Add the element to the set of running animations
+	// No synchronization is required.
+	// Add the element to the set of running animations.
 	elements[elem] = struct{}{}
 
 	if atomic.CompareAndSwapUint32(&isRunning, 0, 1) {

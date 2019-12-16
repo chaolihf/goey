@@ -167,7 +167,7 @@ func (w *tabsElement) updateProps(data *Tabs) error {
 	// Update the selected widget
 	if data.Value == w.value {
 		err := w.mountPage(data.Value)
-		if err!=nil {
+		if err != nil {
 			return err
 		}
 	} else {

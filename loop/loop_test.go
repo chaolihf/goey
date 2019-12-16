@@ -231,11 +231,11 @@ func TestDo(t *testing.T) {
 }
 
 func BenchmarkRunNoInit(b *testing.B) {
-	for i :=0; i<b.N; i++ {
-		err := Run(func() error{
+	for i := 0; i < b.N; i++ {
+		err := Run(func() error {
 			return nil
 		})
-		if err!=nil {
+		if err != nil {
 			b.Errorf("Call to Run failed: %s", err)
 		}
 	}
@@ -270,9 +270,9 @@ func BenchmarkRun(b *testing.B) {
 		return nil
 	}
 
-	for i :=0; i<b.N; i++ {
+	for i := 0; i < b.N; i++ {
 		err := Run(init)
-		if err!=nil {
+		if err != nil {
 			b.Errorf("Call to Run failed: %s", err)
 		}
 	}

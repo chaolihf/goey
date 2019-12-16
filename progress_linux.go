@@ -42,6 +42,6 @@ func (w *progressElement) Props() base.Widget {
 func (w *progressElement) updateProps(data *Progress) error {
 	w.min = data.Min
 	w.max = data.Max
-	gtk.ProgressbarUpdate(w.handle,float64(data.Value-data.Min) / float64(data.Max-data.Min) )
+	gtk.ProgressbarUpdate(w.handle, float64(data.Value-data.Min)/float64(data.Max-data.Min))
 	return nil
 }
