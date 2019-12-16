@@ -21,15 +21,11 @@ check for special instructions below.
 
 ### Windows
 
-No special instructions are required to build this package on windows.
-CGO is not used.
+No special instructions are required to build this package on windows.  CGO is not used.
 
 ### Linux
 
-Although this package does not use CGO, some of its dependencies do. The build
-machine also requires that GTK+ 3 is installed.  This should be installed before
-issuing `go get` or you will have error messages during the building of some
-of the dependencies.
+This package requires the use of CGO to access GTK, which must be installed.  The GTK should be installed before issuing `go get` or you will have error messages during the building of some of the internal packages.
 
 On Ubuntu:
 
@@ -38,19 +34,15 @@ On Ubuntu:
 
 ### MacOS
 
-There is a in-progress port for Cocoa.  It is currently being developed using 
-GNUstep on Linux, but has been developed based on documentation from Apple.
-All controls, except for the date control (which is not available in GNUstep),
-are implemented.  However, additional testing, especially on Darwin, is still
-required.
+There is a in-progress port for Cocoa.  It is currently being developed using GNUstep on Linux, but has been developed based on documentation from Apple.  All controls, except for the date control (which is not available in GNUstep), are implemented.  However, additional testing, especially on Darwin, is still required.
 
 ## Getting Started
 
-* Package documentation and examples are on [godoc](https://godoc.org/bitbucket.org/rj/goey).
-* The minimal GUI example application is [onebutton](https://godoc.org/bitbucket.org/rj/goey/example/onebutton),
-  and additional example applications are in the example folder.
-* A mock widget is provided in the `mock` package
-  ([documentation](https://godoc.org/bitbucket.org/rj/goey/mock)).
+Package documentation and examples are on [godoc](https://godoc.org/bitbucket.org/rj/goey).
+
+The minimal GUI example application is [onebutton](https://godoc.org/bitbucket.org/rj/goey/example/onebutton), and additional example applications are in the example folder.  Some of the example show the options available for the widgets, for example [align](https://godoc.org/bitbucket.org/rj/goey/example/align) and [paragraph](https://godoc.org/bitbucket.org/rj/goey/example/paragraph).
+
+New layout widgets can be developed entirely in Go.  For testing, a mock widget is provided in the [`mock` package](https://godoc.org/bitbucket.org/rj/goey/mock).
 
 ### Windows
 
@@ -77,9 +69,12 @@ recognize by the go build program. Additionally, you could use build flags
 
 Feedback and PRs welcome.
 
-In particular, if anyone has the expertise to provide a port for MacOS, that
-would provide support for all major desktop operating systems.
+In particular, if anyone has the expertise to provide a port for MacOS, that would provide support for all major desktop operating systems.
+
+[![Go Report Card](https://goreportcard.com/badge/bitbucket.org/rj/goey)]
+(https://goreportcard.com/report/bitbucket.org/rj/goey)
+
 
 ## License
 
-BSD © Robert Johnstone
+BSD (c) Robert Johnstone
