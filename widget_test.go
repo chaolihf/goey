@@ -6,7 +6,6 @@ import (
 	"image"
 	"image/draw"
 	"reflect"
-	"runtime"
 	"testing"
 	"time"
 
@@ -32,7 +31,7 @@ type Typeable interface {
 }
 
 func normalize(t *testing.T, rhs base.Widget) {
-	if runtime.GOOS == "windows" {
+	if base.PLATFORM == "windows" {
 		// On windows, the message EM_GETCUEBANNER does not work unless the manifest
 		// is set correctly.  This cannot be done for the package, since that
 		// manifest will conflict with the manifest of any app.
@@ -43,8 +42,8 @@ func normalize(t *testing.T, rhs base.Widget) {
 			}
 			value.SetString("")
 		}
-	} else if runtime.GOOS == "linux" {
-		// On linux with GTK, this package is using a GtkTextView to create
+	} else if base.PLATFORM == "gtk" {
+		// With GTK, this package is using a GtkTextView to create
 		// the multi-line text editor, and that widget does not support
 		// placeholders.
 		if elem, ok := rhs.(*TextArea); ok {
@@ -55,13 +54,16 @@ func normalize(t *testing.T, rhs base.Widget) {
 		}
 	}
 
-	if value := reflect.ValueOf(rhs).Elem().FieldByName("Image"); value.IsValid() {
-		if prop, ok := value.Interface().(*image.Gray); ok {
-			t.Logf("Converting 'Image' field from *image.Gray to *image.RGBA")
-			bounds := prop.Bounds()
-			img := image.NewRGBA(bounds)
-			draw.Draw(img, bounds, prop, bounds.Min, draw.Src)
-			value.Set(reflect.ValueOf(img))
+	if base.PLATFORM != "cocoa" {
+		// On both windows and GTK, the props method only return RGBA images.
+		if value := reflect.ValueOf(rhs).Elem().FieldByName("Image"); value.IsValid() {
+			if prop, ok := value.Interface().(*image.Gray); ok {
+				t.Logf("Converting 'Image' field from *image.Gray to *image.RGBA")
+				bounds := prop.Bounds()
+				img := image.NewRGBA(bounds)
+				draw.Draw(img, bounds, prop, bounds.Min, draw.Src)
+				value.Set(reflect.ValueOf(img))
+			}
 		}
 	}
 
@@ -159,7 +161,7 @@ func testingMountWidget(t *testing.T, widget base.Widget) (ok bool) {
 
 		go func(window *Window) {
 			if testing.Verbose() {
-				time.Sleep(2000 * time.Millisecond)
+				time.Sleep(250 * time.Millisecond)
 			}
 			err := loop.Do(func() error {
 				window.Close()

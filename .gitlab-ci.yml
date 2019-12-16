@@ -129,9 +129,9 @@ test-windows:
     - go get bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
     - go build bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
     - go test -c ./base
-    - wine64 ./base.test.exe -coverprofile=cover.out -test.v
+    - wine64 ./base.test.exe -test.coverprofile=cover.out -test.v
     - go test -c ./loop
-    - wine64 ./loop.test.exe -coverprofile=cover.out -test.v
+    - wine64 ./loop.test.exe -test.coverprofile=cover.out -test.v
     - go test -c .
     - wine64 ./goey.test.exe -test.coverprofile=cover.out -test.v -test.short
     - go tool cover -html=cover.out -o=cover.html

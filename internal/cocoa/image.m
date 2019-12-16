@@ -5,7 +5,7 @@
 void* imageNewFromRGBA( uint8_t* imageData, int width, int height,
                         int stride ) {
 	assert( imageData );
-	assert( width>0 && height>0 );
+	assert( width > 0 && height > 0 );
 
 	NSBitmapImageRep* imagerep =
 	    [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
@@ -43,19 +43,19 @@ void* imageNewFromRGBA( uint8_t* imageData, int width, int height,
 void* imageNewFromGray( uint8_t* imageData, int width, int height,
                         int stride ) {
 	assert( imageData );
-	assert( width>0 && height>0 );
+	assert( width > 0 && height > 0 );
 
-	NSBitmapImageRep* imagerep =
-	    [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
-	                                            pixelsWide:width
-	                                            pixelsHigh:height
-	                                         bitsPerSample:8
-	                                       samplesPerPixel:1
-	                                              hasAlpha:NO
-	                                              isPlanar:NO
-	                                        colorSpaceName:NSDeviceWhiteColorSpace
-	                                           bytesPerRow:width
-	                                          bitsPerPixel:8];
+	NSBitmapImageRep* imagerep = [[NSBitmapImageRep alloc]
+	    initWithBitmapDataPlanes:NULL
+	                  pixelsWide:width
+	                  pixelsHigh:height
+	               bitsPerSample:8
+	             samplesPerPixel:1
+	                    hasAlpha:NO
+	                    isPlanar:NO
+	              colorSpaceName:NSDeviceWhiteColorSpace
+	                 bytesPerRow:width
+	                bitsPerPixel:8];
 	assert( imagerep );
 
 	// Copy over the image data.
@@ -102,7 +102,7 @@ int imageviewImageWidth( void* control ) {
 	assert( control && [(id)control isKindOfClass:[NSImageView class]] );
 
 	NSArray* reps = [[(NSImageView*)control image] representations];
-	NSImageRep* rep = [reps  objectAtIndex:0];
+	NSImageRep* rep = [reps objectAtIndex:0];
 	return [rep pixelsWide];
 }
 
@@ -110,7 +110,7 @@ int imageviewImageHeight( void* control ) {
 	assert( control && [(id)control isKindOfClass:[NSImageView class]] );
 
 	NSArray* reps = [[(NSImageView*)control image] representations];
-	NSImageRep* rep = [reps  objectAtIndex:0];
+	NSImageRep* rep = [reps objectAtIndex:0];
 	return [rep pixelsHigh];
 }
 
@@ -118,9 +118,11 @@ int imageviewImageDepth( void* control ) {
 	assert( control && [(id)control isKindOfClass:[NSImageView class]] );
 
 	NSArray* reps = [[(NSImageView*)control image] representations];
-	NSImageRep* rep = [reps  objectAtIndex:0];
+	assert( reps );
+	NSImageRep* rep = [reps objectAtIndex:0];
+	assert( rep );
 
-	if ( [rep colorSpaceName]==NSDeviceWhiteColorSpace ) {
+	if ( [rep colorSpaceName] == NSDeviceWhiteColorSpace ) {
 		int bits = [rep bitsPerSample];
 		if ( [rep hasAlpha] ) {
 			bits *= 2;
@@ -128,7 +130,7 @@ int imageviewImageDepth( void* control ) {
 		return bits;
 	}
 
-	assert( [rep colorSpaceName]==NSDeviceRGBColorSpace );
+	assert( [rep colorSpaceName] == NSDeviceRGBColorSpace );
 	int bits = [rep bitsPerSample];
 	bits *= [rep hasAlpha] ? 4 : 3;
 	return bits;
@@ -137,7 +139,18 @@ int imageviewImageDepth( void* control ) {
 void imageviewImageData( void* control, void* data ) {
 	assert( control && [(id)control isKindOfClass:[NSImageView class]] );
 
+	NSArray* reps = [[(NSImageView*)control image] representations];
+	assert( reps );
+	NSBitmapImageRep* rep = [reps objectAtIndex:0];
+	assert( rep );
 
+	NSInteger const bytesPerRow = [rep bytesPerRow];
+	int i;
+	for ( i = 0; i < [rep pixelsHigh]; i++ ) {
+		unsigned char* dst = (unsigned char*)( data ) + i * bytesPerRow;
+		unsigned char* src = [rep bitmapData] + i * bytesPerRow;
+		memcpy( dst, src, bytesPerRow );
+	}
 }
 
 void imageviewSetImage( void* control, void* image ) {

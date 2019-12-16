@@ -2,6 +2,11 @@
 
 package base
 
+const (
+	// PLATFORM specifies the GUI toolkit being used.
+	PLATFORM = "gtk"
+)
+
 // Control is an opaque type used as a platform-specific handle to a control
 // created using the platform GUI.  As an example, this will refer to a HWND
 // when targeting Windows, but a *GtkContainer when targeting GTK.
