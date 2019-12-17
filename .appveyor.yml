@@ -29,8 +29,8 @@ test_script:
 - sh: go test -v bitbucket.org/rj/goey/base
 - ps: Add-AppveyorTest -Name "Base" -Framework "Go" -FileName "base.test" -Outcome $(If ($?) {"Passed"} Else {"Failed"})
 - ps: Add-AppveyorTest -Name "Loop" -Framework "Go" -FileName "loop.test" -Outcome Running
-- cmd: go test -v bitbucket.org/rj/goey/loop
-- sh: go test -v bitbucket.org/rj/goey/loop
+- cmd: go test -v -race bitbucket.org/rj/goey/loop
+- sh: go test -v -race bitbucket.org/rj/goey/loop
 - ps: Add-AppveyorTest -Name "Loop" -Framework "Go" -FileName "loop.test" -Outcome $(If ($?) {"Passed"} Else {"Failed"})
 - ps: Add-AppveyorTest -Name "Dialog" -Framework "Go" -FileName "dialog.test" -Outcome Running
 - sh: go test -v bitbucket.org/rj/goey/dialog

@@ -92,6 +92,7 @@ test:
     - go get bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
     - go test -coverprofile=cover.out -v ./base ./loop ./dialog .
     - go tool cover -html=cover.out -o=cover.html
+    - go test -v -race ./loop 
     - go vet -composites=false ./base ./loop ./dialog .
     - go get -u github.com/gordonklaus/ineffassign
     - go install github.com/gordonklaus/ineffassign
