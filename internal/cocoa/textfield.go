@@ -23,13 +23,13 @@ var (
 	textfieldCallbacks = make(map[unsafe.Pointer]textfieldCallback)
 )
 
-func NewTextField(window *View, title string) *TextField {
+func NewTextField(window *View, title string, password bool) *TextField {
 	ctitle := C.CString(title)
 	defer func() {
 		C.free(unsafe.Pointer(ctitle))
 	}()
 
-	handle := C.textfieldNew(unsafe.Pointer(window), ctitle)
+	handle := C.textfieldNew(unsafe.Pointer(window), ctitle, toBool(password))
 	return (*TextField)(handle)
 }
 
@@ -53,6 +53,10 @@ func (w *TextField) SetCallbacks(onchange func(string), onfocus func(), onblur f
 
 func (w *TextField) IsEditable() bool {
 	return C.textfieldIsEditable(unsafe.Pointer(w)) != 0
+}
+
+func (w *TextField) IsPassword() bool {
+	return C.textfieldIsPassword(unsafe.Pointer(w)) != 0
 }
 
 func (w *TextField) Placeholder() string {

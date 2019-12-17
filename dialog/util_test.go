@@ -16,7 +16,6 @@ func (tv durationValue) String() string {
 }
 
 func (tv *durationValue) Set(s string) error {
-	println("set")
 	value, err := time.ParseDuration(s)
 	if err == nil {
 		*(*time.Duration)(tv) = value

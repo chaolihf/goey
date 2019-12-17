@@ -123,8 +123,9 @@ extern void textSetAlignment( void* handle, int align );
 extern char const* textText( void* handle );
 
 /* TextField */
-extern void* textfieldNew( void* superview, char const* text );
+extern void* textfieldNew( void* superview, char const* text, bool_t password );
 extern bool_t textfieldIsEditable( void* handle );
+extern bool_t textfieldIsPassword( void* handle );
 extern char const* textfieldPlaceholder( void* handle );
 extern void textfieldSetEditable( void* handle, bool_t value );
 extern void textfieldSetValue( void* handle, char const* text );

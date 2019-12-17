@@ -12,7 +12,7 @@ type textinputElement struct {
 }
 
 func (w *TextInput) mount(parent base.Control) (base.Element, error) {
-	control := cocoa.NewTextField(parent.Handle, w.Value)
+	control := cocoa.NewTextField(parent.Handle, w.Value, w.Password)
 	control.SetPlaceholder(w.Placeholder)
 	control.SetEnabled(!w.Disabled)
 	control.SetEditable(!w.ReadOnly)
@@ -65,7 +65,7 @@ func (w *textinputElement) Props() base.Widget {
 		Value:       w.control.Value(),
 		Disabled:    !w.control.IsEnabled(),
 		Placeholder: w.control.Placeholder(),
-		Password:    false,
+		Password:    w.control.IsPassword(),
 		ReadOnly:    !w.control.IsEditable(),
 		OnChange:    onchange,
 		OnFocus:     onfocus,

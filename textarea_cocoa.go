@@ -13,7 +13,7 @@ type textareaElement struct {
 }
 
 func (w *TextArea) mount(parent base.Control) (base.Element, error) {
-	control := cocoa.NewTextField(parent.Handle, w.Value)
+	control := cocoa.NewTextField(parent.Handle, w.Value, false)
 	control.SetPlaceholder(w.Placeholder)
 	control.SetEnabled(!w.Disabled)
 	control.SetEditable(!w.ReadOnly)
