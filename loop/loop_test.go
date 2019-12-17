@@ -3,6 +3,7 @@ package loop
 import (
 	"errors"
 	"fmt"
+	"sync"
 	"sync/atomic"
 	"testing"
 )
@@ -437,5 +438,78 @@ func TestDoWithPanic(t *testing.T) {
 	}
 	if c := atomic.LoadInt32(&lockCount); c != 0 {
 		t.Errorf("Want lockCount==0, got lockCount==%d", c)
+	}
+}
+
+func TestThunderHerdOfDo(t *testing.T) {
+	count := uint32(0)
+	// This is the limit for number of simultaneous goroutines under the race
+	// detector.
+	const herdSize = 8128
+
+	init := func() error {
+		// Verify that the test is starting in the correct state.
+		if c := atomic.LoadInt32(&lockCount); c != 1 {
+			t.Errorf("Want lockCount==1, got lockCount==%d", c)
+			return nil
+		}
+
+		// Create window and verify.
+		// We need at least one window open to maintain GUI loop.
+		AddLockCount(1)
+		if c := atomic.LoadInt32(&lockCount); c != 2 {
+			t.Fatalf("Want lockCount==2, got lockCount==%d", c)
+		}
+
+		go func() {
+			// At least let the run loop start before we hammer it.
+			err := Do(func() error {
+				atomic.AddUint32(&count, 1)
+				return nil
+			})
+			if err != nil {
+				t.Errorf("Error in Do, %s", err)
+			}
+
+			// Start the herd.
+			wg := sync.WaitGroup{}
+			for i := 0; i < herdSize; i++ {
+				wg.Add(1)
+				go func() {
+					defer wg.Done()
+
+					err := Do(func() error {
+						atomic.AddUint32(&count, 1)
+						return nil
+					})
+					if err != nil {
+						t.Errorf("Error in Do, %s", err)
+					}
+				}()
+			}
+			wg.Wait()
+
+			// Close the window
+			err = Do(func() error {
+				AddLockCount(-1)
+				return nil
+			})
+			if err != nil {
+				t.Errorf("Error in Do, %s", err)
+			}
+		}()
+
+		return nil
+	}
+
+	err := Run(init)
+	if err != nil {
+		t.Errorf("Failed to run GUI loop, %s", err)
+	}
+	if c := atomic.LoadInt32(&lockCount); c != 0 {
+		t.Errorf("Want lockCount==0, got lockCount==%d", c)
+	}
+	if c := atomic.LoadUint32(&count); c != herdSize+1 {
+		t.Errorf("Want count=10, got count==%d", c)
 	}
 }
