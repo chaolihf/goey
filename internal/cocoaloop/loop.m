@@ -206,11 +206,17 @@ void performOnMainThread() {
 		[NSThread sleepForTimeInterval:0.001];
 	}
 
+	// Even though we don't use autorelease, apparently a autorelease pool
+	// is requred by the call to performSelectorOnMainThread.
+	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+	assert( pool );
+
 	id thunk = [[DoThunk alloc] init];
 	[thunk performSelectorOnMainThread:@selector( main )
 	                        withObject:nil
 	                     waitUntilDone:YES];
 	[thunk release];
+	[pool release];
 }
 
 bool_t isMainThread( void ) {
