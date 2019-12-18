@@ -18,6 +18,12 @@
 }
 
 - (BOOL)becomeFirstResponder {
+	// Bug fix for GNUStep?
+	if ( self == [[self window] firstResponder] ) {
+		textfieldOnFocus( self );
+		return YES;
+	}
+
 	BOOL rc = [super becomeFirstResponder];
 	if ( rc ) {
 		textfieldOnFocus( self );
