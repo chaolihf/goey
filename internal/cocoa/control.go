@@ -35,3 +35,7 @@ func (c *Control) MakeFirstResponder() bool {
 func (c *Control) SetEnabled(enabled bool) {
 	C.controlSetEnabled(unsafe.Pointer(c), toBool(enabled))
 }
+
+func (c *Control) SendKey(key uint) {
+	C.controlSendKey(unsafe.Pointer(c), C.unsigned(key))
+}

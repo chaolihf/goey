@@ -117,7 +117,7 @@ func testingMountWidgets(t *testing.T, widgets ...base.Widget) {
 		}
 		go func(window *Window) {
 			if testing.Verbose() && !testing.Short() {
-				time.Sleep(250 * time.Millisecond)
+				time.Sleep(25 * time.Millisecond)
 			}
 			err := loop.Do(func() error {
 				window.Close()
@@ -161,7 +161,7 @@ func testingMountWidget(t *testing.T, widget base.Widget) (ok bool) {
 
 		go func(window *Window) {
 			if testing.Verbose() {
-				time.Sleep(250 * time.Millisecond)
+				time.Sleep(25 * time.Millisecond)
 			}
 			err := loop.Do(func() error {
 				window.Close()

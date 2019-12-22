@@ -4,26 +4,20 @@
 
 @interface GTextField : NSTextField <NSTextFieldDelegate>
 - (BOOL)becomeFirstResponder;
-- (BOOL)resignFirstResponder;
 - (void)controlTextDidChange:(NSNotification*)obj;
+- (void)controlTextDidEndEditing:(NSNotification*)obj;
+- (void)onEnterKey:(id)sender;
 @end
 
 @implementation GTextField
 
 - (void)controlTextDidChange:(NSNotification*)obj {
 	NSString* v = [self stringValue];
-	// Drop const, not representable in Go type system
 	textfieldOnChange( self,
 	                   (char*)[v cStringUsingEncoding:NSUTF8StringEncoding] );
 }
 
 - (BOOL)becomeFirstResponder {
-	// Bug fix for GNUStep?
-	if ( self == [[self window] firstResponder] ) {
-		textfieldOnFocus( self );
-		return YES;
-	}
-
 	BOOL rc = [super becomeFirstResponder];
 	if ( rc ) {
 		textfieldOnFocus( self );
@@ -31,27 +25,29 @@
 	return rc;
 }
 
-- (BOOL)resignFirstResponder {
-	BOOL rc = [super resignFirstResponder];
-	if ( rc ) {
-		textfieldOnBlur( self );
-	}
-	return rc;
+- (void)controlTextDidEndEditing:(NSNotification*)obj {
+	textfieldOnBlur( self );
+}
+
+- (void)onEnterKey:(id)sender {
+	NSString* v = [self stringValue];
+	textfieldOnEnterKey( self,
+	                     (char*)[v cStringUsingEncoding:NSUTF8StringEncoding] );
 }
 
 @end
 
 @interface GPasswordField : NSSecureTextField <NSTextFieldDelegate>
 - (BOOL)becomeFirstResponder;
-- (BOOL)resignFirstResponder;
 - (void)controlTextDidChange:(NSNotification*)obj;
+- (void)controlTextDidEndEditing:(NSNotification*)obj;
+- (void)onEnterKey:(id)sender;
 @end
 
 @implementation GPasswordField
 
 - (void)controlTextDidChange:(NSNotification*)obj {
 	NSString* v = [self stringValue];
-	// Drop const, not representable in Go type system
 	textfieldOnChange( self,
 	                   (char*)[v cStringUsingEncoding:NSUTF8StringEncoding] );
 }
@@ -64,12 +60,14 @@
 	return rc;
 }
 
-- (BOOL)resignFirstResponder {
-	BOOL rc = [super resignFirstResponder];
-	if ( rc ) {
-		textfieldOnBlur( self );
-	}
-	return rc;
+- (void)controlTextDidEndEditing:(NSNotification*)obj {
+	textfieldOnBlur( self );
+}
+
+- (void)onEnterKey:(id)sender {
+	NSString* v = [self stringValue];
+	textfieldOnEnterKey( self,
+	                     (char*)[v cStringUsingEncoding:NSUTF8StringEncoding] );
 }
 
 @end
@@ -79,13 +77,14 @@ void* textfieldNew( void* superview, char const* text, bool_t password ) {
 	assert( text );
 
 	// Create the button
-	NSTextField<NSTextFieldDelegate>* control = password 
-		? [[GPasswordField alloc] init]
-		: [[GTextField alloc] init];
+	NSTextField<NSTextFieldDelegate>* control =
+	    password ? [[GPasswordField alloc] init] : [[GTextField alloc] init];
 	textfieldSetValue( control, text );
 	[control setEditable:YES];
 	//[control setUsesSingleLineMode:YES];
 	[control setDelegate:control];
+	[control setTarget:control];
+	[control setAction:@selector( onEnterKey: )];
 
 	// Add the button as the view for the window
 	[(NSView*)superview addSubview:control];

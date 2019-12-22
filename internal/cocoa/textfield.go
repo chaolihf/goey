@@ -17,6 +17,7 @@ type textfieldCallback struct {
 	onChange func(string)
 	onFocus  func()
 	onBlur   func()
+	onEnterKey func(string)
 }
 
 var (
@@ -38,16 +39,17 @@ func (w *TextField) Close() {
 	delete(textfieldCallbacks, unsafe.Pointer(w))
 }
 
-func (w *TextField) Callbacks() (func(string), func(), func()) {
+func (w *TextField) Callbacks() (func(string), func(), func(),func(string)) {
 	cb := textfieldCallbacks[unsafe.Pointer(w)]
-	return cb.onChange, cb.onFocus, cb.onBlur
+	return cb.onChange, cb.onFocus, cb.onBlur, cb.onEnterKey
 }
 
-func (w *TextField) SetCallbacks(onchange func(string), onfocus func(), onblur func()) {
+func (w *TextField) SetCallbacks(onchange func(string), onfocus func(), onblur func(),onenterkey func(string)) {
 	textfieldCallbacks[unsafe.Pointer(w)] = textfieldCallback{
 		onChange: onchange,
 		onFocus:  onfocus,
 		onBlur:   onblur,
+		onEnterKey: onenterkey,
 	}
 }
 
@@ -109,5 +111,12 @@ func textfieldOnFocus(handle unsafe.Pointer) {
 func textfieldOnBlur(handle unsafe.Pointer) {
 	if cb := textfieldCallbacks[handle]; cb.onBlur != nil {
 		cb.onBlur()
+	}
+}
+
+//export textfieldOnEnterKey
+func textfieldOnEnterKey(handle unsafe.Pointer, text *C.char) {
+	if cb := textfieldCallbacks[handle]; cb.onEnterKey != nil {
+		cb.onEnterKey(C.GoString(text))
 	}
 }

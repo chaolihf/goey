@@ -51,6 +51,7 @@ extern bool_t controlIsEnabled( void* handle );
 extern void controlSetEnabled( void* handle, bool_t value );
 extern nssize_t controlIntrinsicContentSize( void* handle );
 extern bool_t controlMakeFirstResponder( void* handle );
+extern void controlSendKey( void* handle, unsigned keyASCII );
 
 /* Button */
 extern void* buttonNew( void* superview, char const* title );

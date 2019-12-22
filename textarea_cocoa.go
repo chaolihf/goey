@@ -17,7 +17,7 @@ func (w *TextArea) mount(parent base.Control) (base.Element, error) {
 	control.SetPlaceholder(w.Placeholder)
 	control.SetEnabled(!w.Disabled)
 	control.SetEditable(!w.ReadOnly)
-	control.SetCallbacks(w.OnChange, w.OnFocus, w.OnBlur)
+	control.SetCallbacks(w.OnChange, w.OnFocus, w.OnBlur, nil)
 
 	retval := &textareaElement{
 		control:  control,
@@ -52,7 +52,7 @@ func (w *textareaElement) MinIntrinsicWidth(base.Length) base.Length {
 }
 
 func (w *textareaElement) Props() base.Widget {
-	onchange, onfocus, onblur := w.control.Callbacks()
+	onchange, onfocus, onblur,_ := w.control.Callbacks()
 
 	return &TextArea{
 		Value:       w.control.Value(),
@@ -81,6 +81,6 @@ func (w *textareaElement) updateProps(data *TextArea) error {
 	w.control.SetEnabled(!data.Disabled)
 	w.control.SetEditable(!data.ReadOnly)
 	w.minLines = data.MinLines
-	w.control.SetCallbacks(data.OnChange, data.OnFocus, data.OnBlur)
+	w.control.SetCallbacks(data.OnChange, data.OnFocus, data.OnBlur, nil)
 	return nil
 }

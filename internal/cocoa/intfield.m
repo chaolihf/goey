@@ -107,31 +107,30 @@ bool_t intfieldIsEditable( void* handle ) {
 // keep full precision for values near the minimum or maximum of the int64
 // range.  This function is just for Props, and is used to adjust the int64
 // to get a match.
-static int64_t toInt64(double scale) {
+static int64_t toInt64( double scale ) {
 	int64_t a = scale;
 	if ( (double)a == scale ) {
 		return a;
 	}
-	if ( (double)(a-1) == scale ) {
+	if ( (double)( a - 1 ) == scale ) {
 		return a - 1;
 	}
-    printf("mismatch...%ld %f\n", a, scale);
+	printf( "mismatch...%ld %f\n", a, scale );
 	return a;
 }
-
 
 int64_t intfieldMax( void* handle ) {
 	assert( handle && [(id)handle isKindOfClass:[GIntField class]] );
 
 	NSStepper* stepper = [(GIntField*)handle stepper];
-	return toInt64([stepper maxValue]);
+	return toInt64( [stepper maxValue] );
 }
 
 int64_t intfieldMin( void* handle ) {
 	assert( handle && [(id)handle isKindOfClass:[GIntField class]] );
 
 	NSStepper* stepper = [(GIntField*)handle stepper];
-	return toInt64([stepper minValue]);
+	return toInt64( [stepper minValue] );
 }
 
 char const* intfieldPlaceholder( void* handle ) {

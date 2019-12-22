@@ -3,8 +3,11 @@
 package goey
 
 import (
+	"time"
+
 	"bitbucket.org/rj/goey/base"
 	"bitbucket.org/rj/goey/internal/cocoa"
+	"bitbucket.org/rj/goey/loop"
 )
 
 type textinputElement struct {
@@ -16,7 +19,7 @@ func (w *TextInput) mount(parent base.Control) (base.Element, error) {
 	control.SetPlaceholder(w.Placeholder)
 	control.SetEnabled(!w.Disabled)
 	control.SetEditable(!w.ReadOnly)
-	control.SetCallbacks(w.OnChange, w.OnFocus, w.OnBlur)
+	control.SetCallbacks(w.OnChange, w.OnFocus, w.OnBlur, w.OnEnterKey)
 
 	retval := &textinputElement{
 		control: control,
@@ -58,8 +61,31 @@ func (w *textinputElement) TakeFocus() bool {
 	return w.control.MakeFirstResponder()
 }
 
+// TypeKeys sends events to the control as if the string was typed by a user.
+func (w *textinputElement) TypeKeys(text string) chan error {
+	errs := make(chan error, 1)
+
+	go func() {
+		defer close(errs)
+
+		time.Sleep(500 * time.Millisecond)
+		for _, r := range text {
+			err := loop.Do(func() error {
+				w.control.SendKey(uint(r))
+				return nil
+			})
+			if err != nil {
+				errs <- err
+			}
+			time.Sleep(50 * time.Millisecond)
+		}
+	}()
+
+	return errs
+}
+
 func (w *textinputElement) Props() base.Widget {
-	onchange, onfocus, onblur := w.control.Callbacks()
+	onchange, onfocus, onblur, onenterkey := w.control.Callbacks()
 
 	return &TextInput{
 		Value:       w.control.Value(),
@@ -70,6 +96,7 @@ func (w *textinputElement) Props() base.Widget {
 		OnChange:    onchange,
 		OnFocus:     onfocus,
 		OnBlur:      onblur,
+		OnEnterKey:  onenterkey,
 	}
 }
 
@@ -78,6 +105,6 @@ func (w *textinputElement) updateProps(data *TextInput) error {
 	w.control.SetPlaceholder(data.Placeholder)
 	w.control.SetEnabled(!data.Disabled)
 	w.control.SetEditable(!data.ReadOnly)
-	w.control.SetCallbacks(data.OnChange, data.OnFocus, data.OnBlur)
+	w.control.SetCallbacks(data.OnChange, data.OnFocus, data.OnBlur, data.OnEnterKey)
 	return nil
 }
