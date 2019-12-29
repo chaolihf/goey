@@ -12,7 +12,7 @@ var (
 	ErrRuneNotAvailable = errors.New("rune not available")
 )
 
-// DrawImage returns a 32x32 image with the icon specifed by the rune.
+// DrawImage returns a 32x32 image with the icon specified by the rune.
 func DrawImage(index rune) (image.Image, error) {
 	const Width = 32
 	const Height = 32
