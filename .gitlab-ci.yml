@@ -152,7 +152,7 @@ test-cocoa:
   script:
     - go get -tags cocoa bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
     - fluxbox 2> nul &
-    - go test -tags cocoa -coverprofile=cover.out -v ./base ./loop ./dialog .
+    - go test -tags cocoa -coverprofile=cover.out -v ./base ./loop .
     - go tool cover -html=cover.out -o=cover.html
   except:
     - tags

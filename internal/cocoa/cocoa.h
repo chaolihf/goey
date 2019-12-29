@@ -21,6 +21,7 @@ typedef struct nscolor_tag {
 extern void messageDialog( void* window, char const* text, char const* title, char icon );
 extern char const* openPanel( void* window, char const* dir, char const* base );
 extern char const* savePanel( void* window, char const* dir, char const* base );
+extern void dialogSendKey( unsigned key );
 
 extern void trace( char const* func );
 #ifdef NTRACE

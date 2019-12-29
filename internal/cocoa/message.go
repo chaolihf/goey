@@ -52,3 +52,7 @@ func SavePanel(handle *Window, filename string) string {
 	retval := C.savePanel(unsafe.Pointer(handle), dir, base)
 	return C.GoString(retval)
 }
+
+func DialogSendKey(key uint) {
+	C.dialogSendKey(C.unsigned(key))
+}
