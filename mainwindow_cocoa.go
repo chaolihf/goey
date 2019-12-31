@@ -6,9 +6,9 @@ import (
 	"image"
 
 	"bitbucket.org/rj/goey/base"
+	"bitbucket.org/rj/goey/dialog"
 	"bitbucket.org/rj/goey/internal/cocoa"
 	"bitbucket.org/rj/goey/loop"
-	"bitbucket.org/rj/goey/dialog"
 )
 
 type windowImpl struct {
@@ -52,17 +52,17 @@ func (w *windowImpl) close() {
 
 func (w *windowImpl) message(m *dialog.Message) {
 	//m.title, m.err = w.handle.GetTitle()
-	m.WithParent( w.handle)
+	m.WithParent(w.handle)
 }
 
 func (w *windowImpl) openfiledialog(m *dialog.OpenFile) {
 	//m.title, m.err = w.handle.GetTitle()
-	m.WithParent( w.handle)
+	m.WithParent(w.handle)
 }
 
 func (w *windowImpl) savefiledialog(m *dialog.SaveFile) {
 	//m.title, m.err = w.handle.GetTitle()
-	m.WithParent( w.handle)
+	m.WithParent(w.handle)
 }
 
 func (w *windowImpl) onSize() {
@@ -111,6 +111,12 @@ func (w *windowImpl) onSize() {
 		base.Point{}, base.Point{size.Width, size.Height},
 	}
 	w.child.SetBounds(bounds)
+}
+
+// Screenshot returns an image of the window, as displayed on screen.
+func (w *windowImpl) Screenshot() (image.Image, error) {
+	img := w.handle.Screenshot()
+	return img, nil
 }
 
 func (w *windowImpl) setChildPost() {

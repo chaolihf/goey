@@ -9,6 +9,9 @@ package cocoa
 import "C"
 import "image"
 import "unsafe"
+import "os"
+import "os/exec"
+import "image/png"
 
 // Window is a wrapper for a NSWindow.
 type Window struct {
@@ -50,6 +53,40 @@ func (w *Window) ContentView() *View {
 
 func (w *Window) MakeFirstResponder(c *Control) {
 	C.windowMakeFirstResponder(unsafe.Pointer(w), unsafe.Pointer(c))
+}
+
+func loadPNG(filename string) (image.Image,error) {
+	file, err := os.Open("./ss.png")
+	if err!=nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	return png.Decode(file)
+}
+
+func (w *Window) Screenshot() image.Image {
+	if ss := os.Getenv("SCREENSHOOTER"); ss!="" {
+		cmd := exec.Command(ss,"-w", "-s", "./ss.png")
+		err := cmd.Run()
+		if err!=nil {
+			panic(err)
+		}
+
+		img, err := loadPNG("./ss.png")
+		if err !=nil {
+			panic(err)
+		}
+		os.Remove("./ss.png")
+
+		return img
+	}
+
+	size := C.windowFrameSize(unsafe.Pointer(w))
+
+	img := image.NewRGBA(image.Rect(0, 0, int(size.width), int(size.height)))
+	C.windowScreenshot(unsafe.Pointer(w), unsafe.Pointer(&img.Pix[0]), size.width, size.height)
+	return img
 }
 
 func (w *Window) SetCallbacks(cb WindowCallbacks) {

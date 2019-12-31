@@ -260,7 +260,7 @@ func TestDo(t *testing.T) {
 
 func BenchmarkRunNoInit(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		err := Run(func() error {
+		err := loop.Run(func() error {
 			return nil
 		})
 		if err != nil {
@@ -272,22 +272,22 @@ func BenchmarkRunNoInit(b *testing.B) {
 func BenchmarkRun(b *testing.B) {
 	init := func() error {
 		// Verify that the test is starting in the correct state.
-		if c := atomic.LoadInt32(&lockCount); c != 1 {
+		if c := loop.LockCount(); c != 1 {
 			b.Errorf("Want lockCount==1, got lockCount==%d", c)
 			return nil
 		}
 
 		// Create window and verify.
 		// We need at least one window open to maintain GUI loop.
-		AddLockCount(1)
-		if c := atomic.LoadInt32(&lockCount); c != 2 {
+		loop.AddLockCount(1)
+		if c := loop.LockCount(); c != 2 {
 			b.Fatalf("Want lockCount==2, got lockCount==%d", c)
 		}
 
 		go func() {
 			// Close the window
-			err := Do(func() error {
-				AddLockCount(-1)
+			err := loop.Do(func() error {
+				loop.AddLockCount(-1)
 				return nil
 			})
 			if err != nil {
@@ -299,7 +299,7 @@ func BenchmarkRun(b *testing.B) {
 	}
 
 	for i := 0; i < b.N; i++ {
-		err := Run(init)
+		err := loop.Run(init)
 		if err != nil {
 			b.Errorf("Call to Run failed: %s", err)
 		}
@@ -473,21 +473,21 @@ func TestThunderHerdOfDo(t *testing.T) {
 
 	init := func() error {
 		// Verify that the test is starting in the correct state.
-		if c := atomic.LoadInt32(&lockCount); c != 1 {
+		if c := loop.LockCount(); c != 1 {
 			t.Errorf("Want lockCount==1, got lockCount==%d", c)
 			return nil
 		}
 
 		// Create window and verify.
 		// We need at least one window open to maintain GUI loop.
-		AddLockCount(1)
-		if c := atomic.LoadInt32(&lockCount); c != 2 {
+		loop.AddLockCount(1)
+		if c := loop.LockCount(); c != 2 {
 			t.Fatalf("Want lockCount==2, got lockCount==%d", c)
 		}
 
 		go func() {
 			// At least let the run loop start before we hammer it.
-			err := Do(func() error {
+			err := loop.Do(func() error {
 				atomic.AddUint32(&count, 1)
 				return nil
 			})
@@ -502,7 +502,7 @@ func TestThunderHerdOfDo(t *testing.T) {
 				go func() {
 					defer wg.Done()
 
-					err := Do(func() error {
+					err := loop.Do(func() error {
 						atomic.AddUint32(&count, 1)
 						return nil
 					})
@@ -514,8 +514,8 @@ func TestThunderHerdOfDo(t *testing.T) {
 			wg.Wait()
 
 			// Close the window
-			err = Do(func() error {
-				AddLockCount(-1)
+			err = loop.Do(func() error {
+				loop.AddLockCount(-1)
 				return nil
 			})
 			if err != nil {
@@ -526,11 +526,11 @@ func TestThunderHerdOfDo(t *testing.T) {
 		return nil
 	}
 
-	err := Run(init)
+	err := loop.Run(init)
 	if err != nil {
 		t.Errorf("Failed to run GUI loop, %s", err)
 	}
-	if c := atomic.LoadInt32(&lockCount); c != 0 {
+	if c := loop.LockCount(); c != 0 {
 		t.Errorf("Want lockCount==0, got lockCount==%d", c)
 	}
 	if c := atomic.LoadUint32(&count); c != herdSize+1 {

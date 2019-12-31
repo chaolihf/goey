@@ -97,6 +97,15 @@ nssize_t windowContentSize( void* handle ) {
 	return ret;
 }
 
+nssize_t windowFrameSize( void* handle ) {
+	assert( [NSThread isMainThread] );
+	assert( handle );
+
+	NSRect frame = [(NSWindow*)handle frame];
+	nssize_t ret = {frame.size.width, frame.size.height};
+	return ret;
+}
+
 void* windowContentView( void* handle ) {
 	assert( [NSThread isMainThread] );
 	assert( handle );
@@ -174,4 +183,45 @@ char const* windowTitle( void* handle ) {
 	    [[(NSWindow*)handle title] cStringUsingEncoding:NSUTF8StringEncoding];
 	assert( cstring );
 	return cstring;
+}
+
+void windowScreenshot( void* handle, void* imgdata, int32_t width,
+                       int32_t height ) {
+	assert( [NSThread isMainThread] );
+	assert( handle && [(id)handle isKindOfClass:[NSWindow class]] );
+
+	NSData* data = [(NSWindow*)handle
+	    dataWithEPSInsideRect:[NSWindow frameRectForContentRect:NSMakeRect(0,0,width,height) styleMask:[(NSWindow*)handle styleMask]]];
+	assert( data );
+	NSImage* image = [[NSImage alloc] initWithData:data];
+	assert( image );
+	[data release];
+
+	NSBitmapImageRep* imagerep =
+	    [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
+	                                            pixelsWide:width
+	                                            pixelsHigh:height
+	                                         bitsPerSample:8
+	                                       samplesPerPixel:4
+	                                              hasAlpha:YES
+	                                              isPlanar:NO
+	                                        colorSpaceName:NSDeviceRGBColorSpace
+	                                           bytesPerRow:4 * width
+	                                          bitsPerPixel:32];
+	assert( imagerep );
+
+	BOOL ok = [image
+	    drawRepresentation:imagerep
+	                inRect:NSMakeRect( 0, 0, width, height )];
+	assert( ok );
+
+	NSInteger const bytesPerRow = [imagerep bytesPerRow];
+	int i;
+	for ( i = 0; i < [imagerep pixelsHigh]; i++ ) {
+		unsigned char* dst = (unsigned char*)( imgdata ) + i * bytesPerRow;
+		unsigned char* src = [imagerep bitmapData] + i * bytesPerRow;
+		memcpy( dst, src, bytesPerRow );
+	}
+	[imagerep release];
+	[image release];
 }

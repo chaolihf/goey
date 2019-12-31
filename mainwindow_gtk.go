@@ -139,7 +139,6 @@ func (w *windowImpl) Screenshot() (image.Image, error) {
 	pix, hasAlpha, width, height, stride := gtk.WindowScreenshot(w.handle)
 
 	if hasAlpha {
-
 		return &image.RGBA{
 			Pix:    pix,
 			Stride: stride,
