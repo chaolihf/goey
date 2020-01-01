@@ -126,28 +126,37 @@ test-windows:
     DISPLAY: ":1"
     APT_GET: "wine64 wine-binfmt xvfb"
     GOOS: windows
-  before_script:
-    - *before_script_all
-    - mkdir -p .cache/github.com
-    - mv .cache/github.com $GOPATH/src/
-  after_script:
-    - mv $GOPATH/src/github.com .cache/
   script:
     - go get bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
     - go build bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
-    - go test -c ./base
-    - wine64 ./base.test.exe -test.v
-    - go test -c ./loop
-    - wine64 ./loop.test.exe -test.v
-    - go test -c .
-    - wine64 ./goey.test.exe -test.v -test.short
-  cache:
-    key: test
-    paths:
-      - .cache/github.com/
+    - go test -c -coverprofile=cover.out ./base
+    - wine64 ./base.test.exe -test.coverprofile=cover.out -test.v
+    - go test -c -coverprofile=cover.out ./loop
+    - wine64 ./loop.test.exe -test.coverprofile=cover.out -test.v
+    - go test -c -coverprofile=cover.out .
+    - wine64 ./goey.test.exe -test.coverprofile=cover.out -test.v -test.short
+    - go tool cover -html=cover.out -o=cover.html
   except:
     - tags
-  allow_failure: true
+  artifacts:
+    paths:
+      - cover.html
+
+test-cocoa:
+  image: golang:1.12
+  stage: test
+  variables:
+    GOPATH: $CI_BUILDS_DIR
+    GIT_CLONE_PATH: $CI_BUILDS_DIR/src/bitbucket.org/rj/goey
+    DISPLAY: ":1"
+    APT_GET: "gnustep-devel xvfb fluxbox"
+  script:
+    - go get -tags cocoa bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
+    - fluxbox 2> nul &
+    - go test -tags cocoa -coverprofile=cover.out -v ./base ./loop .
+    - go tool cover -html=cover.out -o=cover.html
+  except:
+    - tags
   artifacts:
     paths:
       - cover.html
@@ -179,9 +188,6 @@ lint:
   except:
     - tags
   allow_failure: true
-
-include:
-  template: SAST.gitlab-ci.yml
 
 pages:
   stage: deploy

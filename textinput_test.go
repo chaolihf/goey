@@ -97,6 +97,14 @@ func TestTextInputOnFocus(t *testing.T) {
 		&TextInput{},
 		&TextInput{},
 	)
+
+	// On some platforms, the password control is a separate type, and so may
+	// may have a parallel implementation.
+	testingCheckFocusAndBlur(t,
+		&TextInput{Password: true},
+		&TextInput{Password: true},
+		&TextInput{Password: true},
+	)
 }
 
 func TestTextInputOnChange(t *testing.T) {

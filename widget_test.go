@@ -6,7 +6,6 @@ import (
 	"image"
 	"image/draw"
 	"reflect"
-	"runtime"
 	"testing"
 	"time"
 
@@ -32,7 +31,7 @@ type Typeable interface {
 }
 
 func normalize(t *testing.T, rhs base.Widget) {
-	if runtime.GOOS == "windows" {
+	if base.PLATFORM == "windows" {
 		// On windows, the message EM_GETCUEBANNER does not work unless the manifest
 		// is set correctly.  This cannot be done for the package, since that
 		// manifest will conflict with the manifest of any app.
@@ -43,8 +42,8 @@ func normalize(t *testing.T, rhs base.Widget) {
 			}
 			value.SetString("")
 		}
-	} else if runtime.GOOS == "linux" {
-		// On linux with GTK, this package is using a GtkTextView to create
+	} else if base.PLATFORM == "gtk" {
+		// With GTK, this package is using a GtkTextView to create
 		// the multi-line text editor, and that widget does not support
 		// placeholders.
 		if elem, ok := rhs.(*TextArea); ok {
@@ -55,13 +54,16 @@ func normalize(t *testing.T, rhs base.Widget) {
 		}
 	}
 
-	if value := reflect.ValueOf(rhs).Elem().FieldByName("Image"); value.IsValid() {
-		if prop, ok := value.Interface().(*image.Gray); ok {
-			t.Logf("Converting 'Image' field from *image.Gray to *image.RGBA")
-			bounds := prop.Bounds()
-			img := image.NewRGBA(bounds)
-			draw.Draw(img, bounds, prop, bounds.Min, draw.Src)
-			value.Set(reflect.ValueOf(img))
+	if base.PLATFORM != "cocoa" {
+		// On both windows and GTK, the props method only return RGBA images.
+		if value := reflect.ValueOf(rhs).Elem().FieldByName("Image"); value.IsValid() {
+			if prop, ok := value.Interface().(*image.Gray); ok {
+				t.Logf("Converting 'Image' field from *image.Gray to *image.RGBA")
+				bounds := prop.Bounds()
+				img := image.NewRGBA(bounds)
+				draw.Draw(img, bounds, prop, bounds.Min, draw.Src)
+				value.Set(reflect.ValueOf(img))
+			}
 		}
 	}
 
@@ -115,7 +117,7 @@ func testingMountWidgets(t *testing.T, widgets ...base.Widget) {
 		}
 		go func(window *Window) {
 			if testing.Verbose() && !testing.Short() {
-				time.Sleep(250 * time.Millisecond)
+				time.Sleep(25 * time.Millisecond)
 			}
 			err := loop.Do(func() error {
 				window.Close()
@@ -158,6 +160,9 @@ func testingMountWidget(t *testing.T, widget base.Widget) (ok bool) {
 		}
 
 		go func(window *Window) {
+			if testing.Verbose() {
+				time.Sleep(25 * time.Millisecond)
+			}
 			err := loop.Do(func() error {
 				window.Close()
 				return nil
@@ -278,7 +283,7 @@ func testingCheckFocusAndBlur(t *testing.T, widgets ...base.Widget) {
 			// Run the actions, which are counted.
 			for i := 0; i < 3; i++ {
 				err := loop.Do(func() error {
-					// Find the child element to be clicked
+					// Find the child element to be focused
 					child := window.child.(*vboxElement).children[i]
 					if elem, ok := child.(Focusable); ok {
 						ok := elem.TakeFocus()
