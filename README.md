@@ -25,16 +25,31 @@ No special instructions are required to build this package on windows.  CGO is n
 
 ### Linux
 
-This package requires the use of CGO to access GTK, which must be installed.  The GTK should be installed before issuing `go get` or you will have error messages during the building of some of the internal packages.
+This package requires the use of CGO to access GTK, which must be installed.  The GTK libraries should be installed before issuing `go get` or you will have error messages during the building of some of the internal packages.
 
 On Ubuntu:
 
     sudo apt-get install libgtk-3-dev
 
+#### Linux with GNUstep
+
+This package can be built to target Cocoa using GNUstep, which must be installed.  Most users are unlikely to want to use this option, but it can be useful for development.  The libraries for GNUstep must be installed before issuing `go get` or you will have error message during the building of some of the internal packages.
+
+On Ubuntu:
+
+    sudo apt-get install gnustep-devel
+
+To force the use of GNUstep, build using the build tag `cocoa`.
+
+### BSD
+
+This package requires the use of CGO to access GTK, which must be installed.  The GTK libraries should be installed before issuing `go get` or you will have error messages during the building of some of the internal packages.
 
 ### MacOS
 
 There is a in-progress port for Cocoa.  It is currently being developed using GNUstep on Linux, but has been developed based on documentation from Apple.  All controls, except for the date control (which is not available in GNUstep), are implemented.  However, additional testing, especially on Darwin, is still required.
+
+If you can either test on Macs, or provide build systems, please contact us.
 
 ## Getting Started
 
@@ -54,16 +69,16 @@ recognize by the go build program. Additionally, you could use build flags
 
 ## Screenshots
 
-| Windows    | Linux (GTK)|
-|:----------:|:----------:|
-|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/onebutton/onebutton_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/onebutton/onebutton_linux.png)|
-|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/twofields/twofields_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/twofields/twofields_linux.png)|
-|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/decoration/decoration_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/decoration/decoration_linux.png)|
-|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/colour/colour_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/colour/colour_linux.png)|
-|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/feettometer/feettometer_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/feettometer/feettometer_linux.png)|
-|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/controls/controls1_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/controls/controls1_linux.png)|
-|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/controls/controls2_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/controls/controls2_linux.png)|
-|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/controls/controls3_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/controls/controls3_linux.png)|
+| Windows    | Linux (GTK) | MacOS (Cocoa) |
+|:----------:|:-----------:|:-------------:|
+|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/onebutton/onebutton_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/onebutton/onebutton_gtk.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/onebutton/onebutton_cocoa.png)|
+|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/twofields/twofields_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/twofields/twofields_gtk.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/twofields/twofields_cocoa.png)|
+|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/decoration/decoration_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/decoration/decoration_gtk.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/decoration/decoration_cocoa.png)|
+|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/colour/colour_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/colour/colour_gtk.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/colour/colour_cocoa.png)|
+|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/feettometer/feettometer_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/feettometer/feettometer_gtk.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/feettometer/feettometer_cocoa.png)|
+|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/controls/controls1_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/controls/controls1_gtk.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/controls/controls1_cocoa.png)|
+|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/controls/controls2_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/controls/controls2_gtk.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/controls/controls2_cocoa.png)|
+|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/controls/controls3_windows.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/controls/controls3_gtk.png)|![Screenshot](https://bitbucket.org/rj/goey/raw/master/example/controls/controls3_cocoa.png)|
 
 ## Contribute
 
@@ -71,8 +86,7 @@ Feedback and PRs welcome.
 
 In particular, if anyone has the expertise to provide a port for MacOS, that would provide support for all major desktop operating systems.
 
-[![Go Report Card](https://goreportcard.com/badge/bitbucket.org/rj/goey)]
-(https://goreportcard.com/report/bitbucket.org/rj/goey)
+[![Go Report Card](https://goreportcard.com/badge/bitbucket.org/rj/goey)](https://goreportcard.com/report/bitbucket.org/rj/goey)
 
 
 ## License
