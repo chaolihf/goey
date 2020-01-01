@@ -469,7 +469,9 @@ func TestDoWithPanic(t *testing.T) {
 
 func TestThunderHerdOfDo(t *testing.T) {
 	count := uint32(0)
-	const herdSize = 10000
+	// This is the limit for number of simultaneous goroutines under the race
+	// detector.
+	const herdSize = 8128
 
 	init := func() error {
 		// Verify that the test is starting in the correct state.
