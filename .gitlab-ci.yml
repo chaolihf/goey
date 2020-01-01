@@ -155,6 +155,7 @@ test-cocoa:
     - fluxbox 2> nul &
     - go test -tags cocoa -coverprofile=cover.out -v ./base ./loop .
     - go tool cover -html=cover.out -o=cover.html
+    - go test -tags cocoa -v -race ./loop 
   except:
     - tags
   artifacts:
