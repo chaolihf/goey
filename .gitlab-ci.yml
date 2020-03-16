@@ -4,6 +4,16 @@ before_script: &before_script_all
   - if [ -n "$APT_GET" ]; then apt-get update -qq -y; apt-get install -qq -y $APT_GET; fi;
   - if [ -n "$DISPLAY" ]; then Xvfb $DISPLAY -screen 0 1024x768x24 & fi;
 
+golang-1.14:
+  image: golang:1.14
+  stage: build
+  variables:
+    DISPLAY: ":1"
+    APT_GET: "libgtk-3-dev xvfb"
+  script:
+    - go build . ./example/...
+    - go test ./base ./loop ./dialog .
+
 golang-1.13:
   image: golang:1.13
   stage: build
@@ -163,29 +173,11 @@ test-cocoa:
       - cover.html
 
 lint:
-  image: golang:1.12
+  image: golang:1.14
   stage: test
-  variables:
-    GOPATH: $CI_BUILDS_DIR
-    GIT_CLONE_PATH: $CI_BUILDS_DIR/src/bitbucket.org/rj/goey
-    APT_GET: "libgtk-3-dev"
-  before_script:
-    - *before_script_all
-    - mkdir -p .cache/pkg
-    - mv .cache/pkg $GOPATH/pkg
-  after_script:
-    - mv $GOPATH/pkg .cache/
   script:
-    - go get bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
-    - cd ..
-    - GO111MODULE=on go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.21.0
-    - GO111MODULE=on go install github.com/golangci/golangci-lint/cmd/golangci-lint
-    - cd $GIT_CLONE_PATH
-    - $GOPATH/bin/golangci-lint run -v --exclude=composites --exclude=".parent. is unused" --enable=interfacer,unconvert,prealloc ./base ./loop ./dialog .
-  cache:
-    key: lint
-    paths:
-      - .cache/pkg/
+    - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- v1.23.6
+    - ./bin/golangci-lint run -v --enable-all --disable wsl .
   except:
     - tags
   allow_failure: true
