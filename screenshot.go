@@ -24,7 +24,12 @@ func saveScreenshot(filename string, ss screenshoter) error {
 	if err != nil {
 		return err
 	}
-	defer file.Close()
+	defer func() {
+		// Ignoring error when closing a file.  Possible loss of information.
+		// The screenshot does not contain user data, and exists just for
+		// testing.  Risk of data corruption is accepted here.
+		_ = file.Close()
+	}()
 
 	return png.Encode(file, img)
 }

@@ -55,26 +55,29 @@ func (w *Window) MakeFirstResponder(c *Control) {
 	C.windowMakeFirstResponder(unsafe.Pointer(w), unsafe.Pointer(c))
 }
 
-func loadPNG(filename string) (image.Image,error) {
+func loadPNG(filename string) (image.Image, error) {
 	file, err := os.Open("./ss.png")
-	if err!=nil {
+	if err != nil {
 		return nil, err
 	}
-	defer file.Close()
+	defer func() {
+		// Close of a file with only read permission.  Will not error.
+		_ = file.Close()
+	}()
 
 	return png.Decode(file)
 }
 
 func (w *Window) Screenshot() image.Image {
-	if ss := os.Getenv("SCREENSHOOTER"); ss!="" {
-		cmd := exec.Command(ss,"-w", "-s", "./ss.png")
+	if ss := os.Getenv("SCREENSHOOTER"); ss != "" {
+		cmd := exec.Command(ss, "-w", "-s", "./ss.png")
 		err := cmd.Run()
-		if err!=nil {
+		if err != nil {
 			panic(err)
 		}
 
 		img, err := loadPNG("./ss.png")
-		if err !=nil {
+		if err != nil {
 			panic(err)
 		}
 		os.Remove("./ss.png")

@@ -110,9 +110,8 @@ test:
     - go get -u github.com/client9/misspell/cmd/misspell
     - go install github.com/client9/misspell/cmd/misspell
     - $GOPATH/bin/misspell -locale US *.go *.md base/*.go loop/*.go dialog/*.go
-    - go get -u github.com/securego/gosec/cmd/gosec
-    - go install github.com/securego/gosec/cmd/gosec
-    - $GOPATH/bin/gosec -exclude=G104,G304 ./...
+    - curl -sfL https://raw.githubusercontent.com/securego/gosec/master/install.sh | sh -s -- -b $GOPATH/bin v2.2.0
+    - $GOPATH/bin/gosec -exclude-dir=internal -exclude=G104,G204,G304 ./...
     - mkdir ./images
     - for elem in $SCREENSHOTS; do go build -v bitbucket.org/rj/goey/example/$elem; done
     - for elem in $SCREENSHOTS; do GOEY_SCREENSHOT=./images/${elem}_linux.png ./$elem; done

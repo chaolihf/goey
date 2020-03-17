@@ -42,7 +42,10 @@ func loadImage(filename string) (image.Image, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer file.Close()
+	defer func() {
+		// Close of a file with only read permission.  Will not error.
+		_ = file.Close()
+	}()
 
 	img, _, err := image.Decode(file)
 	return img, err
