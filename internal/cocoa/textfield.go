@@ -14,9 +14,9 @@ type TextField struct {
 }
 
 type textfieldCallback struct {
-	onChange func(string)
-	onFocus  func()
-	onBlur   func()
+	onChange   func(string)
+	onFocus    func()
+	onBlur     func()
 	onEnterKey func(string)
 }
 
@@ -39,16 +39,16 @@ func (w *TextField) Close() {
 	delete(textfieldCallbacks, unsafe.Pointer(w))
 }
 
-func (w *TextField) Callbacks() (func(string), func(), func(),func(string)) {
+func (w *TextField) Callbacks() (func(string), func(), func(), func(string)) {
 	cb := textfieldCallbacks[unsafe.Pointer(w)]
 	return cb.onChange, cb.onFocus, cb.onBlur, cb.onEnterKey
 }
 
-func (w *TextField) SetCallbacks(onchange func(string), onfocus func(), onblur func(),onenterkey func(string)) {
+func (w *TextField) SetCallbacks(onchange func(string), onfocus func(), onblur func(), onenterkey func(string)) {
 	textfieldCallbacks[unsafe.Pointer(w)] = textfieldCallback{
-		onChange: onchange,
-		onFocus:  onfocus,
-		onBlur:   onblur,
+		onChange:   onchange,
+		onFocus:    onfocus,
+		onBlur:     onblur,
 		onEnterKey: onenterkey,
 	}
 }

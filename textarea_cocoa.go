@@ -52,7 +52,7 @@ func (w *textareaElement) MinIntrinsicWidth(base.Length) base.Length {
 }
 
 func (w *textareaElement) Props() base.Widget {
-	onchange, onfocus, onblur,_ := w.control.Callbacks()
+	onchange, onfocus, onblur, _ := w.control.Callbacks()
 
 	return &TextArea{
 		Value:       w.control.Value(),
