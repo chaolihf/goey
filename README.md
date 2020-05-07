@@ -1,4 +1,4 @@
-# Goey
+# ![Goey](./logo256x128.png)
 
 Package goey provides a declarative, cross-platform GUI for the
 [Go](https://golang.org/) language. The range of controls, their supported
