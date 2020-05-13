@@ -89,6 +89,12 @@ In particular, if anyone has the expertise to provide a port for MacOS, that wou
 
 [![Go Report Card](https://goreportcard.com/badge/bitbucket.org/rj/goey)](https://goreportcard.com/report/bitbucket.org/rj/goey)
 
+## Related Projects
+
+* [Gio](https://gioui.org/): Gio implements portable immediate mode GUI programs in Go.
+* [gotk3](https://github.com/gotk3/gotk3):  Go bindings for GTK3.
+* [walk](https://github.com/lxn/walk):  A Windows GUI toolkit for the Go Programming Language.
+* [ui](https://github.com/andlabs/ui):  Platform-native GUI library for Go. 
 
 ## License
 
