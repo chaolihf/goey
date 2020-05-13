@@ -6,6 +6,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 
 	"bitbucket.org/rj/goey"
@@ -21,7 +22,8 @@ var (
 func main() {
 	err := loop.Run(createWindow)
 	if err != nil {
-		fmt.Println("Error: ", err)
+		fmt.Fprintf(os.Stderr, "error: %s\n", err)
+		os.Exit(1)
 	}
 }
 
@@ -46,7 +48,7 @@ func updateWindow() {
 	// top-level window.
 	err := mainWindow.SetChild(render())
 	if err != nil {
-		fmt.Println("Error: ", err.Error())
+		fmt.Fprintf(os.Stderr, "error: %s\n", err)
 	}
 }
 
@@ -61,7 +63,7 @@ func render() base.Widget {
 	// We return a widget describing the desired state of the GUI.  Note that
 	// this is data only, and no changes have been effected yet.
 	return &goey.Padding{
-		Insets: goey.UniformInsets(36 * goey.DIP),
+		Insets: goey.DefaultInsets(),
 		Child: &goey.Align{
 			Child: &goey.Button{Text: text, OnClick: func() {
 				// Side-effect for clicking the button.
