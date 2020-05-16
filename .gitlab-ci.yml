@@ -83,6 +83,17 @@ golang-1.8:
     - go build bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
     - go test ./base ./loop ./dialog .
 
+golang-windows:
+  stage: build
+  tags:
+    - windows
+    - windows-1809
+  before_script:
+    - go version
+  script:
+    - go build . ./example/...
+    - go test ./base ./loop . -v
+
 test:
   image: golang:1.12
   stage: test
