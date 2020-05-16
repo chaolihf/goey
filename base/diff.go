@@ -66,9 +66,7 @@ func DiffChildren(parent Control, lhs []Element, rhs []Widget) ([]Element, error
 	// If the new tree does not contain any children, then we can trivially
 	// match the tree by deleting the actual widgets.
 	if len(rhs) == 0 {
-		for _, v := range lhs {
-			v.Close()
-		}
+		CloseElements(lhs)
 		return nil, nil
 	}
 
@@ -90,9 +88,7 @@ func DiffChildren(parent Control, lhs []Element, rhs []Widget) ([]Element, error
 
 	// Delete excessive children
 	if len(lhs) > len(rhs) {
-		for _, v := range lhs[len(rhs):] {
-			v.Close()
-		}
+		CloseElements(lhs[len(rhs):])
 		lhs = lhs[:len(rhs)]
 	}
 
