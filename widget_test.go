@@ -3,6 +3,7 @@ package goey
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"image"
 	"image/draw"
 	"reflect"
@@ -328,16 +329,21 @@ func testingCheckFocusAndBlur(t *testing.T, widgets ...base.Widget) {
 }
 
 func testingTypeKeys(t *testing.T, text string, widget base.Widget) {
-	skipFlag := false
+	// Typing keys happens asynchronously to the event loop.  Errors in that
+	// goroutine will be fed into this channel.  However, the channel won't be
+	// drained until the event loop terminates.  Errors need to be buffered.
+	errc := make(chan error, 8)
 
 	init := func() error {
 		window, err := NewWindow(t.Name(), &VBox{Children: []base.Widget{widget}})
 		if err != nil {
-			t.Errorf("Failed to create window, %s", err)
+			return fmt.Errorf("failed to create window: %s", err)
 		}
 
 		var typingErr chan error
 		go func(window *Window) {
+			defer close(errc)
+
 			// On WIN32, let the window complete any opening animation.
 			time.Sleep(20 * time.Millisecond)
 
@@ -347,21 +353,21 @@ func testingTypeKeys(t *testing.T, text string, widget base.Widget) {
 					if elem.TakeFocus() {
 						typingErr = elem.TypeKeys(text)
 					} else {
-						t.Errorf("Control failed to take focus.")
+						return fmt.Errorf("control failed to take focus")
 					}
 				} else {
-					skipFlag = true
+					return fmt.Errorf("control does not support method TypeKeys")
 				}
 				return nil
 			})
 			if err != nil {
-				t.Errorf("Error in Do, %s", err)
+				errc <- err
 			}
 
 			// Wait for typing to complete, and check for errors
 			if typingErr != nil {
 				for v := range typingErr {
-					t.Errorf("Failed to type keys on the control, %v", v)
+					errc <- fmt.Errorf("failed to type keys: %s", v)
 				}
 			}
 
@@ -371,7 +377,7 @@ func testingTypeKeys(t *testing.T, text string, widget base.Widget) {
 				return nil
 			})
 			if err != nil {
-				t.Errorf("Error in Do, %s", err)
+				errc <- fmt.Errorf("can't close window: %s", err)
 			}
 		}(window)
 
@@ -382,8 +388,8 @@ func testingTypeKeys(t *testing.T, text string, widget base.Widget) {
 	if err != nil {
 		t.Errorf("Failed to run GUI loop, %s", err)
 	}
-	if skipFlag {
-		t.Skip("Control does not support TypeKeys")
+	for err := range errc {
+		t.Skip(err.Error())
 	}
 }
 

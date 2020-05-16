@@ -77,12 +77,24 @@ func (w *Control) TakeFocus() bool {
 
 // TypeKeys sends events to the control as if the string was typed by a user.
 func (w *Control) TypeKeys(text string) chan error {
-	err := make(chan error, 1)
+	errc := make(chan error, 1)
 
 	go func() {
-		defer close(err)
+		defer close(errc)
 
 		time.Sleep(50 * time.Millisecond)
+
+		err := loop.Do(func() error {
+			if win.GetForegroundWindow() == 0 {
+				return fmt.Errorf("can't type keys: no foreground window")
+			}
+			return nil
+		})
+		if err != nil {
+			errc <- err
+			return
+		}
+
 		for _, r := range text {
 			inp := [2]win.KEYBD_INPUT{
 				{win.INPUT_KEYBOARD, win.KEYBDINPUT{}},
@@ -100,18 +112,22 @@ func (w *Control) TypeKeys(text string) chan error {
 				inp[1].Ki.DwFlags = win.KEYEVENTF_UNICODE | win.KEYEVENTF_KEYUP
 			}
 
-			loop.Do(func() error {
+			err := loop.Do(func() error {
 				rc := win.SendInput(2, unsafe.Pointer(&inp), int32(unsafe.Sizeof(inp[0])))
 				if rc != 2 {
-					err <- fmt.Errorf("windows error, %x", win.GetLastError())
+					return fmt.Errorf("failed to send input: rc= %d: %x", rc, win.GetLastError())
 				}
 				return nil
 			})
+			if err != nil {
+				errc <- err
+				return
+			}
 			time.Sleep(10 * time.Millisecond)
 		}
 	}()
 
-	return err
+	return errc
 }
 
 // SetOrder is a call around SetWindowPos used to ensure that a window appears
