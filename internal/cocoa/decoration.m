@@ -83,7 +83,7 @@ nssize_t decorationBorderRadius( void* handle ) {
 	assert( handle && [(id)handle isKindOfClass:[GDecoration class]] );
 
 	NSSize size = [(GDecoration*)handle borderRadius];
-	nssize_t rc = {size.width, size.height};
+	nssize_t rc = { size.width, size.height };
 	return rc;
 }
 
@@ -92,13 +92,13 @@ nscolor_t decorationFillColor( void* handle ) {
 
 	NSColor* clr = [(GDecoration*)handle fillColor];
 	if ( !clr ) {
-		nscolor_t clr = {0, 0, 0, 0};
+		nscolor_t clr = { 0, 0, 0, 0 };
 		return clr;
 	}
 
 	CGFloat r, g, b, a;
 	[clr getRed:&r green:&g blue:&b alpha:&a];
-	nscolor_t ret = {r * 255, g * 255, b * 255, a * 255};
+	nscolor_t ret = { r * 255, g * 255, b * 255, a * 255 };
 	return ret;
 }
 
@@ -107,13 +107,13 @@ nscolor_t decorationStrokeColor( void* handle ) {
 
 	NSColor* clr = [(GDecoration*)handle strokeColor];
 	if ( !clr ) {
-		nscolor_t clr = {0, 0, 0, 0};
+		nscolor_t clr = { 0, 0, 0, 0 };
 		return clr;
 	}
 
 	CGFloat r, g, b, a;
 	[clr getRed:&r green:&g blue:&b alpha:&a];
-	nscolor_t ret = {r * 255, g * 255, b * 255, a * 255};
+	nscolor_t ret = { r * 255, g * 255, b * 255, a * 255 };
 	return ret;
 }
 

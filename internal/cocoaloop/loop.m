@@ -127,7 +127,7 @@ void run() {
 
 	// With user interaction, the event loop runs fine.  Without, it suspends,
 	// and then all events stop moving forward (at least on GNUstep).  Make sure
-	// there is a regular source of events to keep things moving along. 
+	// there is a regular source of events to keep things moving along.
 	[NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)0.0167
 	                                 target:[[GNOPObject alloc] init]
 	                               selector:@selector( main )

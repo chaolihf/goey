@@ -23,7 +23,7 @@ nssize_t controlIntrinsicContentSize( void* handle ) {
 	NSSize size = [cell cellSize];
 
 	// Return the values
-	nssize_t ret = {size.width, size.height};
+	nssize_t ret = { size.width, size.height };
 	return ret;
 }
 
@@ -41,7 +41,7 @@ void controlSendKey( void* handle, unsigned keyASCII ) {
 
 	// Return is used for the enter key on MacOS, not new-line as on other
 	// platforms.
-	if ( keyASCII== '\n' ) {
+	if ( keyASCII == '\n' ) {
 		keyASCII = '\r';
 	}
 

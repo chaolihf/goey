@@ -93,7 +93,7 @@ nssize_t windowContentSize( void* handle ) {
 	NSRect frame = [(NSWindow*)handle frame];
 	frame = [NSWindow contentRectForFrameRect:frame styleMask:style];
 
-	nssize_t ret = {frame.size.width, frame.size.height};
+	nssize_t ret = { frame.size.width, frame.size.height };
 	return ret;
 }
 
@@ -102,7 +102,7 @@ nssize_t windowFrameSize( void* handle ) {
 	assert( handle );
 
 	NSRect frame = [(NSWindow*)handle frame];
-	nssize_t ret = {frame.size.width, frame.size.height};
+	nssize_t ret = { frame.size.width, frame.size.height };
 	return ret;
 }
 
@@ -191,7 +191,12 @@ void windowScreenshot( void* handle, void* imgdata, int32_t width,
 	assert( handle && [(id)handle isKindOfClass:[NSWindow class]] );
 
 	NSData* data = [(NSWindow*)handle
-	    dataWithEPSInsideRect:[NSWindow frameRectForContentRect:NSMakeRect(0,0,width,height) styleMask:[(NSWindow*)handle styleMask]]];
+	    dataWithEPSInsideRect:[NSWindow
+	                              frameRectForContentRect:NSMakeRect( 0, 0,
+	                                                                  width,
+	                                                                  height )
+	                                            styleMask:[(NSWindow*)handle
+	                                                          styleMask]]];
 	assert( data );
 	NSImage* image = [[NSImage alloc] initWithData:data];
 	assert( image );
@@ -210,9 +215,8 @@ void windowScreenshot( void* handle, void* imgdata, int32_t width,
 	                                          bitsPerPixel:32];
 	assert( imagerep );
 
-	BOOL ok = [image
-	    drawRepresentation:imagerep
-	                inRect:NSMakeRect( 0, 0, width, height )];
+	BOOL ok = [image drawRepresentation:imagerep
+	                             inRect:NSMakeRect( 0, 0, width, height )];
 	assert( ok );
 
 	NSInteger const bytesPerRow = [imagerep bytesPerRow];

@@ -109,7 +109,7 @@ nssize_t tabviewContentInsets( void* control ) {
 
 	NSRect frame = [(NSTabView*)control frame];
 	NSRect cr = [(NSTabView*)control contentRect];
-	nssize_t ret = {frame.size.width - cr.size.width,
-	                frame.size.height - cr.size.height};
+	nssize_t ret = { frame.size.width - cr.size.width,
+	                 frame.size.height - cr.size.height };
 	return ret;
 }
