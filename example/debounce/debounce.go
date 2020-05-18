@@ -43,6 +43,9 @@ func (d *debouncer) OnEvent(s string) {
 // emitEvent will call the original callback with the last value received for
 // the event.
 func (d *debouncer) emitEvent() {
+	// This method is called from an arbitrary goroutine, and definitely not
+	// OS thread used for the GUI event loop.  Need to ensure that the event
+	// callback is on the correct thread, so use loop.Do.
 	loop.Do(func() error {
 		d.cb(d.value)
 		return nil
