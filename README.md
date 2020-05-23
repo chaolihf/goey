@@ -91,8 +91,10 @@ In particular, if anyone has the expertise to provide a port for MacOS, that wou
 
 ## Related Projects
 
-* [Gio](https://gioui.org/): Gio implements portable immediate mode GUI programs in Go.
+* [fyne](https://fyne.io/): Cross platform GUI in Go based on Material Design.
+* [gio](https://gioui.org/): Gio implements portable immediate mode GUI programs in Go.
 * [gotk3](https://github.com/gotk3/gotk3):  Go bindings for GTK3.
+* [nuklear](https://github.com/golang-ui/nuklear): This project provides Go bindings for nuklear.h -- a small ANSI C GUI library.
 * [walk](https://github.com/lxn/walk):  A Windows GUI toolkit for the Go Programming Language.
 * [ui](https://github.com/andlabs/ui):  Platform-native GUI library for Go. 
 
