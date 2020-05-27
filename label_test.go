@@ -71,4 +71,20 @@ func TestLabelUpdateProps(t *testing.T) {
 		&Label{Text: "BC"},
 		&Label{Text: "CD"},
 	})
+
+	t.Run("QuickCheck", func(t *testing.T) {
+		if testing.Short() {
+			t.Skip("skipping test in short mode")
+		}
+
+		updater, closer := testingUpdateWidget(t)
+		defer closer()
+
+		f := func(text string) bool {
+			return updater(&Label{Text: text})
+		}
+		if err := quick.Check(f, &quick.Config{Values: labelValues}); err != nil {
+			t.Errorf("quick: %s", err)
+		}
+	})
 }

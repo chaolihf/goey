@@ -279,7 +279,7 @@ func testingCheckFocusAndBlur(t *testing.T, widgets ...base.Widget) {
 			// This does not appear to be necessary on WIN32.  With GTK, the
 			// window needs time to display before it will respond properly to
 			// focus events.
-			time.Sleep(20 * time.Millisecond)
+			time.Sleep(100 * time.Millisecond)
 
 			// Run the actions, which are counted.
 			for i := 0; i < 3; i++ {
@@ -299,6 +299,7 @@ func testingCheckFocusAndBlur(t *testing.T, widgets ...base.Widget) {
 				if err != nil {
 					t.Errorf("Error in Do, %s", err)
 				}
+				time.Sleep(20 * time.Millisecond)
 			}
 
 			// Close the window

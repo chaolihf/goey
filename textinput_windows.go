@@ -161,7 +161,7 @@ func (w *textinputElementBase) updateProps(data *TextInput) error {
 	}
 	w.SetDisabled(data.Disabled)
 	if data.Password {
-		// TODO:  ???
+		win.SendMessage(w.hWnd, win.EM_SETPASSWORDCHAR, '*', 0)
 	} else {
 		win.SendMessage(w.hWnd, win.EM_SETPASSWORDCHAR, 0, 0)
 	}

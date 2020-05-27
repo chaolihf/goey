@@ -78,4 +78,20 @@ func TestCheckboxUpdateProps(t *testing.T) {
 		&Checkbox{Value: true, Text: "A--", Disabled: true},
 		&Checkbox{Value: false, Text: "B--", Disabled: false},
 	})
+
+	t.Run("QuickCheck", func(t *testing.T) {
+		if testing.Short() {
+			t.Skip("skipping test in short mode")
+		}
+
+		updater, closer := testingUpdateWidget(t)
+		defer closer()
+
+		f := func(text string, value, disabled bool) bool {
+			return updater(&Checkbox{Text: text, Value: value, Disabled: disabled})
+		}
+		if err := quick.Check(f, &quick.Config{Values: checkboxValues}); err != nil {
+			t.Errorf("quick: %s", err)
+		}
+	})
 }

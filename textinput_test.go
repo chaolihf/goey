@@ -148,4 +148,24 @@ func TestTextInputUpdateProps(t *testing.T) {
 		&TextInput{Value: "CA", Placeholder: "***", Disabled: false},
 		&TextInput{Value: "DA"},
 	})
+
+	t.Run("QuickCheck", func(t *testing.T) {
+		if testing.Short() {
+			t.Skip("skipping test in short mode")
+		}
+
+		updater, closer := testingUpdateWidget(t)
+		defer closer()
+
+		f := func(value string, disabled, password, readonly bool) bool {
+			// Deliberately ignoring flag for password.
+			// Changing text input into a password field is not supported on
+			// all platforms.
+			_ = password
+			return updater(&TextInput{Value: value, Disabled: disabled, ReadOnly: readonly})
+		}
+		if err := quick.Check(f, &quick.Config{Values: textinputValues}); err != nil {
+			t.Errorf("quick: %s", err)
+		}
+	})
 }
