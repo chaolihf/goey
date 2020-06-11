@@ -19,7 +19,7 @@ func init() {
 
 func (w *Label) mount(parent base.Control) (base.Element, error) {
 	// Create the control
-	const STYLE = win.WS_CHILD | win.WS_VISIBLE | win.SS_LEFT
+	const STYLE = win.WS_CHILD | win.WS_VISIBLE | win.SS_LEFT | win.SS_NOPREFIX
 	hwnd, text, err := createControlWindow(0, &staticClassName[0], w.Text, STYLE, parent.HWnd)
 	if err != nil {
 		return nil, err
