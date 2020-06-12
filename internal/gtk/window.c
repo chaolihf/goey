@@ -21,6 +21,8 @@ static void onsizeallocate_cb( GtkWidget *widget, GdkRectangle *rectangle,
 
 void *mountWindow( char const *text )
 {
+    assert( text );
+
     GtkWidget *window = gtk_window_new( GTK_WINDOW_TOPLEVEL );
     gtk_window_set_title( GTK_WINDOW( window ), text );
     gtk_container_set_border_width( GTK_CONTAINER( window ), 0 );
@@ -44,6 +46,8 @@ void *mountWindow( char const *text )
 
 windowsize_t windowSize( void *window )
 {
+    assert( window && GTK_IS_WINDOW(window) );
+
     windowsize_t size;
     gtk_window_get_size( GTK_WINDOW( window ), &size.width, &size.height );
     return size;
@@ -51,6 +55,8 @@ windowsize_t windowSize( void *window )
 
 void *windowScrolledWindow( void *window )
 {
+    assert( window && GTK_IS_WINDOW(window) );
+
     GtkWidget *ss = gtk_bin_get_child( GTK_BIN( window ) );
     assert( ss );
     return ss;
@@ -58,6 +64,8 @@ void *windowScrolledWindow( void *window )
 
 void *windowLayout( void *window )
 {
+    assert( window && GTK_IS_WINDOW(window) );
+
     GtkWidget *ss = gtk_bin_get_child( GTK_BIN( window ) );
     assert( ss );
     GtkWidget *layout = gtk_bin_get_child( GTK_BIN( ss ) );
@@ -67,6 +75,8 @@ void *windowLayout( void *window )
 
 void windowSetLayoutSize( void *window, unsigned width, unsigned height )
 {
+    assert( window && GTK_IS_WINDOW(window) );
+
     GtkWidget *ss = gtk_bin_get_child( GTK_BIN( window ) );
     assert( ss );
     GtkWidget *layout = gtk_bin_get_child( GTK_BIN( ss ) );
@@ -76,16 +86,21 @@ void windowSetLayoutSize( void *window, unsigned width, unsigned height )
 
 char const *windowTitle( void *window )
 {
+    assert( window && GTK_IS_WINDOW(window) );
     return gtk_window_get_title( GTK_WINDOW( window ) );
 }
 
 void windowSetTitle( void *window, char const *text )
 {
+    assert( window && GTK_IS_WINDOW(window) );
+    assert( text );
     gtk_window_set_title( GTK_WINDOW( window ), text );
 }
 
 unsigned windowVScrollbarWidth( void *window )
 {
+    assert( window && GTK_IS_WINDOW(window) );
+
     GtkWidget *oldChild = gtk_bin_get_child( GTK_BIN( window ) );
     assert( oldChild );
     gtk_container_remove( GTK_CONTAINER( window ), oldChild );
@@ -104,6 +119,8 @@ unsigned windowVScrollbarWidth( void *window )
 
 unsigned windowHScrollbarHeight( void *window )
 {
+    assert( window && GTK_IS_WINDOW(window) );
+
     GtkWidget *oldChild = gtk_bin_get_child( GTK_BIN( window ) );
     assert( oldChild );
     gtk_container_remove( GTK_CONTAINER( window ), oldChild );
@@ -122,6 +139,8 @@ unsigned windowHScrollbarHeight( void *window )
 
 void windowShowScrollbars( void *window, bool horz, bool vert )
 {
+    assert( window && GTK_IS_WINDOW(window) );
+
     GtkWidget *ss = gtk_bin_get_child( GTK_BIN( window ) );
     assert( ss );
     gtk_scrolled_window_set_policy(
@@ -131,19 +150,20 @@ void windowShowScrollbars( void *window, bool horz, bool vert )
 
 void windowShow( void *window )
 {
+    assert( window && GTK_IS_WINDOW(window) );
     gtk_widget_show_all( GTK_WIDGET( window ) );
 }
 
 void windowSetDefaultSize( void *window, int width, int height )
 {
-    assert( window );
+    assert( window && GTK_IS_WINDOW(window) );
     gtk_window_set_default_size( GTK_WINDOW( window ), width, height );
 }
 
 void windowSetIcon( void *window, unsigned char const *data, int width,
                     int height, int rowStride )
 {
-    assert( window );
+    assert( window && GTK_IS_WINDOW(window) );
 
     if ( !data ) {
         gtk_window_set_icon( GTK_WINDOW( window ), NULL );
@@ -163,7 +183,7 @@ void *windowScreenshot( void *window, void **data, size_t *dataLen,
                         bool *haveAlpha, int *width, int *height,
                         unsigned *stride )
 {
-    assert( window );
+    assert( window && GTK_IS_WINDOW(window) );
     assert( width );
     assert( height );
 

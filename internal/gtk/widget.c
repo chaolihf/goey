@@ -21,25 +21,25 @@ gboolean onblur_cb( GtkWidget *widget, GdkEvent *event, gpointer user_data )
 
 void widgetClose( void *widget )
 {
-    assert( widget );
+    assert( widget && GTK_IS_WIDGET(widget) );
     gtk_widget_destroy( widget );
 }
 
 bool widgetCanFocus( void *widget )
 {
-    assert( widget );
+    assert( widget && GTK_IS_WIDGET(widget) );
     return gtk_widget_get_can_focus( widget );
 }
 
 void widgetGrabFocus( void *widget )
 {
-    assert( widget );
+    assert( widget && GTK_IS_WIDGET(widget) );
     gtk_widget_grab_focus( widget );
 }
 
 bool widgetIsFocus( void *widget )
 {
-    assert( widget );
+    assert( widget && GTK_IS_WIDGET(widget) );
     return gtk_widget_is_focus( widget );
 }
 
@@ -75,6 +75,8 @@ void widgetSendKey( void *widget, unsigned key, bool release )
 
 int widgetMinHeight( void *widget )
 {
+    assert( widget && GTK_IS_WIDGET(widget) );
+
     int min, natural;
     gtk_widget_get_preferred_height( widget, &min, &natural );
     return min;
@@ -82,6 +84,8 @@ int widgetMinHeight( void *widget )
 
 int widgetMinHeightForWidth( void *widget, int width )
 {
+    assert( widget && GTK_IS_WIDGET(widget) );
+
     int min, natural;
     gtk_widget_get_preferred_height_for_width( widget, width, &min, &natural );
     return min;
@@ -89,6 +93,8 @@ int widgetMinHeightForWidth( void *widget, int width )
 
 int widgetNaturalHeight( void *widget )
 {
+    assert( widget && GTK_IS_WIDGET(widget) );
+
     int min, natural;
     gtk_widget_get_preferred_height( widget, &min, &natural );
     return natural;
@@ -96,6 +102,8 @@ int widgetNaturalHeight( void *widget )
 
 int widgetNaturalHeightForWidth( void *widget, int width )
 {
+    assert( widget && GTK_IS_WIDGET(widget) );
+
     int min, natural;
     gtk_widget_get_preferred_height_for_width( widget, width, &min, &natural );
     return natural;
@@ -103,6 +111,8 @@ int widgetNaturalHeightForWidth( void *widget, int width )
 
 int widgetMinWidth( void *widget )
 {
+    assert( widget && GTK_IS_WIDGET(widget) );
+
     int min, natural;
     gtk_widget_get_preferred_width( widget, &min, &natural );
     return min;
@@ -110,6 +120,8 @@ int widgetMinWidth( void *widget )
 
 int widgetNaturalWidth( void *widget )
 {
+    assert( widget && GTK_IS_WIDGET(widget) );
+
     int min, natural;
     gtk_widget_get_preferred_width( widget, &min, &natural );
     return natural;
@@ -117,6 +129,8 @@ int widgetNaturalWidth( void *widget )
 
 int widgetNaturalWidthForHeight( void *widget, int height )
 {
+    assert( widget && GTK_IS_WIDGET(widget) );
+
     int min, natural;
     gtk_widget_get_preferred_width_for_height( widget, height, &min, &natural );
     return natural;
@@ -124,6 +138,8 @@ int widgetNaturalWidthForHeight( void *widget, int height )
 
 void widgetNaturalSize( void *widget, int *width, int *height )
 {
+    assert( widget && GTK_IS_WIDGET(widget) );
+
     int min;
     gtk_widget_get_preferred_width( widget, &min, width );
     gtk_widget_get_preferred_height( widget, &min, height );
@@ -131,7 +147,7 @@ void widgetNaturalSize( void *widget, int *width, int *height )
 
 extern void widgetSetBounds( void *widget, int x, int y, int width, int height )
 {
-    assert( widget );
+    assert( widget && GTK_IS_WIDGET(widget) );
 
     GtkWidget *parent = gtk_widget_get_parent( widget );
     GtkLayout *layout = GTK_LAYOUT( parent );
@@ -142,18 +158,18 @@ extern void widgetSetBounds( void *widget, int x, int y, int width, int height )
 
 bool widgetSensitive( void *widget )
 {
-    assert( widget );
+    assert( widget && GTK_IS_WIDGET(widget) );
     return gtk_widget_get_sensitive( GTK_WIDGET( widget ) );
 }
 
 bool widgetCanDefault( void *widget )
 {
-    assert( widget );
+    assert( widget && GTK_IS_WIDGET(widget) );
     return gtk_widget_get_can_default( GTK_WIDGET( widget ) );
 }
 
 void widgetSetSizeRequest( void *widget, int width, int height )
 {
-    assert( widget );
+    assert( widget && GTK_IS_WIDGET(widget) );
     gtk_widget_set_size_request( GTK_WIDGET( widget ), width, height );
 }
