@@ -56,6 +56,18 @@ func ExampleRectangle() {
 	// Rectangle (10:00,20:00)-(90:00,80:00) has dimensions 80dip by 60dip.
 }
 
+func ExampleRectangle_Add() {
+	r := Rectangle{Point{10 * DIP, 20 * DIP}, Point{90 * DIP, 80 * DIP}}
+	v := Point{5 * DIP, 5 * DIP}
+
+	fmt.Printf("Rectangle %s, moved by %s,\n", r, v)
+	fmt.Printf("---- %s", r.Add(v))
+
+	// Output:
+	// Rectangle (10:00,20:00)-(90:00,80:00), moved by (5:00,5:00),
+	// ---- (15:00,25:00)-(95:00,85:00)
+}
+
 func ExampleRectangle_Pixels() {
 	// The following line is for the example only, and should not appear in
 	// user code, as the platform-specific code should update the DPI based
