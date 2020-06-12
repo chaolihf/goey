@@ -181,6 +181,45 @@ func TestWindow_SetChild(t *testing.T) {
 		}
 		time.Sleep(50 * time.Millisecond)
 	})
+
+	// Test setting child with different options for scrollbars
+	for i := 0; i < 4; i++ {
+		t.Run("SetScroll", func(t *testing.T) {
+			testingWindow(t, func(t *testing.T, mw *Window) {
+				widget := &Button{
+					Text: "Click me!",
+				}
+
+				err := loop.Do(func() error {
+					mw.SetScroll(
+						(i&0x1) != 0,
+						(i&0x2) != 0,
+					)
+					return nil
+				})
+				if err != nil {
+					t.Logf("Error setting children, %s", err)
+				}
+
+				setchild := func(t *testing.T, child base.Widget) {
+					err := loop.Do(func() error {
+						return mw.SetChild(widget)
+					})
+					if err != nil {
+						t.Logf("Error setting children, %s", err)
+					}
+				}
+
+				time.Sleep(50 * time.Millisecond)
+				setchild(t, widget)
+				time.Sleep(50 * time.Millisecond)
+				setchild(t, nil)
+				time.Sleep(50 * time.Millisecond)
+				setchild(t, widget)
+				time.Sleep(50 * time.Millisecond)
+			})
+		})
+	}
 }
 
 func makeImage(t *testing.T, index int) image.Image {

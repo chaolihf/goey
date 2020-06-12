@@ -103,6 +103,7 @@ unsigned windowVScrollbarWidth( void *window )
 
     GtkWidget *oldChild = gtk_bin_get_child( GTK_BIN( window ) );
     assert( oldChild );
+    g_object_ref( oldChild ); // Keep alive when removed
     gtk_container_remove( GTK_CONTAINER( window ), oldChild );
 
     GtkWidget *sb = gtk_scrollbar_new( GTK_ORIENTATION_VERTICAL, NULL );
@@ -114,6 +115,7 @@ unsigned windowVScrollbarWidth( void *window )
     gtk_widget_get_preferred_width( sb, &min, &nominal );
     gtk_widget_destroy( sb );
     gtk_container_add( GTK_CONTAINER( window ), oldChild );
+    g_object_unref( oldChild );
     return nominal;
 }
 
@@ -123,6 +125,7 @@ unsigned windowHScrollbarHeight( void *window )
 
     GtkWidget *oldChild = gtk_bin_get_child( GTK_BIN( window ) );
     assert( oldChild );
+    g_object_ref( oldChild ); // Keep alive when removed
     gtk_container_remove( GTK_CONTAINER( window ), oldChild );
 
     GtkWidget *sb = gtk_scrollbar_new( GTK_ORIENTATION_HORIZONTAL, NULL );
@@ -134,6 +137,7 @@ unsigned windowHScrollbarHeight( void *window )
     gtk_widget_get_preferred_height( sb, &min, &nominal );
     gtk_widget_destroy( sb );
     gtk_container_add( GTK_CONTAINER( window ), oldChild );
+    g_object_unref( oldChild );
     return nominal;
 }
 
