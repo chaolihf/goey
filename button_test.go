@@ -130,3 +130,30 @@ func TestButtonUpdate(t *testing.T) {
 		}
 	})
 }
+
+func TestButtonLayout(t *testing.T) {
+	cases := []struct {
+		name string
+		bc   base.Constraints
+	}{
+		{"expand", base.Expand()},
+		{"expand-height", base.ExpandHeight(96 * DIP)},
+		{"expand-width", base.ExpandWidth(24 * DIP)},
+		{"loose", base.Loose(base.Size{96 * DIP, 24 * DIP})},
+		{"tight", base.Tight(base.Size{96 * DIP, 24 * DIP})},
+		{"tight-height", base.TightHeight(24 * DIP)},
+		{"tight-width", base.TightWidth(96 * DIP)},
+	}
+
+	updater, closer := testingLayoutWidget(t, &Button{Text: "AB"})
+	defer closer()
+
+	for _, v := range cases {
+		t.Run(v.name, func(t *testing.T) {
+			size := updater(v.bc)
+			if !v.bc.IsSatisfiedBy(size) {
+				t.Errorf("layout does not respect constraints")
+			}
+		})
+	}
+}

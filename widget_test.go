@@ -617,3 +617,67 @@ func testingUpdateWidget(t *testing.T) (updater func(base.Widget) bool, closer f
 	}
 	return updater, closer
 }
+
+func testingLayoutWidget(t *testing.T, child base.Widget) (updater func(base.Constraints) base.Size, closer func()) {
+	ready := make(chan *Window, 1)
+	done := make(chan struct{})
+
+	go func() {
+		init := func() error {
+			// Create the window.  Some of the tests here are not expected in
+			// production code, but we can be a little paranoid here.
+			window, err := NewWindow(t.Name(), child)
+			if err != nil {
+				t.Errorf("Failed to create window, %s", err)
+				return nil
+			}
+			if window == nil {
+				t.Errorf("Unexpected nil for window")
+				return nil
+			}
+			if window.Child() == nil {
+				t.Errorf("Unexpected nil for window child")
+				return nil
+			}
+
+			ready <- window
+			return nil
+		}
+
+		err := loop.Run(init)
+		if err != nil {
+			t.Errorf("Failed to run GUI loop, %s", err)
+		}
+		close(done)
+	}()
+
+	window := <-ready
+
+	updater = func(bc base.Constraints) base.Size {
+		size := base.Size{}
+		err := loop.Do(func() error {
+			size = window.Child().Layout(bc)
+			return nil
+		})
+		if err != nil {
+			t.Errorf("error during widget layout: %s", err)
+		} else {
+			t.Logf("size = %s", size)
+		}
+		return size
+	}
+	closer = func() {
+		// Close the window
+		err := loop.Do(func() error {
+			window.Close()
+			return nil
+		})
+		if err != nil {
+			t.Errorf("Error in Do, %s", err)
+		}
+
+		// Wait for the GUI loop to terminate
+		<-done
+	}
+	return updater, closer
+}
