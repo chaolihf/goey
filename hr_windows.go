@@ -89,6 +89,7 @@ func hrWindowProc(hwnd win.HWND, msg uint32, wParam uintptr, lParam uintptr) (re
 		win.MoveToEx(hdc, int(rect.Left), int(rect.Top+rect.Bottom)/2, nil)
 		win.LineTo(hdc, rect.Right, (rect.Top+rect.Bottom)/2)
 		win.EndPaint(hwnd, &ps)
+		return 0
 	}
 
 	return win.DefWindowProc(hwnd, msg, wParam, lParam)

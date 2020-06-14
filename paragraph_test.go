@@ -50,7 +50,7 @@ func TestParagraphClose(t *testing.T) {
 	)
 }
 
-func TestParagraphProps(t *testing.T) {
+func TestParagraphUpdate(t *testing.T) {
 	testingUpdateWidgets(t, []base.Widget{
 		&P{Text: "A", Align: JustifyLeft},
 		&P{Text: "B", Align: JustifyRight},
@@ -66,4 +66,31 @@ func TestParagraphProps(t *testing.T) {
 		&P{Text: "CAA", Align: JustifyFull},
 		&P{Text: "DAA", Align: JustifyLeft},
 	})
+}
+
+func TestParagraphLayout(t *testing.T) {
+	cases := []struct {
+		name string
+		bc   base.Constraints
+	}{
+		{"expand", base.Expand()},
+		{"expand-height", base.ExpandHeight(96 * DIP)},
+		{"expand-width", base.ExpandWidth(24 * DIP)},
+		{"loose", base.Loose(base.Size{96 * DIP, 24 * DIP})},
+		{"tight", base.Tight(base.Size{96 * DIP, 24 * DIP})},
+		{"tight-height", base.TightHeight(24 * DIP)},
+		{"tight-width", base.TightWidth(96 * DIP)},
+	}
+
+	updater, closer := testingLayoutWidget(t, &P{Text: "AB"})
+	defer closer()
+
+	for _, v := range cases {
+		t.Run(v.name, func(t *testing.T) {
+			size := updater(v.bc)
+			if !v.bc.IsSatisfiedBy(size) {
+				t.Errorf("layout does not respect constraints: got %s", size)
+			}
+		})
+	}
 }

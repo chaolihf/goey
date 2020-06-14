@@ -661,8 +661,6 @@ func testingLayoutWidget(t *testing.T, child base.Widget) (updater func(base.Con
 		})
 		if err != nil {
 			t.Errorf("error during widget layout: %s", err)
-		} else {
-			t.Logf("size = %s", size)
 		}
 		return size
 	}
