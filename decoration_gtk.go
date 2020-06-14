@@ -76,7 +76,7 @@ func (w *decorationElement) props() *Decoration {
 func (w *decorationElement) SetBounds(bounds base.Rectangle) {
 	w.Control.SetBounds(bounds)
 
-	// The DPI informatio may not have been available (or up to date) when the
+	// The DPI information may not have been available (or up to date) when the
 	// component was mounted.  Update the radius.
 	gtk.DecorationSetRadius(w.handle, w.radius.PixelsX())
 
@@ -87,16 +87,12 @@ func (w *decorationElement) SetBounds(bounds base.Rectangle) {
 	w.child.SetBounds(bounds)
 }
 
-func (w *decorationElement) updateProps(data *Decoration) error {
+func (w *decorationElement) updateProps(data *Decoration) (err error) {
 	gtk.DecorationUpdate(w.handle, toRGBA(data.Fill), toRGBA(data.Stroke), data.Radius.PixelsX())
+
 	w.radius = data.Radius
-
-	child, err := base.DiffChild(w.parent, w.child, data.Child)
-	if err != nil {
-		return err
-	}
-	w.child = child
 	w.insets = data.Insets
+	w.child, err = base.DiffChild(w.parent, w.child, data.Child)
 
-	return nil
+	return err
 }
