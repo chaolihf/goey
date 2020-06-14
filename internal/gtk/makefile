@@ -7,6 +7,7 @@ all: gtk.go
 
 gtk.go: thunks.h thunks.i
 	swig -go -cgo -intgosize 64 thunks.i
+	gofmt -w -s gtk.go
 
 fmt:
 	-$(RM) gtk.go

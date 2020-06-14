@@ -30,7 +30,7 @@ func PerformOnMainThread(action func() error) error {
 	// Lock thunk to avoid overwriting of thunkAction or thunkErr
 	thunkMutex.Lock()
 	defer thunkMutex.Unlock()
-	// Is additional syncronization required to provide memory barriers to
+	// Is additional synchronization required to provide memory barriers to
 	// coordinate with the GUI thread?
 
 	thunkAction = action

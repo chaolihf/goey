@@ -191,16 +191,23 @@ func (w *intinputElement) MinIntrinsicWidth(base.Length) base.Length {
 	return 75 * DIP
 }
 
-func (w *intinputElement) Props() base.Widget {
-	value := int64(0)
+func (w *intinputElement) PropsValue() int64 {
+	// If the control has been created with an spinner control, use that
+	// for the value.
 	if w.hwndUpDown != 0 {
-		value = int64(win.SendMessage(w.hwndUpDown, win.UDM_GETPOS32, 0, 0))
-	} else {
-		value, _ = strconv.ParseInt(w.Control.Text(), 10, 64)
+		value := win.SendMessage(w.hwndUpDown, win.UDM_GETPOS32, 0, 0)
+		return int64(value)
 	}
 
+	// Ignoring the error.  The control should prevent the user from entering
+	// invalid text.
+	value, _ := strconv.ParseInt(w.Control.Text(), 10, 64)
+	return value
+}
+
+func (w *intinputElement) Props() base.Widget {
 	return &IntInput{
-		Value:       value,
+		Value:       w.PropsValue(),
 		Placeholder: propsPlaceholder(w.hWnd),
 		Disabled:    !win.IsWindowEnabled(w.hWnd),
 		Min:         w.min,

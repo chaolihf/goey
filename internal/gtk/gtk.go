@@ -195,28 +195,26 @@ import "unsafe"
 import _ "runtime/cgo"
 import "sync"
 
-
 type _ unsafe.Pointer
-
-
 
 var Swig_escape_always_false bool
 var Swig_escape_val interface{}
 
-
 type _swig_fnptr *byte
 type _swig_memberptr *byte
 
-
 type _ sync.Mutex
 
+type swig_gostring struct {
+	p uintptr
+	n int
+}
 
-type swig_gostring struct { p uintptr; n int }
 func swigCopyString(s string) string {
-  p := *(*swig_gostring)(unsafe.Pointer(&s))
-  r := string((*[0x7fffffff]byte)(unsafe.Pointer(p.p))[:p.n])
-  Swig_free(p.p)
-  return r
+	p := *(*swig_gostring)(unsafe.Pointer(&s))
+	r := string((*[0x7fffffff]byte)(unsafe.Pointer(p.p))[:p.n])
+	Swig_free(p.p)
+	return r
 }
 
 func Swig_free(arg1 uintptr) {
@@ -381,7 +379,7 @@ func WindowTitle(arg1 uintptr) (_swig_ret string) {
 	swig_r_p := C._wrap_windowTitle_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
- swig_r_1 = swigCopyString(swig_r) 
+	swig_r_1 = swigCopyString(swig_r)
 	return swig_r_1
 }
 
@@ -538,7 +536,7 @@ func DialogGetFilename(arg1 uintptr) (_swig_ret string) {
 	swig_r_p := C._wrap_dialogGetFilename_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
- swig_r_1 = swigCopyString(swig_r) 
+	swig_r_1 = swigCopyString(swig_r)
 	return swig_r_1
 }
 
@@ -583,7 +581,7 @@ func ButtonText(arg1 uintptr) (_swig_ret string) {
 	swig_r_p := C._wrap_buttonText_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
- swig_r_1 = swigCopyString(swig_r) 
+	swig_r_1 = swigCopyString(swig_r)
 	return swig_r_1
 }
 
@@ -613,7 +611,7 @@ func LabelText(arg1 uintptr) (_swig_ret string) {
 	swig_r_p := C._wrap_labelText_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
- swig_r_1 = swigCopyString(swig_r) 
+	swig_r_1 = swigCopyString(swig_r)
 	return swig_r_1
 }
 
@@ -707,7 +705,7 @@ func TextboxText(arg1 uintptr) (_swig_ret string) {
 	swig_r_p := C._wrap_textboxText_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
- swig_r_1 = swigCopyString(swig_r) 
+	swig_r_1 = swigCopyString(swig_r)
 	return swig_r_1
 }
 
@@ -717,7 +715,7 @@ func TextboxPlaceholder(arg1 uintptr) (_swig_ret string) {
 	swig_r_p := C._wrap_textboxPlaceholder_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
- swig_r_1 = swigCopyString(swig_r) 
+	swig_r_1 = swigCopyString(swig_r)
 	return swig_r_1
 }
 
@@ -771,7 +769,7 @@ func TextareaText(arg1 uintptr) (_swig_ret string) {
 	swig_r_p := C._wrap_textareaText_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
- swig_r_1 = swigCopyString(swig_r) 
+	swig_r_1 = swigCopyString(swig_r)
 	return swig_r_1
 }
 
@@ -781,7 +779,7 @@ func TextareaPlaceholder(arg1 uintptr) (_swig_ret string) {
 	swig_r_p := C._wrap_textareaPlaceholder_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
- swig_r_1 = swigCopyString(swig_r) 
+	swig_r_1 = swigCopyString(swig_r)
 	return swig_r_1
 }
 
@@ -827,7 +825,7 @@ func ParagraphText(arg1 uintptr) (_swig_ret string) {
 	swig_r_p := C._wrap_paragraphText_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
- swig_r_1 = swigCopyString(swig_r) 
+	swig_r_1 = swigCopyString(swig_r)
 	return swig_r_1
 }
 
@@ -1063,7 +1061,7 @@ func ComboboxItem(arg1 uintptr, arg2 uint) (_swig_ret string) {
 	swig_r_p := C._wrap_comboboxItem_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
- swig_r_1 = swigCopyString(swig_r) 
+	swig_r_1 = swigCopyString(swig_r)
 	return swig_r_1
 }
 
@@ -1120,7 +1118,7 @@ func TabsItemCaption(arg1 uintptr, arg2 int) (_swig_ret string) {
 	swig_r_p := C._wrap_tabsItemCaption_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0), C.swig_intgo(_swig_i_1))
 	swig_r = *(*string)(unsafe.Pointer(&swig_r_p))
 	var swig_r_1 string
- swig_r_1 = swigCopyString(swig_r) 
+	swig_r_1 = swigCopyString(swig_r)
 	return swig_r_1
 }
 
@@ -1227,5 +1225,3 @@ func DateInputDay(arg1 uintptr) (_swig_ret uint) {
 	swig_r = (uint)(C._wrap_dateInputDay_gtk_0b05487f82a429b0(C.uintptr_t(_swig_i_0)))
 	return swig_r
 }
-
-
