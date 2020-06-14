@@ -79,3 +79,33 @@ func TestIntInputUpdateProps(t *testing.T) {
 		&IntInput{Value: 5, Placeholder: "***"},
 	})
 }
+
+func TestIntInputUpdateValue(t *testing.T) {
+	cases := []struct {
+		in, min, max, out int64
+	}{
+		{0, 10, 20, 10},
+		{10, 10, 20, 10},
+		{15, 10, 20, 15},
+		{20, 10, 20, 20},
+		{25, 10, 20, 20},
+		{-20, -10, 10, -10},
+		{-10, -10, 10, -10},
+		{0, -10, 10, 0},
+		{10, -10, 10, 10},
+		{20, -10, 10, 10},
+	}
+
+	for i, v := range cases {
+		widget := IntInput{
+			Value: v.in,
+			Min:   v.min,
+			Max:   v.max,
+		}
+
+		widget.UpdateValue()
+		if got := widget.Value; got != v.out {
+			t.Errorf("case %d: got %d, want %d", i, got, v.out)
+		}
+	}
+}
