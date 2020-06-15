@@ -679,3 +679,55 @@ func testingLayoutWidget(t *testing.T, child base.Widget) (updater func(base.Con
 	}
 	return updater, closer
 }
+
+func testingMinSizeWidget(t *testing.T, widget base.Widget) {
+	init := func() error {
+		// Create the window.  Some of the tests here are not expected in
+		// production code, but we can be a little paranoid here.
+		window, err := NewWindow(t.Name(), widget)
+		if err != nil {
+			t.Errorf("Failed to create window, %s", err)
+			return nil
+		}
+		if window == nil {
+			t.Errorf("Unexpected nil for window")
+			return nil
+		}
+		defer window.Close()
+
+		if child := window.Child(); child == nil {
+			t.Errorf("unexpected nil child for window")
+		} else {
+			width1 := child.MinIntrinsicWidth(base.Inf)
+			if width1 <= 0 || width1 == base.Inf {
+				t.Errorf("invalid min width: %s", width1)
+			}
+			width2 := child.MinIntrinsicWidth(120 * base.DIP)
+			if width1 <= 0 || width1 == base.Inf {
+				t.Errorf("invalid min width: %s", width2)
+			}
+			if width2 < width1 {
+				t.Errorf("width with height limit less than unbounded height")
+			}
+
+			height1 := child.MinIntrinsicHeight(base.Inf)
+			if height1 <= 0 || height1 == base.Inf {
+				t.Errorf("invalid min height: %s", height1)
+			}
+			height2 := child.MinIntrinsicHeight(120 * base.DIP)
+			if height1 <= 0 || height1 == base.Inf {
+				t.Errorf("invalid min height: %s", height2)
+			}
+			if height2 < height1 {
+				t.Errorf("height with width limit less than unbounded width")
+			}
+		}
+
+		return nil
+	}
+
+	err := loop.Run(init)
+	if err != nil {
+		t.Errorf("Failed to run GUI loop, %s", err)
+	}
+}

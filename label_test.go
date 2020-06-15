@@ -115,3 +115,7 @@ func TestLabelLayout(t *testing.T) {
 		})
 	}
 }
+
+func TestLabelMinSize(t *testing.T) {
+	testingMinSizeWidget(t, &Label{Text: "AB"})
+}

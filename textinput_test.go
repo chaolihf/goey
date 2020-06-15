@@ -196,3 +196,7 @@ func TestTextInputLayout(t *testing.T) {
 		})
 	}
 }
+
+func TestTextInputMinSize(t *testing.T) {
+	testingMinSizeWidget(t, &TextInput{Value: "AB"})
+}

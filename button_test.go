@@ -157,3 +157,7 @@ func TestButtonLayout(t *testing.T) {
 		})
 	}
 }
+
+func TestButtonMinSize(t *testing.T) {
+	testingMinSizeWidget(t, &Button{Text: "AB"})
+}

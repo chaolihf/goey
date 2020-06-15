@@ -57,3 +57,7 @@ func TestHRLayout(t *testing.T) {
 		})
 	}
 }
+
+func TestHRMinSize(t *testing.T) {
+	testingMinSizeWidget(t, &HR{})
+}
