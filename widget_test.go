@@ -2,7 +2,6 @@ package goey
 
 import (
 	"bytes"
-	"errors"
 	"fmt"
 	"image"
 	"image/draw"
@@ -11,6 +10,7 @@ import (
 	"time"
 
 	"bitbucket.org/rj/goey/base"
+	"bitbucket.org/rj/goey/goeytest"
 	"bitbucket.org/rj/goey/loop"
 )
 
@@ -75,112 +75,30 @@ func normalize(t *testing.T, rhs base.Widget) {
 	}
 }
 
-func equal(t *testing.T, lhs, rhs base.Widget) bool {
-	// Normalize (or canonicalize) the props used to construct the element.
-	normalize(t, rhs)
-	// Compare the widgets' properties.
-	return reflect.DeepEqual(lhs, rhs)
-}
-
 func testingMountWidgets(t *testing.T, widgets ...base.Widget) {
-	init := func() error {
-		// Create the window.  Some of the tests here are not expected in
-		// production code, but we can be a little paranoid here.
-		window, err := NewWindow(t.Name(), &VBox{Children: widgets})
-		if err != nil {
-			t.Errorf("Failed to create window, %s", err)
-			return nil
-		}
-		if window == nil {
-			t.Errorf("Unexpected nil for window")
-			return nil
-		}
+	window, closer := goeytest.WithWindow(t, func() (goeytest.Window, error) {
+		return NewWindow(t.Name(), &VBox{Children: widgets})
+	})
+	defer closer()
 
-		// Check that the controls that were mounted match with the list
-		if children := window.children(); len(children) != len(widgets) {
-			t.Errorf("Wanted len(children) == len(widgets), got %d and %d", len(children), len(widgets))
-		} else {
-			for i := range children {
-				if n1, n2 := children[i].Kind(), widgets[i].Kind(); n1 != n2 {
-					t.Errorf("Wanted children[%d].Kind() == widgets[%d].Kind(), got %s, want %s", i, i, n1, n2)
-				} else if widget, ok := children[i].(Proper); ok {
-					data := widget.Props()
-					if n1, n2 := data.Kind(), widgets[i].Kind(); n1 != n2 {
-						t.Errorf("Wanted data.Kind() == widgets[%d].Kind(), got %s, want %s", i, n1, n2)
-					}
-					if !equal(t, data, widgets[i]) {
-						t.Errorf("Wanted data == widgets[%d], got %v, want %v", i, data, widgets[i])
-					}
-				} else {
-					t.Logf("Cannot verify props of child")
-				}
-			}
-		}
-		go func(window *Window) {
-			if testing.Verbose() && !testing.Short() {
-				time.Sleep(25 * time.Millisecond)
-			}
-			err := loop.Do(func() error {
-				window.Close()
-				return nil
-			})
-			if err != nil {
-				t.Errorf("Error in Do, %s", err)
-			}
-		}(window)
-
-		return nil
-	}
-
-	err := loop.Run(init)
-	if err != nil {
-		t.Errorf("Failed to run GUI loop, %s", err)
-	}
+	elements := window.Child().(*vboxElement).children
+	goeytest.CompareElementsToWidgets(t, normalize, elements, widgets)
 }
 
 func testingMountWidget(t *testing.T, widget base.Widget) (ok bool) {
-	init := func() error {
-		// Create the window.  Some of the tests here are not expected in
-		// production code, but we can be a little paranoid here.
-		window, err := NewWindow(t.Name(), &VBox{Children: []base.Widget{widget}})
-		if err != nil {
-			t.Errorf("Failed to create window, %s", err)
-			return nil
-		}
-		if window == nil {
-			t.Errorf("Unexpected nil for window")
-			return nil
-		}
+	window, closer := goeytest.WithWindow(t, func() (goeytest.Window, error) {
+		return NewWindow(t.Name(), &VBox{Children: []base.Widget{widget}})
+	})
+	defer closer()
 
-		// Check that the controls that were mounted match with the list
-		if children := window.children(); len(children) != 1 {
-			t.Errorf("Wanted len(children) == 1, got %d", len(children))
-		} else {
-			ok = children[0].Kind() == widget.Kind() &&
-				equal(t, children[0].(Proper).Props(), widget)
-		}
-
-		go func(window *Window) {
-			if testing.Verbose() {
-				time.Sleep(25 * time.Millisecond)
-			}
-			err := loop.Do(func() error {
-				window.Close()
-				return nil
-			})
-			if err != nil {
-				t.Errorf("Error in Do, %s", err)
-			}
-		}(window)
-
-		return nil
+	// Check that the controls that were mounted match with the list
+	children := window.Child().(*vboxElement).children
+	if len(children) != 1 {
+		t.Errorf("Wanted len(children) == 1, got %d", len(children))
+		return false
 	}
 
-	err := loop.Run(init)
-	if err != nil {
-		t.Errorf("Failed to run GUI loop, %s", err)
-	}
-	return /* naked return, code set in init callback */
+	return goeytest.CompareElementToWidget(t, normalize, children[0], widget)
 }
 
 func testingMountWidgetsFail(t *testing.T, outError error, widgets ...base.Widget) {
@@ -207,49 +125,19 @@ func testingMountWidgetsFail(t *testing.T, outError error, widgets ...base.Widge
 }
 
 func testingCloseWidgets(t *testing.T, widgets ...base.Widget) {
-	init := func() error {
-		// Create the window.  Some of the tests here are not expected in
-		// production code, but we can be a little paranoid here.
-		window, err := NewWindow(t.Name(), &VBox{Children: widgets})
-		if err != nil {
-			t.Errorf("Failed to create window, %s", err)
-			return nil
-		}
-		if window == nil {
-			t.Errorf("Unexpected nil for window")
-			return nil
-		}
+	window, closer := goeytest.WithWindow(t, func() (goeytest.Window, error) {
+		return NewWindow(t.Name(), &VBox{Children: widgets})
+	})
+	defer closer()
 
-		// Check that the controls that were mounted match with the list
-		if len(window.children()) != len(widgets) {
-			t.Errorf("Want len(window.Children())!=nil")
-		}
+	elements := window.Child().(*vboxElement).children
+	goeytest.CompareElementsToWidgets(t, normalize, elements, widgets)
 
-		err = window.SetChild(&VBox{Children: nil})
-		if err != nil {
-			t.Errorf("Failed to set children, %s", err)
-			return nil
-		}
-		if len(window.children()) != 0 {
-			t.Errorf("Want len(window.Children())!=0")
-		}
-
-		go func(window *Window) {
-			err := loop.Do(func() error {
-				window.Close()
-				return nil
-			})
-			if err != nil {
-				t.Errorf("Error in Do, %s", err)
-			}
-		}(window)
-
-		return nil
-	}
-
-	err := loop.Run(init)
+	err := loop.Do(func() error {
+		return window.SetChild(nil)
+	})
 	if err != nil {
-		t.Errorf("Failed to run GUI loop, %s", err)
+		t.Fatalf("error in loop.Do: %s", err)
 	}
 }
 
@@ -468,190 +356,54 @@ func testingCheckClick(t *testing.T, widgets ...base.Widget) {
 }
 
 func testingUpdateWidgets(t *testing.T, widgets []base.Widget, update []base.Widget) {
-	init := func() error {
-		// Create the window.  Some of the tests here are not expected in
-		// production code, but we can be a little paranoid here.
-		window, err := NewWindow(t.Name(), &VBox{Children: widgets})
-		if err != nil {
-			t.Errorf("Failed to create window, %s", err)
-			return nil
-		}
-		if window == nil {
-			t.Errorf("Unexpected nil for window")
-			return nil
-		}
+	window, closer := goeytest.WithWindow(t, func() (goeytest.Window, error) {
+		return NewWindow(t.Name(), &VBox{Children: widgets})
+	})
+	defer closer()
 
-		// Check that the controls that were mounted match with the list
-		if len(window.children()) != len(widgets) {
-			t.Errorf("Want len(window.Children())!=nil")
-		}
+	elements := window.Child().(*vboxElement).children
+	goeytest.CompareElementsToWidgets(t, normalize, elements, widgets)
 
-		err = window.SetChild(&VBox{Children: update})
-		if err != nil {
-			t.Errorf("Failed to set children, %s", err)
-			return nil
-		}
-
-		// Check that the controls that were mounted match with the list
-		if children := window.children(); children != nil {
-			if len(children) != len(update) {
-				t.Errorf("Wanted len(children) == len(widgets), got %d and %d", len(children), len(widgets))
-			} else {
-				for i := range children {
-					if n1, n2 := children[i].Kind(), update[i].Kind(); n1 != n2 {
-						t.Errorf("Wanted children[%d].Kind() == update[%d].Kind(), got %s and %s", i, i, n1, n2)
-					} else if widget, ok := children[i].(Proper); ok {
-						data := widget.Props()
-						if n1, n2 := data.Kind(), update[i].Kind(); n1 != n2 {
-							t.Errorf("Wanted data.Kind() == update[%d].Kind(), got %s and %s", i, n1, n2)
-						}
-						if !equal(t, data, update[i]) {
-							t.Errorf("Wanted data == update[%d], got %v and %v", i, data, update[i])
-						}
-					} else {
-						t.Logf("Cannot verify props of child")
-					}
-				}
-			}
-		} else {
-			t.Errorf("Want window.Children()!=nil")
-		}
-
-		go func(window *Window) {
-			err := loop.Do(func() error {
-				window.Close()
-				return nil
-			})
-			if err != nil {
-				t.Errorf("Error in Do, %s", err)
-			}
-		}(window)
-
-		return nil
-	}
-
-	err := loop.Run(init)
+	err := loop.Do(func() error {
+		return window.SetChild(&VBox{Children: update})
+	})
 	if err != nil {
-		t.Errorf("Failed to run GUI loop, %s", err)
+		t.Fatalf("error in loop.Do: %s", err)
 	}
+
+	elements = window.Child().(*vboxElement).children
+	goeytest.CompareElementsToWidgets(t, normalize, elements, update)
 }
 
 func testingUpdateWidget(t *testing.T) (updater func(base.Widget) bool, closer func()) {
-	ready := make(chan *Window, 1)
-	done := make(chan struct{})
-
-	go func() {
-		init := func() error {
-			// Create the window.  Some of the tests here are not expected in
-			// production code, but we can be a little paranoid here.
-			window, err := NewWindow(t.Name(), nil)
-			if err != nil {
-				t.Errorf("Failed to create window, %s", err)
-				return nil
-			}
-			if window == nil {
-				t.Errorf("Unexpected nil for window")
-				return nil
-			}
-
-			// Check that the controls that were mounted match with the list
-			if len(window.children()) != 0 {
-				t.Errorf("Want len(window.Children())!=0")
-			}
-
-			ready <- window
-			return nil
-		}
-
-		err := loop.Run(init)
-		if err != nil {
-			t.Errorf("Failed to run GUI loop, %s", err)
-		}
-		close(done)
-	}()
-
-	window := <-ready
+	window, closer := goeytest.WithWindow(t, func() (goeytest.Window, error) {
+		return NewWindow(t.Name(), nil)
+	})
 
 	updater = func(w base.Widget) bool {
 		err := loop.Do(func() error {
-			err := window.SetChild(w)
-			if err != nil {
-				return err
-			}
-
-			child := window.Child()
-			if n1, n2 := child.Kind(), w.Kind(); n1 != n2 {
-				return errors.New("child's kind does not match widget's kind")
-			} else if widget, ok := child.(Proper); ok {
-				data := widget.Props()
-				if n1, n2 := data.Kind(), w.Kind(); n1 != n2 {
-					return errors.New("child's prop's kind does not match widget's kind")
-				}
-				if !equal(t, data, w) {
-					return errors.New("child's prop's not equal to widget")
-				}
-			} else {
-				return errors.New("child does not support props")
-			}
-			return nil
+			return window.SetChild(w)
 		})
-
 		if err != nil {
-			t.Errorf("Error during widget update, %s", err)
+			t.Fatalf("error in loop.Do: %s", err)
 			return false
 		}
-		return true
-	}
-	closer = func() {
-		// Close the window
-		err := loop.Do(func() error {
-			window.Close()
-			return nil
-		})
-		if err != nil {
-			t.Errorf("Error in Do, %s", err)
-		}
 
-		// Wait for the GUI loop to terminate
-		<-done
+		return goeytest.CompareElementToWidget(t, normalize, window.Child(), w)
 	}
+
 	return updater, closer
 }
 
-func testingLayoutWidget(t *testing.T, child base.Widget) (updater func(base.Constraints) base.Size, closer func()) {
-	ready := make(chan *Window, 1)
-	done := make(chan struct{})
+func testingLayoutWidget(t *testing.T, widget base.Widget) (updater func(base.Constraints) base.Size, closer func()) {
+	window, closer := goeytest.WithWindow(t, func() (goeytest.Window, error) {
+		return NewWindow(t.Name(), widget)
+	})
 
-	go func() {
-		init := func() error {
-			// Create the window.  Some of the tests here are not expected in
-			// production code, but we can be a little paranoid here.
-			window, err := NewWindow(t.Name(), child)
-			if err != nil {
-				t.Errorf("Failed to create window, %s", err)
-				return nil
-			}
-			if window == nil {
-				t.Errorf("Unexpected nil for window")
-				return nil
-			}
-			if window.Child() == nil {
-				t.Errorf("Unexpected nil for window child")
-				return nil
-			}
-
-			ready <- window
-			return nil
-		}
-
-		err := loop.Run(init)
-		if err != nil {
-			t.Errorf("Failed to run GUI loop, %s", err)
-		}
-		close(done)
-	}()
-
-	window := <-ready
+	if !goeytest.CompareElementToWidget(t, normalize, window.Child(), widget) {
+		closer()
+		t.Fatalf("widget not correctly mounted")
+	}
 
 	updater = func(bc base.Constraints) base.Size {
 		size := base.Size{}
@@ -660,74 +412,54 @@ func testingLayoutWidget(t *testing.T, child base.Widget) (updater func(base.Con
 			return nil
 		})
 		if err != nil {
-			t.Errorf("error during widget layout: %s", err)
+			t.Fatalf("error in loop.Do: %s", err)
 		}
 		return size
 	}
-	closer = func() {
-		// Close the window
-		err := loop.Do(func() error {
-			window.Close()
-			return nil
-		})
-		if err != nil {
-			t.Errorf("Error in Do, %s", err)
-		}
 
-		// Wait for the GUI loop to terminate
-		<-done
-	}
 	return updater, closer
 }
 
 func testingMinSizeWidget(t *testing.T, widget base.Widget) {
-	init := func() error {
-		// Create the window.  Some of the tests here are not expected in
-		// production code, but we can be a little paranoid here.
-		window, err := NewWindow(t.Name(), widget)
-		if err != nil {
-			t.Errorf("Failed to create window, %s", err)
-			return nil
-		}
-		if window == nil {
-			t.Errorf("Unexpected nil for window")
-			return nil
-		}
-		defer window.Close()
+	window, closer := goeytest.WithWindow(t, func() (goeytest.Window, error) {
+		return NewWindow(t.Name(), widget)
+	})
+	defer closer()
 
-		if child := window.Child(); child == nil {
-			t.Errorf("unexpected nil child for window")
-		} else {
-			width1 := child.MinIntrinsicWidth(base.Inf)
-			if width1 <= 0 || width1 == base.Inf {
-				t.Errorf("invalid min width: %s", width1)
-			}
-			width2 := child.MinIntrinsicWidth(120 * base.DIP)
-			if width1 <= 0 || width1 == base.Inf {
-				t.Errorf("invalid min width: %s", width2)
-			}
-			if width2 < width1 {
-				t.Errorf("width with height limit less than unbounded height")
-			}
+	child := window.Child()
+	if !goeytest.CompareElementToWidget(t, normalize, child, widget) {
+		t.Errorf("widget not correctly mounted")
+		return
+	}
 
-			height1 := child.MinIntrinsicHeight(base.Inf)
-			if height1 <= 0 || height1 == base.Inf {
-				t.Errorf("invalid min height: %s", height1)
-			}
-			height2 := child.MinIntrinsicHeight(120 * base.DIP)
-			if height1 <= 0 || height1 == base.Inf {
-				t.Errorf("invalid min height: %s", height2)
-			}
-			if height2 < height1 {
-				t.Errorf("height with width limit less than unbounded width")
-			}
+	err := loop.Do(func() error {
+		width1 := child.MinIntrinsicWidth(base.Inf)
+		if width1 <= 0 || width1 == base.Inf {
+			t.Errorf("invalid min width: %s", width1)
+		}
+		width2 := child.MinIntrinsicWidth(120 * base.DIP)
+		if width1 <= 0 || width1 == base.Inf {
+			t.Errorf("invalid min width: %s", width2)
+		}
+		if width2 < width1 {
+			t.Errorf("width with height limit less than unbounded height")
+		}
+
+		height1 := child.MinIntrinsicHeight(base.Inf)
+		if height1 <= 0 || height1 == base.Inf {
+			t.Errorf("invalid min height: %s", height1)
+		}
+		height2 := child.MinIntrinsicHeight(120 * base.DIP)
+		if height1 <= 0 || height1 == base.Inf {
+			t.Errorf("invalid min height: %s", height2)
+		}
+		if height2 < height1 {
+			t.Errorf("height with width limit less than unbounded width")
 		}
 
 		return nil
-	}
-
-	err := loop.Run(init)
+	})
 	if err != nil {
-		t.Errorf("Failed to run GUI loop, %s", err)
+		t.Fatalf("error in loop.Do: %s", err)
 	}
 }

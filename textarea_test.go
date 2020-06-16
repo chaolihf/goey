@@ -67,7 +67,7 @@ func TestTextAreaLayout(t *testing.T) {
 		{"tight-width", base.TightWidth(96 * DIP)},
 	}
 
-	updater, closer := testingLayoutWidget(t, &TextArea{Value: "AB"})
+	updater, closer := testingLayoutWidget(t, &TextArea{Value: "AB", MinLines: 3})
 	defer closer()
 
 	for _, v := range cases {
@@ -81,5 +81,5 @@ func TestTextAreaLayout(t *testing.T) {
 }
 
 func TestTextAreaMinSize(t *testing.T) {
-	testingMinSizeWidget(t, &TextArea{Value: "AB"})
+	testingMinSizeWidget(t, &TextArea{Value: "AB", MinLines: 3})
 }
