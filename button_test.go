@@ -59,7 +59,7 @@ func buttonValues(values []reflect.Value, rand *rand.Rand) {
 }
 
 func TestButtonMount(t *testing.T) {
-	testingMountWidgets(t,
+	testMountWidgets(t,
 		&Button{Text: "A"},
 		&Button{Text: "D", Disabled: true},
 		&Button{Text: "E", Default: true},
@@ -71,7 +71,7 @@ func TestButtonMount(t *testing.T) {
 		}
 
 		f := func(text string, disabled, def bool) bool {
-			return testingMountWidget(t, &Button{Text: text, Disabled: disabled, Default: def})
+			return checkMountWidget(t, &Button{Text: text, Disabled: disabled, Default: def})
 		}
 		if err := quick.Check(f, &quick.Config{Values: buttonValues}); err != nil {
 			t.Errorf("quick: %s", err)
@@ -80,7 +80,7 @@ func TestButtonMount(t *testing.T) {
 }
 
 func TestButtonClose(t *testing.T) {
-	testingCloseWidgets(t,
+	testCloseWidgets(t,
 		&Button{Text: "A"},
 		&Button{Text: "D", Disabled: true},
 		&Button{Text: "E", Default: true},
@@ -88,7 +88,7 @@ func TestButtonClose(t *testing.T) {
 }
 
 func TestButtonFocus(t *testing.T) {
-	testingCheckFocusAndBlur(t,
+	testCheckFocusAndBlur(t,
 		&Button{Text: "A"},
 		&Button{Text: "B"},
 		&Button{Text: "C"},
@@ -96,7 +96,7 @@ func TestButtonFocus(t *testing.T) {
 }
 
 func TestButtonClick(t *testing.T) {
-	testingCheckClick(t,
+	testCheckClick(t,
 		&Button{Text: "A"},
 		&Button{Text: "B"},
 		&Button{Text: "C"},
@@ -104,7 +104,7 @@ func TestButtonClick(t *testing.T) {
 }
 
 func TestButtonUpdate(t *testing.T) {
-	testingUpdateWidgets(t, []base.Widget{
+	testUpdateWidgets(t, []base.Widget{
 		&Button{Text: "A"},
 		&Button{Text: "D", Disabled: true},
 		&Button{Text: "E", Default: true},
@@ -119,7 +119,7 @@ func TestButtonUpdate(t *testing.T) {
 			t.Skip("skipping test in short mode")
 		}
 
-		updater, closer := testingUpdateWidget(t)
+		updater, closer := checkUpdateWidget(t)
 		defer closer()
 
 		f := func(text string, disabled, def bool) bool {
@@ -132,32 +132,9 @@ func TestButtonUpdate(t *testing.T) {
 }
 
 func TestButtonLayout(t *testing.T) {
-	cases := []struct {
-		name string
-		bc   base.Constraints
-	}{
-		{"expand", base.Expand()},
-		{"expand-height", base.ExpandHeight(96 * DIP)},
-		{"expand-width", base.ExpandWidth(24 * DIP)},
-		{"loose", base.Loose(base.Size{96 * DIP, 24 * DIP})},
-		{"tight", base.Tight(base.Size{96 * DIP, 24 * DIP})},
-		{"tight-height", base.TightHeight(24 * DIP)},
-		{"tight-width", base.TightWidth(96 * DIP)},
-	}
-
-	updater, closer := testingLayoutWidget(t, &Button{Text: "AB"})
-	defer closer()
-
-	for _, v := range cases {
-		t.Run(v.name, func(t *testing.T) {
-			size := updater(v.bc)
-			if !v.bc.IsSatisfiedBy(size) {
-				t.Errorf("layout does not respect constraints")
-			}
-		})
-	}
+	testLayoutWidget(t, &Button{Text: "AB"})
 }
 
 func TestButtonMinSize(t *testing.T) {
-	testingMinSizeWidget(t, &Button{Text: "AB"})
+	testMinSizeWidget(t, &Button{Text: "AB"})
 }

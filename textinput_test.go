@@ -59,7 +59,7 @@ func textinputValues(values []reflect.Value, rand *rand.Rand) {
 }
 
 func TestTextInputMount(t *testing.T) {
-	testingMountWidgets(t,
+	testMountWidgets(t,
 		&TextInput{Value: "A"},
 		&TextInput{Value: "B", Placeholder: "..."},
 		&TextInput{Value: "C", Disabled: true},
@@ -73,7 +73,7 @@ func TestTextInputMount(t *testing.T) {
 		}
 
 		f := func(value string, disabled, password, readonly bool) bool {
-			return testingMountWidget(t, &TextInput{Value: value, Disabled: disabled, Password: password, ReadOnly: readonly})
+			return checkMountWidget(t, &TextInput{Value: value, Disabled: disabled, Password: password, ReadOnly: readonly})
 		}
 		if err := quick.Check(f, &quick.Config{Values: textinputValues}); err != nil {
 			t.Errorf("quick: %s", err)
@@ -82,7 +82,7 @@ func TestTextInputMount(t *testing.T) {
 }
 
 func TestTextInputClose(t *testing.T) {
-	testingCloseWidgets(t,
+	testCloseWidgets(t,
 		&TextInput{Value: "A"},
 		&TextInput{Value: "B", Placeholder: "..."},
 		&TextInput{Value: "C", Disabled: true},
@@ -92,7 +92,7 @@ func TestTextInputClose(t *testing.T) {
 }
 
 func TestTextInputOnFocus(t *testing.T) {
-	testingCheckFocusAndBlur(t,
+	testCheckFocusAndBlur(t,
 		&TextInput{},
 		&TextInput{},
 		&TextInput{},
@@ -100,7 +100,7 @@ func TestTextInputOnFocus(t *testing.T) {
 
 	// On some platforms, the password control is a separate type, and so may
 	// may have a parallel implementation.
-	testingCheckFocusAndBlur(t,
+	testCheckFocusAndBlur(t,
 		&TextInput{Password: true},
 		&TextInput{Password: true},
 		&TextInput{Password: true},
@@ -110,7 +110,7 @@ func TestTextInputOnFocus(t *testing.T) {
 func TestTextInputOnChange(t *testing.T) {
 	log := bytes.NewBuffer(nil)
 
-	testingTypeKeys(t, "Hello",
+	testTypeKeys(t, "Hello",
 		&TextInput{OnChange: func(v string) {
 			log.WriteString(v)
 			log.WriteString("\x1E")
@@ -125,7 +125,7 @@ func TestTextInputOnChange(t *testing.T) {
 func TestTextInputOnEnterKey(t *testing.T) {
 	log := bytes.NewBuffer(nil)
 
-	testingTypeKeys(t, "Hello\n",
+	testTypeKeys(t, "Hello\n",
 		&TextInput{OnEnterKey: func(v string) {
 			log.WriteString(v)
 		}})
@@ -137,7 +137,7 @@ func TestTextInputOnEnterKey(t *testing.T) {
 }
 
 func TestTextInputUpdateProps(t *testing.T) {
-	testingUpdateWidgets(t, []base.Widget{
+	testUpdateWidgets(t, []base.Widget{
 		&TextInput{Value: "A"},
 		&TextInput{Value: "B", Placeholder: "..."},
 		&TextInput{Value: "C", Disabled: true},
@@ -154,7 +154,7 @@ func TestTextInputUpdateProps(t *testing.T) {
 			t.Skip("skipping test in short mode")
 		}
 
-		updater, closer := testingUpdateWidget(t)
+		updater, closer := checkUpdateWidget(t)
 		defer closer()
 
 		f := func(value string, disabled, password, readonly bool) bool {
@@ -171,32 +171,9 @@ func TestTextInputUpdateProps(t *testing.T) {
 }
 
 func TestTextInputLayout(t *testing.T) {
-	cases := []struct {
-		name string
-		bc   base.Constraints
-	}{
-		{"expand", base.Expand()},
-		{"expand-height", base.ExpandHeight(96 * DIP)},
-		{"expand-width", base.ExpandWidth(24 * DIP)},
-		{"loose", base.Loose(base.Size{96 * DIP, 24 * DIP})},
-		{"tight", base.Tight(base.Size{96 * DIP, 24 * DIP})},
-		{"tight-height", base.TightHeight(24 * DIP)},
-		{"tight-width", base.TightWidth(96 * DIP)},
-	}
-
-	updater, closer := testingLayoutWidget(t, &TextInput{Value: "AB"})
-	defer closer()
-
-	for _, v := range cases {
-		t.Run(v.name, func(t *testing.T) {
-			size := updater(v.bc)
-			if !v.bc.IsSatisfiedBy(size) {
-				t.Errorf("layout does not respect constraints")
-			}
-		})
-	}
+	testLayoutWidget(t, &TextInput{Value: "AB"})
 }
 
 func TestTextInputMinSize(t *testing.T) {
-	testingMinSizeWidget(t, &TextInput{Value: "AB"})
+	testMinSizeWidget(t, &TextInput{Value: "AB"})
 }

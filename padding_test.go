@@ -37,7 +37,7 @@ func ExampleInsets_String() {
 
 func TestPaddingMount(t *testing.T) {
 	// These should all be able to mount without error.
-	testingMountWidgets(t,
+	testMountWidgets(t,
 		&Padding{Child: &Button{Text: "A"}},
 		&Padding{Insets: DefaultInsets(), Child: &Button{Text: "B"}},
 		&Padding{Insets: UniformInsets(48 * DIP), Child: &Button{Text: "C"}},
@@ -46,16 +46,16 @@ func TestPaddingMount(t *testing.T) {
 
 	// These should mount with an error.
 	err := errors.New("Mock error 1")
-	testingMountWidgetsFail(t, err,
+	testMountWidgetsFail(t, err,
 		&Padding{Child: &mock.Widget{Err: err}},
 	)
-	testingMountWidgetsFail(t, err,
+	testMountWidgetsFail(t, err,
 		&Padding{Insets: DefaultInsets(), Child: &mock.Widget{Err: err}},
 	)
 }
 
 func TestPaddingClose(t *testing.T) {
-	testingCloseWidgets(t,
+	testCloseWidgets(t,
 		&Padding{Child: &Button{Text: "A"}},
 		&Padding{Insets: DefaultInsets(), Child: &Button{Text: "B"}},
 		&Padding{Insets: UniformInsets(48 * DIP), Child: &Button{Text: "C"}},
@@ -64,7 +64,7 @@ func TestPaddingClose(t *testing.T) {
 }
 
 func TestPaddingUpdateProps(t *testing.T) {
-	testingUpdateWidgets(t, []base.Widget{
+	testUpdateWidgets(t, []base.Widget{
 		&Padding{Child: &Button{Text: "A"}},
 		&Padding{Insets: DefaultInsets(), Child: &Button{Text: "B"}},
 		&Padding{Insets: UniformInsets(48 * DIP), Child: &Button{Text: "C"}},

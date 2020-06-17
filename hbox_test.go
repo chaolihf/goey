@@ -30,7 +30,7 @@ func TestHBoxMount(t *testing.T) {
 		&Button{Text: "C"},
 	}
 
-	testingMountWidgets(t,
+	testMountWidgets(t,
 		&HBox{},
 		&HBox{Children: buttons, AlignMain: MainStart},
 		&HBox{Children: buttons, AlignMain: MainCenter},
@@ -48,7 +48,7 @@ func TestHBoxClose(t *testing.T) {
 		&Button{Text: "C"},
 	}
 
-	testingCloseWidgets(t,
+	testCloseWidgets(t,
 		&HBox{},
 		&HBox{Children: buttons, AlignMain: MainStart},
 	)
@@ -72,7 +72,7 @@ func TestHBoxUpdateProps(t *testing.T) {
 		&Button{Text: "DA"},
 	}
 
-	testingUpdateWidgets(t, []base.Widget{
+	testUpdateWidgets(t, []base.Widget{
 		&HBox{AlignMain: MainStart},
 		&HBox{Children: buttons, AlignMain: MainEnd, AlignCross: CrossStart},
 		&HBox{Children: widgets1},

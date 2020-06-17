@@ -1,14 +1,15 @@
 package goey
 
 import (
-	"bitbucket.org/rj/goey/base"
 	"testing"
+
+	"bitbucket.org/rj/goey/base"
 )
 
 func TestSelectInputMount(t *testing.T) {
 	options := []string{"Option A", "Option B", "Option C"}
 
-	testingMountWidgets(t,
+	testMountWidgets(t,
 		&SelectInput{Value: 0, Items: options},
 		&SelectInput{Value: 1, Items: options},
 		&SelectInput{Value: 2, Items: options, Disabled: true},
@@ -20,7 +21,7 @@ func TestSelectInputMount(t *testing.T) {
 func TestSelectInputClose(t *testing.T) {
 	options := []string{"Option A", "Option B", "Option C"}
 
-	testingCloseWidgets(t,
+	testCloseWidgets(t,
 		&SelectInput{Value: 0, Items: options},
 		&SelectInput{Value: 1, Items: options},
 		&SelectInput{Value: 2, Items: options, Disabled: true},
@@ -31,7 +32,7 @@ func TestSelectInputClose(t *testing.T) {
 func TestSelectInputEvents(t *testing.T) {
 	options := []string{"Option A", "Option B", "Option C"}
 
-	testingCheckFocusAndBlur(t,
+	testCheckFocusAndBlur(t,
 		&SelectInput{Items: options},
 		&SelectInput{Items: options},
 		&SelectInput{Items: options},
@@ -42,7 +43,7 @@ func TestSelectInputUpdateProps(t *testing.T) {
 	options1 := []string{"Option A", "Option B", "Option C"}
 	options2 := []string{"Choice A", "Choice B", "Choice C"}
 
-	testingUpdateWidgets(t, []base.Widget{
+	testUpdateWidgets(t, []base.Widget{
 		&SelectInput{Value: 0, Items: options1},
 		&SelectInput{Value: 1, Items: options2},
 		&SelectInput{Value: 2, Items: options1, Disabled: true},

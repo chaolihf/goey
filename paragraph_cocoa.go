@@ -44,7 +44,10 @@ func (w *paragraphElement) MinIntrinsicHeight(width base.Length) base.Length {
 
 func (w *paragraphElement) MinIntrinsicWidth(height base.Length) base.Length {
 	if height != base.Inf {
-		panic("not implemented")
+		// TODO:  Better way to calculate the width between min reflow width
+		// max reflow width to respect the height.
+		x := w.control.MinWidth()
+		return min(base.FromPixelsX(x), w.maxReflowWidth())
 	}
 
 	x := w.control.MinWidth()

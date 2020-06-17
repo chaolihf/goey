@@ -12,7 +12,7 @@ func TestTabsMount(t *testing.T) {
 		{"Tab 2", &Button{Text: "Click me B!"}},
 	}
 
-	testingMountWidgets(t,
+	testMountWidgets(t,
 		&Tabs{Children: items},
 		&Tabs{Value: 1, Children: items},
 	)
@@ -24,7 +24,7 @@ func TestTabsClose(t *testing.T) {
 		{"Tab 2", &Button{Text: "Click me B!"}},
 	}
 
-	testingCloseWidgets(t,
+	testCloseWidgets(t,
 		&Tabs{Children: items},
 		&Tabs{Value: 1, Children: items},
 	)
@@ -41,7 +41,7 @@ func TestTabsUpdate(t *testing.T) {
 		{"Tab C", &Button{Text: "..."}},
 	}
 
-	testingUpdateWidgets(t, []base.Widget{
+	testUpdateWidgets(t, []base.Widget{
 		&Tabs{Children: items1},
 		&Tabs{Value: 1, Children: items2},
 	}, []base.Widget{

@@ -66,7 +66,7 @@ func ExampleSlider() {
 }
 
 func TestSliderMount(t *testing.T) {
-	testingMountWidgets(t,
+	testMountWidgets(t,
 		&Slider{Value: 50},
 		&Slider{Value: 10},
 		&Slider{Value: 0},
@@ -79,7 +79,7 @@ func TestSliderMount(t *testing.T) {
 }
 
 func TestSliderClose(t *testing.T) {
-	testingCloseWidgets(t,
+	testCloseWidgets(t,
 		&Slider{Value: 50},
 		&Slider{Value: 50, Disabled: true},
 		&Slider{Value: 500, Max: 1000},
@@ -87,7 +87,7 @@ func TestSliderClose(t *testing.T) {
 }
 
 func TestSliderFocus(t *testing.T) {
-	testingCheckFocusAndBlur(t,
+	testCheckFocusAndBlur(t,
 		&Slider{Value: 50},
 		&Slider{Value: 40},
 		&Slider{Value: 500, Max: 1000},
@@ -95,7 +95,7 @@ func TestSliderFocus(t *testing.T) {
 }
 
 func TestSliderUpdate(t *testing.T) {
-	testingUpdateWidgets(t, []base.Widget{
+	testUpdateWidgets(t, []base.Widget{
 		&Slider{Value: 50},
 		&Slider{Value: 50, Disabled: true},
 		&Slider{Value: 500, Max: 1000},
@@ -129,4 +129,12 @@ func TestSlider_UpdateValue(t *testing.T) {
 			t.Errorf("Case %d: .Value does not match, got %f, want %f", i, slider.Value, v.out)
 		}
 	}
+}
+
+func TestSliderLayout(t *testing.T) {
+	testLayoutWidget(t, &Slider{Value: 50, Max: 100})
+}
+
+func TestSliderMinSize(t *testing.T) {
+	testMinSizeWidget(t, &Slider{Value: 50, Max: 100})
 }

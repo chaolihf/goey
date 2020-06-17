@@ -11,7 +11,7 @@ func TestTextAreaMount(t *testing.T) {
 	// Note, cannot use zero value for MinLines.  This will be changed to a
 	// default value, and cause the post mounting check that the widget was
 	// correctly instantiated to fail.
-	testingMountWidgets(t,
+	testMountWidgets(t,
 		&TextArea{Value: "A", MinLines: 3},
 		&TextArea{Value: "B", MinLines: 3, Placeholder: "..."},
 		&TextArea{Value: "C", MinLines: 3, Disabled: true},
@@ -19,7 +19,7 @@ func TestTextAreaMount(t *testing.T) {
 }
 
 func TestTextAreaOnFocus(t *testing.T) {
-	testingCheckFocusAndBlur(t,
+	testCheckFocusAndBlur(t,
 		&TextArea{},
 		&TextArea{},
 		&TextArea{},
@@ -29,7 +29,7 @@ func TestTextAreaOnFocus(t *testing.T) {
 func TestTextAreaOnChange(t *testing.T) {
 	log := bytes.NewBuffer(nil)
 
-	testingTypeKeys(t, "Hello",
+	testTypeKeys(t, "Hello",
 		&TextArea{OnChange: func(v string) {
 			log.WriteString(v)
 			log.WriteString("\x1E")
@@ -42,7 +42,7 @@ func TestTextAreaOnChange(t *testing.T) {
 }
 
 func TestTextAreaUpdateProps(t *testing.T) {
-	testingUpdateWidgets(t, []base.Widget{
+	testUpdateWidgets(t, []base.Widget{
 		&TextArea{Value: "A", MinLines: 5},
 		&TextArea{Value: "B", MinLines: 3, Placeholder: "..."},
 		&TextArea{Value: "C", MinLines: 3, Disabled: true},
@@ -54,32 +54,9 @@ func TestTextAreaUpdateProps(t *testing.T) {
 }
 
 func TestTextAreaLayout(t *testing.T) {
-	cases := []struct {
-		name string
-		bc   base.Constraints
-	}{
-		{"expand", base.Expand()},
-		{"expand-height", base.ExpandHeight(96 * DIP)},
-		{"expand-width", base.ExpandWidth(24 * DIP)},
-		{"loose", base.Loose(base.Size{96 * DIP, 24 * DIP})},
-		{"tight", base.Tight(base.Size{96 * DIP, 24 * DIP})},
-		{"tight-height", base.TightHeight(24 * DIP)},
-		{"tight-width", base.TightWidth(96 * DIP)},
-	}
-
-	updater, closer := testingLayoutWidget(t, &TextArea{Value: "AB", MinLines: 3})
-	defer closer()
-
-	for _, v := range cases {
-		t.Run(v.name, func(t *testing.T) {
-			size := updater(v.bc)
-			if !v.bc.IsSatisfiedBy(size) {
-				t.Errorf("layout does not respect constraints")
-			}
-		})
-	}
+	testLayoutWidget(t, &TextArea{Value: "AB", MinLines: 3})
 }
 
 func TestTextAreaMinSize(t *testing.T) {
-	testingMinSizeWidget(t, &TextArea{Value: "AB", MinLines: 3})
+	testMinSizeWidget(t, &TextArea{Value: "AB", MinLines: 3})
 }

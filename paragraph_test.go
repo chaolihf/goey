@@ -18,7 +18,7 @@ func paragraphValues(values []reflect.Value, rand *rand.Rand) {
 }
 
 func TestParagraphMount(t *testing.T) {
-	testingMountWidgets(t,
+	testMountWidgets(t,
 		&P{Text: "A", Align: JustifyLeft},
 		&P{Text: "B", Align: JustifyRight},
 		&P{Text: "C", Align: JustifyCenter},
@@ -33,7 +33,7 @@ func TestParagraphMount(t *testing.T) {
 		}
 
 		f := func(text string, align TextAlignment) bool {
-			return testingMountWidget(t, &P{Text: text, Align: align})
+			return checkMountWidget(t, &P{Text: text, Align: align})
 		}
 		if err := quick.Check(f, &quick.Config{Values: paragraphValues}); err != nil {
 			t.Errorf("quick: %s", err)
@@ -42,7 +42,7 @@ func TestParagraphMount(t *testing.T) {
 }
 
 func TestParagraphClose(t *testing.T) {
-	testingCloseWidgets(t,
+	testCloseWidgets(t,
 		&P{Text: "A", Align: JustifyLeft},
 		&P{Text: "B", Align: JustifyRight},
 		&P{Text: "C", Align: JustifyCenter},
@@ -51,7 +51,7 @@ func TestParagraphClose(t *testing.T) {
 }
 
 func TestParagraphUpdate(t *testing.T) {
-	testingUpdateWidgets(t, []base.Widget{
+	testUpdateWidgets(t, []base.Widget{
 		&P{Text: "A", Align: JustifyLeft},
 		&P{Text: "B", Align: JustifyRight},
 		&P{Text: "C", Align: JustifyCenter},
@@ -69,28 +69,9 @@ func TestParagraphUpdate(t *testing.T) {
 }
 
 func TestParagraphLayout(t *testing.T) {
-	cases := []struct {
-		name string
-		bc   base.Constraints
-	}{
-		{"expand", base.Expand()},
-		{"expand-height", base.ExpandHeight(96 * DIP)},
-		{"expand-width", base.ExpandWidth(24 * DIP)},
-		{"loose", base.Loose(base.Size{96 * DIP, 24 * DIP})},
-		{"tight", base.Tight(base.Size{96 * DIP, 24 * DIP})},
-		{"tight-height", base.TightHeight(24 * DIP)},
-		{"tight-width", base.TightWidth(96 * DIP)},
-	}
+	testLayoutWidget(t, &P{Text: "AB"})
+}
 
-	updater, closer := testingLayoutWidget(t, &P{Text: "AB"})
-	defer closer()
-
-	for _, v := range cases {
-		t.Run(v.name, func(t *testing.T) {
-			size := updater(v.bc)
-			if !v.bc.IsSatisfiedBy(size) {
-				t.Errorf("layout does not respect constraints: got %s", size)
-			}
-		})
-	}
+func TestParagraphMinSize(t *testing.T) {
+	testMinSizeWidget(t, &P{Text: "AB"})
 }

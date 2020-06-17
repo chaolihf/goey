@@ -30,7 +30,7 @@ func TestVBoxMount(t *testing.T) {
 		&Button{Text: "C"},
 	}
 
-	testingMountWidgets(t,
+	testMountWidgets(t,
 		&VBox{},
 		&VBox{Children: buttons, AlignMain: MainStart},
 		&VBox{Children: buttons, AlignMain: MainCenter},
@@ -48,7 +48,7 @@ func TestVBoxClose(t *testing.T) {
 		&Button{Text: "C"},
 	}
 
-	testingCloseWidgets(t,
+	testCloseWidgets(t,
 		&VBox{},
 		&VBox{Children: buttons, AlignMain: MainStart},
 	)
@@ -61,7 +61,7 @@ func TestVBoxUpdateProps(t *testing.T) {
 		&Button{Text: "C"},
 	}
 
-	testingUpdateWidgets(t, []base.Widget{
+	testUpdateWidgets(t, []base.Widget{
 		&VBox{AlignMain: MainStart},
 		&VBox{Children: buttons, AlignMain: MainEnd, AlignCross: CrossStart},
 	}, []base.Widget{

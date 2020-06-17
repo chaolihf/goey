@@ -7,7 +7,7 @@ import (
 )
 
 func TestProgressMount(t *testing.T) {
-	testingMountWidgets(t,
+	testMountWidgets(t,
 		&Progress{Value: 50, Min: 0, Max: 100},
 		&Progress{Value: 0},
 		&Progress{Value: 10, Min: 0, Max: 1000},
@@ -18,7 +18,7 @@ func TestProgressMount(t *testing.T) {
 }
 
 func TestProgressClose(t *testing.T) {
-	testingCloseWidgets(t,
+	testCloseWidgets(t,
 		&Progress{Value: 50, Min: 0, Max: 100},
 		&Progress{Value: 0},
 		&Progress{Value: 10, Min: 0, Max: 1000},
@@ -26,7 +26,7 @@ func TestProgressClose(t *testing.T) {
 }
 
 func TestProgressUpdate(t *testing.T) {
-	testingUpdateWidgets(t, []base.Widget{
+	testUpdateWidgets(t, []base.Widget{
 		&Progress{Value: 50, Min: 0, Max: 100},
 		&Progress{Value: 50, Min: 0, Max: 100},
 	}, []base.Widget{

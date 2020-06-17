@@ -55,7 +55,7 @@ func TestImgMount(t *testing.T) {
 	draw.Draw(images[5], bounds, image.NewUniform(color.RGBA{128, 128, 128, 255}), image.Point{}, draw.Src)
 	drawVerticalGradient(images[6].(*image.Gray))
 
-	testingMountWidgets(t,
+	testMountWidgets(t,
 		&Align{Child: &Img{Image: images[0], Width: 100 * DIP, Height: 10 * DIP}},
 		&Align{Child: &Img{Image: images[1], Width: 20 * DIP}},
 		&Align{Child: &Img{Image: images[2], Height: 30 * DIP}},
@@ -73,7 +73,7 @@ func TestImgClose(t *testing.T) {
 	draw.Draw(images[1], bounds, image.NewUniform(color.RGBA{255, 0, 255, 255}), image.Point{}, draw.Src)
 	draw.Draw(images[2], bounds, image.NewUniform(color.RGBA{0, 255, 255, 255}), image.Point{}, draw.Src)
 
-	testingCloseWidgets(t,
+	testCloseWidgets(t,
 		&Img{Image: images[0], Width: 100 * DIP, Height: 10 * DIP},
 		&Img{Image: images[1], Width: 100 * DIP, Height: 10 * DIP},
 		&Img{Image: images[2]},
@@ -153,7 +153,7 @@ func TestImgUpdate(t *testing.T) {
 	draw.Draw(images[1], bounds, image.NewUniform(color.RGBA{255, 0, 255, 255}), image.Point{}, draw.Src)
 	draw.Draw(images[2], bounds, image.NewUniform(color.RGBA{0, 255, 255, 255}), image.Point{}, draw.Src)
 
-	testingUpdateWidgets(t, []base.Widget{
+	testUpdateWidgets(t, []base.Widget{
 		&Img{Image: images[0], Width: 100 * DIP, Height: 10 * DIP},
 		&Img{Image: images[1], Width: 100 * DIP, Height: 10 * DIP},
 		&Img{Image: images[2], Width: 100 * DIP, Height: 10 * DIP},

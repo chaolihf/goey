@@ -27,7 +27,7 @@ func labelValues(values []reflect.Value, rand *rand.Rand) {
 }
 
 func TestLabelMount(t *testing.T) {
-	testingMountWidgets(t,
+	testMountWidgets(t,
 		&Label{Text: "A"},
 		&Label{Text: "B"},
 		&Label{Text: "C"},
@@ -41,7 +41,7 @@ func TestLabelMount(t *testing.T) {
 		}
 
 		f := func(text string) bool {
-			return testingMountWidget(t, &Label{Text: text})
+			return checkMountWidget(t, &Label{Text: text})
 		}
 		if err := quick.Check(f, &quick.Config{Values: labelValues}); err != nil {
 			t.Errorf("quick: %s", err)
@@ -50,7 +50,7 @@ func TestLabelMount(t *testing.T) {
 }
 
 func TestLabelClose(t *testing.T) {
-	testingCloseWidgets(t,
+	testCloseWidgets(t,
 		&Label{Text: "A"},
 		&Label{Text: "B"},
 		&Label{Text: "C"},
@@ -58,7 +58,7 @@ func TestLabelClose(t *testing.T) {
 }
 
 func TestLabelUpdateProps(t *testing.T) {
-	testingUpdateWidgets(t, []base.Widget{
+	testUpdateWidgets(t, []base.Widget{
 		&Label{Text: "A"},
 		&Label{Text: "B"},
 		&Label{Text: "C"},
@@ -77,7 +77,7 @@ func TestLabelUpdateProps(t *testing.T) {
 			t.Skip("skipping test in short mode")
 		}
 
-		updater, closer := testingUpdateWidget(t)
+		updater, closer := checkUpdateWidget(t)
 		defer closer()
 
 		f := func(text string) bool {
@@ -90,32 +90,9 @@ func TestLabelUpdateProps(t *testing.T) {
 }
 
 func TestLabelLayout(t *testing.T) {
-	cases := []struct {
-		name string
-		bc   base.Constraints
-	}{
-		{"expand", base.Expand()},
-		{"expand-height", base.ExpandHeight(96 * DIP)},
-		{"expand-width", base.ExpandWidth(24 * DIP)},
-		{"loose", base.Loose(base.Size{96 * DIP, 24 * DIP})},
-		{"tight", base.Tight(base.Size{96 * DIP, 24 * DIP})},
-		{"tight-height", base.TightHeight(24 * DIP)},
-		{"tight-width", base.TightWidth(96 * DIP)},
-	}
-
-	updater, closer := testingLayoutWidget(t, &Label{Text: "AB"})
-	defer closer()
-
-	for _, v := range cases {
-		t.Run(v.name, func(t *testing.T) {
-			size := updater(v.bc)
-			if !v.bc.IsSatisfiedBy(size) {
-				t.Errorf("layout does not respect constraints")
-			}
-		})
-	}
+	testLayoutWidget(t, &Label{Text: "AB"})
 }
 
 func TestLabelMinSize(t *testing.T) {
-	testingMinSizeWidget(t, &Label{Text: "AB"})
+	testMinSizeWidget(t, &Label{Text: "AB"})
 }

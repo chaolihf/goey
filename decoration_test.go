@@ -28,7 +28,7 @@ func TestDecorationMount(t *testing.T) {
 	child := &mock.Widget{Size: base.Size{15 * base.DIP, 15 * base.DIP}}
 
 	// These should all be able to mount without error.
-	testingMountWidgets(t,
+	testMountWidgets(t,
 		&Decoration{Child: &Button{Text: "A"}, Insets: DefaultInsets()},
 		&Decoration{Child: &Label{Text: "A"}, Fill: red, Insets: DefaultInsets()},
 		&Decoration{Child: child},
@@ -42,16 +42,16 @@ func TestDecorationMount(t *testing.T) {
 
 	// These should mount with an error.
 	err := errors.New("Mock error 1")
-	testingMountWidgetsFail(t, err,
+	testMountWidgetsFail(t, err,
 		&Decoration{Child: &mock.Widget{Err: err}},
 	)
-	testingMountWidgetsFail(t, err,
+	testMountWidgetsFail(t, err,
 		&Decoration{Insets: DefaultInsets(), Child: &mock.Widget{Err: err}},
 	)
 }
 
 func TestDecorationClose(t *testing.T) {
-	testingCloseWidgets(t,
+	testCloseWidgets(t,
 		&Decoration{Child: &Button{Text: "A"}},
 		&Decoration{},
 		&Decoration{Stroke: black},
@@ -60,7 +60,7 @@ func TestDecorationClose(t *testing.T) {
 }
 
 func TestDecorationUpdate(t *testing.T) {
-	testingUpdateWidgets(t, []base.Widget{
+	testUpdateWidgets(t, []base.Widget{
 		&Decoration{Child: &Button{Text: "A"}},
 		&Decoration{},
 		&Decoration{Stroke: black},

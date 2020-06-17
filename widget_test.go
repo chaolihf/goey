@@ -75,7 +75,7 @@ func normalize(t *testing.T, rhs base.Widget) {
 	}
 }
 
-func testingMountWidgets(t *testing.T, widgets ...base.Widget) {
+func testMountWidgets(t *testing.T, widgets ...base.Widget) {
 	window, closer := goeytest.WithWindow(t, func() (goeytest.Window, error) {
 		return NewWindow(t.Name(), &VBox{Children: widgets})
 	})
@@ -85,7 +85,7 @@ func testingMountWidgets(t *testing.T, widgets ...base.Widget) {
 	goeytest.CompareElementsToWidgets(t, normalize, elements, widgets)
 }
 
-func testingMountWidget(t *testing.T, widget base.Widget) (ok bool) {
+func checkMountWidget(t *testing.T, widget base.Widget) (ok bool) {
 	window, closer := goeytest.WithWindow(t, func() (goeytest.Window, error) {
 		return NewWindow(t.Name(), &VBox{Children: []base.Widget{widget}})
 	})
@@ -101,17 +101,17 @@ func testingMountWidget(t *testing.T, widget base.Widget) (ok bool) {
 	return goeytest.CompareElementToWidget(t, normalize, children[0], widget)
 }
 
-func testingMountWidgetsFail(t *testing.T, outError error, widgets ...base.Widget) {
+func testMountWidgetsFail(t *testing.T, outError error, widgets ...base.Widget) {
 	init := func() error {
 		window, err := NewWindow(t.Name(), &VBox{Children: widgets})
 		if window != nil {
-			t.Errorf("Unexpected non-nil window")
+			t.Errorf("unexpected non-nil window")
 		}
 		if err != outError {
 			if err == nil {
-				t.Errorf("Unexpected nil error, want %s", outError)
+				t.Errorf("unexpected nil error: want %s", outError)
 			} else {
-				t.Errorf("Unexpected error, want %v, got %s", outError, err)
+				t.Errorf("unexpected error: want %v, got %s", outError, err)
 			}
 			return nil
 		}
@@ -120,11 +120,11 @@ func testingMountWidgetsFail(t *testing.T, outError error, widgets ...base.Widge
 
 	err := loop.Run(init)
 	if err != nil {
-		t.Errorf("Failed to run GUI loop, %s", err)
+		t.Errorf("failed to run GUI loop: %s", err)
 	}
 }
 
-func testingCloseWidgets(t *testing.T, widgets ...base.Widget) {
+func testCloseWidgets(t *testing.T, widgets ...base.Widget) {
 	window, closer := goeytest.WithWindow(t, func() (goeytest.Window, error) {
 		return NewWindow(t.Name(), &VBox{Children: widgets})
 	})
@@ -141,10 +141,9 @@ func testingCloseWidgets(t *testing.T, widgets ...base.Widget) {
 	}
 }
 
-func testingCheckFocusAndBlur(t *testing.T, widgets ...base.Widget) {
+func testCheckFocusAndBlur(t *testing.T, widgets ...base.Widget) {
+	// Rewrite the widgets to add the OnFocus and OnBlur event handlers.
 	log := bytes.NewBuffer(nil)
-	skipFlag := false
-
 	for i := byte(0); i < 3; i++ {
 		s := reflect.ValueOf(widgets[i])
 		letter := 'a' + i
@@ -156,60 +155,39 @@ func testingCheckFocusAndBlur(t *testing.T, widgets ...base.Widget) {
 		}))
 	}
 
-	init := func() error {
-		window, err := NewWindow(t.Name(), &VBox{Children: widgets})
-		if err != nil {
-			t.Errorf("Failed to create window, %s", err)
-		}
+	func() {
+		window, closer := goeytest.WithWindow(t, func() (goeytest.Window, error) {
+			return NewWindow(t.Name(), &VBox{Children: widgets})
+		})
+		defer closer()
 
-		go func(window *Window) {
-			// Wait for the window to be active.
-			// This does not appear to be necessary on WIN32.  With GTK, the
-			// window needs time to display before it will respond properly to
-			// focus events.
-			time.Sleep(100 * time.Millisecond)
+		// Wait for the window to be active.
+		// This does not appear to be necessary on WIN32.  With GTK, the
+		// window needs time to display before it will respond properly to
+		// focus events.
+		time.Sleep(100 * time.Millisecond)
 
-			// Run the actions, which are counted.
-			for i := 0; i < 3; i++ {
+		// Run the actions, which are counted.
+		for i := 0; i < 3; i++ {
+			child := window.Child().(*vboxElement).children[i]
+			// Find the child element to be focused
+			if elem, ok := child.(Focusable); ok {
 				err := loop.Do(func() error {
-					// Find the child element to be focused
-					child := window.child.(*vboxElement).children[i]
-					if elem, ok := child.(Focusable); ok {
-						ok := elem.TakeFocus()
-						if !ok {
-							t.Errorf("Failed to set focus on the control")
-						}
-					} else {
-						skipFlag = true
+					ok := elem.TakeFocus()
+					if !ok {
+						t.Errorf("Failed to set focus on the control")
 					}
 					return nil
 				})
 				if err != nil {
-					t.Errorf("Error in Do, %s", err)
+					t.Errorf("error in loop.Do: %s", err)
 				}
-				time.Sleep(20 * time.Millisecond)
+			} else {
+				t.Skip("control does not support method TakeFocus")
 			}
-
-			// Close the window
-			err := loop.Do(func() error {
-				window.Close()
-				return nil
-			})
-			if err != nil {
-				t.Errorf("Error in Do, %s", err)
-			}
-		}(window)
-
-		return nil
-	}
-
-	err := loop.Run(init)
-	if err != nil {
-		t.Errorf("Failed to run GUI loop, %s", err)
-	}
-	if skipFlag {
-		t.Skip("Control does not support TakeFocus")
-	}
+			time.Sleep(20 * time.Millisecond)
+		}
+	}()
 
 	const want = "fabafbbbfcbc"
 	if s := log.String(); s != want {
@@ -217,7 +195,7 @@ func testingCheckFocusAndBlur(t *testing.T, widgets ...base.Widget) {
 	}
 }
 
-func testingTypeKeys(t *testing.T, text string, widget base.Widget) {
+func testTypeKeys(t *testing.T, text string, widget base.Widget) {
 	// Typing keys happens asynchronously to the event loop.  Errors in that
 	// goroutine will be fed into this channel.  However, the channel won't be
 	// drained until the event loop terminates.  Errors need to be buffered.
@@ -282,10 +260,9 @@ func testingTypeKeys(t *testing.T, text string, widget base.Widget) {
 	}
 }
 
-func testingCheckClick(t *testing.T, widgets ...base.Widget) {
+func testCheckClick(t *testing.T, widgets ...base.Widget) {
+	// Rewrite the widgets to add the onclick events
 	log := bytes.NewBuffer(nil)
-	skipFlag := false
-
 	for i := byte(0); i < 3; i++ {
 		letter := 'a' + i
 		if elem, ok := widgets[i].(*Checkbox); ok {
@@ -304,49 +281,27 @@ func testingCheckClick(t *testing.T, widgets ...base.Widget) {
 		}
 	}
 
-	init := func() error {
-		window, err := NewWindow(t.Name(), &VBox{Children: widgets})
-		if err != nil {
-			t.Errorf("Failed to create window, %s", err)
-		}
+	window, closer := goeytest.WithWindow(t, func() (goeytest.Window, error) {
+		return NewWindow(t.Name(), &VBox{Children: widgets})
+	})
+	defer closer()
 
-		go func(window *Window) {
-			// Run the actions, which are counted.
-			for i := 0; i < 3; i++ {
-				err := loop.Do(func() error {
-					// Find the child element to be clicked
-					child := window.child.(*vboxElement).children[i]
-					if elem, ok := child.(Clickable); ok {
-						elem.Click()
-					} else {
-						skipFlag = true
-					}
-					return nil
-				})
-				if err != nil {
-					t.Errorf("Error in Do, %s", err)
-				}
-			}
+	// Run the actions, which are counted.
+	for i := 0; i < 3; i++ {
+		// Find the child element to be clicked
+		child := window.Child().(*vboxElement).children[i]
 
-			// Close the window
+		if elem, ok := child.(Clickable); ok {
 			err := loop.Do(func() error {
-				window.Close()
+				elem.Click()
 				return nil
 			})
 			if err != nil {
 				t.Errorf("Error in Do, %s", err)
 			}
-		}(window)
-
-		return nil
-	}
-
-	err := loop.Run(init)
-	if err != nil {
-		t.Errorf("Failed to run GUI loop, %s", err)
-	}
-	if skipFlag {
-		t.Skip("Control does not support Click")
+		} else {
+			t.Skip("control does not support method Click")
+		}
 	}
 
 	const want = "cacbcc"
@@ -355,7 +310,7 @@ func testingCheckClick(t *testing.T, widgets ...base.Widget) {
 	}
 }
 
-func testingUpdateWidgets(t *testing.T, widgets []base.Widget, update []base.Widget) {
+func testUpdateWidgets(t *testing.T, widgets []base.Widget, update []base.Widget) {
 	window, closer := goeytest.WithWindow(t, func() (goeytest.Window, error) {
 		return NewWindow(t.Name(), &VBox{Children: widgets})
 	})
@@ -375,7 +330,7 @@ func testingUpdateWidgets(t *testing.T, widgets []base.Widget, update []base.Wid
 	goeytest.CompareElementsToWidgets(t, normalize, elements, update)
 }
 
-func testingUpdateWidget(t *testing.T) (updater func(base.Widget) bool, closer func()) {
+func checkUpdateWidget(t *testing.T) (updater func(base.Widget) bool, closer func()) {
 	window, closer := goeytest.WithWindow(t, func() (goeytest.Window, error) {
 		return NewWindow(t.Name(), nil)
 	})
@@ -395,17 +350,18 @@ func testingUpdateWidget(t *testing.T) (updater func(base.Widget) bool, closer f
 	return updater, closer
 }
 
-func testingLayoutWidget(t *testing.T, widget base.Widget) (updater func(base.Constraints) base.Size, closer func()) {
+func testLayoutWidget(t *testing.T, widget base.Widget) {
 	window, closer := goeytest.WithWindow(t, func() (goeytest.Window, error) {
 		return NewWindow(t.Name(), widget)
 	})
+	defer closer()
 
 	if !goeytest.CompareElementToWidget(t, normalize, window.Child(), widget) {
 		closer()
 		t.Fatalf("widget not correctly mounted")
 	}
 
-	updater = func(bc base.Constraints) base.Size {
+	updater := func(bc base.Constraints) base.Size {
 		size := base.Size{}
 		err := loop.Do(func() error {
 			size = window.Child().Layout(bc)
@@ -417,10 +373,31 @@ func testingLayoutWidget(t *testing.T, widget base.Widget) (updater func(base.Co
 		return size
 	}
 
-	return updater, closer
+	cases := []struct {
+		name string
+		bc   base.Constraints
+	}{
+		{"expand", base.Expand()},
+		{"expand-height", base.ExpandHeight(96 * DIP)},
+		{"expand-width", base.ExpandWidth(24 * DIP)},
+		{"expand-with-min", base.Constraints{base.Size{base.Inf / 2, base.Inf / 2}, base.Size{base.Inf, base.Inf}}},
+		{"loose", base.Loose(base.Size{96 * DIP, 24 * DIP})},
+		{"tight", base.Tight(base.Size{96 * DIP, 24 * DIP})},
+		{"tight-height", base.TightHeight(24 * DIP)},
+		{"tight-width", base.TightWidth(96 * DIP)},
+	}
+
+	for _, v := range cases {
+		t.Run(v.name, func(t *testing.T) {
+			size := updater(v.bc)
+			if !v.bc.IsSatisfiedBy(size) {
+				t.Errorf("layout does not respect constraints")
+			}
+		})
+	}
 }
 
-func testingMinSizeWidget(t *testing.T, widget base.Widget) {
+func testMinSizeWidget(t *testing.T, widget base.Widget) {
 	window, closer := goeytest.WithWindow(t, func() (goeytest.Window, error) {
 		return NewWindow(t.Name(), widget)
 	})

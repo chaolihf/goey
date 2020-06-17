@@ -19,7 +19,7 @@ func checkboxValues(values []reflect.Value, rand *rand.Rand) {
 }
 
 func TestCheckboxMount(t *testing.T) {
-	testingMountWidgets(t,
+	testMountWidgets(t,
 		&Checkbox{Value: false, Text: "A"},
 		&Checkbox{Value: true, Text: "B"},
 		&Checkbox{Value: false, Text: "C", Disabled: true},
@@ -33,7 +33,7 @@ func TestCheckboxMount(t *testing.T) {
 		}
 
 		f := func(text string, value, disabled bool) bool {
-			return testingMountWidget(t, &Checkbox{Text: text, Value: value, Disabled: disabled})
+			return checkMountWidget(t, &Checkbox{Text: text, Value: value, Disabled: disabled})
 		}
 		if err := quick.Check(f, &quick.Config{Values: checkboxValues}); err != nil {
 			t.Errorf("quick: %s", err)
@@ -42,14 +42,14 @@ func TestCheckboxMount(t *testing.T) {
 }
 
 func TestCheckboxClose(t *testing.T) {
-	testingCloseWidgets(t,
+	testCloseWidgets(t,
 		&Checkbox{Value: false, Text: "A"},
 		&Checkbox{Value: true, Text: "B", Disabled: true},
 	)
 }
 
 func TestCheckboxFocus(t *testing.T) {
-	testingCheckFocusAndBlur(t,
+	testCheckFocusAndBlur(t,
 		&Checkbox{Text: "A"},
 		&Checkbox{Text: "B"},
 		&Checkbox{Text: "C"},
@@ -59,7 +59,7 @@ func TestCheckboxFocus(t *testing.T) {
 func TestCheckboxClick(t *testing.T) {
 	var values [3]bool
 
-	testingCheckClick(t,
+	testCheckClick(t,
 		&Checkbox{Text: "A", OnChange: func(v bool) { values[0] = v }},
 		&Checkbox{Text: "B", Value: true, OnChange: func(v bool) { values[1] = v }},
 		&Checkbox{Text: "C", OnChange: func(v bool) { values[2] = v }},
@@ -70,8 +70,8 @@ func TestCheckboxClick(t *testing.T) {
 	}
 }
 
-func TestCheckboxUpdateProps(t *testing.T) {
-	testingUpdateWidgets(t, []base.Widget{
+func TestCheckboxUpdate(t *testing.T) {
+	testUpdateWidgets(t, []base.Widget{
 		&Checkbox{Value: false, Text: "A"},
 		&Checkbox{Value: true, Text: "B", Disabled: true},
 	}, []base.Widget{
@@ -84,7 +84,7 @@ func TestCheckboxUpdateProps(t *testing.T) {
 			t.Skip("skipping test in short mode")
 		}
 
-		updater, closer := testingUpdateWidget(t)
+		updater, closer := checkUpdateWidget(t)
 		defer closer()
 
 		f := func(text string, value, disabled bool) bool {

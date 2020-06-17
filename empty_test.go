@@ -7,7 +7,7 @@ import (
 )
 
 func TestEmptyMount(t *testing.T) {
-	testingMountWidgets(t,
+	testMountWidgets(t,
 		&Empty{},
 		&Empty{},
 		&Empty{},
@@ -15,14 +15,14 @@ func TestEmptyMount(t *testing.T) {
 }
 
 func TestEmptyClose(t *testing.T) {
-	testingCloseWidgets(t,
+	testCloseWidgets(t,
 		&Empty{},
 		&Empty{},
 	)
 }
 
 func TestEmptyUpdate(t *testing.T) {
-	testingUpdateWidgets(t, []base.Widget{
+	testUpdateWidgets(t, []base.Widget{
 		&Empty{},
 		&Empty{},
 	}, []base.Widget{

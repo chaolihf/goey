@@ -1,10 +1,11 @@
 package goey
 
 import (
-	"bitbucket.org/rj/goey/base"
-	"bitbucket.org/rj/goey/mock"
 	"errors"
 	"testing"
+
+	"bitbucket.org/rj/goey/base"
+	"bitbucket.org/rj/goey/mock"
 )
 
 type Boundser interface {
@@ -28,20 +29,20 @@ func (w *expandElement) Props() base.Widget {
 }
 
 func TestExpandMount(t *testing.T) {
-	testingMountWidgets(t,
+	testMountWidgets(t,
 		&Expand{},
 		&Expand{Child: &mock.Widget{}},
 	)
 
 	// This should mount with an error.
 	err := errors.New("Mock error 1")
-	testingMountWidgetsFail(t, err,
+	testMountWidgetsFail(t, err,
 		&Expand{Child: &mock.Widget{Err: err}},
 	)
 }
 
 func TestExpandClose(t *testing.T) {
-	testingCloseWidgets(t,
+	testCloseWidgets(t,
 		&Expand{},
 		&Expand{Child: &mock.Widget{}},
 	)
@@ -50,7 +51,7 @@ func TestExpandClose(t *testing.T) {
 func TestExpandUpdateProps(t *testing.T) {
 	child := mock.Widget{}
 
-	testingUpdateWidgets(t, []base.Widget{
+	testUpdateWidgets(t, []base.Widget{
 		&Expand{},
 		&Expand{Child: &child},
 		&Expand{Child: &child, Factor: 1},

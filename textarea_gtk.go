@@ -34,21 +34,16 @@ func (w *TextArea) mount(parent base.Control) (base.Element, error) {
 
 func (w *textareaElement) Layout(bc base.Constraints) base.Size {
 	if !bc.HasBoundedWidth() {
-		if bc.Min.Width > 0 {
-			width := bc.Min.Width
-			height := w.MinIntrinsicHeight(width)
-			return bc.Constrain(base.Size{width, height})
-		}
-
-		width := gtk.WidgetNaturalWidth(w.handle)
-		height := w.MinIntrinsicHeight(base.Inf)
-		return bc.Constrain(base.Size{
-			base.FromPixelsX(width),
-			height,
-		})
+		width := bc.ConstrainWidth(
+			base.FromPixelsX(gtk.WidgetMinWidth(w.handle)),
+		)
+		height := w.MinIntrinsicHeight(width)
+		return bc.Constrain(base.Size{width, height})
 	}
 
-	width := bc.Max.Width
+	width := bc.ConstrainWidth(
+		base.FromPixelsX(gtk.WidgetNaturalWidth(w.handle)),
+	)
 	height := w.MinIntrinsicHeight(width)
 	return bc.Constrain(base.Size{width, height})
 }

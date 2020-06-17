@@ -9,7 +9,7 @@ import (
 )
 
 func TestIntInputMount(t *testing.T) {
-	testingMountWidgets(t,
+	testMountWidgets(t,
 		&IntInput{Value: 1},
 		&IntInput{Value: 2, Placeholder: "..."},
 		&IntInput{Value: 3, Disabled: true},
@@ -19,7 +19,7 @@ func TestIntInputMount(t *testing.T) {
 }
 
 func TestIntInputClose(t *testing.T) {
-	testingCloseWidgets(t,
+	testCloseWidgets(t,
 		&IntInput{Value: 1},
 		&IntInput{Value: 2, Placeholder: "..."},
 		&IntInput{Value: 3, Disabled: true},
@@ -29,7 +29,7 @@ func TestIntInputClose(t *testing.T) {
 }
 
 func TestIntInputOnFocus(t *testing.T) {
-	testingCheckFocusAndBlur(t,
+	testCheckFocusAndBlur(t,
 		&IntInput{},
 		&IntInput{},
 		&IntInput{},
@@ -39,7 +39,7 @@ func TestIntInputOnFocus(t *testing.T) {
 func TestIntInputOnChange(t *testing.T) {
 	log := make([]int64, 0)
 
-	testingTypeKeys(t, "1234",
+	testTypeKeys(t, "1234",
 		&IntInput{OnChange: func(v int64) {
 			log = append(log, v)
 		}})
@@ -57,7 +57,7 @@ func TestIntInputOnChange(t *testing.T) {
 func TestIntInputOnEnterKey(t *testing.T) {
 	got := int64(0)
 
-	testingTypeKeys(t, "1234\n",
+	testTypeKeys(t, "1234\n",
 		&IntInput{OnEnterKey: func(v int64) {
 			got = v
 		}})
@@ -69,7 +69,7 @@ func TestIntInputOnEnterKey(t *testing.T) {
 }
 
 func TestIntInputUpdateProps(t *testing.T) {
-	testingUpdateWidgets(t, []base.Widget{
+	testUpdateWidgets(t, []base.Widget{
 		&IntInput{Value: 1},
 		&IntInput{Value: 2, Placeholder: "..."},
 		&IntInput{Value: 3, Disabled: true},
