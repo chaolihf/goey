@@ -8,6 +8,7 @@ import (
 	"bitbucket.org/rj/goey/base"
 	"bitbucket.org/rj/goey/internal/gtk"
 	"bitbucket.org/rj/goey/loop"
+	"gitlab.com/stone.code/assert"
 )
 
 // Control is an opaque type used as a platform-specific handle to a control
@@ -133,8 +134,6 @@ func (w *Control) MinIntrinsicWidth(base.Length) base.Length {
 // SetBounds updates the position of the widget.
 func (w *Control) SetBounds(bounds base.Rectangle) {
 	pixels := bounds.Pixels()
-	if pixels.Dx() <= 0 || pixels.Dy() <= 0 {
-		panic("internal error.  zero width or zero height bounds for control")
-	}
+	assert.Assert(pixels.Dx() > 0 && pixels.Dy() > 0, "zero width or zero height bounds for GTK control")
 	gtk.WidgetSetBounds(w.handle, pixels.Min.X, pixels.Min.Y, pixels.Dx(), pixels.Dy())
 }

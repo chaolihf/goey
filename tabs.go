@@ -74,10 +74,10 @@ func (w *tabsElement) Layout(bc base.Constraints) base.Size {
 	}
 
 	size := w.child.Layout(bc.Inset(insets.X, insets.Y))
-	return base.Size{
+	return bc.Constrain(base.Size{
 		Width:  size.Width + insets.X,
 		Height: size.Height + insets.Y,
-	}
+	})
 }
 
 func (w *tabsElement) MinIntrinsicHeight(width base.Length) base.Length {
@@ -92,7 +92,7 @@ func (w *tabsElement) MinIntrinsicHeight(width base.Length) base.Length {
 		return w.child.MinIntrinsicHeight(base.Inf) + yInset
 	}
 
-	return w.child.MinIntrinsicHeight(width - xInset)
+	return w.child.MinIntrinsicHeight(width-xInset) + yInset
 }
 
 func (w *tabsElement) MinIntrinsicWidth(height base.Length) base.Length {

@@ -68,7 +68,7 @@ func (w *tabsElement) OnChange(page int) {
 			w.onChange(page)
 		}
 		if page != w.value {
-			// Not clear how a handle at this point should be handled.
+			// Not clear how an error at this point should be handled.
 			// The widget is supposed to already be mounted, but we create and
 			// remove controls when the tab is changed.
 			// In practice, errors are very infrequent (never?).  GTK widgets

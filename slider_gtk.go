@@ -100,10 +100,7 @@ func (w *sliderElement) Layout(bc base.Constraints) base.Size {
 // to be correctly displayed.
 func (w *sliderElement) MinIntrinsicWidth(base.Length) base.Length {
 	width := gtk.WidgetMinWidth(w.handle)
-	if limit := base.FromPixelsX(width); limit < 160*DIP {
-		return 160 * DIP
-	}
-	return base.FromPixelsX(width)
+	return max(base.FromPixelsX(width), 160*DIP)
 }
 
 func (w *sliderElement) updateProps(data *Slider) error {
