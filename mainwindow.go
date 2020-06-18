@@ -71,20 +71,6 @@ func (w *Window) Child() base.Element {
 	return w.child
 }
 
-// children assumes that the direct child of the window is a VBox, and then
-// returns the children of that element.  It is used for testing.
-func (w *Window) children() []base.Element {
-	if w.child == nil {
-		return nil
-	}
-
-	if vbox, ok := w.child.(*vboxElement); ok {
-		return vbox.children
-	}
-
-	return nil
-}
-
 func (w *windowImpl) layoutChild(windowSize base.Size) base.Size {
 	// Create the constraints
 	constraints := base.Tight(windowSize)
