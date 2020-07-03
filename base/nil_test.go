@@ -12,6 +12,28 @@ func ExampleMount() {
 	// generally useable.
 	parent := Control{}
 
+	widget := &mock{}
+	elem, err := Mount(parent, widget)
+	if err != nil {
+		panic("Unexpected error!")
+	}
+	defer elem.Close()
+
+	if widget.Kind() != elem.Kind() {
+		panic("Internal error, kinds do not match")
+	}
+
+	fmt.Println("OK")
+
+	// Output:
+	// OK
+}
+
+func ExampleMount_nil() {
+	// This won't work in real code, as the zero value for a control is not
+	// generally useable.
+	parent := Control{}
+
 	// It is okay to mount a nil widget.
 	elem, err := Mount(parent, nil)
 	if err != nil {
@@ -20,10 +42,14 @@ func ExampleMount() {
 	defer elem.Close()
 	fmt.Println("The value of elem is nil...", elem == nil)
 	fmt.Println("The kind of elem is...", elem.Kind())
+	fmt.Println("The minimum intrinsic height is...", elem.MinIntrinsicHeight(Inf))
+	fmt.Println("The minimum intrinsic width is...", elem.MinIntrinsicWidth(Inf))
 
 	// Output:
 	// The value of elem is nil... false
 	// The kind of elem is... bitbucket.org/rj/goey/base.nil
+	// The minimum intrinsic height is... 0:00
+	// The minimum intrinsic width is... 0:00
 }
 
 func TestMount(t *testing.T) {
