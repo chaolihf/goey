@@ -73,17 +73,7 @@ func DiffChildren(parent Control, lhs []Element, rhs []Widget) ([]Element, error
 	// If the old tree does not contain any children, then we can trivially
 	// match the tree by mounting all of the widgets.
 	if len(lhs) == 0 {
-		c := make([]Element, 0, len(rhs))
-
-		for _, v := range rhs {
-			mountedChild, err := v.Mount(parent)
-			if err != nil {
-				return nil, err
-			}
-			c = append(c, mountedChild)
-		}
-
-		return c, nil
+		return mountWidgets(parent, lhs, rhs)
 	}
 
 	// Delete excessive children
@@ -111,12 +101,16 @@ func DiffChildren(parent Control, lhs []Element, rhs []Widget) ([]Element, error
 	}
 
 	// Mount any remaining children.
-	for _, v := range rhs[len(lhs):] {
-		mountedWidget, err := v.Mount(parent)
+	return mountWidgets(parent, lhs, rhs[len(lhs):])
+}
+
+func mountWidgets(parent Control, lhs []Element, rhs []Widget) ([]Element, error) {
+	for _, v := range rhs {
+		mountedChild, err := v.Mount(parent)
 		if err != nil {
 			return lhs, err
 		}
-		lhs = append(lhs, mountedWidget)
+		lhs = append(lhs, mountedChild)
 	}
 
 	return lhs, nil
