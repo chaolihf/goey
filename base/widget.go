@@ -32,8 +32,9 @@ type Widget interface {
 	// Users should not need to use this method directly.
 	Kind() *Kind
 	// Mount creates a widget or control in the GUI.  The newly created widget
-	// will be a child of the widget specified by parent.  If non-nil, the returned
-	// Element must have a matching kind.
+	// will be a child of the widget specified by parent.  If non-nil, the
+	// returned Element must have a matching kind.  Must return either an
+	// Element or an error.
 	Mount(parent Control) (Element, error)
 }
 

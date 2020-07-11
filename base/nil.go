@@ -6,9 +6,12 @@ var (
 
 // Mount will try to mount a widget.  In the case where the widget is non-nil,
 // this function is a simple wrapper around calling the method Mount directly.
-// If widget is nil, this function will instead return a non-nil element, but
-// an element with an intrinsic size of zero and no visible elements in the
-// GUI.
+// If widget is nil, this function will instead return a non-nil element to act
+// as a placeholder.
+//
+// The placeholder element has an intrinsic size of zero and adds no visible
+// elements in the GUI.  Unlike other elements, there is no need to call Close,
+// as that method is a no-op.
 func Mount(parent Control, widget Widget) (Element, error) {
 	if widget == nil {
 		return (*nilElement)(nil), nil

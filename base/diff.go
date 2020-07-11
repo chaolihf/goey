@@ -43,6 +43,9 @@ func DiffChild(parent Control, lhs Element, rhs Widget) (Element, error) {
 	// Need to replace the element.
 	newChild, err := rhs.Mount(parent)
 	if err != nil {
+		// Note: newChild must be nil here, or we will leak the element.
+		// It may be worthwhile to verify and panic so that leaks are
+		// corrected.
 		return lhs, err
 	}
 	lhs.Close()
