@@ -15,10 +15,14 @@ import (
 	"image/draw"
 	_ "image/png"
 	"os"
+	"strings"
 
 	"bitbucket.org/rj/goey"
 	"bitbucket.org/rj/goey/base"
 	"bitbucket.org/rj/goey/loop"
+	"golang.org/x/image/font"
+	"golang.org/x/image/font/basicfont"
+	"golang.org/x/image/math/fixed"
 )
 
 var (
@@ -51,6 +55,28 @@ func loadImage(filename string) (image.Image, error) {
 	return img, err
 }
 
+func createImage(label string) image.Image {
+	img := image.NewRGBA(image.Rect(0, 0, 200, 100))
+
+	point := fixed.Point26_6{
+		fixed.Int26_6(2 * 64),
+		fixed.Int26_6(50 * 64)}
+
+	for _, v := range strings.Split(label, "\n") {
+		d := &font.Drawer{
+			Dst:  img,
+			Src:  image.Black,
+			Face: basicfont.Face7x13,
+			Dot:  point,
+		}
+		d.DrawString(v)
+
+		point.Y += fixed.Int26_6(15 * 64)
+	}
+
+	return img
+}
+
 func selectImage(index int) (image.Image, string) {
 	if clickCount%4 == 3 {
 		return gopher, "Image of the Go gopher."
@@ -65,8 +91,8 @@ func main() {
 	var err error
 	gopher, err = loadImage("gopher.png")
 	if err != nil {
-		fmt.Println("Error: ", err)
-		return
+		fmt.Printf("error: could not open image: %s\n", err)
+		gopher = createImage("image not found\n" + err.Error())
 	}
 
 	err = loop.Run(createWindow)

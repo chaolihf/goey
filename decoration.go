@@ -42,14 +42,14 @@ func (*decorationElement) Kind() *base.Kind {
 }
 
 func (w *decorationElement) Layout(bc base.Constraints) base.Size {
-	hinset := w.insets.Left + w.insets.Right
-	vinset := w.insets.Top + w.insets.Bottom
+	hinset := w.insets.Left + w.insets.Right + base.FromPixelsX(2)
+	vinset := w.insets.Top + w.insets.Bottom + base.FromPixelsY(2)
 
 	innerConstraints := bc.Inset(hinset, vinset)
 	w.childSize = w.child.Layout(innerConstraints)
 	return base.Size{
-		max(w.childSize.Width+hinset, base.FromPixelsX(2)),
-		max(w.childSize.Height+vinset, base.FromPixelsY(2)),
+		max(w.childSize.Width+hinset, base.FromPixelsX(4)),
+		max(w.childSize.Height+vinset, base.FromPixelsY(4)),
 	}
 }
 
