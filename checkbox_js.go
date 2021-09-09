@@ -112,7 +112,7 @@ func (w *checkboxElement) MinIntrinsicWidth(base.Length) base.Length {
 
 func (w *checkboxElement) Props() base.Widget {
 	return &Checkbox{
-		Text:     w.elemLabel.Get("innerText").String(),
+		Text:     w.elemLabel.Get("textContent").String(),
 		Value:    w.elemInput.Get("checked").Truthy(),
 		Disabled: w.elemInput.Get("disabled").Truthy(),
 		OnChange: w.onChange.Fn,
@@ -129,7 +129,7 @@ func (w *checkboxElement) TakeFocus() bool {
 func (w *checkboxElement) updateProps(data *Checkbox) error {
 	w.elemInput.Set("checked", data.Value)
 	w.elemInput.Set("disabled", data.Disabled)
-	w.elemLabel.Set("innerText", data.Text)
+	w.elemLabel.Set("textContent", data.Text)
 	w.onChange.Set(w.elemInput, data.OnChange)
 	w.onFocus.Set(w.elemInput, data.OnFocus)
 	w.onBlur.Set(w.elemInput, data.OnBlur)

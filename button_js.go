@@ -31,16 +31,6 @@ func (w *Button) mount(parent base.Control) (base.Element, error) {
 	return retval, nil
 }
 
-func (w *Button) updateElement(elem js.Value) {
-	elem.Set("innerText", w.Text)
-	elem.Set("disabled", w.Disabled)
-	if w.Default {
-		elem.Set("className", "btn btn-primary")
-	} else {
-		elem.Set("className", "btn btn-secondary")
-	}
-}
-
 func (w *buttonElement) Click() {
 	w.handle.Call("click")
 }
@@ -58,7 +48,7 @@ func (w *buttonElement) createMeasurementElement() js.Value {
 
 	handle := document.Call("createElement", "button")
 	handle.Set("className", "btn btn-primary")
-	handle.Set("innerText", w.handle.Get("innerText"))
+	handle.Set("textContent", w.handle.Get("textContent"))
 	handle.Get("style").Set("visibility", "hidden")
 
 	body := document.Call("getElementsByTagName", "body").Index(0)
@@ -99,7 +89,7 @@ func (w *buttonElement) MinIntrinsicWidth(base.Length) base.Length {
 
 func (w *buttonElement) Props() base.Widget {
 	return &Button{
-		Text:     w.handle.Get("innerText").String(),
+		Text:     w.handle.Get("textContent").String(),
 		Default:  strings.Contains(w.handle.Get("className").String(), "primary"),
 		Disabled: w.handle.Get("disabled").Truthy(),
 		OnClick:  w.onClick.Fn,
@@ -109,7 +99,7 @@ func (w *buttonElement) Props() base.Widget {
 }
 
 func (w *buttonElement) updateProps(data *Button) error {
-	w.handle.Set("innerText", data.Text)
+	w.handle.Set("textContent", data.Text)
 	w.handle.Set("disabled", data.Disabled)
 	if data.Default {
 		w.handle.Set("className", "btn btn-primary")

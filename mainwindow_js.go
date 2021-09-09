@@ -54,6 +54,10 @@ func (w *windowImpl) control() base.Control {
 func (w *windowImpl) close() {
 	if !w.handle.IsNull() {
 		if w.child != nil {
+			document := js.Global().Get("document")
+			if ae := document.Get("activeElement"); ae.Truthy() {
+				ae.Call("blur")
+			}
 			w.child.Close()
 			w.child = nil
 		}
