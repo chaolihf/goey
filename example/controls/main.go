@@ -101,6 +101,8 @@ func renderWindow() base.Widget {
 							OnChange: func(v bool) { println("check box input: ", v) }},
 						&goey.Checkbox{Text: "Please click on the checkbox B",
 							OnChange: func(v bool) { println("check box input: ", v) }},
+						&goey.Checkbox{Text: "Please click on the checkbox C",
+							Disabled: true},
 					},
 				},
 			},
