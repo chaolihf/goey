@@ -1,4 +1,3 @@
-//go:build cocoa || (darwin && !gtk)
 // +build cocoa darwin,!gtk
 
 package goey

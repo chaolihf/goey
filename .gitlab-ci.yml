@@ -19,7 +19,7 @@ golang-gtk-modules:
         DUMMY: ["dummy"]
 
 golang-gtk-gopath:
-  image: golang:1.10
+  image: "golang:${GOVERSION}"
   stage: build
   variables:
     GOPATH: $CI_BUILDS_DIR
@@ -27,12 +27,32 @@ golang-gtk-gopath:
     DISPLAY: ":1"
     APT_GET: "libgtk-3-dev xvfb"
   script:
-    - go get bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
-    - go build bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
+    - go get -v bitbucket.org/rj/goey/base
+    - go get -v bitbucket.org/rj/goey/loop
+    - go get -v bitbucket.org/rj/goey/example/...
+    - go build -v bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
     - go test ./base ./loop ./dialog .
   parallel:
     matrix:
       - GOVERSION: ["1.8", "1.9", "1.10"]
+        DUMMY: ["dummy"]
+
+golang-js:
+  image: "golang:${GOVERSION}"
+  stage: build
+  variables:
+    APT_GET: "chromium"
+    GOOS: js
+    GOARCH: wasm
+    GOBIN: $CI_BUILDS_DIR/bin
+  script:
+    - GOOS= GOARCH= go get github.com/agnivade/wasmbrowsertest@latest
+    - GOOS= GOARCH= go install github.com/agnivade/wasmbrowsertest
+    - go build . ./example/...
+    - go test -exec ${GOBIN}/wasmbrowsertest -run Test ./base ./loop .
+  parallel:
+    matrix:
+      - GOVERSION: ["1.14", "1.16", "1.17"]
         DUMMY: ["dummy"]
 
 golang-windows:

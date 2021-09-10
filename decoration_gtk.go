@@ -1,4 +1,3 @@
-//go:build gtk || (linux && !cocoa) || (freebsd && !cocoa) || (openbsd && !cocoa)
 // +build gtk linux,!cocoa freebsd,!cocoa openbsd,!cocoa
 
 package goey
