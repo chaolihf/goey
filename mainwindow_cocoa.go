@@ -1,3 +1,4 @@
+//go:build cocoa || (darwin && !gtk)
 // +build cocoa darwin,!gtk
 
 package goey
@@ -71,7 +72,7 @@ func (w *windowImpl) onSize() {
 	}
 
 	// Update the global DPI
-	base.DPI.X, base.DPI.Y = 96, 96
+	w.setDPI()
 
 	// Calculate the layout.
 	width, height := w.handle.ContentSize()
@@ -121,16 +122,19 @@ func (w *windowImpl) Screenshot() (image.Image, error) {
 
 func (w *windowImpl) setChildPost() {
 	// Redo the layout so the children are placed.
-	if w.child != nil {
-		// Update the global DPI
-		base.DPI.X, base.DPI.Y = 96, 96
-
-		// Constrain window size
-		w.updateWindowMinSize()
-		// Properties may have changed sizes, so we need to do layout.
-		w.onSize()
-	} else {
+	if w.child == nil {
+		return
 	}
+
+	// Constrain window size
+	w.updateWindowMinSize()
+	// Properties may have changed sizes, so we need to do layout.
+	w.onSize()
+}
+
+// setDPI updates the global DPI
+func (_ *windowImpl) setDPI() {
+	base.DPI.X, base.DPI.Y = 96, 96
 }
 
 func (w *windowImpl) setScroll(horz, vert bool) {

@@ -1,3 +1,4 @@
+//go:build gtk || (linux && !cocoa) || (freebsd && !cocoa) || (openbsd && !cocoa)
 // +build gtk linux,!cocoa freebsd,!cocoa openbsd,!cocoa
 
 package goey
@@ -165,12 +166,14 @@ func (w *windowImpl) Screenshot() (image.Image, error) {
 	}, nil
 }
 
+// setDPI updates the global DPI
+func (_ *windowImpl) setDPI() {
+	base.DPI.X, base.DPI.Y = 96, 96
+}
+
 func (w *windowImpl) setChildPost() {
 	// Redo the layout so the children are placed.
 	if w.child != nil {
-		// Update the global DPI
-		base.DPI.X, base.DPI.Y = 96, 96
-
 		// Constrain window size
 		w.updateWindowMinSize()
 		// Properties may have changed sizes, so we need to do layout.

@@ -40,14 +40,10 @@ func NewWindow(title string, child base.Widget) (*Window, error) {
 	w.horizontalScroll, w.verticalScroll = scrollDefaults()
 
 	// Mount the widget, and initialize its layout.
-	if child != nil {
-		newChild, err := child.Mount(w.control())
-		if err != nil {
-			w.Close()
-			return nil, err
-		}
-		w.child = newChild
-		w.setChildPost()
+	err = w.SetChild(child)
+	if err != nil {
+		w.Close()
+		return nil, err
 	}
 
 	// Show the window
@@ -155,6 +151,10 @@ func (w *Window) SetChild(child base.Widget) error {
 	defer func() {
 		atomic.StoreUintptr(&insideSetChildren, 0)
 	}()
+
+	// The child may want to convert lengths to device dependent
+	// pixels when mounting.
+	w.setDPI()
 
 	// Update the child element.
 	newChild, err := base.DiffChild(w.control(), w.child, child)

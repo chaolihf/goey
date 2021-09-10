@@ -85,7 +85,7 @@ func (w *windowImpl) onSize(hwnd win.HWND) {
 	// convert device independent pixels into actual pixels, but the DPI can change
 	// from window to window when the computer has multiple monitors.  Fortunately,
 	// all layout should happen in the GUI thread.
-	w.updateGlobalDPI()
+	w.setDPI()
 
 	// Perform layout
 	rect := win.RECT{}
@@ -330,6 +330,13 @@ func (w *windowImpl) setChildPost() {
 	}
 }
 
+func (w *windowImpl) setDPI() {
+	base.DPI = image.Point{
+		X: int(float32(w.dpi.X) * Scale),
+		Y: int(float32(w.dpi.Y) * Scale),
+	}
+}
+
 func (w *windowImpl) setScroll(hscroll, vscroll bool) {
 	// Copy the new parameters for the window into the fields.
 	w.horizontalScroll, w.verticalScroll = hscroll, vscroll
@@ -515,10 +522,6 @@ func (w *windowImpl) title() (string, error) {
 	return win2.GetWindowText(w.hWnd), nil
 }
 
-func (w *windowImpl) updateGlobalDPI() {
-	base.DPI = image.Point{int(float32(w.dpi.X) * Scale), int(float32(w.dpi.Y) * Scale)}
-}
-
 func (w *windowImpl) updateWindowMinSize() {
 
 	// Determine the extra width and height required for borders, title bar,
@@ -543,7 +546,7 @@ func (w *windowImpl) updateWindowMinSize() {
 	}
 
 	// Determine the minimum size (in pixels) for the child of the window
-	w.updateGlobalDPI()
+	w.setDPI()
 	if w.horizontalScroll && w.verticalScroll {
 		width := w.child.MinIntrinsicWidth(base.Inf)
 		height := w.child.MinIntrinsicHeight(base.Inf)
