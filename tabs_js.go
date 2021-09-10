@@ -75,7 +75,7 @@ func (w *tabsElement) controlTabsMinWidth() base.Length {
 }
 
 func (w *tabsElement) mountPage(page int) error {
-	child, err := w.widgets[page].Child.Mount(base.Control{w.innerDiv})
+	child, err := base.Mount(base.Control{w.innerDiv}, w.widgets[page].Child)
 	if err != nil {
 		return err
 	}
@@ -126,7 +126,20 @@ func (w *tabsElement) onClick(value int) {
 }
 
 func (w *tabsElement) Props() base.Widget {
-	return &Tabs{}
+	count := w.handle.Get("childElementCount").Int()
+
+	children := make([]TabItem, count)
+	for i := 0; i < count; i++ {
+		children[i].Caption = w.handle.Get("children").Index(i).Get("children").Index(0).Get("textContent").String()
+		children[i].Child = w.widgets[i].Child
+	}
+
+	return &Tabs{
+		Value:    w.value,
+		Children: children,
+		Insets:   w.insets,
+		OnChange: w.onChange,
+	}
 }
 
 func (w *tabsElement) SetBounds(bounds base.Rectangle) {
@@ -134,16 +147,18 @@ func (w *tabsElement) SetBounds(bounds base.Rectangle) {
 		b.Max.Y = b.Min.Y + base.FromPixelsY(40)
 		return b
 	}
-
 	w.Control.SetBounds(calcTabStrip(bounds))
-	bounds.Min.Y += base.FromPixelsY(40)
-	(&Control{w.innerDiv}).SetBounds(bounds)
 
-	if w.child != nil {
-		// Determine the bounds for the child widget
-		insets := w.contentInsets()
-		insets.X += w.insets.Left + w.insets.Right
-		insets.Y += w.insets.Top + w.insets.Bottom
+	calcTabPanel := func(b base.Rectangle) base.Rectangle {
+		b.Min.Y += base.FromPixelsY(40)
+		return b
+	}
+	(&Control{w.innerDiv}).SetBounds(calcTabPanel(bounds))
+
+	insets := w.contentInsets()
+	insets.X += w.insets.Dx()
+	insets.Y += w.insets.Dy()
+	if bounds.Dx() > insets.X && bounds.Dy() > insets.Y {
 		bounds = base.Rectangle{
 			Max: base.Point{bounds.Dx() - insets.X, bounds.Dy() - insets.Y},
 		}
@@ -152,11 +167,11 @@ func (w *tabsElement) SetBounds(bounds base.Rectangle) {
 		offset := base.Point{w.insets.Left, w.insets.Top}
 		bounds.Min = bounds.Min.Add(offset)
 		bounds.Max = bounds.Max.Add(offset)
-
-		// Update bounds for the child
-		w.cachedBounds = bounds
-		w.child.SetBounds(bounds)
 	}
+
+	// Update bounds for the child
+	w.cachedBounds = bounds
+	w.child.SetBounds(bounds)
 }
 
 func updateTabItems(handle js.Value, clickCB js.Value, items []TabItem) {
@@ -166,14 +181,14 @@ func updateTabItems(handle js.Value, clickCB js.Value, items []TabItem) {
 	children := handle.Get("children")
 	if n > len(items) {
 		for i := n; i > len(items); i-- {
-			children.Index(i).Call("remove")
+			children.Index(i - 1).Call("remove")
 		}
 		n = len(items)
 	}
 
 	// Change text of existing options
 	for i := 0; i < n; i++ {
-		children.Index(i).Get("children").Index(0).Set("innerText", items[i])
+		children.Index(i).Get("children").Index(0).Set("textContent", items[i].Caption)
 	}
 
 	// Add new options
@@ -184,7 +199,7 @@ func updateTabItems(handle js.Value, clickCB js.Value, items []TabItem) {
 		li.Set("onclick", clickCB)
 		a := js.Global().Get("document").Call("createElement", "a")
 		a.Set("className", "nav-link")
-		a.Set("innerText", items[i].Caption)
+		a.Set("textContent", items[i].Caption)
 		a.Set("href", "#")
 		li.Call("appendChild", a)
 		handle.Call("appendChild", li)

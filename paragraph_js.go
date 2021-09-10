@@ -27,10 +27,10 @@ func (w *P) mount(parent base.Control) (base.Element, error) {
 }
 
 func (w *paragraphElement) measureReflowLimits() {
-	const innerText = "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm"
+	const textContent = "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm"
 
 	handle := js.Global().Get("document").Call("createElement", "p")
-	handle.Set("innerText", innerText)
+	handle.Set("textContent", textContent)
 	handle.Get("style").Set("visibility", "hidden")
 
 	body := js.Global().Get("document").Call("getElementsByTagName", "body").Index(0)
@@ -46,13 +46,13 @@ func (w *paragraphElement) MinIntrinsicHeight(width base.Length) base.Length {
 		width = w.maxReflowWidth()
 	}
 
-	innerText := w.handle.Get("innerText")
-	if innerText.String() == "" {
-		innerText = js.ValueOf("X")
+	textContent := w.handle.Get("textContent")
+	if textContent.String() == "" {
+		textContent = js.ValueOf("X")
 	}
 
 	handle := js.Global().Get("document").Call("createElement", "p")
-	handle.Set("innerText", innerText)
+	handle.Set("textContent", textContent)
 	handle.Get("style").Set("visibility", "hidden")
 	handle.Get("style").Set("width", fmt.Sprintf("%dpx", width.PixelsX()))
 
@@ -66,7 +66,7 @@ func (w *paragraphElement) MinIntrinsicHeight(width base.Length) base.Length {
 
 func (w *paragraphElement) MinIntrinsicWidth(height base.Length) base.Length {
 	handle := js.Global().Get("document").Call("createElement", "p")
-	handle.Set("innerText", w.handle.Get("innerText"))
+	handle.Set("textContent", w.handle.Get("innerText"))
 	handle.Get("style").Set("visibility", "hidden")
 	if height != base.Inf {
 		handle.Get("style").Set("height", fmt.Sprintf("%dpx", height.PixelsY()))
@@ -95,13 +95,13 @@ func (w *paragraphElement) Props() base.Widget {
 	}
 
 	return &P{
-		Text:  w.handle.Get("innerText").String(),
+		Text:  w.handle.Get("textContent").String(),
 		Align: getAlign(w.handle.Get("style").Get("text-align").String()),
 	}
 }
 
 func (w *paragraphElement) updateProps(data *P) error {
-	w.handle.Set("innerText", data.Text)
+	w.handle.Set("textContent", data.Text)
 	switch data.Align {
 	case JustifyLeft:
 		w.handle.Get("style").Set("text-align", "left")

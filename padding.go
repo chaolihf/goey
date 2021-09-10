@@ -29,6 +29,16 @@ func UniformInsets(l base.Length) Insets {
 	return Insets{l, l, l, l}
 }
 
+// Dx returns the total left and right insets.
+func (i *Insets) Dx() base.Length {
+	return i.Left + i.Right
+}
+
+// Dy returns the total top and top insets.
+func (i *Insets) Dy() base.Length {
+	return i.Top + i.Bottom
+}
+
 // String returns a string representation of i like "Insets{92:00,92:00,46:00,46:00}".
 func (i *Insets) String() string {
 	return "Insets{" + i.Top.String() + "," + i.Right.String() + "," +

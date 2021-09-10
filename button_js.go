@@ -20,7 +20,7 @@ func (w *Button) mount(parent base.Control) (base.Element, error) {
 	// Create the control
 	handle := js.Global().Get("document").Call("createElement", "button")
 	handle.Get("style").Set("position", "absolute")
-	parent.Handle.Call("appendChild", handle)
+	defer parent.Handle.Call("appendChild", handle)
 
 	// Create the element
 	retval := &buttonElement{

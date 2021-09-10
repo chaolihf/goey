@@ -3,6 +3,8 @@ package goey
 import (
 	"fmt"
 	"image/color"
+	"strconv"
+	"strings"
 	"syscall/js"
 
 	"bitbucket.org/rj/goey/base"
@@ -28,8 +30,12 @@ func (w *Decoration) mount(parent base.Control) (base.Element, error) {
 	retval := &decorationElement{
 		Control: Control{handle},
 	}
-	retval.updateProps(w)
+	if err := retval.updateProps(w); err != nil {
+		retval.Control.Close()
+		return nil, err
+	}
 
+	assert.Assert(retval.child != nil, "child should not be nil")
 	return retval, nil
 }
 
@@ -39,8 +45,42 @@ func (w *decorationElement) Close() {
 }
 
 func (w *decorationElement) props() *Decoration {
-	println(w.handle.Get("style").Get("borderRadius").String())
-	return &Decoration{}
+	fromCSS := func(s string) color.RGBA {
+		if s == "inherit" || s == "none" || s == "" {
+			return color.RGBA{}
+		}
+		if ndx := strings.Index(s, "rgb"); ndx >= 0 {
+			s = s[ndx:]
+
+			if strings.Count(s, ",") == 2 {
+				var clr color.RGBA
+				fmt.Sscanf(s, "rgb(%d,%d,%d)", &clr.R, &clr.G, &clr.B)
+				clr.A = 0xff
+				return clr
+			} else {
+				var clr color.RGBA
+				fmt.Sscanf(s, "rgb(%d,%d,%d,%d)", &clr.R, &clr.G, &clr.B, &clr.A)
+				return clr
+			}
+		}
+
+		panic("not implemented: " + s)
+	}
+	radiusFromCSS := func(s string) base.Length {
+		if strings.HasSuffix(s, "px") {
+			v, _ := strconv.Atoi(s[:len(s)-2])
+			return base.FromPixelsX(v)
+		}
+
+		panic("not implemented: " + s)
+	}
+
+	return &Decoration{
+		Insets: w.insets,
+		Fill:   fromCSS(w.handle.Get("style").Get("background").String()),
+		Stroke: fromCSS(w.handle.Get("style").Get("border").String()),
+		Radius: radiusFromCSS(w.handle.Get("style").Get("borderRadius").String()),
+	}
 }
 
 func (w *decorationElement) SetBounds(bounds base.Rectangle) {
@@ -66,14 +106,17 @@ func (w *decorationElement) updateProps(data *Decoration) (err error) {
 
 	w.insets = data.Insets
 
-	w.handle.Get("style").Set("borderRadius", fmt.Sprintf("%dpx", data.Radius.PixelsX()))
+	style := w.handle.Get("style")
+	style.Set("borderRadius", fmt.Sprintf("%dpx", data.Radius.PixelsX()))
 	if data.Stroke.A != 0 {
-		w.handle.Get("style").Set("borderColor", cssColor(data.Stroke))
-		w.handle.Get("style").Set("borderStyle", "solid")
-		w.handle.Get("style").Set("borderWidth", "1px")
+		style.Set("border", cssColor(data.Stroke)+" solid 1px")
+	} else {
+		style.Set("border", "none")
 	}
 	if data.Fill.A != 0 {
-		w.handle.Get("style").Set("backgroundColor", cssColor(data.Fill))
+		style.Set("background", cssColor(data.Fill))
+	} else {
+		style.Set("background", "inherit")
 	}
 
 	return nil

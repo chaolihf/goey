@@ -21,6 +21,7 @@ func (w *IntInput) mount(parent base.Control) (base.Element, error) {
 	// Create the control
 	handle := js.Global().Get("document").Call("createElement", "input")
 	handle.Get("style").Set("position", "absolute")
+	handle.Set("className", "form-control")
 	handle.Set("type", "number")
 	handle.Set("step", 1)
 	parent.Handle.Call("appendChild", handle)
@@ -32,6 +33,60 @@ func (w *IntInput) mount(parent base.Control) (base.Element, error) {
 	retval.updateProps(w)
 
 	return retval, nil
+}
+
+func (w *intinputElement) Close() {
+	w.onChange.Close()
+	w.onFocus.Close()
+	w.onBlur.Close()
+	w.onEnterKey.Close()
+
+	w.Control.Close()
+}
+
+func (w *intinputElement) createMeasurementElement() js.Value {
+	document := js.Global().Get("document")
+
+	handle := document.Call("createElement", "input")
+	handle.Set("className", "form-control")
+	handle.Set("type", "number")
+	handle.Set("step", 1)
+	handle.Get("style").Set("visibility", "hidden")
+
+	body := document.Call("getElementsByTagName", "body").Index(0)
+	body.Call("appendChild", handle)
+
+	return handle
+}
+
+func (w *intinputElement) Layout(bc base.Constraints) base.Size {
+	handle := w.createMeasurementElement()
+	defer handle.Call("remove")
+
+	width := base.FromPixelsX(handle.Get("offsetWidth").Int() + 1)
+	width = bc.ConstrainWidth(width)
+	height := base.FromPixelsY(handle.Get("offsetHeight").Int() + 1)
+	height = bc.ConstrainHeight(height)
+
+	return base.Size{width, height}
+}
+
+func (w *intinputElement) MinIntrinsicHeight(base.Length) base.Length {
+	handle := w.createMeasurementElement()
+	defer handle.Call("remove")
+
+	height := handle.Get("offsetHeight").Int()
+
+	return base.FromPixelsY(height)
+}
+
+func (w *intinputElement) MinIntrinsicWidth(base.Length) base.Length {
+	handle := w.createMeasurementElement()
+	defer handle.Call("remove")
+
+	width := handle.Get("offsetWidth").Int()
+
+	return base.FromPixelsX(width + 1)
 }
 
 func (w *intinputElement) Props() base.Widget {

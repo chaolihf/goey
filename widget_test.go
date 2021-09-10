@@ -55,7 +55,7 @@ func normalize(t *testing.T, rhs base.Widget) {
 		}
 	}
 
-	if base.PLATFORM != "cocoa" {
+	if base.PLATFORM == "windows" || base.PLATFORM == "gtk" {
 		// On both windows and GTK, the props method only return RGBA images.
 		if value := reflect.ValueOf(rhs).Elem().FieldByName("Image"); value.IsValid() {
 			if prop, ok := value.Interface().(*image.Gray); ok {

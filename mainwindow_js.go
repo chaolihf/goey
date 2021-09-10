@@ -1,7 +1,6 @@
 package goey
 
 import (
-	"fmt"
 	"image"
 	"syscall/js"
 
@@ -32,7 +31,6 @@ func newWindow(title string, child base.Widget) (*Window, error) {
 	}}
 
 	js.Global().Get("window").Set("onresize", js.FuncOf(func(js.Value, []js.Value) interface{} {
-		fmt.Println("resize")
 		retval.onSize()
 		return nil
 	}))
@@ -88,7 +86,7 @@ func (w *windowImpl) onSize() {
 	}
 
 	// Get the client area size.
-	base.DPI.X, base.DPI.Y = 96, 96
+	w.setDPI()
 	clientSize := base.Size{
 		base.FromPixelsX(js.Global().Get("window").Get("innerWidth").Int()),
 		base.FromPixelsY(js.Global().Get("window").Get("innerHeight").Int()),
@@ -105,9 +103,6 @@ func (w *windowImpl) onSize() {
 func (w *windowImpl) setChildPost() {
 	// Redo the layout so the children are placed.
 	if w.child != nil {
-		// Update the global DPI
-		base.DPI.X, base.DPI.Y = 96, 96
-
 		// Constrain window size
 		// w.updateWindowMinSize()
 		// Properties may have changed sizes, so we need to do layout.
@@ -169,6 +164,10 @@ func (w *windowImpl) showScrollV(height base.Length, clientHeight base.Length) b
 	return false
 }
 
+func (_ *windowImpl) setDPI() {
+	base.DPI.X, base.DPI.Y = 96, 96
+}
+
 func (w *windowImpl) setIcon(img image.Image) error {
 	if img == nil {
 		//gtk.WindowSetIcon(w.handle, nil, 0, 0, 0)
@@ -185,13 +184,12 @@ func (w *windowImpl) setOnClosing(callback func() bool) {
 }
 
 func (w *windowImpl) setTitle(value string) error {
-	//gtk.WindowSetTitle(w.handle, value)
+	js.Global().Get("document").Set("title", value)
 	return nil
 }
 
 func (w *windowImpl) title() (string, error) {
-	// return gtk.WindowTitle(w.handle), nil
-	return "", nil
+	return js.Global().Get("document").Get("title").String(), nil
 }
 
 func (w *windowImpl) updateWindowMinSize() {

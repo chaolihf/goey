@@ -81,38 +81,40 @@ func (w *tabsElement) Layout(bc base.Constraints) base.Size {
 }
 
 func (w *tabsElement) MinIntrinsicHeight(width base.Length) base.Length {
-	xInset := w.insets.Left + w.insets.Right
-	yInset := w.insets.Top + w.insets.Bottom
+	insets := w.contentInsets()
+	insets.X += w.insets.Dx()
+	insets.Y += w.insets.Dy()
 
 	if w.child == nil {
-		return yInset
+		return insets.Y
 	}
 
 	if width == base.Inf {
-		return w.child.MinIntrinsicHeight(base.Inf) + yInset
+		return w.child.MinIntrinsicHeight(base.Inf) + insets.Y
 	}
 
-	return w.child.MinIntrinsicHeight(width-xInset) + yInset
+	return w.child.MinIntrinsicHeight(width-insets.X) + insets.Y
 }
 
 func (w *tabsElement) MinIntrinsicWidth(height base.Length) base.Length {
-	xInset := w.insets.Left + w.insets.Right
-	yInset := w.insets.Top + w.insets.Bottom
+	insets := w.contentInsets()
+	insets.X += w.insets.Dx()
+	insets.Y += w.insets.Dy()
 
 	if w.child == nil {
-		return xInset
+		return insets.X
 	}
 
 	if height == base.Inf {
 		return max(
 			w.controlTabsMinWidth(),
-			w.child.MinIntrinsicWidth(base.Inf)+xInset,
+			w.child.MinIntrinsicWidth(base.Inf)+insets.X,
 		)
 	}
 
 	return max(
 		w.controlTabsMinWidth(),
-		w.child.MinIntrinsicWidth(height-yInset),
+		w.child.MinIntrinsicWidth(height-insets.Y)+insets.X,
 	)
 }
 

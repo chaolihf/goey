@@ -6,6 +6,7 @@ import (
 	"image"
 	"image/png"
 	"io"
+	"strings"
 	"syscall/js"
 
 	"bitbucket.org/rj/goey/base"
@@ -34,14 +35,22 @@ func (w *Img) mount(parent base.Control) (base.Element, error) {
 
 func (w *imgElement) Props() base.Widget {
 	return &Img{
-		Image:  w.PropsImage(),
+		Image:  w.propsImage(),
 		Width:  w.width,
 		Height: w.height,
 	}
 }
 
-func (w *imgElement) PropsImage() image.Image {
-	return nil
+func (w *imgElement) propsImage() image.Image {
+	data := w.handle.Get("src").String()
+
+	r := base64.NewDecoder(base64.StdEncoding, strings.NewReader(data[22:]))
+
+	img, err := png.Decode(r)
+	if err != nil {
+		println("error decoding png: ", err.Error())
+	}
+	return img
 }
 
 func (w *imgElement) updateProps(data *Img) error {
@@ -52,12 +61,14 @@ func (w *imgElement) updateProps(data *Img) error {
 }
 
 func imageToAttr(i image.Image) string {
-	w := bytes.NewBuffer(nil)
-	io.WriteString(w, "data:image/png;base64,")
+	ws := bytes.NewBuffer(nil)
+	io.WriteString(ws, "data:image/png;base64,")
 
 	// Writing to a memory buffer.  There shouldn't be any errors during the
 	// encoding.
-	_ = png.Encode(base64.NewEncoder(base64.StdEncoding, w), i)
+	wb := base64.NewEncoder(base64.StdEncoding, ws)
+	_ = png.Encode(wb, i)
+	wb.Close()
 
-	return w.String()
+	return ws.String()
 }

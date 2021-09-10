@@ -75,7 +75,7 @@ func (w *Control) MinIntrinsicWidth(base.Length) base.Length {
 // SetBounds updates the position of the widget.
 func (w *Control) SetBounds(bounds base.Rectangle) {
 	pixels := bounds.Pixels()
-	assert.Assert(pixels.Dx() > 0 && pixels.Dy() > 0, "zero width or zero height bounds for control")
+	assert.Assert(pixels.Dx() >= 0 && pixels.Dy() >= 0, "zero width or zero height bounds for control")
 
 	style := w.handle.Get("style")
 
