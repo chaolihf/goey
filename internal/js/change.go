@@ -113,7 +113,7 @@ func (cb *ChangeDateCB) Set(elem js.Value, onchange func(time.Time)) {
 	if cb.Fn != nil && cb.jsfunc.IsUndefined() {
 		cb.jsfunc = js.FuncOf(func(js.Value, []js.Value) interface{} {
 			value, err := time.Parse("2006-1-2", elem.Get("value").String())
-			assert.Assert(err == nil, "value of HTMLSelectInput did not convert to int")
+			assert.Assert(err == nil, "value of HTMLInput did not convert to date")
 			cb.Fn(value)
 			return nil
 		})

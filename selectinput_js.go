@@ -20,8 +20,13 @@ type selectinputElement struct {
 
 func (w *SelectInput) mount(parent base.Control) (base.Element, error) {
 	// Create the control
-	handle := js.Global().Get("document").Call("createElement", "select")
+	document := js.Global().Get("document")
+	handle := document.Call("createElement", "select")
+	handle.Set("className", "form-control")
 	handle.Get("style").Set("position", "absolute")
+	opt := document.Call("createElement", "option")
+	opt.Set("text", "XXXXXXXX")
+	handle.Call("appendChild", opt)
 	parent.Handle.Call("appendChild", handle)
 
 	// Create the element
@@ -33,46 +38,53 @@ func (w *SelectInput) mount(parent base.Control) (base.Element, error) {
 	return retval, nil
 }
 
+func (w *selectinputElement) Close() {
+	w.onChange.Close()
+	w.onFocus.Close()
+	w.onBlur.Close()
+
+	w.Control.Close()
+}
+
+func (w *selectinputElement) createMeasurementElement() js.Value {
+	document := js.Global().Get("document")
+
+	handle := document.Call("createElement", "select")
+	handle.Set("className", "form-control")
+	handle.Get("style").Set("visibility", "hidden")
+
+	body := document.Call("getElementsByTagName", "body").Index(0)
+	body.Call("appendChild", handle)
+
+	return handle
+}
+
 func (w *selectinputElement) Layout(bc base.Constraints) base.Size {
-	width := w.MinIntrinsicWidth(bc.Max.Width)
+	handle := w.createMeasurementElement()
+	defer handle.Call("remove")
+
+	width := base.FromPixelsX(handle.Get("offsetWidth").Int() + 1)
 	width = bc.ConstrainWidth(width)
-	height := w.MinIntrinsicHeight(width)
+	height := base.FromPixelsY(handle.Get("offsetHeight").Int() + 1)
 	height = bc.ConstrainHeight(height)
 
 	return base.Size{width, height}
 }
 
 func (w *selectinputElement) MinIntrinsicHeight(base.Length) base.Length {
-	// Create a dummy selectinput
-	handle := js.Global().Get("document").Call("createElement", "selectinput")
-	handle.Get("style").Set("visibility", "hidden")
-	handle.Get("style").Set("display", "block")
-	opt := js.Global().Get("document").Call("createElement", "option")
-	opt.Set("text", "XXXXXXXX")
-	handle.Call("appendChild", opt)
+	handle := w.createMeasurementElement()
+	defer handle.Call("remove")
 
-	body := js.Global().Get("document").Call("getElementsByTagName", "body").Index(0)
-	body.Call("appendChild", handle)
 	height := handle.Get("offsetHeight").Int()
-	handle.Call("remove")
 
 	return base.FromPixelsY(height)
 }
 
 func (w *selectinputElement) MinIntrinsicWidth(base.Length) base.Length {
-	// Create a dummy selectinput
-	handle := js.Global().Get("document").Call("createElement", "selectinput")
-	handle.Set("innerText", w.handle.Get("innerText"))
-	handle.Get("style").Set("visibility", "hidden")
-	handle.Get("style").Set("display", "block")
-	opt := js.Global().Get("document").Call("createElement", "option")
-	opt.Set("text", "XXXXXXXX")
-	handle.Call("appendChild", opt)
+	handle := w.createMeasurementElement()
+	defer handle.Call("remove")
 
-	body := js.Global().Get("document").Call("getElementsByTagName", "body").Index(0)
-	body.Call("appendChild", handle)
 	width := handle.Get("offsetWidth").Int()
-	handle.Call("remove")
 
 	return base.FromPixelsX(width + 1)
 }
