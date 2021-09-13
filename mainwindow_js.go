@@ -35,7 +35,9 @@ func init() {
 }
 
 func newWindow(title string, child base.Widget) (*Window, error) {
-	handle := js.Global().Get("document").Call("getElementsByTagName", "body").Index(0)
+	document := js.Global().Get("document")
+	document.Set("title", title)
+	handle := document.Call("getElementsByTagName", "body").Index(0)
 	assert.Assert(handle.Type() == js.TypeObject, "expected body element to be an object")
 
 	loop.AddLockCount(1)
