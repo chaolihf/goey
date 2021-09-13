@@ -21,9 +21,8 @@ type dateinputElement struct {
 func (w *DateInput) mount(parent base.Control) (base.Element, error) {
 	// Create the control
 	handle := js.Global().Get("document").Call("createElement", "input")
-	handle.Set("className", "form-control")
+	handle.Set("className", "goey form-control")
 	handle.Set("type", "date")
-	handle.Get("style").Set("position", "absolute")
 	parent.Handle.Call("appendChild", handle)
 
 	// Create the element

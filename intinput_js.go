@@ -22,8 +22,7 @@ type intinputElement struct {
 func (w *IntInput) mount(parent base.Control) (base.Element, error) {
 	// Create the control
 	handle := js.Global().Get("document").Call("createElement", "input")
-	handle.Get("style").Set("position", "absolute")
-	handle.Set("className", "form-control")
+	handle.Set("className", "goey form-control")
 	handle.Set("type", "number")
 	handle.Set("step", 1)
 	parent.Handle.Call("appendChild", handle)

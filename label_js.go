@@ -17,7 +17,7 @@ func (w *Label) mount(parent base.Control) (base.Element, error) {
 	// Create the control
 	handle := js.Global().Get("document").Call("createElement", "span")
 	handle.Set("textContent", w.Text)
-	handle.Get("style").Set("position", "absolute")
+	handle.Set("className", "goey")
 	parent.Handle.Call("appendChild", handle)
 
 	// Create the element

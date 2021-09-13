@@ -21,7 +21,6 @@ type buttonElement struct {
 func (w *Button) mount(parent base.Control) (base.Element, error) {
 	// Create the control
 	handle := js.Global().Get("document").Call("createElement", "button")
-	handle.Get("style").Set("position", "absolute")
 	defer parent.Handle.Call("appendChild", handle)
 
 	// Create the element
@@ -104,9 +103,9 @@ func (w *buttonElement) updateProps(data *Button) error {
 	w.handle.Set("textContent", data.Text)
 	w.handle.Set("disabled", data.Disabled)
 	if data.Default {
-		w.handle.Set("className", "btn btn-primary")
+		w.handle.Set("className", "goey btn btn-primary")
 	} else {
-		w.handle.Set("className", "btn btn-secondary")
+		w.handle.Set("className", "goey btn btn-secondary")
 	}
 	w.onClick.Set(w.handle, data.OnClick)
 	w.onFocus.Set(w.handle, data.OnFocus)

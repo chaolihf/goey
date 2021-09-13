@@ -18,8 +18,7 @@ type progressElement struct {
 func (w *Progress) mount(parent base.Control) (base.Element, error) {
 	// Create the control
 	handle := js.Global().Get("document").Call("createElement", "div")
-	handle.Set("className", "progress")
-	handle.Get("style").Set("position", "absolute")
+	handle.Set("className", "goey progress")
 	handle2 := js.Global().Get("document").Call("createElement", "div")
 	handle2.Set("className", "progress-bar")
 	handle2.Set("role", "progress-bar")

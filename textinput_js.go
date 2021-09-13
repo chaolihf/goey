@@ -21,8 +21,7 @@ type textinputElement struct {
 func (w *TextInput) mount(parent base.Control) (base.Element, error) {
 	// Create the control
 	handle := js.Global().Get("document").Call("createElement", "input")
-	handle.Set("className", "form-control")
-	handle.Get("style").Set("position", "absolute")
+	handle.Set("className", "goey form-control")
 	parent.Handle.Call("appendChild", handle)
 
 	// Create the element

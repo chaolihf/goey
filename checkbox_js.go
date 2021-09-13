@@ -26,8 +26,7 @@ func (w *Checkbox) mount(parent base.Control) (base.Element, error) {
 
 	// Create the control
 	handle := js.Global().Get("document").Call("createElement", "div")
-	handle.Get("style").Set("position", "absolute")
-	handle.Set("className", "form-check")
+	handle.Set("className", "goey form-check")
 	elemInput := js.Global().Get("document").Call("createElement", "input")
 	elemInput.Set("type", "checkbox")
 	elemInput.Set("className", "form-check-input")

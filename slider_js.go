@@ -21,9 +21,8 @@ type sliderElement struct {
 func (w *Slider) mount(parent base.Control) (base.Element, error) {
 	// Create the control
 	handle := js.Global().Get("document").Call("createElement", "input")
-	handle.Get("style").Set("position", "absolute")
 	handle.Set("type", "range")
-	handle.Set("className", "form-range")
+	handle.Set("className", "goey form-range")
 	parent.Handle.Call("appendChild", handle)
 
 	// Create the element

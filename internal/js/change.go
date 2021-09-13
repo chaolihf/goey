@@ -26,7 +26,7 @@ func (cb *ChangeStringCB) Set(elem js.Value, onchange func(string)) {
 		elem.Set("oninput", cb.jsfunc)
 	} else if cb.Fn == nil && !cb.jsfunc.IsUndefined() {
 		cb.release()
-		elem.Set("oninput", js.Undefined())
+		elem.Delete("oninput")
 	}
 }
 
@@ -48,7 +48,7 @@ func (cb *ChangeBoolCB) Set(elem js.Value, onchange func(bool)) {
 		elem.Set("oninput", cb.jsfunc)
 	} else if cb.Fn == nil && !cb.jsfunc.IsUndefined() {
 		cb.release()
-		elem.Set("oninput", js.Undefined())
+		elem.Delete("oninput")
 	}
 }
 
@@ -72,7 +72,7 @@ func (cb *ChangeIntCB) Set(elem js.Value, onchange func(int)) {
 		elem.Set("oninput", cb.jsfunc)
 	} else if cb.Fn == nil && !cb.jsfunc.IsUndefined() {
 		cb.release()
-		elem.Set("oninput", js.Undefined())
+		elem.Delete("oninput")
 	}
 }
 
@@ -96,7 +96,7 @@ func (cb *ChangeInt64CB) Set(elem js.Value, onchange func(int64)) {
 		elem.Set("oninput", cb.jsfunc)
 	} else if cb.Fn == nil && !cb.jsfunc.IsUndefined() {
 		cb.release()
-		elem.Set("oninput", js.Undefined())
+		elem.Delete("oninput")
 	}
 }
 
@@ -112,9 +112,12 @@ func (cb *ChangeDateCB) Set(elem js.Value, onchange func(time.Time)) {
 
 	if cb.Fn != nil && cb.jsfunc.IsUndefined() {
 		cb.jsfunc = js.FuncOf(func(js.Value, []js.Value) interface{} {
-			value, err := time.Parse("2006-1-2", elem.Get("value").String())
-			assert.Assert(err == nil, "value of HTMLInput did not convert to date")
-			cb.Fn(value)
+			s := elem.Get("value").String()
+			if s != "" {
+				value, err := time.Parse("2006-1-2", s)
+				assert.Assert(err == nil, "value of HTMLInput did not convert to date")
+				cb.Fn(value)
+			}
 			return nil
 		})
 		elem.Set("oninput", cb.jsfunc)

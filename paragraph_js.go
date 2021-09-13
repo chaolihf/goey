@@ -16,7 +16,7 @@ type paragraphElement struct {
 func (w *P) mount(parent base.Control) (base.Element, error) {
 	// Create the control
 	handle := js.Global().Get("document").Call("createElement", "p")
-	handle.Get("style").Set("position", "absolute")
+	handle.Set("className", "goey")
 	parent.Handle.Call("appendChild", handle)
 
 	// Create the element

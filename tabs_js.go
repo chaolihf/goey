@@ -28,10 +28,9 @@ type tabsElement struct {
 func (w *Tabs) mount(parent base.Control) (base.Element, error) {
 	// Create the control
 	handle := js.Global().Get("document").Call("createElement", "ul")
-	handle.Set("className", "nav nav-tabs")
-	handle.Get("style").Set("position", "absolute")
+	handle.Set("className", "goey nav nav-tabs")
 	innerDiv := js.Global().Get("document").Call("createElement", "div")
-	innerDiv.Get("style").Set("position", "absolute")
+	innerDiv.Set("className", "goey")
 	parent.Handle.Call("appendChild", handle)
 	parent.Handle.Call("appendChild", innerDiv)
 

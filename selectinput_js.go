@@ -13,7 +13,7 @@ import (
 type selectinputElement struct {
 	Control
 
-	onChange goeyjs.ChangeIntCB
+	onChange goeyjs.SelectCB
 	onFocus  goeyjs.FocusCB
 	onBlur   goeyjs.BlurCB
 }
@@ -22,8 +22,7 @@ func (w *SelectInput) mount(parent base.Control) (base.Element, error) {
 	// Create the control
 	document := js.Global().Get("document")
 	handle := document.Call("createElement", "select")
-	handle.Set("className", "form-control")
-	handle.Get("style").Set("position", "absolute")
+	handle.Set("className", "goey form-control")
 	opt := document.Call("createElement", "option")
 	opt.Set("text", "XXXXXXXX")
 	handle.Call("appendChild", opt)

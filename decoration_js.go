@@ -24,8 +24,7 @@ type decorationElement struct {
 func (w *Decoration) mount(parent base.Control) (base.Element, error) {
 	// Create the control
 	handle := js.Global().Get("document").Call("createElement", "div")
-	handle.Set("className", "panel panel-default")
-	handle.Get("style").Set("position", "absolute")
+	handle.Set("className", "goey panel panel-default")
 	parent.Handle.Call("appendChild", handle)
 
 	// Create the element

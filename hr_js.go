@@ -3,6 +3,7 @@
 package goey
 
 import (
+	"fmt"
 	"syscall/js"
 
 	"bitbucket.org/rj/goey/base"
@@ -15,7 +16,7 @@ type hrElement struct {
 func (w *HR) mount(parent base.Control) (base.Element, error) {
 	// Create the control
 	handle := js.Global().Get("document").Call("createElement", "hr")
-	handle.Get("style").Set("position", "absolute")
+	handle.Set("className", "goey")
 	parent.Handle.Call("appendChild", handle)
 
 	// Create the element
@@ -24,4 +25,17 @@ func (w *HR) mount(parent base.Control) (base.Element, error) {
 	}
 
 	return retval, nil
+}
+
+func (w *hrElement) SetBounds(bounds base.Rectangle) {
+	pixels := bounds.Pixels()
+
+	top := (pixels.Min.Y + pixels.Max.Y) / 2
+
+	style := w.handle.Get("style")
+
+	style.Set("left", fmt.Sprintf("%dpx", pixels.Min.X))
+	style.Set("top", fmt.Sprintf("%dpx", top))
+	style.Set("width", fmt.Sprintf("%dpx", pixels.Dx()))
+	style.Set("height", fmt.Sprintf("1px"))
 }

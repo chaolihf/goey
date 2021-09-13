@@ -22,6 +22,18 @@ type windowImpl struct {
 	onClosing               func() bool
 }
 
+func init() {
+	document := js.Global().Get("document")
+	head := document.Call("getElementsByTagName", "head").Index(0)
+
+	style := document.Call("createElement", "style")
+	style.Set("textContent", `.goey {
+		position:absolute; margin:0;
+	}`)
+
+	head.Call("appendChild", style)
+}
+
 func newWindow(title string, child base.Widget) (*Window, error) {
 	handle := js.Global().Get("document").Call("getElementsByTagName", "body").Index(0)
 	assert.Assert(handle.Type() == js.TypeObject, "expected body element to be an object")
