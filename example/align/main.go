@@ -48,6 +48,9 @@ func render() base.Widget {
 	return &goey.Padding{
 		Child: &goey.VBox{
 			Children: []base.Widget{
+				&goey.P{
+					Text: "This is a demonstration of the use of an Align widget.  Use the input boxes to alter the horizontal and vertical alignment.",
+				},
 				&goey.HBox{
 					AlignMain: goey.Homogeneous,
 					Children: []base.Widget{
