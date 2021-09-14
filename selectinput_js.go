@@ -1,3 +1,4 @@
+//go:build go1.12
 // +build go1.12
 
 package goey
@@ -49,8 +50,15 @@ func (w *selectinputElement) createMeasurementElement() js.Value {
 	document := js.Global().Get("document")
 
 	handle := document.Call("createElement", "select")
-	handle.Set("className", "form-control")
-	handle.Get("style").Set("visibility", "hidden")
+	handle.Set("className", "form-control goey-measure")
+
+	// Add the options
+	n := w.handle.Get("length").Int()
+	for i := 0; i < n; i++ {
+		opt := document.Call("createElement", "option")
+		opt.Set("text", w.handle.Index(i).Get("text"))
+		handle.Call("add", opt)
+	}
 
 	body := document.Call("getElementsByTagName", "body").Index(0)
 	body.Call("appendChild", handle)

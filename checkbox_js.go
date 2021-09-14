@@ -1,3 +1,4 @@
+//go:build go1.12
 // +build go1.12
 
 package goey
@@ -65,7 +66,7 @@ func (w *checkboxElement) createMeasurementElement() js.Value {
 	document := js.Global().Get("document")
 
 	handle := document.Call("createElement", "div")
-	handle.Set("className", "form-check")
+	handle.Set("className", "form-check goey-measure")
 	elemInput := document.Call("createElement", "input")
 	elemInput.Set("type", "checkbox")
 	elemInput.Set("className", "form-check-input")
@@ -73,7 +74,6 @@ func (w *checkboxElement) createMeasurementElement() js.Value {
 	elemLabel := document.Call("createElement", "label")
 	elemLabel.Set("className", "form-check-label")
 	handle.Call("appendChild", elemLabel)
-	handle.Get("style").Set("visibility", "hidden")
 
 	body := document.Call("getElementsByTagName", "body").Index(0)
 	body.Call("appendChild", handle)

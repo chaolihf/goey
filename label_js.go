@@ -1,3 +1,4 @@
+//go:build go1.12
 // +build go1.12
 
 package goey
@@ -37,9 +38,8 @@ func (w *labelElement) createMeasurementElement() js.Value {
 	document := js.Global().Get("document")
 
 	handle := document.Call("createElement", "span")
+	handle.Set("className", "goey-measure")
 	handle.Set("textContent", text)
-	handle.Get("style").Set("visibility", "hidden")
-	handle.Get("style").Set("display", "block")
 
 	body := document.Call("getElementsByTagName", "body").Index(0)
 	body.Call("appendChild", handle)

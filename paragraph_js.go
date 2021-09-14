@@ -1,3 +1,4 @@
+//go:build go1.12
 // +build go1.12
 
 package goey
@@ -28,17 +29,26 @@ func (w *P) mount(parent base.Control) (base.Element, error) {
 	return retval, nil
 }
 
+func (w *paragraphElement) createMeasurementElement(textContent interface{}) js.Value {
+	document := js.Global().Get("document")
+
+	handle := document.Call("createElement", "p")
+	handle.Set("className", "goey-measure")
+	handle.Set("textContent", textContent)
+
+	body := document.Call("getElementsByTagName", "body").Index(0)
+	body.Call("appendChild", handle)
+
+	return handle
+}
+
 func (w *paragraphElement) measureReflowLimits() {
 	const textContent = "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm"
 
-	handle := js.Global().Get("document").Call("createElement", "p")
-	handle.Set("textContent", textContent)
-	handle.Get("style").Set("visibility", "hidden")
+	handle := w.createMeasurementElement(textContent)
+	defer handle.Call("remove")
 
-	body := js.Global().Get("document").Call("getElementsByTagName", "body").Index(0)
-	body.Call("appendChild", handle)
 	width := handle.Get("offsetWidth").Int() + 1
-	handle.Call("remove")
 
 	paragraphMaxWidth = base.FromPixelsX(width)
 }
@@ -53,33 +63,30 @@ func (w *paragraphElement) MinIntrinsicHeight(width base.Length) base.Length {
 		textContent = js.ValueOf("X")
 	}
 
-	handle := js.Global().Get("document").Call("createElement", "p")
-	handle.Set("textContent", textContent)
-	handle.Get("style").Set("visibility", "hidden")
-	handle.Get("style").Set("width", fmt.Sprintf("%dpx", width.PixelsX()))
+	handle := w.createMeasurementElement(textContent)
+	defer handle.Call("remove")
+	handle.Get("style").Set("maxWidth", fmt.Sprintf("%dpx", width.PixelsX()))
 
-	body := js.Global().Get("document").Call("getElementsByTagName", "body").Index(0)
-	body.Call("appendChild", handle)
-	height := handle.Get("offsetHeight").Int()
-	handle.Call("remove")
+	height := handle.Get("offsetHeight").Int() + 1
 
 	return base.FromPixelsY(height)
 }
 
 func (w *paragraphElement) MinIntrinsicWidth(height base.Length) base.Length {
-	handle := js.Global().Get("document").Call("createElement", "p")
-	handle.Set("textContent", w.handle.Get("innerText"))
-	handle.Get("style").Set("visibility", "hidden")
+	handle := w.createMeasurementElement(w.handle.Get("textContent"))
+	defer handle.Call("remove")
+
 	if height != base.Inf {
-		handle.Get("style").Set("height", fmt.Sprintf("%dpx", height.PixelsY()))
+		handle.Get("style").Set("maxHeight", fmt.Sprintf("%dpx", height.PixelsY()))
+
+		width := handle.Get("offsetWidth").Int()
+
+		return min(base.FromPixelsX(width), w.maxReflowWidth())
 	}
 
-	body := js.Global().Get("document").Call("getElementsByTagName", "body").Index(0)
-	body.Call("appendChild", handle)
 	width := handle.Get("offsetWidth").Int()
-	handle.Call("remove")
 
-	return base.FromPixelsX(width)
+	return min(base.FromPixelsX(width), w.minReflowWidth())
 }
 
 func (w *paragraphElement) Props() base.Widget {

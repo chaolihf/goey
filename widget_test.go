@@ -414,6 +414,8 @@ func testMinSizeWidget(t *testing.T, widget base.Widget) {
 		if width1 <= 0 || width1 == base.Inf {
 			t.Errorf("invalid min width: %s", width1)
 		}
+		t.Logf("MinIntrinsicWidth(Inf): %s", width1)
+
 		width2 := child.MinIntrinsicWidth(120 * base.DIP)
 		if width1 <= 0 || width1 == base.Inf {
 			t.Errorf("invalid min width: %s", width2)
@@ -426,6 +428,8 @@ func testMinSizeWidget(t *testing.T, widget base.Widget) {
 		if height1 <= 0 || height1 == base.Inf {
 			t.Errorf("invalid min height: %s", height1)
 		}
+		t.Logf("MinIntrinsicHeight(Inf): %s", height1)
+
 		height2 := child.MinIntrinsicHeight(120 * base.DIP)
 		if height1 <= 0 || height1 == base.Inf {
 			t.Errorf("invalid min height: %s", height2)

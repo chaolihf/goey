@@ -1,3 +1,4 @@
+//go:build go1.12
 // +build go1.12
 
 package goey
@@ -29,6 +30,10 @@ func init() {
 	style := document.Call("createElement", "style")
 	style.Set("textContent", `.goey {
 		position:absolute; margin:0;
+	}
+	.goey-measure {
+		position:absolute; visibility:hidden;
+		width:auto; height:auto;
 	}`)
 
 	head.Call("appendChild", style)

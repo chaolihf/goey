@@ -95,3 +95,11 @@ func TestCheckboxUpdate(t *testing.T) {
 		}
 	})
 }
+
+func TestCheckboxLayout(t *testing.T) {
+	testLayoutWidget(t, &Checkbox{Text: "AB"})
+}
+
+func TestCheckboxMinSize(t *testing.T) {
+	testMinSizeWidget(t, &Checkbox{Text: "AB"})
+}

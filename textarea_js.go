@@ -1,3 +1,4 @@
+//go:build go1.12
 // +build go1.12
 
 package goey
@@ -41,6 +42,19 @@ func (w *textareaElement) Close() {
 	w.Control.Close()
 }
 
+func (w *textareaElement) createMeasurementElement() js.Value {
+	document := js.Global().Get("document")
+
+	handle := document.Call("createElement", "textarea")
+	handle.Set("className", "goey-measure form-control")
+	handle.Set("rows", w.minLines)
+
+	body := document.Call("getElementsByTagName", "body").Index(0)
+	body.Call("appendChild", handle)
+
+	return handle
+}
+
 func (w *textareaElement) Layout(bc base.Constraints) base.Size {
 	width := w.MinIntrinsicWidth(bc.Max.Width)
 	width = bc.ConstrainWidth(width)
@@ -51,30 +65,19 @@ func (w *textareaElement) Layout(bc base.Constraints) base.Size {
 }
 
 func (w *textareaElement) MinIntrinsicHeight(base.Length) base.Length {
-	// Create a dummy button
-	handle := js.Global().Get("document").Call("createElement", "textarea")
-	handle.Set("value", w.handle.Get("value"))
-	handle.Get("style").Set("visibility", "hidden")
+	handle := w.createMeasurementElement()
+	defer handle.Call("remove")
 
-	body := js.Global().Get("document").Call("getElementsByTagName", "body").Index(0)
-	body.Call("appendChild", handle)
 	height := handle.Get("offsetHeight").Int()
-	handle.Call("remove")
 
 	return base.FromPixelsY(height)
 }
 
 func (w *textareaElement) MinIntrinsicWidth(base.Length) base.Length {
-	// Create a dummy button
-	handle := js.Global().Get("document").Call("createElement", "button")
-	handle.Set("className", "btn btn-primary")
-	handle.Set("value", w.handle.Get("value"))
-	handle.Get("style").Set("visibility", "hidden")
+	handle := w.createMeasurementElement()
+	defer handle.Call("remove")
 
-	body := js.Global().Get("document").Call("getElementsByTagName", "body").Index(0)
-	body.Call("appendChild", handle)
 	width := handle.Get("offsetWidth").Int()
-	handle.Call("remove")
 
 	return base.FromPixelsX(width + 1)
 }
