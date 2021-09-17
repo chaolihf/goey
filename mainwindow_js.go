@@ -4,6 +4,7 @@
 package goey
 
 import (
+	"fmt"
 	"image"
 	"syscall/js"
 
@@ -125,12 +126,14 @@ func (w *windowImpl) setChildPost() {
 	// Redo the layout so the children are placed.
 	if w.child != nil {
 		// Constrain window size
-		// w.updateWindowMinSize()
+		w.updateWindowMinSize()
 		// Properties may have changed sizes, so we need to do layout.
 		w.onSize()
 	} else {
 		// Ensure that the scrollbars are hidden.
-		//gtk.WindowShowScrollbars(w.handle, false, false)
+		style := w.handle.Get("style")
+		style.Set("overflowX", "hidden")
+		style.Set("overflowY", "hidden")
 	}
 }
 
@@ -157,13 +160,13 @@ func (w *windowImpl) showScrollH(width base.Length, clientWidth base.Length) boo
 	if width > clientWidth {
 		if !w.horizontalScrollVisible {
 			// Show the scrollbar
-			//gtk.WindowShowScrollbars(w.handle, true, w.verticalScrollVisible)
+			w.handle.Get("style").Set("overflowX", "scroll")
 			w.horizontalScrollVisible = true
 			return true
 		}
 	} else if w.horizontalScrollVisible {
 		// Remove the scroll bar
-		//gtk.WindowShowScrollbars(w.handle, false, w.verticalScrollVisible)
+		w.handle.Get("style").Set("overflowX", "hidden")
 		w.horizontalScrollVisible = false
 		return true
 	}
@@ -175,13 +178,13 @@ func (w *windowImpl) showScrollV(height base.Length, clientHeight base.Length) b
 	if height > clientHeight {
 		if !w.verticalScrollVisible {
 			// Show the scrollbar
-			//gtk.WindowShowScrollbars(w.handle, w.horizontalScrollVisible, true)
+			w.handle.Get("style").Set("overflowY", "scroll")
 			w.verticalScrollVisible = true
 			return true
 		}
 	} else if w.verticalScrollVisible {
 		// Remove the scroll bar
-		//gtk.WindowShowScrollbars(w.handle, w.horizontalScrollVisible, false)
+		w.handle.Get("style").Set("overflowY", "hidden")
 		w.verticalScrollVisible = false
 		return true
 	}
@@ -270,5 +273,7 @@ func (w *windowImpl) updateWindowMinSize() {
 		request.Y = limit
 	}
 
-	// gtk.WidgetSetSizeRequest(w.handle, request.X, request.Y)
+	style := js.Global().Get("document").Call("getElementsByTagName", "body").Index(0).Get("style")
+	style.Set("minWidth", fmt.Sprintf("%dpx", request.X))
+	style.Set("minHeight", fmt.Sprintf("%dpx", request.Y))
 }
