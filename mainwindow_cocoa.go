@@ -137,11 +137,13 @@ func (_ *windowImpl) setDPI() {
 }
 
 func (w *windowImpl) setScroll(horz, vert bool) {
-	w.horizontalScroll = horz
-	w.verticalScroll = vert
-	w.handle.SetScrollVisible(false, false)
-	w.horizontalScrollVisible = false
-	w.verticalScrollVisible = false
+	// If either scrollbar is being disabled, make that it is hidden.
+	if !horz || !vert {
+		w.handle.SetScrollVisible(false, false)
+		w.horizontalScrollVisible = false
+		w.verticalScrollVisible = false
+	}
+
 	// Redo layout to account for new box constraints, and show
 	// scrollbars if necessary
 	w.onSize()

@@ -135,15 +135,19 @@ func (w *windowImpl) setChildPost() {
 }
 
 func (w *windowImpl) setScroll(horz, vert bool) {
-	w.horizontalScroll = horz
-	w.verticalScroll = vert
-	// Hide the scrollbars as a reset
-	//gtk.WindowShowScrollbars(w.handle, false, false)
-	w.horizontalScrollVisible = false
-	w.verticalScrollVisible = false
+	// If either scrollbar is being disabled, make sure that it is hidden.
+	if !horz {
+		w.handle.Get("style").Set("overflowX", "hidden")
+		w.horizontalScrollVisible = false
+	}
+	if !vert {
+		w.handle.Get("style").Set("overflowY", "hidden")
+		w.verticalScrollVisible = false
+	}
+
 	// Redo layout to account for new box constraints, and show
 	// scrollbars if necessary
-	// w.onSize()
+	w.onSize()
 }
 
 func (w *windowImpl) show() {

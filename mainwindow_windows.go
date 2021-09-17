@@ -338,17 +338,13 @@ func (w *windowImpl) setDPI() {
 }
 
 func (w *windowImpl) setScroll(hscroll, vscroll bool) {
-	// Copy the new parameters for the window into the fields.
-	w.horizontalScroll, w.verticalScroll = hscroll, vscroll
-
-	// If either scrollbar is being disabled, make sure to the state for
-	// that scrollbar, and to hide it.
-	if !w.horizontalScroll {
+	// If either scrollbar is being disabled, make sure that it is hidden.
+	if !hscroll {
 		w.horizontalScrollPos = 0
 		w.horizontalScrollVisible = false
 		win2.ShowScrollBar(w.hWnd, win.SB_HORZ, win.FALSE)
 	}
-	if !w.verticalScroll {
+	if !vscroll {
 		w.verticalScrollPos = 0
 		w.verticalScrollVisible = false
 		win2.ShowScrollBar(w.hWnd, win.SB_VERT, win.FALSE)

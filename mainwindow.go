@@ -186,6 +186,10 @@ func (w *Window) SetOnClosing(callback func() bool) {
 
 // SetScroll sets whether scrolling is allowed in the horizontal and vertical directions.
 func (w *Window) SetScroll(horizontal, vertical bool) {
+	// Copy the new parameters for the window into the fields.
+	w.horizontalScroll, w.verticalScroll = horizontal, vertical
+
+	// Defer to the platform dependent code.
 	w.setScroll(horizontal, vertical)
 }
 
