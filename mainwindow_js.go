@@ -35,6 +35,11 @@ func init() {
 	.goey-measure {
 		position:absolute; visibility:hidden;
 		width:auto; height:auto;
+	}
+	.goey-tabs-panel {
+		border-left: solid 1px rgb(222,226,230);
+		border-right: solid 1px rgb(222,226,230);
+		border-bottom: solid 1px rgb(222,226,230);
 	}`)
 
 	head.Call("appendChild", style)

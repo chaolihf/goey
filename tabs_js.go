@@ -1,3 +1,4 @@
+//go:build go1.12
 // +build go1.12
 
 package goey
@@ -30,7 +31,7 @@ func (w *Tabs) mount(parent base.Control) (base.Element, error) {
 	handle := js.Global().Get("document").Call("createElement", "ul")
 	handle.Set("className", "goey nav nav-tabs")
 	innerDiv := js.Global().Get("document").Call("createElement", "div")
-	innerDiv.Set("className", "goey")
+	innerDiv.Set("className", "goey goey-tabs-panel")
 	parent.Handle.Call("appendChild", handle)
 	parent.Handle.Call("appendChild", innerDiv)
 
@@ -38,6 +39,7 @@ func (w *Tabs) mount(parent base.Control) (base.Element, error) {
 	retval := &tabsElement{
 		Control:  Control{handle},
 		innerDiv: innerDiv,
+		insets:   w.Insets,
 
 		value:   len(w.Children), // Force tab change
 		widgets: w.Children,
@@ -57,10 +59,13 @@ func (w *tabsElement) attachOnClick() {
 }
 
 func (w *tabsElement) contentInsets() base.Point {
+	// Padding for the tab panel should match the padding used by Bootstrap for
+	// the tabs.  Also add 1px for the borders.
+
 	if w.cachedInsets.Y == 0 {
 		w.cachedInsets = base.Point{
-			X: 0,
-			Y: base.FromPixelsY(40),
+			X: base.FromPixelsX(1 + 1),
+			Y: base.FromPixelsY(40 + 1),
 		}
 	}
 
@@ -171,8 +176,9 @@ func (w *tabsElement) SetBounds(bounds base.Rectangle) {
 	}
 
 	// Update bounds for the child
+	// Cache and update child element
 	w.cachedBounds = bounds
-	w.child.SetBounds(bounds)
+	w.child.SetBounds(w.cachedBounds)
 }
 
 func updateTabItems(handle js.Value, clickCB js.Value, items []TabItem) {
