@@ -1,7 +1,7 @@
 before_script: &before_script_all
   - cat /etc/*-release
   - if [ -x "$(command -v go)" ]; then go version; fi;
-  - if [ -n "$APT_GET" ]; then apt-get update -qq -y; apt-get install -qq -y $APT_GET; fi;
+  - if [ -n "$APT_GET" ]; then apt-get update -qq -y; apt-get install -qq -y --no-install-recommends $APT_GET; fi;
   - if [ -n "$DISPLAY" ]; then Xvfb $DISPLAY -screen 0 1024x768x24 & fi;
 
 golang-gtk-modules:
@@ -11,8 +11,8 @@ golang-gtk-modules:
     DISPLAY: ":1"
     APT_GET: "libgtk-3-dev xvfb"
   script:
-    - go build . ./example/...
-    - go test ./base ./loop ./dialog .
+    - go build -v . ./example/...
+    - go test -v ./base ./loop ./dialog .
   parallel:
     matrix:
       - GOVERSION: ["1.11", "1.12", "1.13", "1.14", "1.15", "1.16", "1.17"]
@@ -27,8 +27,7 @@ golang-gtk-gopath:
     DISPLAY: ":1"
     APT_GET: "libgtk-3-dev xvfb"
   script:
-    - go get -v bitbucket.org/rj/goey/base
-    - go get -v bitbucket.org/rj/goey/loop
+    - go get -v bitbucket.org/rj/goey/base bitbucket.org/rj/goey/loop
     - go get -v bitbucket.org/rj/goey/example/...
     - go build -v bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
     - go test ./base ./loop ./dialog .
@@ -48,11 +47,13 @@ golang-js:
   script:
     - GOOS= GOARCH= go get github.com/agnivade/wasmbrowsertest@latest
     - GOOS= GOARCH= go install github.com/agnivade/wasmbrowsertest
-    - go build . ./example/...
-    - go test -exec ${GOBIN}/wasmbrowsertest -run Test ./base ./loop .
+    - ln $GOBIN/wasmbrowsertest $GOBIN/go_js_wasm_exec
+    - PATH=$PATH:$GOBIN
+    - go build -v . ./example/...
+    - go test -v -run Test ./base ./loop .
   parallel:
     matrix:
-      - GOVERSION: ["1.14", "1.16", "1.17"]
+      - GOVERSION: ["1.14", "latest"]
         DUMMY: ["dummy"]
 
 golang-windows:
@@ -66,9 +67,24 @@ golang-windows:
     - go build . ./example/...
     - go test ./base ./loop . -v
 
-test:
+golang-cocoa:
+  image: "golang:${GOVERSION}"
+  stage: build
+  variables:
+    DISPLAY: ":1"
+    APT_GET: "gnustep-devel xvfb"
+  script:
+    - go build -v -tags cocoa . ./example/...
+    - go test -v -tags cocoa ./base ./loop .
+  parallel:
+    matrix:
+      - GOVERSION: ["1.12", "latest"]
+        DUMMY: ["dummy"]
+
+test-gtk:
   image: golang:latest
   stage: test
+  needs: []
   variables:
     GOPATH: $CI_BUILDS_DIR
     GIT_CLONE_PATH: $CI_BUILDS_DIR/src/bitbucket.org/rj/goey
@@ -83,8 +99,8 @@ test:
     - mv $GOPATH/src/github.com .cache/
   script:
     - go get bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
-    - go test -coverprofile=cover.out -v ./base ./loop ./dialog .
-    - go tool cover -html=cover.out -o=cover.html
+    - go test -coverprofile=cover-gtk.out -v ./base ./loop ./dialog .
+    - go tool cover -html=cover-gtk.out -o=cover.html
     - go test -v -race ./loop 
     - go vet -composites=false ./base ./loop ./dialog .
     - go get -u github.com/gordonklaus/ineffassign
@@ -107,14 +123,14 @@ test:
   artifacts:
     paths:
       - cover.html
+      - cover-gtk.out
       - images/
 
 test-windows:
-  image: golang:1.12
+  image: golang:latest
   stage: test
+  needs: []
   variables:
-    GOPATH: $CI_BUILDS_DIR
-    GIT_CLONE_PATH: $CI_BUILDS_DIR/src/bitbucket.org/rj/goey
     DISPLAY: ":1"
     APT_GET: "wine64 wine-binfmt xvfb"
     GOOS: windows
@@ -135,31 +151,31 @@ test-windows:
       - cover.html
 
 test-cocoa:
-  image: golang:1.12
+  image: golang:latest
   stage: test
+  needs: []
   variables:
-    GOPATH: $CI_BUILDS_DIR
-    GIT_CLONE_PATH: $CI_BUILDS_DIR/src/bitbucket.org/rj/goey
     DISPLAY: ":1"
     APT_GET: "gnustep-devel xvfb fluxbox"
   script:
-    - go get -tags cocoa bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
     - fluxbox 2> nul &
-    - go test -tags cocoa -coverprofile=cover.out -v ./base ./loop .
-    - go tool cover -html=cover.out -o=cover.html
+    - go test -tags cocoa -coverprofile=cover-cocoa.out -v ./base ./loop .
+    - go tool cover -html=cover-cocoa.out -o=cover.html
     - go test -tags cocoa -v -race ./loop 
   except:
     - tags
   artifacts:
     paths:
       - cover.html
+      - cover-cocoa.out
 
 lint:
-  image: golang:1.14
+  image: golang:latest
   stage: test
+  needs: []
   script:
-    - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- v1.23.6
-    - ./bin/golangci-lint run -v --enable-all --disable wsl .
+    - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- v1.40.0
+    - ./bin/golangci-lint run -v --enable-all --disable wsl --issues-exit-code=0 .
   except:
     - tags
   allow_failure: true
@@ -167,7 +183,7 @@ lint:
 pages:
   stage: deploy
   dependencies:
-    - test
+    - test-gtk
   script:
     - mkdir ./public
     - mv cover.html ./public
