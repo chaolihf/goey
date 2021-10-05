@@ -22,8 +22,8 @@ func asyncTypeKeys(text string, initialWait time.Duration) <-chan error {
 		time.Sleep(initialWait)
 		for _, r := range text {
 			inp := [2]win.KEYBD_INPUT{
-				{win.INPUT_KEYBOARD, win.KEYBDINPUT{}},
-				{win.INPUT_KEYBOARD, win.KEYBDINPUT{}},
+				{Type: win.INPUT_KEYBOARD, Ki: win.KEYBDINPUT{}},
+				{Type: win.INPUT_KEYBOARD, Ki: win.KEYBDINPUT{}},
 			}
 
 			if r == '\n' {

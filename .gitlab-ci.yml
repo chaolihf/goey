@@ -44,6 +44,7 @@ golang-js:
     GOOS: js
     GOARCH: wasm
     GOBIN: $CI_BUILDS_DIR/bin
+    EXAMPLES: "onebutton twofields threebuttons colour decoration controls"
   script:
     - GOOS= GOARCH= go get github.com/agnivade/wasmbrowsertest@latest
     - GOOS= GOARCH= go install github.com/agnivade/wasmbrowsertest
@@ -51,10 +52,24 @@ golang-js:
     - PATH=$PATH:$GOBIN
     - go build -v . ./example/...
     - go test -v -run Test ./base ./loop .
+    - for elem in $EXAMPLES; do
+    -   mkdir -p ./public/${elem}
+    -   cp `go env GOROOT`/misc/wasm/wasm_exec.js ./public/${elem}/
+    -   cp ./example/jswasm/index.html ./public/${elem}/
+    -   go build -o ./public/${elem}/main.wasm ./example/${elem}
+    - done
   parallel:
     matrix:
       - GOVERSION: ["1.14", "latest"]
         DUMMY: ["dummy"]
+  artifacts:
+    paths:
+      - public/
+      - public/
+      - public/
+      - public/
+      - public/
+      - public/
 
 golang-windows:
   stage: build
@@ -98,8 +113,8 @@ test-gtk:
   after_script:
     - mv $GOPATH/src/github.com .cache/
   script:
-    - go get bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
-    - go test -coverprofile=cover-gtk.out -v ./base ./loop ./dialog .
+    - go build -v . ./example/...
+    - go test -v -coverprofile=cover-gtk.out ./base ./loop ./dialog .
     - go tool cover -html=cover-gtk.out -o=cover.html
     - go test -v -race ./loop 
     - go vet -composites=false ./base ./loop ./dialog .
@@ -126,7 +141,7 @@ test-gtk:
       - cover-gtk.out
       - images/
 
-test-windows:
+test-wine64:
   image: golang:latest
   stage: test
   needs: []
@@ -135,20 +150,37 @@ test-windows:
     APT_GET: "wine64 wine-binfmt xvfb"
     GOOS: windows
   script:
-    - go get bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
-    - go build bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
-    - go test -c -coverprofile=cover.out ./base
-    - wine64 ./base.test.exe -test.coverprofile=cover.out -test.v
-    - go test -c -coverprofile=cover.out ./loop
-    - wine64 ./loop.test.exe -test.coverprofile=cover.out -test.v
-    - go test -c -coverprofile=cover.out .
-    - wine64 ./goey.test.exe -test.coverprofile=cover.out -test.v -test.short
-    - go tool cover -html=cover.out -o=cover.html
+    - go build -v . ./example/...
+    - go test -v -exec wine64 -short -coverprofile=cover-wine64.out ./base ./loop .
+    - go tool cover -html=cover-wine64.out -o=cover.html
+    - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- v1.42.0
+    - ./bin/golangci-lint run -v ./base ./loop
   except:
     - tags
   artifacts:
     paths:
       - cover.html
+      - cover-wine64.out
+
+test-windows:
+  stage: test
+  needs: ["golang-windows"]
+  tags:
+    - windows
+    - windows-1809
+  before_script:
+    - go version
+  script:
+    - go build . ./example/...
+    - go test ./base ./loop . -v
+    - go test -v -coverprofile="cover-windows.out" ./base ./loop .
+    - go test -v -race ./loop 
+  except:
+    - tags
+  artifacts:
+    paths:
+      - cover.html
+      - cover-windows.out
 
 test-cocoa:
   image: golang:latest
@@ -159,9 +191,9 @@ test-cocoa:
     APT_GET: "gnustep-devel xvfb fluxbox"
   script:
     - fluxbox 2> nul &
-    - go test -tags cocoa -coverprofile=cover-cocoa.out -v ./base ./loop .
+    - go test -v -tags cocoa -coverprofile=cover-cocoa.out ./base ./loop .
     - go tool cover -html=cover-cocoa.out -o=cover.html
-    - go test -tags cocoa -v -race ./loop 
+    - go test -v -tags cocoa -race ./loop 
   except:
     - tags
   artifacts:
@@ -182,10 +214,9 @@ lint:
 
 pages:
   stage: deploy
-  dependencies:
-    - test-gtk
+  needs: ["test-gtk", "golang-js: [latest, dummy]"]
   script:
-    - mkdir ./public
+    - mkdir -p ./public
     - mv cover.html ./public
     - mv images/*.png ./public
   only:
@@ -193,4 +224,3 @@ pages:
   artifacts:
     paths:
       - public
-
