@@ -81,6 +81,10 @@ func (v Length) Scale(num, den int) Length {
 
 // String returns a human readable distance.
 func (v Length) String() string {
+	if v == Inf {
+		return "Inf"
+	}
+
 	return fixed.Int26_6(v).String()
 }
 

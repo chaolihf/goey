@@ -44,24 +44,22 @@ func Expand() Constraints {
 	return Constraints{Size{0, 0}, Size{Inf, Inf}}
 }
 
-// ExpandHeight creates box constraints with a fixed width and that forces
-// elements to expand to as high as possible.  The constraint for width will
-// be tight.  The constraint for height will be loose and unbounded.
-func ExpandHeight(width Length) Constraints {
-	return Constraints{Size{width, 0}, Size{width, Inf}}
-}
-
-// ExpandWidth creates box constraints with a fixed height and that forces
-// elements to expand to as wide as possible.  The constraint for width will
-// be loose and unbounded.  The constraint for height will be tight.
-func ExpandWidth(height Length) Constraints {
-	return Constraints{Size{0, height}, Size{Inf, height}}
-}
-
 // Loose creates box constraints that forbid sizes larger than the given size.
 // The constraints for both width and height will be loose and bounded.
 func Loose(size Size) Constraints {
 	return Constraints{Size{}, size}
+}
+
+// LooseWidth creates box constraints that forbid widths larger than the given length.
+// The constraints for width will be loose and bounded, while the height will be unconstrained.
+func LooseWidth(width Length) Constraints {
+	return Constraints{Size{}, Size{width, Inf}}
+}
+
+// LooseHeight creates box constraints that forbid heights larger than the given length.
+// The constraints for height will be loose and bounded, while the width will be unconstrained.
+func LooseHeight(height Length) Constraints {
+	return Constraints{Size{}, Size{Inf, height}}
 }
 
 // Tight creates a box constraints that is respected only by the given size.
@@ -236,6 +234,10 @@ func (bc Constraints) LoosenHeight() Constraints {
 // requirement removed.
 func (bc Constraints) LoosenWidth() Constraints {
 	return Constraints{Size{0, bc.Min.Height}, bc.Max}
+}
+
+func (bc Constraints) String() string {
+	return "[" + bc.Min.String() + "/" + bc.Max.String() + "]"
 }
 
 // Tighten creates a new box constraint with tight width and height

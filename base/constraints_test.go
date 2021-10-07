@@ -6,45 +6,47 @@ import (
 
 func TestConstraints(t *testing.T) {
 	cases := []struct {
-		in                                                   Constraints
-		isNormalized, isTight, hasTightWidth, hasTightHeight bool
-		isBounded, hasBoundedWidth, hasBoundedHeight         bool
+		in                                           Constraints
+		isTight, hasTightWidth, hasTightHeight       bool
+		isBounded, hasBoundedWidth, hasBoundedHeight bool
 	}{
-		{Expand(), true, false, false, false, false, false, false},
-		{ExpandHeight(10 * DIP), true, false, true, false, false, true, false},
-		{ExpandWidth(10 * DIP), true, false, false, true, false, false, true},
-		{Loose(Size{10 * DIP, 15 * DIP}), true, false, false, false, true, true, true},
-		{Tight(Size{10 * DIP, 15 * DIP}), true, true, true, true, true, true, true},
-		{TightWidth(10 * DIP), true, false, true, false, false, true, false},
-		{TightHeight(10 * DIP), true, false, false, true, false, false, true},
+		{Expand(), false, false, false, false, false, false},
+		{Loose(Size{10 * DIP, 15 * DIP}), false, false, false, true, true, true},
+		{LooseWidth(10 * DIP), false, false, false, false, true, false},
+		{LooseHeight(10 * DIP), false, false, false, false, false, true},
+		{Tight(Size{10 * DIP, 15 * DIP}), true, true, true, true, true, true},
+		{TightWidth(10 * DIP), false, true, false, false, true, false},
+		{TightHeight(10 * DIP), false, false, true, false, false, true},
 	}
 
 	for i, v := range cases {
-		if out := v.in.IsNormalized(); v.isNormalized != out {
-			t.Errorf("Failed on case %d for IsNormalized, want %v, got %v", i, v.isNormalized, out)
-		}
-		if out := v.in.IsTight(); v.isTight != out {
-			t.Errorf("Failed on case %d for IsTight, want %v, got %v", i, v.isTight, out)
-		}
-		if out := v.in.HasTightWidth(); v.hasTightWidth != out {
-			t.Errorf("Failed on case %d for HasTightWidth, want %v, got %v", i, v.hasTightWidth, out)
-		}
-		if out := v.in.HasTightHeight(); v.hasTightHeight != out {
-			t.Errorf("Failed on case %d for HasTightHeight, want %v, got %v", i, v.hasTightHeight, out)
-		}
-		if out := v.in.IsBounded(); v.isBounded != out {
-			t.Errorf("Failed on case %d for IsBounded, want %v, got %v", i, v.isBounded, out)
-		}
-		if out := v.in.HasBoundedWidth(); v.hasBoundedWidth != out {
-			t.Errorf("Failed on case %d for HasBoundedWidth, want %v, got %v", i, v.hasBoundedWidth, out)
-		}
-		if out := v.in.HasBoundedHeight(); v.hasBoundedHeight != out {
-			t.Errorf("Failed on case %d for HasBoundedHeight, want %v, got %v", i, v.hasBoundedHeight, out)
-		}
+		t.Run(v.in.String(), func(t *testing.T) {
+			if out := v.in.IsNormalized(); !out {
+				t.Errorf("Failed on case %d for IsNormalized, want %v, got %v", i, true, out)
+			}
+			if out := v.in.IsZero(); out {
+				t.Errorf("Failed on case %d for IsZero, want %v, got %v", i, false, out)
+			}
 
-		if out := v.in.IsZero(); out {
-			t.Errorf("Failed on case %d for IsZero, want %v, got %v", i, false, out)
-		}
+			if out := v.in.IsTight(); v.isTight != out {
+				t.Errorf("Failed on case %d for IsTight, want %v, got %v", i, v.isTight, out)
+			}
+			if out := v.in.HasTightWidth(); v.hasTightWidth != out {
+				t.Errorf("Failed on case %d for HasTightWidth, want %v, got %v", i, v.hasTightWidth, out)
+			}
+			if out := v.in.HasTightHeight(); v.hasTightHeight != out {
+				t.Errorf("Failed on case %d for HasTightHeight, want %v, got %v", i, v.hasTightHeight, out)
+			}
+			if out := v.in.IsBounded(); v.isBounded != out {
+				t.Errorf("Failed on case %d for IsBounded, want %v, got %v", i, v.isBounded, out)
+			}
+			if out := v.in.HasBoundedWidth(); v.hasBoundedWidth != out {
+				t.Errorf("Failed on case %d for HasBoundedWidth, want %v, got %v", i, v.hasBoundedWidth, out)
+			}
+			if out := v.in.HasBoundedHeight(); v.hasBoundedHeight != out {
+				t.Errorf("Failed on case %d for HasBoundedHeight, want %v, got %v", i, v.hasBoundedHeight, out)
+			}
+		})
 	}
 }
 
@@ -211,11 +213,11 @@ func TestConstraints_Tighten(t *testing.T) {
 		outH Constraints
 		outV Constraints
 	}{
-		{Expand(), size1, Tight(size1), ExpandWidth(size1.Height), ExpandHeight(size1.Width)},
-		{ExpandHeight(10 * DIP), size1, Tight(size1), Tight(size1), ExpandHeight(10 * DIP)},
-		{ExpandWidth(10 * DIP), size1, Tight(size1), ExpandWidth(10 * DIP), Tight(size1)},
+		{Expand(), size1, Tight(size1), TightHeight(10 * DIP), TightWidth(10 * DIP)},
 		{Loose(Size{20 * DIP, 25 * DIP}), size1, Tight(size1), Constraints{Size{0, 10 * DIP}, Size{20 * DIP, 10 * DIP}}, Constraints{Size{10 * DIP, 0}, Size{10 * DIP, 25 * DIP}}},
 		{Loose(Size{20 * DIP, 25 * DIP}), Size{30 * DIP, 30 * DIP}, Tight(Size{20 * DIP, 25 * DIP}), Constraints{Size{0, 25 * DIP}, Size{20 * DIP, 25 * DIP}}, Constraints{Size{20 * DIP, 0}, Size{20 * DIP, 25 * DIP}}},
+		{LooseWidth(10 * DIP), size1, Tight(size1), Constraints{Size{0, 10 * DIP}, Size{10 * DIP, 10 * DIP}}, TightWidth(10 * DIP)},
+		{LooseHeight(10 * DIP), size1, Tight(size1), TightHeight(10 * DIP), Constraints{Size{10 * DIP, 0}, Size{10 * DIP, 10 * DIP}}},
 		{Tight(Size{10 * DIP, 15 * DIP}), size1, Tight(Size{10 * DIP, 15 * DIP}), Tight(Size{10 * DIP, 15 * DIP}), Tight(Size{10 * DIP, 15 * DIP})},
 		{TightWidth(15 * DIP), size1, Tight(Size{15 * DIP, 10 * DIP}), Tight(Size{15 * DIP, 10 * DIP}), TightWidth(15 * DIP)},
 		{TightHeight(15 * DIP), size1, Tight(Size{10 * DIP, 15 * DIP}), TightHeight(15 * DIP), Tight(Size{10 * DIP, 15 * DIP})},

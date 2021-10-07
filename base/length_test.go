@@ -208,6 +208,10 @@ func TestRectangle(t *testing.T) {
 
 	for i, v := range cases {
 		out := Rect(v.x0, v.y0, v.x1, v.y1)
+
+		if out.Min != v.min {
+			t.Errorf("Error in case %d, want %s, got %s", i, out.Min, v.min)
+		}
 		if got := out.Dx(); got != v.width {
 			t.Errorf("Error in case %d, want %s, got %s", i, got, v.width)
 		}

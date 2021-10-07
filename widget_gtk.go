@@ -1,3 +1,4 @@
+//go:build gtk || (linux && !cocoa) || (freebsd && !cocoa) || (openbsd && !cocoa)
 // +build gtk linux,!cocoa freebsd,!cocoa openbsd,!cocoa
 
 package goey
@@ -94,7 +95,7 @@ func (w *Control) Layout(bc base.Constraints) base.Size {
 		// much space as desired.
 		width, height := gtk.WidgetNaturalSize(w.handle)
 		// Dimensions may need to be increased to meet minimums.
-		return bc.Constrain(base.Size{base.FromPixelsX(width), base.FromPixelsY(height)})
+		return bc.Constrain(base.FromPixels(width, height))
 	}
 	if !bc.HasBoundedHeight() {
 		// No need to worry about height.  Find the width that best meets the

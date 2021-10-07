@@ -378,10 +378,10 @@ func testLayoutWidget(t *testing.T, widget base.Widget) {
 		bc   base.Constraints
 	}{
 		{"expand", base.Expand()},
-		{"expand-height", base.ExpandHeight(96 * DIP)},
-		{"expand-width", base.ExpandWidth(24 * DIP)},
 		{"expand-with-min", base.Constraints{base.Size{base.Inf / 2, base.Inf / 2}, base.Size{base.Inf, base.Inf}}},
 		{"loose", base.Loose(base.Size{96 * DIP, 24 * DIP})},
+		{"loose-height", base.LooseHeight(24 * DIP)},
+		{"loose-width", base.LooseWidth(96 * DIP)},
 		{"tight", base.Tight(base.Size{96 * DIP, 24 * DIP})},
 		{"tight-height", base.TightHeight(24 * DIP)},
 		{"tight-width", base.TightWidth(96 * DIP)},
@@ -417,7 +417,7 @@ func testMinSizeWidget(t *testing.T, widget base.Widget) {
 		t.Logf("MinIntrinsicWidth(Inf): %s", width1)
 
 		width2 := child.MinIntrinsicWidth(120 * base.DIP)
-		if width1 <= 0 || width1 == base.Inf {
+		if width2 <= 0 || width2 == base.Inf {
 			t.Errorf("invalid min width: %s", width2)
 		}
 		if width2 < width1 {
@@ -431,7 +431,7 @@ func testMinSizeWidget(t *testing.T, widget base.Widget) {
 		t.Logf("MinIntrinsicHeight(Inf): %s", height1)
 
 		height2 := child.MinIntrinsicHeight(120 * base.DIP)
-		if height1 <= 0 || height1 == base.Inf {
+		if height2 <= 0 || height2 == base.Inf {
 			t.Errorf("invalid min height: %s", height2)
 		}
 		if height2 < height1 {

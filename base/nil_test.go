@@ -82,3 +82,19 @@ func TestMount(t *testing.T) {
 		}
 	}
 }
+
+func TestMountNil(t *testing.T) {
+	out, err := Mount(Control{}, nil)
+	if err != nil {
+		t.Fatalf("Failed to mount <nil> widget: %s", err)
+	}
+	if out == nil {
+		t.Fatalf("Element is nil")
+	}
+
+	props := out.(interface{ Props() Widget }).Props()
+	if props != nil {
+		t.Errorf("Nil element unexpectedly return nil for props")
+	}
+
+}
