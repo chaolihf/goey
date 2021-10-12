@@ -9,6 +9,10 @@ var (
 )
 
 // Label describes a widget that provides a descriptive label for other fields.
+//
+// Labels should not be empty, and should not contain leading or trailing
+// spaces.  If violated, the behaviour of the Label will depend on the GUI
+// platform targeted.
 type Label struct {
 	Text string // Text is the contents of the label
 }

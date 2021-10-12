@@ -3,6 +3,7 @@ package goey
 import (
 	"math/rand"
 	"reflect"
+	"strings"
 	"testing"
 	"testing/quick"
 
@@ -41,6 +42,7 @@ func TestLabelMount(t *testing.T) {
 		}
 
 		f := func(text string) bool {
+			text = strings.TrimSpace(text)
 			return checkMountWidget(t, &Label{Text: text})
 		}
 		if err := quick.Check(f, &quick.Config{Values: labelValues}); err != nil {
@@ -81,6 +83,7 @@ func TestLabelUpdateProps(t *testing.T) {
 		defer closer()
 
 		f := func(text string) bool {
+			text = strings.TrimSpace(text)
 			return updater(&Label{Text: text})
 		}
 		if err := quick.Check(f, &quick.Config{Values: labelValues}); err != nil {

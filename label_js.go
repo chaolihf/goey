@@ -66,7 +66,7 @@ func (w *labelElement) MinIntrinsicHeight(base.Length) base.Length {
 	height := handle.Get("offsetHeight").Int()
 	assert.Assert(height > 0, "failure measuring label height")
 
-	return base.FromPixelsY(height)
+	return base.FromPixelsY(height + 1)
 }
 
 func (w *labelElement) MinIntrinsicWidth(base.Length) base.Length {
@@ -76,7 +76,7 @@ func (w *labelElement) MinIntrinsicWidth(base.Length) base.Length {
 	width := handle.Get("offsetWidth").Int()
 	assert.Assert(width > 0, "failure measuring label width")
 
-	return base.FromPixelsX(width)
+	return base.FromPixelsX(width + 1)
 }
 
 func (w *labelElement) Props() base.Widget {
