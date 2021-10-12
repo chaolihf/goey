@@ -12,11 +12,11 @@ func FromPixels(x, y int) Size {
 }
 
 // IsZero returns true if the size is the zero value.
-func (s *Size) IsZero() bool {
+func (s Size) IsZero() bool {
 	return s.Width == 0 && s.Height == 0
 }
 
 // String returns a string representation of the size.
-func (s *Size) String() string {
+func (s Size) String() string {
 	return "(" + s.Width.String() + "x" + s.Height.String() + ")"
 }

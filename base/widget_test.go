@@ -1,11 +1,13 @@
-package base
+package base_test
 
 import (
 	"fmt"
+
+	"bitbucket.org/rj/goey/base"
 )
 
 func ExampleKind_String() {
-	kind := NewKind("bitbucket.org/rj/goey/base.Example")
+	kind := base.NewKind("bitbucket.org/rj/goey/base.Example")
 
 	fmt.Println("Kind is", kind.String())
 

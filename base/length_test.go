@@ -1,16 +1,18 @@
-package base
+package base_test
 
 import (
 	"fmt"
 	"image"
 	"testing"
+
+	"bitbucket.org/rj/goey/base"
 )
 
 func ExampleLength() {
 	// Since there are 96 device-independent pixels per inch, and 6 picas
 	// per inch, the following two lengths should be equal.
-	length1 := 96 * DIP
-	length2 := 6 * PC
+	length1 := 96 * base.DIP
+	length2 := 6 * base.PC
 
 	if length1 == length2 {
 		fmt.Printf("All is OK with the world.")
@@ -26,7 +28,7 @@ func ExampleLength_Scale() {
 	// There are 96 DIP in an inch, and 6 pica in a inch, so the following
 	// should work.
 
-	if length := (1 * DIP).Scale(96, 6); length == (1 * PC) {
+	if length := (1 * base.DIP).Scale(96, 6); length == (1 * base.PC) {
 		fmt.Printf("The ratio of pica to DIP is 96 to 6.")
 	}
 
@@ -35,9 +37,9 @@ func ExampleLength_Scale() {
 }
 
 func ExampleLength_String() {
-	fmt.Printf("Converting:  1pt is equal to %sdip\n", 1*PT)
-	fmt.Printf("Converting:  1pt is equal to %1.2fdip\n", (1 * PT).DIP())
-	fmt.Printf("Converting:  1pc is equal to %1.1fdip\n", (1 * PC).DIP())
+	fmt.Printf("Converting:  1pt is equal to %sdip\n", 1*base.PT)
+	fmt.Printf("Converting:  1pt is equal to %1.2fdip\n", (1 * base.PT).DIP())
+	fmt.Printf("Converting:  1pc is equal to %1.1fdip\n", (1 * base.PC).DIP())
 
 	// Output:
 	// Converting:  1pt is equal to 1:21dip
@@ -46,7 +48,9 @@ func ExampleLength_String() {
 }
 
 func ExampleRectangle() {
-	r := Rectangle{Point{10 * DIP, 20 * DIP}, Point{90 * DIP, 80 * DIP}}
+	r := base.Rectangle{
+		Min: base.Point{10 * base.DIP, 20 * base.DIP},
+		Max: base.Point{90 * base.DIP, 80 * base.DIP}}
 
 	fmt.Printf("Rectangle %s has dimensions %.0fdip by %.0fdip.",
 		r, r.Dx().DIP(), r.Dy().DIP(),
@@ -57,8 +61,10 @@ func ExampleRectangle() {
 }
 
 func ExampleRectangle_Add() {
-	r := Rectangle{Point{10 * DIP, 20 * DIP}, Point{90 * DIP, 80 * DIP}}
-	v := Point{5 * DIP, 5 * DIP}
+	r := base.Rectangle{
+		Min: base.Point{10 * base.DIP, 20 * base.DIP},
+		Max: base.Point{90 * base.DIP, 80 * base.DIP}}
+	v := base.Point{5 * base.DIP, 5 * base.DIP}
 
 	fmt.Printf("Rectangle %s, moved by %s,\n", r, v)
 	fmt.Printf("---- %s", r.Add(v))
@@ -73,10 +79,12 @@ func ExampleRectangle_Pixels() {
 	// user code, as the platform-specific code should update the DPI based
 	// on the system.  However, for the purpose of this example, set a known
 	// DPI.
-	DPI = image.Point{2 * 96, 2 * 96}
+	base.DPI = image.Point{2 * 96, 2 * 96}
 
 	// Construct an example rectangle.
-	r := Rectangle{Point{10 * DIP, 20 * DIP}, Point{90 * DIP, 80 * DIP}}
+	r := base.Rectangle{
+		Min: base.Point{10 * base.DIP, 20 * base.DIP},
+		Max: base.Point{90 * base.DIP, 80 * base.DIP}}
 	rpx := r.Pixels()
 
 	fmt.Printf("Rectangle %s when translated to pixels is %s.", r, rpx)
@@ -88,53 +96,64 @@ func ExampleRectangle_Pixels() {
 func TestFromPixels(t *testing.T) {
 	cases := []struct {
 		dpix, dpiy       int
-		pixelsx, pixelsy int
-		lengthx, lengthy Length
+		pixels           int
+		lengthx, lengthy base.Length
 	}{
-		{96, 96, 2, 3, 2 * DIP, 3 * DIP},
-		{96, 96 * 3 / 2, 2, 3, 2 * DIP, 2 * DIP},
+		// Standard DPI tests
+		{96, 96, 2, 2 * base.DIP, 2 * base.DIP},
+		{96, 96, 3, 3 * base.DIP, 3 * base.DIP},
+		{96, 96 * 3 / 2, 2, 2 * base.DIP, 2 * base.DIP * 2 / 3},
+		{96, 96 * 3 / 2, 3, 3 * base.DIP, 2 * base.DIP},
+		// 300 DPI tests
+		{300, 300, 1, base.DIP * 96 / 300, base.DIP * 96 / 300},
+		{300, 300, 4096, 4096 * base.DIP * 96 / 300, 4096 * base.DIP * 96 / 300},
+		// Very high DPI stress test.
+		{1024, 1024, 1, base.DIP * 96 / 1024, base.DIP * 96 / 1024},
+		{1024, 1024, 1024 * 16, 16 * base.Inch, 16 * base.Inch},
 	}
 
 	for i, v := range cases {
-		DPI = image.Point{v.dpix, v.dpiy}
-		if got := FromPixelsX(v.pixelsx); got != v.lengthx {
+		base.DPI = image.Point{v.dpix, v.dpiy}
+		if got := base.FromPixelsX(v.pixels); got != v.lengthx {
 			t.Errorf("Unexpected conversion in FromPixelsX on case %d, got %v, want %v", i, got, v.lengthx)
 		}
-		if got := FromPixelsY(v.pixelsy); got != v.lengthy {
+		if got := base.FromPixelsY(v.pixels); got != v.lengthy {
 			t.Errorf("Unexpected conversion in FromPixelsY on case %d, got %v, want %v", i, got, v.lengthy)
 		}
 	}
 }
 
 func TestLength(t *testing.T) {
-	if rt := (1 * DIP).DIP(); rt != 1 {
+	if rt := (1 * base.DIP).DIP(); rt != 1 {
 		t.Errorf("Unexpected round-trip for Length, %v =/= %v", rt, 1)
 	}
-	if rt := (1 * PT).PT(); rt != 1 {
+	if rt := (1 * base.PT).PT(); rt != 1 {
 		t.Errorf("Unexpected round-trip for PT,  %v =/= %v", rt, 1)
 	}
-	if rt := (1 * PC).PC(); rt != 1 {
+	if rt := (1 * base.PC).PC(); rt != 1 {
 		t.Errorf("Unexpected round-trip for PC,  %v =/= %v", rt, 1)
 	}
-	if rt := (1 * Inch).Inch(); rt != 1 {
+	if rt := (1 * base.Inch).Inch(); rt != 1 {
 		t.Errorf("Unexpected round-trip for inch,  %v =/= %v", rt, 1)
 	}
-	if rt := (1 * PT) * (1 << 6) / (1 * DIP); rt != 96*(1<<6)/72 {
+	if rt := (1 * base.PT) * (1 << 6) / (1 * base.DIP); rt != 96*(1<<6)/72 {
 		t.Errorf("Unexpected ratio between DIP and PT, %v =/= %v", rt, 96*(1<<6)/72)
 	}
-	if rt := (1 * PC) * (1 << 6) / (1 * DIP); rt != 96*(1<<6)/6 {
+	if rt := (1 * base.PC) * (1 << 6) / (1 * base.DIP); rt != 96*(1<<6)/6 {
 		t.Errorf("Unexpected ratio between DIP and PC, %v =/= %v", rt, 96*(1<<6)/72)
 	}
-	if rt := (1 * Inch) * (1 << 6) / (1 * DIP); rt != 96*(1<<6) {
+	if rt := (1 * base.Inch) * (1 << 6) / (1 * base.DIP); rt != 96*(1<<6) {
 		t.Errorf("Unexpected ratio between DIP and inch, %v =/= %v", rt, 96*(1<<6))
 	}
 }
 
 func TestLength_Clamp(t *testing.T) {
+	const DIP = base.DIP
+
 	cases := []struct {
-		in       Length
-		min, max Length
-		out      Length
+		in       base.Length
+		min, max base.Length
+		out      base.Length
 	}{
 		{10 * DIP, 0 * DIP, 20 * DIP, 10 * DIP},
 		{30 * DIP, 0 * DIP, 20 * DIP, 20 * DIP},
@@ -155,14 +174,16 @@ func TestLength_Clamp(t *testing.T) {
 }
 
 func TestPoint(t *testing.T) {
+	const DIP = base.DIP
+
 	cases := []struct {
-		a, b Point
-		add  Point
-		sub  Point
+		a, b base.Point
+		add  base.Point
+		sub  base.Point
 	}{
-		{Point{}, Point{1 * DIP, 2 * DIP}, Point{1 * DIP, 2 * DIP}, Point{-1 * DIP, -2 * DIP}},
-		{Point{1 * DIP, 2 * DIP}, Point{}, Point{1 * DIP, 2 * DIP}, Point{1 * DIP, 2 * DIP}},
-		{Point{3 * DIP, 5 * DIP}, Point{7 * DIP, 11 * DIP}, Point{10 * DIP, 16 * DIP}, Point{-4 * DIP, -6 * DIP}},
+		{base.Point{}, base.Point{1 * DIP, 2 * DIP}, base.Point{1 * DIP, 2 * DIP}, base.Point{-1 * DIP, -2 * DIP}},
+		{base.Point{1 * DIP, 2 * DIP}, base.Point{}, base.Point{1 * DIP, 2 * DIP}, base.Point{1 * DIP, 2 * DIP}},
+		{base.Point{3 * DIP, 5 * DIP}, base.Point{7 * DIP, 11 * DIP}, base.Point{10 * DIP, 16 * DIP}, base.Point{-4 * DIP, -6 * DIP}},
 	}
 
 	for i, v := range cases {
@@ -176,17 +197,19 @@ func TestPoint(t *testing.T) {
 }
 
 func TestLength_Pixels(t *testing.T) {
+	const DIP = base.DIP
+
 	cases := []struct {
-		in  Point
+		in  base.Point
 		dpi image.Point
 		out image.Point
 	}{
-		{Point{1 * DIP, 2 * DIP}, image.Point{96, 96}, image.Point{1, 2}},
-		{Point{1 * DIP, 2 * DIP}, image.Point{2 * 96, 3 * 96}, image.Point{2, 6}},
+		{base.Point{1 * DIP, 2 * DIP}, image.Point{96, 96}, image.Point{1, 2}},
+		{base.Point{1 * DIP, 2 * DIP}, image.Point{2 * 96, 3 * 96}, image.Point{2, 6}},
 	}
 
 	for i, v := range cases {
-		DPI = v.dpi
+		base.DPI = v.dpi
 		if out := v.in.Pixels(); out != v.out {
 			t.Errorf("Error in case %d, want %s, got %s", i, v.out, out)
 		}
@@ -194,20 +217,22 @@ func TestLength_Pixels(t *testing.T) {
 }
 
 func TestRectangle(t *testing.T) {
+	const DIP = base.DIP
+
 	cases := []struct {
-		x0, y0, x1, y1 Length
-		min            Point
-		width          Length
-		height         Length
+		x0, y0, x1, y1 base.Length
+		min            base.Point
+		width          base.Length
+		height         base.Length
 	}{
-		{1 * DIP, 2 * DIP, 10 * DIP, 12 * DIP, Point{1 * DIP, 2 * DIP}, 9 * DIP, 10 * DIP},
-		{1 * DIP, 12 * DIP, 10 * DIP, 2 * DIP, Point{1 * DIP, 2 * DIP}, 9 * DIP, 10 * DIP},
-		{10 * DIP, 2 * DIP, 1 * DIP, 12 * DIP, Point{1 * DIP, 2 * DIP}, 9 * DIP, 10 * DIP},
-		{10 * DIP, 12 * DIP, 1 * DIP, 2 * DIP, Point{1 * DIP, 2 * DIP}, 9 * DIP, 10 * DIP},
+		{1 * DIP, 2 * DIP, 10 * DIP, 12 * DIP, base.Point{1 * DIP, 2 * DIP}, 9 * DIP, 10 * DIP},
+		{1 * DIP, 12 * DIP, 10 * DIP, 2 * DIP, base.Point{1 * DIP, 2 * DIP}, 9 * DIP, 10 * DIP},
+		{10 * DIP, 2 * DIP, 1 * DIP, 12 * DIP, base.Point{1 * DIP, 2 * DIP}, 9 * DIP, 10 * DIP},
+		{10 * DIP, 12 * DIP, 1 * DIP, 2 * DIP, base.Point{1 * DIP, 2 * DIP}, 9 * DIP, 10 * DIP},
 	}
 
 	for i, v := range cases {
-		out := Rect(v.x0, v.y0, v.x1, v.y1)
+		out := base.Rect(v.x0, v.y0, v.x1, v.y1)
 
 		if out.Min != v.min {
 			t.Errorf("Error in case %d, want %s, got %s", i, out.Min, v.min)
@@ -218,7 +243,7 @@ func TestRectangle(t *testing.T) {
 		if got := out.Dy(); got != v.height {
 			t.Errorf("Error in case %d, want %s, got %s", i, got, v.height)
 		}
-		expected := Point{v.width, v.height}
+		expected := base.Point{v.width, v.height}
 		if got := out.Size(); got != expected {
 			t.Errorf("Error in case %d, want %s, got %s", i, got, expected)
 		}
