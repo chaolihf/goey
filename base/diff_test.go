@@ -275,12 +275,12 @@ func TestLayout(t *testing.T) {
 		{&nilElement{}, Loose(size1), size1},
 		{&nilElement{}, TightWidth(size1.Width), Size{size1.Width, 0}},
 		{&nilElement{}, TightHeight(size1.Height), Size{0, size1.Height}},
-		{&nilElement{}, Expand(), Size{}},
+		{&nilElement{}, Unconstrained(), Size{}},
 		{&mockElement{}, Tight(size1), size1},
 		{&mockElement{}, Loose(size1), Size{}},
 		{&mockElement{}, TightWidth(size1.Width), Size{size1.Width, 0}},
 		{&mockElement{}, TightHeight(size1.Height), Size{0, size1.Height}},
-		{&mockElement{}, Expand(), Size{}},
+		{&mockElement{}, Unconstrained(), Size{}},
 	}
 
 	for i, v := range cases {

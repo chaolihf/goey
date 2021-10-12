@@ -89,13 +89,13 @@ func TestAlignLayout(t *testing.T) {
 		{size1, 0, 0, base.Tight(size1), size1},
 		{size2, 0, 0, base.Tight(size2), size2},
 		{sizeZ, 0, 0, base.Tight(size1), size1},
-		{size1, 0, 0, base.Expand().Loosen(), size1},
-		{size2, 0, 0, base.Expand().Loosen(), size2},
-		{sizeZ, 0, 0, base.Expand().Loosen(), sizeZ},
-		{size1, 1, 1, base.Expand().Loosen(), size1},
-		{size2, 1, 1, base.Expand().Loosen(), size2},
-		{size1, 2, 3, base.Expand().Loosen(), base.Size{20 * DIP, 60 * DIP}},
-		{size2, 4, 5, base.Expand().Loosen(), base.Size{4 * 35 * DIP, 150 * DIP}},
+		{size1, 0, 0, base.Unconstrained(), size1},
+		{size2, 0, 0, base.Unconstrained(), size2},
+		{sizeZ, 0, 0, base.Unconstrained(), sizeZ},
+		{size1, 1, 1, base.Unconstrained(), size1},
+		{size2, 1, 1, base.Unconstrained(), size2},
+		{size1, 2, 3, base.Unconstrained(), base.Size{20 * DIP, 60 * DIP}},
+		{size2, 4, 5, base.Unconstrained(), base.Size{4 * 35 * DIP, 150 * DIP}},
 	}
 
 	for i, v := range cases {

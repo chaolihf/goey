@@ -377,7 +377,7 @@ func testLayoutWidget(t *testing.T, widget base.Widget) {
 		name string
 		bc   base.Constraints
 	}{
-		{"expand", base.Expand()},
+		{"unconstrainied", base.Unconstrained()},
 		{"expand-with-min", base.Constraints{base.Size{base.Inf / 2, base.Inf / 2}, base.Size{base.Inf, base.Inf}}},
 		{"loose", base.Loose(base.Size{96 * DIP, 24 * DIP})},
 		{"loose-height", base.LooseHeight(24 * DIP)},

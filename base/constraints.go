@@ -37,10 +37,9 @@ type Constraints struct {
 	Min, Max Size
 }
 
-// Expand creates box constraints that allows elements to expand to as large as
-// possible.  The constraints for both width and height will be loose and
-// unbounded.
-func Expand() Constraints {
+// Unconstrained creates box constraints that allow any size.
+// The constraints for both widthand height will be loose and unbounded.
+func Unconstrained() Constraints {
 	return Constraints{Size{0, 0}, Size{Inf, Inf}}
 }
 

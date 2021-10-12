@@ -10,7 +10,7 @@ func TestConstraints(t *testing.T) {
 		isTight, hasTightWidth, hasTightHeight       bool
 		isBounded, hasBoundedWidth, hasBoundedHeight bool
 	}{
-		{Expand(), false, false, false, false, false, false},
+		{Unconstrained(), false, false, false, false, false, false},
 		{Loose(Size{10 * DIP, 15 * DIP}), false, false, false, true, true, true},
 		{LooseWidth(10 * DIP), false, false, false, false, true, false},
 		{LooseHeight(10 * DIP), false, false, false, false, false, true},
@@ -128,7 +128,7 @@ func TestConstraints_Inset(t *testing.T) {
 		{TightHeight(0), 1 * DIP, TightHeight(0)},
 		{TightHeight(2 * DIP), 10 * DIP, TightHeight(0)},
 		{TightHeight(10 * DIP), 5 * DIP, TightHeight(5 * DIP)},
-		{Expand(), 5 * DIP, Expand()},
+		{Unconstrained(), 5 * DIP, Unconstrained()},
 	}
 
 	for i, v := range cases {
@@ -213,7 +213,7 @@ func TestConstraints_Tighten(t *testing.T) {
 		outH Constraints
 		outV Constraints
 	}{
-		{Expand(), size1, Tight(size1), TightHeight(10 * DIP), TightWidth(10 * DIP)},
+		{Unconstrained(), size1, Tight(size1), TightHeight(10 * DIP), TightWidth(10 * DIP)},
 		{Loose(Size{20 * DIP, 25 * DIP}), size1, Tight(size1), Constraints{Size{0, 10 * DIP}, Size{20 * DIP, 10 * DIP}}, Constraints{Size{10 * DIP, 0}, Size{10 * DIP, 25 * DIP}}},
 		{Loose(Size{20 * DIP, 25 * DIP}), Size{30 * DIP, 30 * DIP}, Tight(Size{20 * DIP, 25 * DIP}), Constraints{Size{0, 25 * DIP}, Size{20 * DIP, 25 * DIP}}, Constraints{Size{20 * DIP, 0}, Size{20 * DIP, 25 * DIP}}},
 		{LooseWidth(10 * DIP), size1, Tight(size1), Constraints{Size{0, 10 * DIP}, Size{10 * DIP, 10 * DIP}}, TightWidth(10 * DIP)},
