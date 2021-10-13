@@ -97,6 +97,27 @@ golang-cocoa:
       - GOVERSION: ["1.12", "latest"]
         DUMMY: ["dummy"]
 
+nix-all:
+  image: nixos/nix
+  stage: build
+  script:
+    - nix-env -iA nixpkgs.xvfb-run nixpkgs.fluxbox
+    - xvfb-run -n 99 fluxbox &
+    - export DISPLAY=:99
+    - nix-shell --pure --argstr platform ${PLATFORM} --command "go build -v ./base ./loop . ./example/..."
+    - nix-shell --pure --argstr platform ${PLATFORM} --command "go build -v ./base ./loop . ./example/..." ./shell-pinned.nix
+    - if [ $PLATFORM == "js" ]; then
+    -   nix-shell --pure --argstr platform ${PLATFORM} --command "go test -v -short -run=Test ./base ./loop ."
+    - elif [ $PLATFORM == "windows" ]; then
+    -   nix-shell --pure --argstr platform ${PLATFORM} --command "go test -v -short ./base ./loop ." ./shell-pinned.nix
+    - else
+    -   nix-shell --pure --keep DISPLAY --argstr platform ${PLATFORM} --command "go test -v -short ./base ./loop ."
+    - fi
+  parallel:
+    matrix:
+      - PLATFORM: ["gtk", "windows", "js"]
+        DUMMY: ["dummy"]
+
 test-gtk:
   image: golang:latest
   stage: test
