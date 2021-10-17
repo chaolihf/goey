@@ -469,6 +469,7 @@ func TestDoWithPanic(t *testing.T) {
 
 func TestThunderHerdOfDo(t *testing.T) {
 	count := uint32(0)
+
 	// This is the limit for number of simultaneous goroutines under the race
 	// detector.
 	const herdSize = 8128
@@ -490,7 +491,7 @@ func TestThunderHerdOfDo(t *testing.T) {
 		go func() {
 			// At least let the run loop start before we hammer it.
 			err := loop.Do(func() error {
-				atomic.AddUint32(&count, 1)
+				count++
 				return nil
 			})
 			if err != nil {
@@ -505,7 +506,7 @@ func TestThunderHerdOfDo(t *testing.T) {
 					defer wg.Done()
 
 					err := loop.Do(func() error {
-						atomic.AddUint32(&count, 1)
+						count++
 						return nil
 					})
 					if err != nil {
@@ -537,5 +538,70 @@ func TestThunderHerdOfDo(t *testing.T) {
 	}
 	if c := atomic.LoadUint32(&count); c != herdSize+1 {
 		t.Errorf("Want count=10, got count==%d", c)
+	}
+	if count != herdSize+1 {
+		t.Errorf("Want count=%d, got count==%d", herdSize+1, count)
+	}
+}
+
+func BenchmarkThunderHerdOfDo(t *testing.B) {
+	const herdSize = 8128
+
+	for i := 0; i < t.N; i++ {
+		count := uint32(0)
+
+		init := func() error {
+			// Create window and verify.
+			// We need at least one window open to maintain GUI loop.
+			loop.AddLockCount(1)
+			if c := loop.LockCount(); c != 2 {
+				t.Fatalf("Want lockCount==2, got lockCount==%d", c)
+			}
+
+			go func() {
+				// At least let the run loop start before we hammer it.
+				err := loop.Do(func() error {
+					count++
+					return nil
+				})
+				if err != nil {
+					t.Errorf("Error in Do, %s", err)
+				}
+
+				// Start the herd.
+				wg := sync.WaitGroup{}
+				for i := 0; i < herdSize; i++ {
+					wg.Add(1)
+					go func() {
+						defer wg.Done()
+
+						err := loop.Do(func() error {
+							count++
+							return nil
+						})
+						if err != nil {
+							t.Errorf("Error in Do, %s", err)
+						}
+					}()
+				}
+				wg.Wait()
+
+				// Close the window
+				err = loop.Do(func() error {
+					loop.AddLockCount(-1)
+					return nil
+				})
+				if err != nil {
+					t.Errorf("Error in Do, %s", err)
+				}
+			}()
+
+			return nil
+		}
+
+		err := loop.Run(init)
+		if err != nil {
+			t.Errorf("Failed to run GUI loop, %s", err)
+		}
 	}
 }

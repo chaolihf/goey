@@ -45,6 +45,7 @@ func CompareElementsToWidgets(t *testing.T, normalize func(*testing.T, base.Widg
 			if err != nil {
 				t.Fatalf("error in loop.Do: %s", err)
 			}
+
 			if n1, n2 := data.Kind(), widgets[i].Kind(); n1 != n2 {
 				t.Errorf("Wanted data.Kind() == widgets[%d].Kind(), got %s, want %s", i, n1, n2)
 			}

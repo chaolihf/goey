@@ -21,6 +21,9 @@ var (
 	namePost = [...]uint16{'G', 'o', 'e', 'y', 'P', 'o', 's', 't', 'W', 'i', 'n', 'd', 'o', 'w', 0}
 
 	activeWindow uintptr
+
+	postMessageAction = make(chan func() error, 1)
+	postMessageErr    = make(chan error, 1)
 )
 
 func initRun() error {
@@ -73,10 +76,14 @@ func runTesting(func() error) error {
 }
 
 func do(action func() error) error {
-	// Marshal the action to the GUI thread, and collect the return value.
-	err := make(chan error, 1)
-	win.PostMessage(hwndPost, win.WM_USER, uintptr(unsafe.Pointer(&action)), uintptr(unsafe.Pointer(&err)))
-	return nopanic.Unwrap(<-err)
+	// Let the GUI thread know that an action is coming.
+	win.PostMessage(hwndPost, win.WM_USER, 0, 0)
+
+	// Send the action.
+	postMessageAction <- action
+
+	// Block for and return err.
+	return nopanic.Unwrap(<-postMessageErr)
 }
 
 func loop() (ok bool) {
@@ -108,8 +115,7 @@ func SetActiveWindow(hwnd win.HWND) {
 func postWindowProc(hwnd win.HWND, msg uint32, wParam uintptr, lParam uintptr) uintptr {
 	switch msg {
 	case win.WM_USER:
-		err := nopanic.Wrap(*(*func() error)(unsafe.Pointer(wParam)))
-		(*(*chan error)(unsafe.Pointer(lParam))) <- err
+		postMessageErr <- nopanic.Wrap(<-postMessageAction)
 		return 0
 	}
 
