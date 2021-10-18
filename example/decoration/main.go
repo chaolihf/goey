@@ -9,6 +9,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"image/color"
 	"strconv"
@@ -31,6 +32,9 @@ var (
 )
 
 func main() {
+	flag.IntVar(&clickCount, "count", 0, "Initial click count")
+	flag.Parse()
+
 	err := loop.Run(createWindow)
 	if err != nil {
 		fmt.Println("Error: ", err)

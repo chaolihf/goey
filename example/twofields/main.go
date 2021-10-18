@@ -8,6 +8,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"strconv"
 
@@ -17,13 +18,15 @@ import (
 )
 
 var (
-	mainWindow     *goey.Window
-	text           [2]string
-	characterCount [2]int
-	wordCount      [2]int
+	mainWindow *goey.Window
+	text       [2]string
 )
 
 func main() {
+	flag.StringVar(&text[0], "text0", "", "Initial text for the first field")
+	flag.StringVar(&text[1], "text1", "", "Initial text for the second field")
+	flag.Parse()
+
 	err := loop.Run(createWindow)
 	if err != nil {
 		fmt.Println("Error: ", err)
@@ -57,7 +60,6 @@ func render() base.Widget {
 					Placeholder: "You should type something here.",
 					OnChange: func(value string) {
 						text[0] = value
-						characterCount[0] = len(value)
 						updateWindow()
 					},
 					OnFocus: onfocus(1),
@@ -68,14 +70,13 @@ func render() base.Widget {
 					Placeholder: "...and here.",
 					OnChange: func(value string) {
 						text[1] = value
-						characterCount[1] = len(value)
 						updateWindow()
 					},
 					OnFocus: onfocus(2),
 					OnBlur:  onblur(2),
 				}},
 				&goey.HR{},
-				&goey.Label{Text: "The total character count is:  " + strconv.Itoa(characterCount[0]+characterCount[1])},
+				&goey.Label{Text: "The total character count is:  " + strconv.Itoa(len(text[0])+len(text[1]))},
 			},
 		},
 	}

@@ -9,6 +9,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"image"
 	"image/color"
@@ -44,7 +45,10 @@ var (
 func loadImage(filename string) (image.Image, error) {
 	file, err := os.Open(filename)
 	if err != nil {
-		return nil, err
+		file, err = os.Open("./example/colour/" + filename)
+		if err != nil {
+			return nil, err
+		}
 	}
 	defer func() {
 		// Close of a file with only read permission.  Will not error.
@@ -88,6 +92,9 @@ func selectImage(index int) (image.Image, string) {
 }
 
 func main() {
+	flag.IntVar(&clickCount, "count", 0, "Initial click count")
+	flag.Parse()
+
 	var err error
 	gopher, err = loadImage("gopher.png")
 	if err != nil {
