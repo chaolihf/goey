@@ -8,7 +8,7 @@ import (
 
 	"bitbucket.org/rj/goey/base"
 	"bitbucket.org/rj/goey/dialog"
-	win2 "bitbucket.org/rj/goey/internal/syscall"
+	win2 "bitbucket.org/rj/goey/internal/windows"
 	"bitbucket.org/rj/goey/loop"
 	"github.com/lxn/win"
 )
@@ -49,6 +49,7 @@ type windowImpl struct {
 	dpi                     image.Point
 	windowRectDelta         image.Point
 	windowMinSize           image.Point
+	hicon                   win.HICON
 	child                   base.Element
 	childSize               base.Size
 	onClosing               func() bool
@@ -302,7 +303,7 @@ func (w *windowImpl) Screenshot() (image.Image, error) {
 	}
 
 	// Convert the bitmap to a image.Image.
-	img := bitmapToImage(hdc, bitmap)
+	img := win2.BitmapToImage(hdc, bitmap)
 	return img, nil
 }
 
@@ -497,10 +498,19 @@ func (w *windowImpl) showScrollV(height base.Length, clientHeight base.Length) (
 }
 
 func (w *windowImpl) setIcon(img image.Image) error {
-	hicon, _, err := imageToIcon(img)
+	// Create the new icon
+	hicon, err := win2.ImageToIcon(img)
 	if err != nil {
 		return err
 	}
+
+	// Delete the old hicon, and save the new hicon
+	if w.hicon != 0 {
+		win.DestroyIcon(w.hicon)
+	}
+	w.hicon = hicon
+
+	// Update the window with the new icon.
 	win2.SetClassLongPtr(w.hWnd, win2.GCLP_HICON, uintptr(hicon))
 
 	return nil

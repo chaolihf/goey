@@ -6,7 +6,7 @@ import (
 	"unsafe"
 
 	"bitbucket.org/rj/goey/base"
-	win2 "bitbucket.org/rj/goey/internal/syscall"
+	win2 "bitbucket.org/rj/goey/internal/windows"
 	"github.com/lxn/win"
 )
 
