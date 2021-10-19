@@ -36,7 +36,7 @@ type Control struct {
 	hWnd win.HWND
 }
 
-// Text copies text of the underlying window
+// Text copies text of the underlying window.
 func (w Control) Text() string {
 	return win2.GetWindowText(w.hWnd)
 }
@@ -97,8 +97,8 @@ func (w *Control) TypeKeys(text string) chan error {
 
 		for _, r := range text {
 			inp := [2]win.KEYBD_INPUT{
-				{win.INPUT_KEYBOARD, win.KEYBDINPUT{}},
-				{win.INPUT_KEYBOARD, win.KEYBDINPUT{}},
+				{Type: win.INPUT_KEYBOARD, Ki: win.KEYBDINPUT{}},
+				{Type: win.INPUT_KEYBOARD, Ki: win.KEYBDINPUT{}},
 			}
 
 			if r == '\n' {
@@ -138,20 +138,6 @@ func (w *Control) SetOrder(previous win.HWND) win.HWND {
 	// to top of the z-order.
 	win.SetWindowPos(w.hWnd, previous, 0, 0, 0, 0, win.SWP_NOMOVE|win.SWP_NOSIZE|win.SWP_NOREDRAW|0x400)
 	return w.hWnd
-}
-
-// SetText is a wrapper around the WIN32 call to SetWindowText.
-func (w Control) SetText(value string) error {
-	utf16, err := syscall.UTF16PtrFromString(value)
-	if err != nil {
-		return err
-	}
-
-	rc := win2.SetWindowText(w.hWnd, utf16)
-	if rc == 0 {
-		return syscall.GetLastError()
-	}
-	return nil
 }
 
 // Close is a wrapper around the WIN32 call to DestroyWindow.

@@ -53,6 +53,12 @@ func (m *Message) WithInfo() *Message {
 	return m
 }
 
+// WithOwner sets the owner of the dialog box.
+func (m *Message) WithOwner(owner Owner) *Message {
+	m.owner = owner
+	return m
+}
+
 // WithTitle adds a title to the message's dialog.
 func (m *Message) WithTitle(text string) *Message {
 	text = strings.TrimSpace(text)

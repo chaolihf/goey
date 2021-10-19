@@ -31,8 +31,6 @@ func max(a, b Length) Length {
 // A sentinel value can be used to indicate that the maximum size for a
 // dimension is infinite.  The constraints on that dimension are called
 // 'unbounded'.
-//
-// (This type is similar to BoxConstraints type in flutter library rendering)
 type Constraints struct {
 	Min, Max Size
 }

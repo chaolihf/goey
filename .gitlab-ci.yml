@@ -127,7 +127,8 @@ test-gtk:
     GIT_CLONE_PATH: $CI_BUILDS_DIR/src/bitbucket.org/rj/goey
     DISPLAY: ":1"
     APT_GET: "libgtk-3-dev xvfb"
-    SCREENSHOTS: "onebutton twofields decoration colour"
+    SCREENSHOTS: "onebutton twofields threebuttons decoration colour"
+    LINTERS: "ineffassign,misspell,gosec,godot,govet,revive"
   before_script:
     - *before_script_all
     - mkdir -p .cache/github.com
@@ -140,14 +141,10 @@ test-gtk:
     - go tool cover -html=cover-gtk.out -o=cover.html
     - go test -v -race ./loop 
     - go vet -composites=false ./base ./loop ./dialog .
-    - go get -u github.com/gordonklaus/ineffassign
-    - go install github.com/gordonklaus/ineffassign
-    - $GOPATH/bin/ineffassign .
-    - go get -u github.com/client9/misspell/cmd/misspell
-    - go install github.com/client9/misspell/cmd/misspell
+    - go install github.com/client9/misspell/cmd/misspell@latest
     - $GOPATH/bin/misspell -locale US *.go *.md base/*.go loop/*.go dialog/*.go
-    - curl -sfL https://raw.githubusercontent.com/securego/gosec/master/install.sh | sh -s -- -b $GOPATH/bin v2.2.0
-    - $GOPATH/bin/gosec -exclude-dir=internal -exclude=G104,G204,G304 ./...
+    - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- v1.42.0
+    - ./bin/golangci-lint run -v --enable=$LINTERS ./base ./loop ./dialog .
     - mkdir ./images
     - for elem in $SCREENSHOTS; do go build -v bitbucket.org/rj/goey/example/$elem; done
     - for elem in $SCREENSHOTS; do GOEY_SCREENSHOT=./images/${elem}_linux.png ./$elem; done
@@ -171,12 +168,13 @@ test-wine64:
     DISPLAY: ":1"
     APT_GET: "wine64 wine-binfmt xvfb"
     GOOS: windows
+    LINTERS: "ineffassign,misspell,gosec,godot,govet,revive"
   script:
     - go build -v . ./example/...
     - go test -v -exec wine64 -short -coverprofile=cover-wine64.out ./base ./loop .
     - go tool cover -html=cover-wine64.out -o=cover.html
     - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- v1.42.0
-    - ./bin/golangci-lint run -v ./base ./loop
+    - ./bin/golangci-lint run -v --enable=$LINTERS ./base ./loop ./dialog .
   except:
     - tags
   artifacts:
@@ -211,10 +209,13 @@ test-cocoa:
   variables:
     DISPLAY: ":1"
     APT_GET: "gnustep-devel xvfb fluxbox"
+    LINTERS: "ineffassign,misspell,gosec,godot,govet,revive"
   script:
     - go test -v -tags cocoa -coverprofile=cover-cocoa.out ./base ./loop .
     - go tool cover -html=cover-cocoa.out -o=cover.html
     - go test -v -tags cocoa -race ./loop 
+    - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- v1.42.0
+    - ./bin/golangci-lint run -v --enable=$LINTERS --build-tags=cocoa ./base ./loop .
   except:
     - tags
   artifacts:

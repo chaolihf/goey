@@ -45,9 +45,10 @@ func (w *emptyElement) Props() base.Widget {
 }
 
 func (w *emptyElement) Layout(bc base.Constraints) base.Size {
-	width := w.MinIntrinsicWidth(0)
-	height := w.MinIntrinsicHeight(0)
-	return bc.Constrain(base.Size{width, height})
+	return bc.Constrain(base.Size{
+		Width:  w.MinIntrinsicWidth(0),
+		Height: w.MinIntrinsicHeight(0),
+	})
 }
 
 func (w *emptyElement) MinIntrinsicHeight(width base.Length) base.Length {

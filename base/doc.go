@@ -10,5 +10,6 @@
 //
 // Additionally, this package contains geometric types.  These types support
 // the automatic layout of widgets in a platform independent manner.  The
-// layout algorithm is roughly based on Flutter.
+// layout algorithm is roughly based on Flutter.  For example, see the type
+// Constraints, which is roughly similar to flutter's BoxConstraints.
 package base

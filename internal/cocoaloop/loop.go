@@ -1,4 +1,4 @@
-package cocoa
+package cocoaloop
 
 /*
 #cgo CFLAGS: -x objective-c -DNTRACE -I/usr/include/GNUstep
@@ -6,18 +6,19 @@ package cocoa
 #include "loop.h"
 */
 import "C"
-import "sync"
-import "bitbucket.org/rj/goey/internal/nopanic"
+import (
+	"sync"
 
-func Init() error {
+	"bitbucket.org/rj/goey/internal/nopanic"
+)
+
+func Init() {
 	C.init()
-	return nil
 }
 
-func Run() error {
+func Run() {
 	// Run the event loop.
 	C.run()
-	return nil
 }
 
 var (

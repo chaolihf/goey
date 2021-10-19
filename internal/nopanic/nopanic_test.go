@@ -1,12 +1,13 @@
 package nopanic_test
 
 import (
-	"bitbucket.org/rj/goey/internal/nopanic"
 	"errors"
 	"fmt"
 	"reflect"
 	"strings"
 	"testing"
+
+	"bitbucket.org/rj/goey/internal/nopanic"
 )
 
 func ExampleWrap() {
@@ -26,7 +27,7 @@ func ExampleWrap() {
 	// No luck!
 }
 
-func ExampleWrap_2() {
+func ExampleWrap_panic() {
 	defer func() {
 		if r := recover(); r != nil {
 			fmt.Println("Recovered...")
@@ -154,7 +155,9 @@ func TestUnwrap2(t *testing.T) {
 		}
 	}()
 
-	nopanic.Unwrap(nopanic.Wrap(func() error {
+	// Call to Unwrap should never return, because it should repanic.
+	_ = nopanic.Unwrap(nopanic.Wrap(func() error {
 		panic(err1)
 	}))
+	t.Errorf("this line is unreachable")
 }

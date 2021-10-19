@@ -1,3 +1,4 @@
+//go:build cocoa || (darwin && !gtk)
 // +build cocoa darwin,!gtk
 
 package goey
@@ -52,17 +53,17 @@ func (w *windowImpl) close() {
 
 func (w *windowImpl) message(m *dialog.Message) {
 	//m.title, m.err = w.handle.GetTitle()
-	m.WithParent(w.handle)
+	m.WithOwner(dialog.Owner{Window: w.handle})
 }
 
 func (w *windowImpl) openfiledialog(m *dialog.OpenFile) {
 	//m.title, m.err = w.handle.GetTitle()
-	m.WithParent(w.handle)
+	m.WithOwner(dialog.Owner{Window: w.handle})
 }
 
 func (w *windowImpl) savefiledialog(m *dialog.SaveFile) {
 	//m.title, m.err = w.handle.GetTitle()
-	m.WithParent(w.handle)
+	m.WithOwner(dialog.Owner{Window: w.handle})
 }
 
 func (w *windowImpl) onSize() {
@@ -131,8 +132,8 @@ func (w *windowImpl) setChildPost() {
 	w.onSize()
 }
 
-// setDPI updates the global DPI
-func (_ *windowImpl) setDPI() {
+// setDPI updates the global DPI.
+func (*windowImpl) setDPI() {
 	base.DPI.X, base.DPI.Y = 96, 96
 }
 
@@ -154,8 +155,7 @@ func (w *windowImpl) show() {
 }
 
 func (w *windowImpl) setIcon(img image.Image) error {
-	w.handle.SetIcon(img)
-	return nil
+	return w.handle.SetIcon(img)
 }
 
 func (w *windowImpl) setOnClosing(callback func() bool) {

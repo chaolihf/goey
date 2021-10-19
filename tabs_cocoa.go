@@ -1,3 +1,4 @@
+//go:build cocoa || (darwin && !gtk)
 // +build cocoa darwin,!gtk
 
 package goey
@@ -29,12 +30,12 @@ func (w *Tabs) mount(parent base.Control) (base.Element, error) {
 	child := base.Element(nil)
 	if len(w.Children) > 0 {
 		parent := base.Control{control.ContentView(w.Value)}
-		child_, err := base.Mount(parent, w.Children[w.Value].Child)
+		mountedChild, err := base.Mount(parent, w.Children[w.Value].Child)
 		if err != nil {
 			control.Close()
 			return nil, err
 		}
-		child = child_
+		child = mountedChild
 		control.SelectItem(w.Value)
 	}
 

@@ -16,7 +16,7 @@ func (m *SaveFile) show() (string, error) {
 
 	ofn := win.OPENFILENAME{
 		LStructSize: uint32(unsafe.Sizeof(win.OPENFILENAME{})),
-		HwndOwner:   m.hWnd,
+		HwndOwner:   m.owner.HWnd,
 		LpstrFilter: buildFilterString(m.filters),
 		LpstrTitle:  title,
 	}
@@ -35,10 +35,4 @@ func (m *SaveFile) show() (string, error) {
 		return "", nil
 	}
 	return syscall.UTF16ToString(buffer), nil
-}
-
-// WithOwner sets the owner of the dialog box.
-func (m *SaveFile) WithOwner(hwnd win.HWND) *SaveFile {
-	m.hWnd = hwnd
-	return m
 }

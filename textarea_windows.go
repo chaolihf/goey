@@ -5,6 +5,7 @@ import (
 	"unsafe"
 
 	"bitbucket.org/rj/goey/base"
+	win2 "bitbucket.org/rj/goey/internal/windows"
 	"github.com/lxn/win"
 )
 
@@ -97,12 +98,17 @@ func (w *textareaElement) Props() base.Widget {
 
 func (w *textareaElement) updateProps(data *TextArea) error {
 	if data.Value != w.Text() {
-		w.SetText(data.Value)
+		_, err := win2.SetWindowText(w.hWnd, data.Value)
+		if err != nil {
+			return err
+		}
 	}
+
 	err := updatePlaceholder(w.hWnd, data.Placeholder)
 	if err != nil {
 		return err
 	}
+
 	w.SetDisabled(data.Disabled)
 	win.SendMessage(w.hWnd, win.EM_SETREADONLY, uintptr(win.BoolToBOOL(data.ReadOnly)), 0)
 

@@ -1,3 +1,4 @@
+//go:build cocoa || (darwin && !gtk)
 // +build cocoa darwin,!gtk
 
 package dialog
@@ -7,12 +8,6 @@ import (
 )
 
 func (m *OpenFile) show() (string, error) {
-	retval := cocoa.OpenPanel(m.parent, m.filename)
+	retval := cocoa.OpenPanel(m.owner.Window, m.filename)
 	return retval, nil
-}
-
-// WithParent sets the parent of the dialog box.
-func (m *OpenFile) WithParent(parent *cocoa.Window) *OpenFile {
-	m.parent = parent
-	return m
 }

@@ -263,7 +263,10 @@ func (w *intinputElement) updateProps(data *IntInput) error {
 
 	text := strconv.FormatInt(data.Value, 10)
 	if text != w.Text() {
-		w.SetText(text)
+		_, err := win2.SetWindowText(w.hWnd, text)
+		if err != nil {
+			return err
+		}
 	}
 	if w.hwndUpDown != 0 {
 		win.SendMessage(w.hwndUpDown, win.UDM_SETRANGE32, uintptr(data.Min), uintptr(data.Max))

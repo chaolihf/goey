@@ -120,8 +120,8 @@ func (w *alignElement) SetBounds(bounds base.Rectangle) {
 	y := bounds.Min.Y.Scale(int(w.vAlign)-int(AlignEnd), int(AlignStart)-int(AlignEnd)) +
 		(bounds.Max.Y-w.childSize.Height).Scale(int(w.vAlign)-int(AlignStart), int(AlignEnd)-int(AlignStart))
 	w.child.SetBounds(base.Rectangle{
-		base.Point{x, y},
-		base.Point{x + w.childSize.Width, y + w.childSize.Height},
+		Min:base.Point{x, y},
+		Max:base.Point{x + w.childSize.Width, y + w.childSize.Height},
 	})
 }
 

@@ -42,6 +42,12 @@ func (m *SaveFile) WithFilename(filename string) *SaveFile {
 	return m
 }
 
+// WithOwner sets the owner of the dialog box.
+func (m *SaveFile) WithOwner(owner Owner) *SaveFile {
+	m.owner = owner
+	return m
+}
+
 // WithTitle adds a title to the dialog.
 func (m *SaveFile) WithTitle(text string) *SaveFile {
 	text = strings.TrimSpace(text)

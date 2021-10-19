@@ -12,9 +12,6 @@ import (
 )
 
 var (
-	currentCD  string
-	s1, s2, s3 bool
-	showLorem  bool
 	window     *goey.Window
 )
 

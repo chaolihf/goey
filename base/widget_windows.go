@@ -20,8 +20,8 @@ type Control struct {
 	HWnd win.HWND
 }
 
-// NativeElement contains platform-specific methods that all widgets
-// must support on WIN32
+// NativeElement contains platform-specific methods that all elements
+// must support on WIN32.
 type NativeElement interface {
 	// SetOrder is called to ensure that windows appears in the correct order,
 	// which is important for tab navigation.  Elements should call SetOrder

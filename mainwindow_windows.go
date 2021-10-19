@@ -189,8 +189,7 @@ func newWindow(title string, child base.Widget) (*Window, error) {
 	if err != nil {
 		return nil, err
 	}
-	const WS_EX_COMPOSITED = 0x02000000
-	hwnd := win.CreateWindowEx(win.WS_EX_CONTROLPARENT|WS_EX_COMPOSITED, &mainWindow.className[0], windowName, style,
+	hwnd := win.CreateWindowEx(win.WS_EX_CONTROLPARENT|win2.WS_EX_COMPOSITED, &mainWindow.className[0], windowName, style,
 		rect.Left, rect.Top, rect.Right-rect.Left, rect.Bottom-rect.Top,
 		win.HWND_DESKTOP, 0, hInstance, nil)
 	if hwnd == 0 {
@@ -258,17 +257,17 @@ func (w *windowImpl) NativeHandle() win.HWND {
 
 func (w *windowImpl) message(m *dialog.Message) {
 	m.WithTitle(win2.GetWindowText(w.hWnd))
-	m.WithOwner(w.hWnd)
+	m.WithOwner(dialog.Owner{HWnd: w.hWnd})
 }
 
 func (w *windowImpl) openfiledialog(m *dialog.OpenFile) {
 	m.WithTitle(win2.GetWindowText(w.hWnd))
-	m.WithOwner(w.hWnd)
+	m.WithOwner(dialog.Owner{HWnd: w.hWnd})
 }
 
 func (w *windowImpl) savefiledialog(m *dialog.SaveFile) {
 	m.WithTitle(win2.GetWindowText(w.hWnd))
-	m.WithOwner(w.hWnd)
+	m.WithOwner(dialog.Owner{HWnd: w.hWnd})
 }
 
 // Screenshot returns an image of the window, as displayed on screen.
@@ -521,7 +520,8 @@ func (w *windowImpl) setOnClosing(callback func() bool) {
 }
 
 func (w *windowImpl) setTitle(value string) error {
-	return Control{w.hWnd}.SetText(value)
+	_, err := win2.SetWindowText(w.hWnd, value)
+	return err
 }
 
 func (w *windowImpl) title() (string, error) {

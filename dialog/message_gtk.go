@@ -1,3 +1,4 @@
+//go:build gtk || (linux && !cocoa) || (freebsd && !cocoa) || (openbsd && !cocoa)
 // +build gtk linux,!cocoa freebsd,!cocoa openbsd,!cocoa
 
 package dialog
@@ -7,7 +8,7 @@ import (
 )
 
 func (m *Message) show() error {
-	dlg := gtk.MountMessageDialog(m.parent, m.title, m.icon, m.text)
+	dlg := gtk.MountMessageDialog(m.owner.Handle, m.title, m.icon, m.text)
 	activeDialogForTesting = dlg
 	defer func() {
 		activeDialogForTesting = 0
@@ -28,10 +29,4 @@ func (m *Message) withWarn() {
 
 func (m *Message) withInfo() {
 	m.icon = gtk.MessageDialogWithInfo()
-}
-
-// WithParent sets the parent of the dialog box.
-func (m *Message) WithParent(parent uintptr) *Message {
-	m.parent = parent
-	return m
 }

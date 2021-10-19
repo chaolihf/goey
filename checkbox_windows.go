@@ -4,6 +4,7 @@ import (
 	"unsafe"
 
 	"bitbucket.org/rj/goey/base"
+	win2 "bitbucket.org/rj/goey/internal/windows"
 	"github.com/lxn/win"
 )
 
@@ -77,7 +78,12 @@ func (w *checkboxElement) MinIntrinsicWidth(base.Length) base.Length {
 }
 
 func (w *checkboxElement) updateProps(data *Checkbox) error {
-	w.SetText(data.Text)
+	text, err := win2.SetWindowText(w.hWnd, data.Text)
+	if err != nil {
+		return err
+	}
+
+	w.text = text
 	w.SetDisabled(data.Disabled)
 	if data.Value {
 		win.SendMessage(w.hWnd, win.BM_SETCHECK, win.BST_CHECKED, 0)

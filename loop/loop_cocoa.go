@@ -1,3 +1,4 @@
+//go:build cocoa || (darwin && !gtk)
 // +build cocoa darwin,!gtk
 
 package loop
@@ -25,14 +26,14 @@ var (
 )
 
 func init() {
-	assert.Assert(cocoa.IsMainThread(), "Not main thread")
+	assert.Assert(cocoaloop.IsMainThread(), "Not main thread")
 	runtime.LockOSThread()
 }
 
 func initRun() error {
 	cocoaInit.Do(func() {
-		assert.Assert(cocoa.IsMainThread(), "Not main thread")
-		cocoa.Init()
+		assert.Assert(cocoaloop.IsMainThread(), "Not main thread")
+		cocoaloop.Init()
 	})
 
 	return nil
@@ -43,8 +44,8 @@ func terminateRun() {
 }
 
 func run() {
-	assert.Assert(cocoa.IsMainThread(), "Not main thread")
-	cocoa.Run()
+	assert.Assert(cocoaloop.IsMainThread(), "Not main thread")
+	cocoaloop.Run()
 }
 
 func runTesting(action func() error) error {
@@ -53,17 +54,17 @@ func runTesting(action func() error) error {
 }
 
 func do(action func() error) error {
-	return cocoa.PerformOnMainThread(action)
+	return cocoaloop.PerformOnMainThread(action)
 }
 
 func stop() {
-	cocoa.Stop()
+	cocoaloop.Stop()
 }
 
 func testMain(m *testing.M) int {
 	// Ensure that we are locked to the main thread.
 	runtime.LockOSThread()
-	assert.Assert(cocoa.IsMainThread(), "Not main thread")
+	assert.Assert(cocoaloop.IsMainThread(), "Not main thread")
 
 	atomic.StoreUint32(&isTesting, 1)
 	defer func() {
@@ -81,7 +82,7 @@ func testMain(m *testing.M) int {
 	}()
 
 	for a := range testingActions {
-		assert.Assert(cocoa.IsMainThread(), "Not main thread")
+		assert.Assert(cocoaloop.IsMainThread(), "Not main thread")
 
 		err := func() (err error) {
 			atomic.StoreUint32(&isTesting, 0)

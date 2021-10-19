@@ -21,7 +21,7 @@ func (w *TextArea) mount(parent base.Control) (base.Element, error) {
 
 	retval := &textareaElement{
 		control:  control,
-		minLines: w.MinLines,
+		minLines: minlinesDefault(w.MinLines),
 	}
 	return retval, nil
 }
@@ -80,7 +80,7 @@ func (w *textareaElement) updateProps(data *TextArea) error {
 	w.control.SetPlaceholder(data.Placeholder)
 	w.control.SetEnabled(!data.Disabled)
 	w.control.SetEditable(!data.ReadOnly)
-	w.minLines = data.MinLines
+	w.minLines = minlinesDefault(data.MinLines)
 	w.control.SetCallbacks(data.OnChange, data.OnFocus, data.OnBlur, nil)
 	return nil
 }

@@ -1,3 +1,4 @@
+//go:build gtk || (linux && !cocoa) || (freebsd && !cocoa) || (openbsd && !cocoa)
 // +build gtk linux,!cocoa freebsd,!cocoa openbsd,!cocoa
 
 package dialog
@@ -9,8 +10,10 @@ import (
 	"bitbucket.org/rj/goey/loop"
 )
 
-type dialogImpl struct {
-	parent uintptr
+// Owner holds a pointer to the owning window.
+// This type varies between platforms.
+type Owner struct {
+	Handle uintptr
 }
 
 var (

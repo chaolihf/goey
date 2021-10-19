@@ -4,6 +4,7 @@ import (
 	"unsafe"
 
 	"bitbucket.org/rj/goey/base"
+	win2 "bitbucket.org/rj/goey/internal/windows"
 	"github.com/lxn/win"
 )
 
@@ -24,14 +25,8 @@ func (w *Slider) mount(parent base.Control) (base.Element, error) {
 	// on windows, causing very high CPU usage.
 	const RANGEMAX = 0xffffff
 
-	const TBS_HORZ = 0x0000
-	const TBS_AUTOTICKS = 0x0001
-	const TBM_SETTICFREQ = win.WM_USER + 20
-	const TBM_SETPAGESIZE = win.WM_USER + 21
-	const TBM_SETLINESIZE = win.WM_USER + 23
-
 	// Create the control
-	const STYLE = win.WS_CHILD | win.WS_VISIBLE | win.WS_TABSTOP | TBS_HORZ | TBS_AUTOTICKS
+	const STYLE = win.WS_CHILD | win.WS_VISIBLE | win.WS_TABSTOP | win2.TBS_HORZ | win2.TBS_AUTOTICKS
 	hwnd, _, err := createControlWindow(0, &slider.className[0], "", STYLE, parent.HWnd)
 	if err != nil {
 		return nil, err
@@ -40,9 +35,9 @@ func (w *Slider) mount(parent base.Control) (base.Element, error) {
 		win.EnableWindow(hwnd, false)
 	}
 	win.SendMessage(hwnd, win.TBM_SETRANGEMAX, win.FALSE, RANGEMAX)
-	win.SendMessage(hwnd, TBM_SETLINESIZE, win.FALSE, RANGEMAX/100)
-	win.SendMessage(hwnd, TBM_SETPAGESIZE, win.FALSE, RANGEMAX/16)
-	win.SendMessage(hwnd, TBM_SETTICFREQ, win.FALSE, RANGEMAX/8)
+	win.SendMessage(hwnd, win.TBM_SETLINESIZE, win.FALSE, RANGEMAX/100)
+	win.SendMessage(hwnd, win2.TBM_SETPAGESIZE, win.FALSE, RANGEMAX/16)
+	win.SendMessage(hwnd, win2.TBM_SETTICFREQ, win.FALSE, RANGEMAX/8)
 	currentValue := sliderToQuantized(w.Value, w.Min, w.Max)
 	win.SendMessage(hwnd, win.TBM_SETPOS, win.TRUE, currentValue)
 

@@ -17,7 +17,7 @@ func (m *OpenFile) show() (string, error) {
 
 	ofn := win.OPENFILENAME{
 		LStructSize: uint32(unsafe.Sizeof(win.OPENFILENAME{})),
-		HwndOwner:   m.hWnd,
+		HwndOwner:   m.owner.HWnd,
 		LpstrFilter: buildFilterString(m.filters),
 		LpstrTitle:  title,
 		Flags:       win.OFN_PATHMUSTEXIST | win.OFN_FILEMUSTEXIST,
@@ -81,10 +81,4 @@ func buildFileString(ofn *win.OPENFILENAME, buffer []uint16, filename string) ([
 	ofn.LpstrFile = &buffer[0]
 	ofn.NMaxFile = uint32(cap(buffer))
 	return buffer[:cap(buffer)], nil
-}
-
-// WithOwner sets the owner of the dialog box.
-func (m *OpenFile) WithOwner(hwnd win.HWND) *OpenFile {
-	m.hWnd = hwnd
-	return m
 }

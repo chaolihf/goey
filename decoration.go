@@ -48,8 +48,8 @@ func (w *decorationElement) Layout(bc base.Constraints) base.Size {
 	innerConstraints := bc.Inset(hinset, vinset)
 	w.childSize = w.child.Layout(innerConstraints)
 	return base.Size{
-		max(w.childSize.Width+hinset, base.FromPixelsX(4)),
-		max(w.childSize.Height+vinset, base.FromPixelsY(4)),
+		Width:  max(w.childSize.Width+hinset, base.FromPixelsX(4)),
+		Height: max(w.childSize.Height+vinset, base.FromPixelsY(4)),
 	}
 }
 

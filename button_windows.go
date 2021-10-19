@@ -1,10 +1,11 @@
 package goey
 
 import (
-	"bitbucket.org/rj/goey/base"
-	"github.com/lxn/win"
-	"syscall"
 	"unsafe"
+
+	"bitbucket.org/rj/goey/base"
+	win2 "bitbucket.org/rj/goey/internal/windows"
+	"github.com/lxn/win"
 )
 
 var (
@@ -96,12 +97,11 @@ func (w *buttonElement) MinIntrinsicWidth(base.Length) base.Length {
 }
 
 func (w *buttonElement) updateProps(data *Button) error {
-	text, err := syscall.UTF16FromString(data.Text)
+	text, err := win2.SetWindowText(w.hWnd, data.Text)
 	if err != nil {
 		return err
 	}
 
-	w.SetText(data.Text)
 	w.text = text
 	w.SetDisabled(data.Disabled)
 	win.SendMessage(w.hWnd, win.BM_SETSTYLE, uintptr(buttonStyle(data.Default)), win.TRUE)

@@ -1,7 +1,6 @@
 package goey
 
 import (
-	"syscall"
 	"unsafe"
 
 	"bitbucket.org/rj/goey/base"
@@ -74,12 +73,12 @@ func (w *labelElement) SetBounds(bounds base.Rectangle) {
 }
 
 func (w *labelElement) updateProps(data *Label) error {
-	text, err := syscall.UTF16FromString(data.Text)
+	text, err := win2.SetWindowText(w.hWnd, data.Text)
 	if err != nil {
 		return err
 	}
 	w.text = text
-	win2.SetWindowText(w.hWnd, &text[0])
+
 	// TODO:  Update alignment
 
 	return nil

@@ -16,7 +16,7 @@ var (
 // In an HBox or VBox, the widget will be positioned according to the rules
 // of its child.  However, any excess space along the main axis will be added
 // based on the ratio of the widget's factor to the sum of factors for all
-// widgets in the box.  Note that
+// widgets in the box.
 type Expand struct {
 	Factor int         // Fraction (minus one) of available space used by this widget
 	Child  base.Widget // Child widget.

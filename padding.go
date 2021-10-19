@@ -101,8 +101,8 @@ func (w *paddingElement) Layout(bc base.Constraints) base.Size {
 	innerConstraints := bc.Inset(hinset, vinset)
 	w.childSize = w.child.Layout(innerConstraints)
 	return base.Size{
-		w.childSize.Width + hinset,
-		w.childSize.Height + vinset,
+		Width:  w.childSize.Width + hinset,
+		Height: w.childSize.Height + vinset,
 	}
 }
 

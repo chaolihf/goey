@@ -153,18 +153,24 @@ func updatePlaceholder(hWnd win.HWND, text string) error {
 
 func (w *textinputElementBase) updateProps(data *TextInput) error {
 	if data.Value != w.Text() {
-		w.SetText(data.Value)
+		_, err := win2.SetWindowText(w.hWnd, data.Value)
+		if err != nil {
+			return err
+		}
 	}
+
 	err := updatePlaceholder(w.hWnd, data.Placeholder)
 	if err != nil {
 		return err
 	}
+
 	w.SetDisabled(data.Disabled)
 	if data.Password {
 		win.SendMessage(w.hWnd, win.EM_SETPASSWORDCHAR, '*', 0)
 	} else {
 		win.SendMessage(w.hWnd, win.EM_SETPASSWORDCHAR, 0, 0)
 	}
+
 	win.SendMessage(w.hWnd, win.EM_SETREADONLY, uintptr(win.BoolToBOOL(data.ReadOnly)), 0)
 
 	w.onChange = data.OnChange

@@ -204,27 +204,27 @@ func (w *Window) Title() (string, error) {
 }
 
 func sizeDefaults() (uint, uint) {
-	const DEF_WIDTH = 640
-	const DEF_HEIGHT = 480
+	const defaultWidth = 640
+	const defaultHeight = 480
 
 	env := os.Getenv("GOEY_SIZE")
 	if env == "" {
-		return DEF_WIDTH, DEF_HEIGHT
+		return defaultWidth, defaultHeight
 	}
 
 	parts := strings.Split(env, "x")
 	if len(parts) != 2 {
-		return DEF_WIDTH, DEF_HEIGHT
+		return defaultWidth, defaultHeight
 	}
 
 	width, err := strconv.ParseUint(parts[0], 10, 64)
 	if err != nil {
-		return DEF_WIDTH, DEF_HEIGHT
+		return defaultWidth, defaultHeight
 	}
 
 	height, err := strconv.ParseUint(parts[1], 10, 64)
 	if err != nil {
-		return DEF_WIDTH, DEF_HEIGHT
+		return defaultWidth, defaultHeight
 	}
 
 	return uint(width), uint(height)

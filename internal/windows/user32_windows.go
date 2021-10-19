@@ -31,6 +31,14 @@ const (
 
 	STM_SETIMAGE = 0x0172
 	STM_GETIMAGE = 0x0173
+
+	TBS_HORZ        = 0x0000
+	TBS_AUTOTICKS   = 0x0001
+	TBM_SETTICFREQ  = win.WM_USER + 20
+	TBM_SETPAGESIZE = win.WM_USER + 21
+	TBM_SETLINESIZE = win.WM_USER + 23
+
+	WS_EX_COMPOSITED = 0x02000000
 )
 
 // NMSELCHANGE match the C structure of the same name.
@@ -82,9 +90,17 @@ func GetWindowTextLength(hWnd win.HWND) int32 {
 }
 
 // SetWindowText is a wrapper.
-func SetWindowText(hWnd win.HWND, text *uint16) win.BOOL {
-	r0, _, _ := syscall.Syscall(procSetWindowText.Addr(), 2, uintptr(hWnd), uintptr(unsafe.Pointer(text)), 0)
-	return win.BOOL(r0)
+func SetWindowText(hWnd win.HWND, text string) ([]uint16, error) {
+	utf16, err := syscall.UTF16FromString(text)
+	if err != nil {
+		return nil, err
+	}
+
+	_, _, errno := syscall.Syscall(procSetWindowText.Addr(), 2, uintptr(hWnd), uintptr(unsafe.Pointer(&utf16[0])), 0)
+	if errno != 0 {
+		return utf16, errno
+	}
+	return utf16, nil
 }
 
 // ShowScrollBar is a wrapper.

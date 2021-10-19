@@ -1,3 +1,4 @@
+//go:build gtk || (linux && !cocoa) || (freebsd && !cocoa) || (openbsd && !cocoa)
 // +build gtk linux,!cocoa freebsd,!cocoa openbsd,!cocoa
 
 package dialog
@@ -7,7 +8,7 @@ import (
 )
 
 func (m *OpenFile) show() (string, error) {
-	dlg := gtk.MountOpenDialog(m.parent, m.title, m.filename)
+	dlg := gtk.MountOpenDialog(m.owner.Handle, m.title, m.filename)
 	activeDialogForTesting = dlg
 	defer func() {
 		activeDialogForTesting = 0
@@ -23,10 +24,4 @@ func (m *OpenFile) show() (string, error) {
 		return "", nil
 	}
 	return gtk.DialogGetFilename(dlg), nil
-}
-
-// WithParent sets the parent of the dialog box.
-func (m *OpenFile) WithParent(parent uintptr) *OpenFile {
-	m.parent = parent
-	return m
 }

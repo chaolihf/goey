@@ -1,3 +1,4 @@
+//go:build gtk || (linux && !cocoa) || (freebsd && !cocoa) || (openbsd && !cocoa)
 // +build gtk linux,!cocoa freebsd,!cocoa openbsd,!cocoa
 
 package goey
@@ -73,7 +74,7 @@ func (w *windowImpl) OnSizeAllocate(width, height int) {
 	// Update the global DPI
 	base.DPI.X, base.DPI.Y = 96, 96
 
-	clientSize := base.Size{base.FromPixelsX(width), base.FromPixelsY(height)}
+	clientSize := base.FromPixels(width, height)
 	size := w.layoutChild(clientSize)
 	if w.horizontalScroll && w.verticalScroll {
 		// Show scroll bars if necessary.
@@ -90,7 +91,7 @@ func (w *windowImpl) OnSizeAllocate(width, height int) {
 		ok := w.showScrollV(size.Height, clientSize.Height)
 		if ok {
 			width, height := gtk.WindowSize(w.handle)
-			clientSize := base.Size{base.FromPixelsX(width), base.FromPixelsY(height)}
+			clientSize := base.FromPixels(width, height)
 			size = w.layoutChild(clientSize)
 		}
 	} else if w.horizontalScroll {
@@ -98,19 +99,20 @@ func (w *windowImpl) OnSizeAllocate(width, height int) {
 		ok := w.showScrollH(size.Width, clientSize.Width)
 		if ok {
 			width, height := gtk.WindowSize(w.handle)
-			clientSize := base.Size{base.FromPixelsX(width), base.FromPixelsY(height)}
+			clientSize := base.FromPixels(width, height)
 			size = w.layoutChild(clientSize)
 		}
 	}
 	gtk.WindowSetLayoutSize(w.handle, uint(size.Width.PixelsX()), uint(size.Height.PixelsY()))
 	bounds := base.Rectangle{
-		base.Point{}, base.Point{size.Width, size.Height},
+		Min: base.Point{},
+		Max: base.Point{size.Width, size.Height},
 	}
 	w.child.SetBounds(bounds)
 }
 
 func (w *windowImpl) control() base.Control {
-	return base.Control{w.layout}
+	return base.Control{Handle: w.layout}
 }
 
 func (w *windowImpl) close() {
@@ -123,15 +125,15 @@ func (w *windowImpl) close() {
 func (w *windowImpl) message(m *dialog.Message) {
 	title := gtk.WindowTitle(w.handle)
 	m.WithTitle(title)
-	m.WithParent(w.handle)
+	m.WithOwner(dialog.Owner{Handle: w.handle})
 }
 
 func (w *windowImpl) openfiledialog(m *dialog.OpenFile) {
-	m.WithParent(w.handle)
+	m.WithOwner(dialog.Owner{Handle: w.handle})
 }
 
 func (w *windowImpl) savefiledialog(m *dialog.SaveFile) {
-	m.WithParent(w.handle)
+	m.WithOwner(dialog.Owner{Handle: w.handle})
 }
 
 // Screenshot returns an image of the window, as displayed on screen.
@@ -165,8 +167,8 @@ func (w *windowImpl) Screenshot() (image.Image, error) {
 	}, nil
 }
 
-// setDPI updates the global DPI
-func (_ *windowImpl) setDPI() {
+// setDPI updates the global DPI.
+func (*windowImpl) setDPI() {
 	base.DPI.X, base.DPI.Y = 96, 96
 }
 

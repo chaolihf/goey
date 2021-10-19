@@ -318,23 +318,23 @@ func (w *vboxElement) setBoundsForChild(i int, v base.Element, posX, posY, posX2
 	switch w.alignCross {
 	case CrossStart:
 		v.SetBounds(base.Rectangle{
-			base.Point{posX, posY},
-			base.Point{posX + dx, posY2},
+			Min: base.Point{posX, posY},
+			Max: base.Point{posX + dx, posY2},
 		})
 	case CrossCenter:
 		v.SetBounds(base.Rectangle{
-			base.Point{posX + (posX2-posX-dx)/2, posY},
-			base.Point{posX + (posX2-posX+dx)/2, posY2},
+			Min: base.Point{posX + (posX2-posX-dx)/2, posY},
+			Max: base.Point{posX + (posX2-posX+dx)/2, posY2},
 		})
 	case CrossEnd:
 		v.SetBounds(base.Rectangle{
-			base.Point{posX2 - dx, posY},
-			base.Point{posX2, posY2},
+			Min: base.Point{posX2 - dx, posY},
+			Max: base.Point{posX2, posY2},
 		})
 	case Stretch:
 		v.SetBounds(base.Rectangle{
-			base.Point{posX, posY},
-			base.Point{posX2, posY2},
+			Min: base.Point{posX, posY},
+			Max: base.Point{posX2, posY2},
 		})
 	}
 }

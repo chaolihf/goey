@@ -1,7 +1,6 @@
 package goey
 
 import (
-	"syscall"
 	"unsafe"
 
 	"bitbucket.org/rj/goey/base"
@@ -106,12 +105,12 @@ func (w *paragraphElement) SetBounds(bounds base.Rectangle) {
 }
 
 func (w *paragraphElement) updateProps(data *P) error {
-	text, err := syscall.UTF16FromString(data.Text)
+	text, err := win2.SetWindowText(w.hWnd, data.Text)
 	if err != nil {
 		return err
 	}
 	w.text = text
-	win2.SetWindowText(w.hWnd, &text[0])
+
 	win.SetWindowLongPtr(w.hWnd, win.GWL_STYLE, uintptr(data.calcStyle()))
 
 	return nil

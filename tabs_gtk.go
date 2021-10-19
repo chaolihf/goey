@@ -1,3 +1,4 @@
+//go:build gtk || (linux && !cocoa) || (freebsd && !cocoa) || (openbsd && !cocoa)
 // +build gtk linux,!cocoa freebsd,!cocoa openbsd,!cocoa
 
 package goey
@@ -29,12 +30,12 @@ func (w *Tabs) mount(parent base.Control) (base.Element, error) {
 	child := base.Element(nil)
 	if len(w.Children) > 0 {
 		parent := gtk.TabsGetTabParent(control, w.Value)
-		child_, err := base.Mount(base.Control{parent}, w.Children[w.Value].Child)
+		mountedChild, err := base.Mount(base.Control{parent}, w.Children[w.Value].Child)
 		if err != nil {
 			gtk.WidgetClose(control)
 			return nil, err
 		}
-		child = child_
+		child = mountedChild
 	}
 
 	retval := &tabsElement{

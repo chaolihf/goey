@@ -9,8 +9,10 @@ import (
 	"github.com/lxn/win"
 )
 
-type dialogImpl struct {
-	hWnd win.HWND
+// Owner holds a pointer to the owning window.
+// This type varies between platforms.
+type Owner struct {
+	HWnd win.HWND
 }
 
 func asyncTypeKeys(text string, initialWait time.Duration) <-chan error {

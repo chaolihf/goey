@@ -14,8 +14,6 @@ var (
 	mainWindow *goey.Window
 	halign     goey.Alignment
 	valign     goey.Alignment
-	wf         float64 = 2
-	hf         float64 = 2
 )
 
 func main() {

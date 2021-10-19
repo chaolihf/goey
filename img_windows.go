@@ -44,7 +44,7 @@ type imgElement struct {
 
 func (w *imgElement) Props() base.Widget {
 	// Need to recreate the image from the HBITMAP
-	hbitmap := win.HBITMAP(win.SendMessage(w.hWnd, win2.STM_GETIMAGE, 0 /*IMAGE_BITMAP*/, 0))
+	hbitmap := win.HBITMAP(win.SendMessage(w.hWnd, win2.STM_GETIMAGE, win.IMAGE_BITMAP, 0))
 	if hbitmap == 0 {
 		return &Img{
 			Width:  w.width,
