@@ -202,13 +202,29 @@ func (_ *windowImpl) setDPI() {
 }
 
 func (w *windowImpl) setIcon(img image.Image) error {
+	document := js.Global().Get("document")
+	favicon := document.Call("getElementById", "goey-favicon")
+
+	// If the image is nil, remove the link element from the HTML head.
 	if img == nil {
-		//gtk.WindowSetIcon(w.handle, nil, 0, 0, 0)
+		if favicon.Truthy() {
+			favicon.Call("remove")
+		}
 	}
 
-	// rgba := imageToRGBA(img)
-	//gtk.WindowSetIcon(w.handle, &rgba.Pix[0], rgba.Rect.Dx(), rgba.Rect.Dy(), rgba.Stride)
-	//w.iconPix = rgba.Pix
+	// If the link element does not yet exist, create it.
+	if !favicon.Truthy() {
+		favicon = document.Call("createElement", "link")
+		favicon.Set("rel", "shortcut icon")
+		favicon.Set("id", "goey-favicon")
+
+		head := document.Call("getElementsByTagName", "head").Index(0)
+		head.Call("appendChild", favicon)
+	}
+
+	// Set image data for the favicon.
+	favicon.Set("href", imageToAttr(img))
+
 	return nil
 }
 
