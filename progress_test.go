@@ -14,6 +14,7 @@ func TestProgressMount(t *testing.T) {
 		&Progress{Value: 0},
 		&Progress{Value: 100},
 		&Progress{Value: 500, Max: 1000},
+		&Progress{Min: 50, Max: 50}, // Identical Min and Max
 	)
 }
 
@@ -29,9 +30,11 @@ func TestProgressUpdate(t *testing.T) {
 	testUpdateWidgets(t, []base.Widget{
 		&Progress{Value: 50, Min: 0, Max: 100},
 		&Progress{Value: 50, Min: 0, Max: 100},
+		&Progress{Value: 50, Min: 50, Max: 50},
 	}, []base.Widget{
 		&Progress{Value: 75, Min: 0, Max: 100},
 		&Progress{Value: 50, Min: 0, Max: 200},
+		&Progress{Value: 150, Min: 100, Max: 200},
 	})
 }
 

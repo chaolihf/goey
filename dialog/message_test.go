@@ -24,6 +24,12 @@ func TestNewMessage(t *testing.T) {
 		{func() error {
 			return NewMessage("Some text for the body of the dialog box.").WithTitle(t.Name()).WithInfo().Show()
 		}, true, true},
+		{func() error {
+			return NewMessage("Some text for the body of the dialog box.").WithTitle(t.Name()).WithWarn().Show()
+		}, true, true},
+		{func() error {
+			return NewMessage("Some text for the body of the dialog box.").WithTitle(t.Name()).WithError().Show()
+		}, true, true},
 		{func() error { return NewMessage("").Err() }, false, false},
 		{func() error { return NewMessage("").Show() }, false, false},
 		{func() error { return NewMessage("Some text...").WithTitle("").Err() }, false, false},
