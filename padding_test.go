@@ -2,7 +2,6 @@ package goey
 
 import (
 	"errors"
-	"fmt"
 	"testing"
 
 	"bitbucket.org/rj/goey/base"
@@ -19,20 +18,6 @@ func (w *paddingElement) Props() base.Widget {
 		Insets: w.insets,
 		Child:  child,
 	}
-}
-
-func ExampleInsets_String() {
-	p := Insets{
-		Top:    2 * base.DIP,
-		Right:  1 * base.DIP,
-		Bottom: 3 * base.DIP / 2,
-		Left:   1 * base.DIP,
-	}
-
-	fmt.Println("Insets:", p)
-
-	// Output:
-	// Insets: {2:00 1:00 1:32 1:00}
 }
 
 func TestPaddingMount(t *testing.T) {

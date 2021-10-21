@@ -39,12 +39,6 @@ func (i *Insets) Dy() base.Length {
 	return i.Top + i.Bottom
 }
 
-// String returns a string representation of i like "Insets{92:00,92:00,46:00,46:00}".
-func (i *Insets) String() string {
-	return "Insets{" + i.Top.String() + "," + i.Right.String() + "," +
-		i.Bottom.String() + "," + i.Left.String() + "}"
-}
-
 // Padding describes a widget that adds some space around a single child widget.
 //
 // The size of the control will match the size of the child element, although
