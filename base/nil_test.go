@@ -96,5 +96,4 @@ func TestMountNil(t *testing.T) {
 	if props != nil {
 		t.Errorf("Nil element unexpectedly return nil for props")
 	}
-
 }

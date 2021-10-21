@@ -1,3 +1,4 @@
+//go:build gtk || (linux && !cocoa) || (freebsd && !cocoa) || (openbsd && !cocoa)
 // +build gtk linux,!cocoa freebsd,!cocoa openbsd,!cocoa
 
 package base
@@ -20,5 +21,4 @@ type Control struct {
 
 // NativeElement contains platform-specific methods that all widgets
 // must support on GTK.
-type NativeElement interface {
-}
+type NativeElement interface{}

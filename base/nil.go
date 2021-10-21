@@ -19,11 +19,10 @@ func Mount(parent Control, widget Widget) (Element, error) {
 	return widget.Mount(parent)
 }
 
-type nilElement struct {
-}
+type nilElement struct{}
 
 func (*nilElement) Close() {
-
+	// No-op
 }
 
 func (*nilElement) Kind() *Kind {

@@ -47,6 +47,7 @@ func (m *mockElement) Kind() *Kind {
 func (m *mockElement) Layout(bc Constraints) Size {
 	return bc.Constrain(Size{})
 }
+
 func (m *mockElement) MinIntrinsicHeight(width Length) Length {
 	return 0
 }
@@ -56,7 +57,7 @@ func (m *mockElement) MinIntrinsicWidth(height Length) Length {
 }
 
 func (m *mockElement) SetBounds(bounds Rectangle) {
-
+	// No-op
 }
 
 func (m *mockElement) updateProps(data *mock) error {

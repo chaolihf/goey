@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	window     *goey.Window
+	window *goey.Window
 )
 
 func main() {
@@ -45,26 +45,39 @@ func renderWindow() base.Widget {
 				Child: &goey.VBox{
 					Children: []base.Widget{
 						&goey.Label{Text: "Text input:"},
-						&goey.TextInput{Value: "Some input...", Placeholder: "Type some text here.  And some more.  And something really long.",
-							OnChange: func(v string) { println("text input ", v) }, OnEnterKey: func(v string) { println("t1* ", v) }},
+						&goey.TextInput{
+							Value: "Some input...", Placeholder: "Type some text here.  And some more.  And something really long.",
+							OnChange: func(v string) { println("text input ", v) }, OnEnterKey: func(v string) { println("t1* ", v) },
+						},
 						&goey.Label{Text: "Password input:"},
-						&goey.TextInput{Value: "", Placeholder: "Don't share", Password: true,
-							OnChange: func(v string) { println("password input ", v) }},
+						&goey.TextInput{
+							Value: "", Placeholder: "Don't share", Password: true,
+							OnChange: func(v string) { println("password input ", v) },
+						},
 						&goey.Label{Text: "Integer input:"},
-						&goey.IntInput{Value: 3, Placeholder: "Please enter a number",
+						&goey.IntInput{
+							Value: 3, Placeholder: "Please enter a number",
 							Min: -100, Max: 100,
-							OnChange: func(v int64) { println("int input ", v) }},
+							OnChange: func(v int64) { println("int input ", v) },
+						},
 						&goey.Label{Text: "Date input:"},
-						&goey.DateInput{Value: time.Now().Add(24 * time.Hour),
-							OnChange: func(v time.Time) { println("date input: ", v.String()) }},
+						&goey.DateInput{
+							Value:    time.Now().Add(24 * time.Hour),
+							OnChange: func(v time.Time) { println("date input: ", v.String()) },
+						},
 						&goey.Label{Text: "Select input (combobox):"},
-						&goey.SelectInput{Items: []string{"Choice 1", "Choice 2", "Choice 3"},
-							OnChange: func(v int) { println("select input: ", v) }},
+						&goey.SelectInput{
+							Items:    []string{"Choice 1", "Choice 2", "Choice 3"},
+							OnChange: func(v int) { println("select input: ", v) },
+						},
 						&goey.Label{Text: "Number input:"},
-						&goey.Slider{Value: 25, Min: 0, Max: 100,
-							OnChange: func(v float64) { println("slider input: ", v) }},
+						&goey.Slider{
+							Value: 25, Min: 0, Max: 100,
+							OnChange: func(v float64) { println("slider input: ", v) },
+						},
 						&goey.HR{},
-						&goey.Expand{Child: &goey.TextArea{Value: "", Placeholder: "Room to write",
+						&goey.Expand{Child: &goey.TextArea{
+							Value: "", Placeholder: "Room to write",
 							OnChange: func(v string) { println("text area: ", v) },
 						}},
 					},
@@ -94,12 +107,18 @@ func renderWindow() base.Widget {
 						},
 						&goey.HR{},
 						&goey.Label{Text: "Check boxes:"},
-						&goey.Checkbox{Value: true, Text: "Please click on the checkbox A",
-							OnChange: func(v bool) { println("check box input: ", v) }},
-						&goey.Checkbox{Text: "Please click on the checkbox B",
-							OnChange: func(v bool) { println("check box input: ", v) }},
-						&goey.Checkbox{Text: "Please click on the checkbox C",
-							Disabled: true},
+						&goey.Checkbox{
+							Value: true, Text: "Please click on the checkbox A",
+							OnChange: func(v bool) { println("check box input: ", v) },
+						},
+						&goey.Checkbox{
+							Text:     "Please click on the checkbox B",
+							OnChange: func(v bool) { println("check box input: ", v) },
+						},
+						&goey.Checkbox{
+							Text:     "Please click on the checkbox C",
+							Disabled: true,
+						},
 					},
 				},
 			},

@@ -64,7 +64,8 @@ func createImage(label string) image.Image {
 
 	point := fixed.Point26_6{
 		fixed.Int26_6(2 * 64),
-		fixed.Int26_6(50 * 64)}
+		fixed.Int26_6(50 * 64),
+	}
 
 	for _, v := range strings.Split(label, "\n") {
 		d := &font.Drawer{

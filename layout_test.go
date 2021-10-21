@@ -1,8 +1,9 @@
 package goey
 
 import (
-	"bitbucket.org/rj/goey/base"
 	"testing"
+
+	"bitbucket.org/rj/goey/base"
 )
 
 func TestCalculateHGap(t *testing.T) {

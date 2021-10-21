@@ -101,7 +101,8 @@ func render() base.Widget {
 	}
 
 	children := []base.Widget{
-		&goey.Button{Text: text,
+		&goey.Button{
+			Text:    text,
 			Default: true,
 			OnClick: func() {
 				clickCount++
@@ -110,12 +111,14 @@ func render() base.Widget {
 			OnFocus: onfocus(1),
 			OnBlur:  onblur(1),
 		},
-		&goey.Button{Text: "Cycle main axis align",
+		&goey.Button{
+			Text:    "Cycle main axis align",
 			OnClick: cycleMainAxisAlign,
 			OnFocus: onfocus(2),
 			OnBlur:  onblur(2),
 		},
-		&goey.Button{Text: "Cycle cross axis align",
+		&goey.Button{
+			Text:    "Cycle cross axis align",
 			OnClick: cycleCrossAxisAlign,
 			OnFocus: onfocus(3),
 			OnBlur:  onblur(3),

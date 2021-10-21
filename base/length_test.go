@@ -50,7 +50,8 @@ func ExampleLength_String() {
 func ExampleRectangle() {
 	r := base.Rectangle{
 		Min: base.Point{10 * base.DIP, 20 * base.DIP},
-		Max: base.Point{90 * base.DIP, 80 * base.DIP}}
+		Max: base.Point{90 * base.DIP, 80 * base.DIP},
+	}
 
 	fmt.Printf("Rectangle %s has dimensions %.0fdip by %.0fdip.",
 		r, r.Dx().DIP(), r.Dy().DIP(),
@@ -63,7 +64,8 @@ func ExampleRectangle() {
 func ExampleRectangle_Add() {
 	r := base.Rectangle{
 		Min: base.Point{10 * base.DIP, 20 * base.DIP},
-		Max: base.Point{90 * base.DIP, 80 * base.DIP}}
+		Max: base.Point{90 * base.DIP, 80 * base.DIP},
+	}
 	v := base.Point{5 * base.DIP, 5 * base.DIP}
 
 	fmt.Printf("Rectangle %s, moved by %s,\n", r, v)
@@ -84,7 +86,8 @@ func ExampleRectangle_Pixels() {
 	// Construct an example rectangle.
 	r := base.Rectangle{
 		Min: base.Point{10 * base.DIP, 20 * base.DIP},
-		Max: base.Point{90 * base.DIP, 80 * base.DIP}}
+		Max: base.Point{90 * base.DIP, 80 * base.DIP},
+	}
 	rpx := r.Pixels()
 
 	fmt.Printf("Rectangle %s when translated to pixels is %s.", r, rpx)

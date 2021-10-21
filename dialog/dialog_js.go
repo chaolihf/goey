@@ -5,5 +5,4 @@ package dialog
 
 // Owner holds a pointer to the owning window.
 // This type varies between platforms.
-type Owner struct {
-}
+type Owner struct{}

@@ -81,7 +81,8 @@ func TestSelectInput_UpdateValue(t *testing.T) {
 	}
 
 	for i, v := range cases {
-		input := &SelectInput{Value: v.value,
+		input := &SelectInput{
+			Value: v.value,
 			Items: []string{"Option A", "Option B", "Option C"},
 		}
 		input.UpdateValue()

@@ -66,27 +66,32 @@ func renderSidebar() base.Widget {
 		Fill: color.RGBA{128, 255, 128, 255},
 		Child: &goey.Padding{
 			Insets: goey.DefaultInsets(),
-			Child: &goey.VBox{goey.MainCenter, goey.CrossCenter, []base.Widget{
-				&goey.Label{Text: "Example Menu"},
-				&goey.Img{Image: gopher},
+			Child: &goey.VBox{
+				AlignMain: goey.MainCenter, AlignCross: goey.CrossCenter,
+				Children: []base.Widget{
+					&goey.Label{Text: "Example Menu"},
+					&goey.Img{Image: gopher},
+				},
 			},
-			},
-		}}
+		},
+	}
 }
 
 func renderMainbar() base.Widget {
 	return &goey.Expand{Child: &goey.Padding{
 		Insets: goey.DefaultInsets(),
-		Child: &goey.VBox{goey.MainCenter, goey.Stretch, []base.Widget{
-			&Column{[]base.Widget{
-				&goey.Button{Text: "A1"}, &goey.Button{Text: "A2"}, &goey.Button{Text: "A3"}, &goey.Button{Text: "A4"},
-				&goey.Button{Text: "B1"}, &goey.Button{Text: "B2"}, &goey.Button{Text: "B3"}, &goey.Button{Text: "B4"},
-				&goey.Button{Text: "C1"}, &goey.Button{Text: "C2"}, &goey.Button{Text: "C3"}, &goey.Button{Text: "C4"},
-				&goey.Button{Text: "D1"}, &goey.Button{Text: "D2"}, &goey.Button{Text: "D3"}, &goey.Button{Text: "D4"},
+		Child: &goey.VBox{
+			AlignMain: goey.MainCenter, AlignCross: goey.Stretch,
+			Children: []base.Widget{
+				&Column{[]base.Widget{
+					&goey.Button{Text: "A1"}, &goey.Button{Text: "A2"}, &goey.Button{Text: "A3"}, &goey.Button{Text: "A4"},
+					&goey.Button{Text: "B1"}, &goey.Button{Text: "B2"}, &goey.Button{Text: "B3"}, &goey.Button{Text: "B4"},
+					&goey.Button{Text: "C1"}, &goey.Button{Text: "C2"}, &goey.Button{Text: "C3"}, &goey.Button{Text: "C4"},
+					&goey.Button{Text: "D1"}, &goey.Button{Text: "D2"}, &goey.Button{Text: "D3"}, &goey.Button{Text: "D4"},
+				}},
+				&goey.HR{},
+				&goey.Button{Text: "Help"},
 			}},
-			&goey.HR{},
-			&goey.Button{Text: "Help"},
-		}},
 	}}
 }
 

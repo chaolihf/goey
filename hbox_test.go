@@ -87,7 +87,8 @@ func TestHBoxUpdateProps(t *testing.T) {
 
 func TestHBoxLayout(t *testing.T) {
 	children := []base.Element{
-		mock.New(base.Size{26 * DIP, 13 * DIP}), mock.New(base.Size{13 * DIP, 11 * DIP})}
+		mock.New(base.Size{26 * DIP, 13 * DIP}), mock.New(base.Size{13 * DIP, 11 * DIP}),
+	}
 
 	cases := []struct {
 		children    []base.Element

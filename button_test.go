@@ -45,7 +45,8 @@ func ExampleButton() {
 					clickCount++
 					update()
 				}},
-			}}
+			},
+		}
 	}
 }
 

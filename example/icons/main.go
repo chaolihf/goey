@@ -85,7 +85,7 @@ func render() base.Widget {
 }
 
 func init() {
-	//https://github.com/google/material-design-icons/blob/master/iconfont/codepoints
+	// https://github.com/google/material-design-icons/blob/master/iconfont/codepoints
 	iconData = []IconData{
 		{"3d_rotation", 0xe84d},
 		{"ac_unit", 0xeb3b},

@@ -1,3 +1,4 @@
+//go:build go1.12
 // +build go1.12
 
 package base
@@ -24,5 +25,4 @@ type Control struct {
 
 // NativeElement contains platform-specific methods that all widgets
 // must support on JS/WASM.
-type NativeElement interface {
-}
+type NativeElement interface{}

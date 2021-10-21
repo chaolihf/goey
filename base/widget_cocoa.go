@@ -1,3 +1,4 @@
+//go:build cocoa || (darwin && !gtk)
 // +build cocoa darwin,!gtk
 
 package base
@@ -24,5 +25,4 @@ type Control struct {
 
 // NativeElement contains platform-specific methods that all widgets
 // must support on OSX.
-type NativeElement interface {
-}
+type NativeElement interface{}

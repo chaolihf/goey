@@ -51,11 +51,13 @@ func render() base.Widget {
 		for i, v := range Model {
 			if !v.Completed {
 				index := i
-				widgets = append(widgets, &goey.Checkbox{Text: v.Text, Value: v.Completed,
+				widgets = append(widgets, &goey.Checkbox{
+					Text: v.Text, Value: v.Completed,
 					OnChange: func(newValue bool) {
 						Model[index].Completed = newValue
 						update()
-					}})
+					},
+				})
 			}
 		}
 	}
@@ -65,11 +67,13 @@ func render() base.Widget {
 		for i, v := range Model {
 			if v.Completed {
 				index := i
-				widgets = append(widgets, &goey.Checkbox{Text: v.Text, Value: v.Completed,
+				widgets = append(widgets, &goey.Checkbox{
+					Text: v.Text, Value: v.Completed,
 					OnChange: func(newValue bool) {
 						Model[index].Completed = newValue
 						update()
-					}})
+					},
+				})
 			}
 		}
 	}
