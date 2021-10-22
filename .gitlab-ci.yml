@@ -139,7 +139,7 @@ test-gtk:
     - go build -v . ./example/...
     - go test -v -coverprofile=cover-gtk.out ./base ./loop ./dialog .
     - go tool cover -html=cover-gtk.out -o=cover.html
-    - go test -v -race ./loop 
+    - go test -v -race -count=10 ./loop 
     - go vet -composites=false ./base ./loop ./dialog .
     - go install github.com/client9/misspell/cmd/misspell@latest
     - $GOPATH/bin/misspell -locale US *.go *.md base/*.go loop/*.go dialog/*.go
@@ -194,7 +194,7 @@ test-windows:
     - go build . ./example/...
     - go test ./base ./loop . -v
     - go test -v -coverprofile="cover-windows.out" ./base ./loop .
-    - go test -v -race ./loop 
+    - go test -v -race -count=10 ./loop 
   except:
     - tags
   artifacts:
@@ -213,7 +213,7 @@ test-cocoa:
   script:
     - go test -v -tags cocoa -coverprofile=cover-cocoa.out ./base ./loop .
     - go tool cover -html=cover-cocoa.out -o=cover.html
-    - go test -v -tags cocoa -race ./loop 
+    - go test -v -tags cocoa -race -count=10 ./loop 
     - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- v1.42.0
     - ./bin/golangci-lint run -v --enable=$LINTERS --build-tags=cocoa ./base ./loop .
   except:

@@ -91,10 +91,10 @@ func (w *windowImpl) onSize(hwnd win.HWND) {
 	// Perform layout
 	rect := win.RECT{}
 	win.GetClientRect(hwnd, &rect)
-	clientSize := base.Size{
-		base.FromPixelsX(int(rect.Right - rect.Left)),
-		base.FromPixelsY(int(rect.Bottom - rect.Top)),
-	}
+	clientSize := base.FromPixels(
+		int(rect.Right-rect.Left),
+		int(rect.Bottom-rect.Top),
+	)
 	size := w.layoutChild(clientSize)
 
 	// NOTE:  If the visibility of either scrollbar is changed, then a WM_SIZE
@@ -134,8 +134,8 @@ func (w *windowImpl) onSize(hwnd win.HWND) {
 
 	// Position the child element.
 	w.child.SetBounds(base.Rectangle{
-		base.Point{-w.horizontalScrollPos, -w.verticalScrollPos},
-		base.Point{size.Width - w.horizontalScrollPos, size.Height - w.verticalScrollPos},
+		Min: base.Point{-w.horizontalScrollPos, -w.verticalScrollPos},
+		Max: base.Point{size.Width - w.horizontalScrollPos, size.Height - w.verticalScrollPos},
 	})
 
 	// Update the position of all of the children
@@ -416,8 +416,8 @@ func (w *windowImpl) setScrollPos(direction int32, wParam uintptr) {
 			w.verticalScrollPos = base.FromPixelsY(int(si.NPos))
 		}
 		w.child.SetBounds(base.Rectangle{
-			base.Point{-w.horizontalScrollPos, -w.verticalScrollPos},
-			base.Point{w.childSize.Width - w.horizontalScrollPos, w.childSize.Height - w.verticalScrollPos},
+			Min: base.Point{-w.horizontalScrollPos, -w.verticalScrollPos},
+			Max: base.Point{w.childSize.Width - w.horizontalScrollPos, w.childSize.Height - w.verticalScrollPos},
 		})
 
 		// TODO:  Use ScrollWindow function to reduce flicker during scrolling
@@ -498,7 +498,7 @@ func (w *windowImpl) showScrollV(height base.Length, clientHeight base.Length) (
 
 func (w *windowImpl) setIcon(img image.Image) error {
 	// Create the new icon
-	hicon, err := win2.ImageToIcon(img)
+	hicon, err := win2.CreateIconFromImage(img)
 	if err != nil {
 		return err
 	}

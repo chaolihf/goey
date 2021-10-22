@@ -9,7 +9,7 @@ import (
 	"github.com/lxn/win"
 )
 
-func ImageToIcon(prop image.Image) (win.HICON, error) {
+func CreateIconFromImage(prop image.Image) (win.HICON, error) {
 	// Create a mask for the icon.
 	// Currently, we are using a straight white mask, but perhaps this
 	// should be a copy of the alpha channel if the source image is
@@ -17,14 +17,14 @@ func ImageToIcon(prop image.Image) (win.HICON, error) {
 	bounds := prop.Bounds()
 	imgMask := image.NewGray(prop.Bounds())
 	draw.Draw(imgMask, bounds, image.White, image.Point{}, draw.Src)
-	hmask, err := ImageToBitmap(imgMask)
+	hmask, err := CreateBitmapFromImage(imgMask)
 	if err != nil {
 		return 0, err
 	}
 	defer win.DeleteObject(win.HGDIOBJ(hmask))
 
 	// Convert the image to a bitmap.
-	hbitmap, err := ImageToBitmap(prop)
+	hbitmap, err := CreateBitmapFromImage(prop)
 	if err != nil {
 		return 0, err
 	}
@@ -43,11 +43,26 @@ func ImageToIcon(prop image.Image) (win.HICON, error) {
 	return hicon, nil
 }
 
+func checkMemoryBlock(pix []byte) bool {
+	start := uintptr(unsafe.Pointer(&pix[0]))
+	end := start + uintptr(len(pix))
+
+	// No documentation found, but 0xc000400000 appears to be poison.  Image
+	// blocks spanning this address lead to CreateBitmap failures.
+	const PoisonAddress = 0xc000400000
+	return start <= PoisonAddress && end >= PoisonAddress
+}
+
 func imageToBitmapRGBA(img *image.RGBA, pix []byte) (win.HBITMAP, error) {
 	// Need to convert RGBA to BGRA.
 	for i := 0; i < len(pix); i += 4 {
 		// swap the red and green bytes.
 		pix[i+0], pix[i+2] = pix[i+2], pix[i+0]
+	}
+
+	// Move memory to avoid 'invalid argument' failures.
+	if checkMemoryBlock(pix) {
+		pix = append([]byte(nil), pix...)
 	}
 
 	// The following call also works with 4 channels of 8-bits on a Windows
@@ -60,7 +75,7 @@ func imageToBitmapRGBA(img *image.RGBA, pix []byte) (win.HBITMAP, error) {
 	return hbitmap, nil
 }
 
-func ImageToBitmap(prop image.Image) (win.HBITMAP, error) {
+func CreateBitmapFromImage(prop image.Image) (win.HBITMAP, error) {
 	if img, ok := prop.(*image.RGBA); ok {
 		// Create a copy of the backing for the pixel data
 		buffer := append([]uint8(nil), img.Pix...)
@@ -86,7 +101,12 @@ func BitmapToImage(hdc win.HDC, hbitmap win.HBITMAP) image.Image {
 	if bmi.BmiHeader.BiPlanes == 1 && bmi.BmiHeader.BiBitCount == 32 && bmi.BmiHeader.BiCompression == win.BI_BITFIELDS {
 		// Get the pixel data
 		buffer := make([]byte, bmi.BmiHeader.BiSizeImage)
-		win.GetDIBits(hdc, hbitmap, 0, uint32(bmi.BmiHeader.BiHeight), &buffer[0], &bmi, 0)
+		if checkMemoryBlock(buffer) {
+			buffer = make([]byte, bmi.BmiHeader.BiSizeImage)
+		}
+		if cnt := win.GetDIBits(hdc, hbitmap, 0, uint32(bmi.BmiHeader.BiHeight), &buffer[0], &bmi, 0); cnt == 0 {
+			return nil
+		}
 
 		// Need to convert BGR to RGB
 		for i := 0; i < len(buffer); i += 4 {

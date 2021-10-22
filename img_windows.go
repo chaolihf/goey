@@ -11,7 +11,7 @@ import (
 
 func (w *Img) mount(parent base.Control) (base.Element, error) {
 	// Create the bitmap
-	hbitmap, err := win2.ImageToBitmap(w.Image)
+	hbitmap, err := win2.CreateBitmapFromImage(w.Image)
 	if err != nil {
 		return nil, err
 	}
@@ -73,7 +73,7 @@ func (w *imgElement) SetBounds(bounds base.Rectangle) {
 
 func (w *imgElement) updateImage(img image.Image) error {
 	// Convert the imagme to a bitmap
-	hbitmap, err := win2.ImageToBitmap(img)
+	hbitmap, err := win2.CreateBitmapFromImage(img)
 	if err != nil {
 		return err
 	}
