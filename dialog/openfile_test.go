@@ -29,6 +29,10 @@ func TestNewOpenFile(t *testing.T) {
 		{func() (string, error) { return "", NewOpenFile().WithTitle("").Err() }, 0, "", false},
 		{func() (string, error) { return NewOpenFile().WithTitle("").Show() }, 0, "", false},
 		{func() (string, error) { return NewOpenFile().WithFilename("./openfile_test.go").Show() }, '\n', filepath.Join(wd, "openfile_test.go"), true},
+		{func() (string, error) { return NewOpenFile().AddFilter("Go Source Files", "*.go").Show() }, '\x1b', "", true},
+		{func() (string, error) {
+			return NewOpenFile().WithFilename("./openfile_test.go").AddFilter("Go Source Files", "*.go").Show()
+		}, '\n', filepath.Join(wd, "openfile_test.go"), true},
 	}
 	init := func() error {
 		for i, v := range cases {
