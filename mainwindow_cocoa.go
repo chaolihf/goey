@@ -24,7 +24,7 @@ type windowImpl struct {
 	onClosing func() bool
 }
 
-func newWindow(title string, child base.Widget) (*Window, error) {
+func newWindow(title string) (*Window, error) {
 	// Update the global DPI
 	base.DPI.X, base.DPI.Y = 96, 96
 
@@ -121,11 +121,6 @@ func (w *windowImpl) Screenshot() (image.Image, error) {
 }
 
 func (w *windowImpl) setChildPost() {
-	// Redo the layout so the children are placed.
-	if w.child == nil {
-		return
-	}
-
 	// Constrain window size
 	w.updateWindowMinSize()
 	// Properties may have changed sizes, so we need to do layout.
@@ -203,14 +198,17 @@ func (w *windowImpl) showScrollV(height base.Length, clientHeight base.Length) b
 	return false
 }
 
-func (w *windowImpl) title() (string, error) {
-	return w.handle.Title(), nil
+func (w *windowImpl) title() string {
+	return w.handle.Title()
 }
 
 func (w *windowImpl) updateWindowMinSize() {
-	// Determine the extra width and height required for borders, title bar,
-	// and scrollbars
-	dx, dy := 0, 0
+	size := w.MinSize()
+
+	dx := size.Width.PixelsX()
+	dy := size.Height.PixelsY()
+
+	// Determine the extra width and height required for scrollbars.
 	if w.verticalScroll {
 		// TODO:  Measure scrollbar width
 		dx += 15
@@ -220,49 +218,7 @@ func (w *windowImpl) updateWindowMinSize() {
 		dy += 15
 	}
 
-	// If there is no child, then we just need enough space for the window chrome.
-	if w.child == nil {
-		w.handle.SetMinSize(dx, dy)
-		return
-	}
-
-	request := image.Point{}
-	// Determine the minimum size (in pixels) for the child of the window
-	if w.horizontalScroll && w.verticalScroll {
-		width := w.child.MinIntrinsicWidth(base.Inf)
-		height := w.child.MinIntrinsicHeight(base.Inf)
-		request.X = width.PixelsX() + dx
-		request.Y = height.PixelsY() + dy
-	} else if w.horizontalScroll {
-		height := w.child.MinIntrinsicHeight(base.Inf)
-		size := w.child.Layout(base.TightHeight(height))
-		request.X = size.Width.PixelsX() + dx
-		request.Y = height.PixelsY() + dy
-	} else if w.verticalScroll {
-		width := w.child.MinIntrinsicWidth(base.Inf)
-		size := w.child.Layout(base.TightWidth(width))
-		request.X = width.PixelsX() + dx
-		request.Y = size.Height.PixelsY() + dy
-	} else {
-		width := w.child.MinIntrinsicWidth(base.Inf)
-		height := w.child.MinIntrinsicHeight(base.Inf)
-		size1 := w.child.Layout(base.TightWidth(width))
-		size2 := w.child.Layout(base.TightHeight(height))
-		request.X = max(width, size2.Width).PixelsX() + dx
-		request.Y = max(height, size1.Height).PixelsY() + dy
-	}
-
-	// If scrolling is enabled for either direction, we can relax the
-	// minimum window size.  These limits are fairly arbitrary, but we do need to
-	// leave enough space for the scroll bars.
-	if limit := (120 * DIP).PixelsX(); w.horizontalScroll && request.X > limit {
-		request.X = limit
-	}
-	if limit := (120 * DIP).PixelsY(); w.verticalScroll && request.Y > limit {
-		request.Y = limit
-	}
-
-	w.handle.SetMinSize(request.X, request.Y)
+	w.handle.SetMinSize(dx, dy)
 }
 
 type windowCallbacks windowImpl

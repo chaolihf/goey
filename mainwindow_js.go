@@ -45,7 +45,7 @@ func init() {
 	head.Call("appendChild", style)
 }
 
-func newWindow(title string, child base.Widget) (*Window, error) {
+func newWindow(title string) (*Window, error) {
 	document := js.Global().Get("document")
 	document.Set("title", title)
 	handle := document.Call("getElementsByTagName", "body").Index(0)
@@ -128,18 +128,10 @@ func (w *windowImpl) onSize() {
 }
 
 func (w *windowImpl) setChildPost() {
-	// Redo the layout so the children are placed.
-	if w.child != nil {
-		// Constrain window size
-		w.updateWindowMinSize()
-		// Properties may have changed sizes, so we need to do layout.
-		w.onSize()
-	} else {
-		// Ensure that the scrollbars are hidden.
-		style := w.handle.Get("style")
-		style.Set("overflowX", "hidden")
-		style.Set("overflowY", "hidden")
-	}
+	// Constrain window size
+	w.updateWindowMinSize()
+	// Properties may have changed sizes, so we need to do layout.
+	w.onSize()
 }
 
 func (w *windowImpl) setScroll(horz, vert bool) {
@@ -237,14 +229,17 @@ func (w *windowImpl) setTitle(value string) error {
 	return nil
 }
 
-func (w *windowImpl) title() (string, error) {
-	return js.Global().Get("document").Get("title").String(), nil
+func (w *windowImpl) title() string {
+	return js.Global().Get("document").Get("title").String()
 }
 
 func (w *windowImpl) updateWindowMinSize() {
-	// Determine the extra width and height required for borders, title bar,
-	// and scrollbars
-	dx, dy := 0, 0
+	size := w.MinSize()
+
+	dx := size.Width.PixelsX()
+	dy := size.Height.PixelsY()
+
+	// Determine the extra width and height required for scrollbars.
 	if w.verticalScroll {
 		dx += 0 // int(gtk.WindowVScrollbarWidth(w.handle))
 	}
@@ -252,49 +247,7 @@ func (w *windowImpl) updateWindowMinSize() {
 		dy += 0 // int(gtk.WindowHScrollbarHeight(w.handle))
 	}
 
-	// If there is no child, then we just need enough space for the window chrome.
-	if w.child == nil {
-		// gtk.WidgetSetSizeRequest(w.handle, dx, dy)
-		return
-	}
-
-	request := image.Point{}
-	// Determine the minimum size (in pixels) for the child of the window
-	if w.horizontalScroll && w.verticalScroll {
-		width := w.child.MinIntrinsicWidth(base.Inf)
-		height := w.child.MinIntrinsicHeight(base.Inf)
-		request.X = width.PixelsX() + dx
-		request.Y = height.PixelsY() + dy
-	} else if w.horizontalScroll {
-		height := w.child.MinIntrinsicHeight(base.Inf)
-		size := w.child.Layout(base.TightHeight(height))
-		request.X = size.Width.PixelsX() + dx
-		request.Y = height.PixelsY() + dy
-	} else if w.verticalScroll {
-		width := w.child.MinIntrinsicWidth(base.Inf)
-		size := w.child.Layout(base.TightWidth(width))
-		request.X = width.PixelsX() + dx
-		request.Y = size.Height.PixelsY() + dy
-	} else {
-		width := w.child.MinIntrinsicWidth(base.Inf)
-		height := w.child.MinIntrinsicHeight(base.Inf)
-		size1 := w.child.Layout(base.TightWidth(width))
-		size2 := w.child.Layout(base.TightHeight(height))
-		request.X = max(width, size2.Width).PixelsX() + dx
-		request.Y = max(height, size1.Height).PixelsY() + dy
-	}
-
-	// If scrolling is enabled for either direction, we can relax the
-	// minimum window size.  These limits are fairly arbitrary, but we do need to
-	// leave enough space for the scroll bars.
-	if limit := (120 * DIP).PixelsX(); w.horizontalScroll && request.X > limit {
-		request.X = limit
-	}
-	if limit := (120 * DIP).PixelsY(); w.verticalScroll && request.Y > limit {
-		request.Y = limit
-	}
-
 	style := js.Global().Get("document").Call("getElementsByTagName", "body").Index(0).Get("style")
-	style.Set("minWidth", fmt.Sprintf("%dpx", request.X))
-	style.Set("minHeight", fmt.Sprintf("%dpx", request.Y))
+	style.Set("minWidth", fmt.Sprintf("%dpx", dx))
+	style.Set("minHeight", fmt.Sprintf("%dpx", dy))
 }

@@ -11,6 +11,7 @@ import (
 
 	"bitbucket.org/rj/goey/base"
 	"bitbucket.org/rj/goey/loop"
+	"bitbucket.org/rj/goey/mock"
 )
 
 func ExampleNewWindow() {
@@ -143,6 +144,50 @@ func TestMain(m *testing.M) {
 	loop.TestMain(m)
 }
 
+func TestWindow_MinSize(t *testing.T) {
+	cases := []struct {
+		child            base.Widget
+		hscroll, vscroll bool
+		minSize          base.Size
+	}{
+		{&mock.Widget{Size: base.Size{10 * base.DIP, 10 * base.DIP}}, false, false, base.Size{10 * base.DIP, 10 * base.DIP}},
+		{&mock.Widget{Size: base.Size{10 * base.DIP, 10 * base.DIP}}, false, true, base.Size{10 * base.DIP, 10 * base.DIP}},
+		{&mock.Widget{Size: base.Size{10 * base.DIP, 10 * base.DIP}}, true, false, base.Size{10 * base.DIP, 10 * base.DIP}},
+		{&mock.Widget{Size: base.Size{10 * base.DIP, 10 * base.DIP}}, true, true, base.Size{10 * base.DIP, 10 * base.DIP}},
+		{&mock.Widget{Size: base.Size{10000 * base.DIP, 10 * base.DIP}}, false, false, base.Size{10000 * base.DIP, 10 * base.DIP}},
+		{&mock.Widget{Size: base.Size{10000 * base.DIP, 10 * base.DIP}}, false, true, base.Size{10000 * base.DIP, 10 * base.DIP}},
+		{&mock.Widget{Size: base.Size{10000 * base.DIP, 10 * base.DIP}}, true, false, base.Size{120 * base.DIP, 10 * base.DIP}},
+		{&mock.Widget{Size: base.Size{10000 * base.DIP, 10 * base.DIP}}, true, true, base.Size{120 * base.DIP, 10 * base.DIP}},
+		{&mock.Widget{Size: base.Size{10 * base.DIP, 10000 * base.DIP}}, false, false, base.Size{10 * base.DIP, 10000 * base.DIP}},
+		{&mock.Widget{Size: base.Size{10 * base.DIP, 10000 * base.DIP}}, false, true, base.Size{10 * base.DIP, 120 * base.DIP}},
+		{&mock.Widget{Size: base.Size{10 * base.DIP, 10000 * base.DIP}}, true, false, base.Size{10 * base.DIP, 10000 * base.DIP}},
+		{&mock.Widget{Size: base.Size{10 * base.DIP, 10000 * base.DIP}}, true, true, base.Size{10 * base.DIP, 120 * base.DIP}},
+	}
+
+	for i, v := range cases {
+		t.Run(strconv.Itoa(i), func(t *testing.T) {
+			testingWindow(t, func(t *testing.T, mw *Window) {
+				err := loop.Do(func() error {
+					if err := mw.SetChild(v.child); err != nil {
+						t.Errorf("failed to set child: %s", err)
+						return nil
+					}
+
+					mw.SetScroll(v.hscroll, v.vscroll)
+					if got := mw.MinSize(); got != v.minSize {
+						t.Errorf("incorrect minimum size, want %s, got %s", v.minSize, got)
+					}
+
+					return nil
+				})
+				if err != nil {
+					t.Errorf("failed loop.Do: %s", err)
+				}
+			})
+		})
+	}
+}
+
 func TestWindow_SetChild(t *testing.T) {
 	testingWindow(t, func(t *testing.T, mw *Window) {
 		widgets := []base.Widget{}
@@ -181,45 +226,6 @@ func TestWindow_SetChild(t *testing.T) {
 		}
 		time.Sleep(50 * time.Millisecond)
 	})
-
-	// Test setting child with different options for scrollbars
-	for i := 0; i < 4; i++ {
-		t.Run("SetScroll", func(t *testing.T) {
-			testingWindow(t, func(t *testing.T, mw *Window) {
-				widget := &Button{
-					Text: "Click me!",
-				}
-
-				err := loop.Do(func() error {
-					mw.SetScroll(
-						(i&0x1) != 0,
-						(i&0x2) != 0,
-					)
-					return nil
-				})
-				if err != nil {
-					t.Logf("Error setting children, %s", err)
-				}
-
-				setchild := func(t *testing.T, child base.Widget) {
-					err := loop.Do(func() error {
-						return mw.SetChild(widget)
-					})
-					if err != nil {
-						t.Logf("Error setting children, %s", err)
-					}
-				}
-
-				time.Sleep(50 * time.Millisecond)
-				setchild(t, widget)
-				time.Sleep(50 * time.Millisecond)
-				setchild(t, nil)
-				time.Sleep(50 * time.Millisecond)
-				setchild(t, widget)
-				time.Sleep(50 * time.Millisecond)
-			})
-		})
-	}
 }
 
 func makeImage(t *testing.T, index int) image.Image {
@@ -236,7 +242,7 @@ func makeImage(t *testing.T, index int) image.Image {
 	return img
 }
 
-func TestNewWindow_SetIcon(t *testing.T) {
+func TestWindow_SetIcon(t *testing.T) {
 	testingWindow(t, func(t *testing.T, mw *Window) {
 		for i := 0; i < 6; i++ {
 			img := makeImage(t, i)
@@ -252,7 +258,7 @@ func TestNewWindow_SetIcon(t *testing.T) {
 	})
 }
 
-func TestNewWindow_SetScroll(t *testing.T) {
+func TestWindow_SetScroll(t *testing.T) {
 	testingWindow(t, func(t *testing.T, mw *Window) {
 		cases := []struct {
 			horizontal, vertical bool
@@ -290,11 +296,10 @@ func TestNewWindow_SetTitle(t *testing.T) {
 				return err
 			}
 
-			if got, err := mw.Title(); err != nil {
-				t.Errorf("Failed to get title, got error %s", err)
-			} else if got != "Flash!" {
+			if got := mw.Title(); got != "Flash!" {
 				t.Errorf("Failed to set title correctly, got %s", got)
 			}
+
 			return nil
 		})
 		if err != nil {

@@ -29,7 +29,7 @@ type Window struct {
 // NewWindow create a new top-level window for the application.
 func NewWindow(title string, child base.Widget) (*Window, error) {
 	// Create the window
-	w, err := newWindow(title, child)
+	w, err := newWindow(title)
 	if err != nil {
 		return nil, err
 	}
@@ -85,6 +85,45 @@ func (w *windowImpl) layoutChild(windowSize base.Size) base.Size {
 		fmt.Println("constraints not satisfied,", constraints, ",", size)
 	}
 	return size
+}
+
+// MinSize returns the minimum size required to layout the child.  The minimum
+// size depends on the child, but also on what dimensions are allowed to scroll.
+func (w *windowImpl) MinSize() base.Size {
+	// In case the child needs to convert pixels to DIPs.
+	w.setDPI()
+
+	// Select strategy for calculating the minimum size depending on which
+	// dimensions are allowed to scroll.
+	if w.horizontalScroll && w.verticalScroll {
+		return base.Size{
+			Width:  min(w.child.MinIntrinsicWidth(base.Inf), 120*DIP),
+			Height: min(w.child.MinIntrinsicHeight(base.Inf), 120*DIP),
+		}
+	} else if w.horizontalScroll {
+		height := w.child.MinIntrinsicHeight(base.Inf)
+		size := w.child.Layout(base.TightHeight(height))
+		return base.Size{
+			Width:  min(size.Width, 120*DIP),
+			Height: height,
+		}
+	} else if w.verticalScroll {
+		width := w.child.MinIntrinsicWidth(base.Inf)
+		size := w.child.Layout(base.TightWidth(width))
+		return base.Size{
+			Width:  width,
+			Height: min(size.Height, 120*DIP),
+		}
+	} else {
+		width := w.child.MinIntrinsicWidth(base.Inf)
+		height := w.child.MinIntrinsicHeight(base.Inf)
+		size1 := w.child.Layout(base.TightWidth(width))
+		size2 := w.child.Layout(base.TightHeight(height))
+		return base.Size{
+			Width:  max(width, size2.Width),
+			Height: max(height, size1.Height),
+		}
+	}
 }
 
 // Message returns a builder that can be used to construct a message
@@ -199,7 +238,7 @@ func (w *Window) SetTitle(title string) error {
 }
 
 // Title returns the current caption in the title bar for the window.
-func (w *Window) Title() (string, error) {
+func (w *Window) Title() string {
 	return w.title()
 }
 

@@ -19,6 +19,11 @@ func Mount(parent Control, widget Widget) (Element, error) {
 	return widget.Mount(parent)
 }
 
+// MountNil is a wrapper around Mount(parent,nil).
+func MountNil() Element {
+	return (*nilElement)(nil)
+}
+
 type nilElement struct{}
 
 func (*nilElement) Close() {

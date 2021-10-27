@@ -29,9 +29,10 @@ func DiffChild(parent Control, lhs Element, rhs Widget) (Element, error) {
 		return (*nilElement)(nil), nil
 	}
 
-	// if the lhs is empty, then create a new element
+	// If the lhs is empty, then create a new nil element.  This ensures that
+	// we don't risk returning nil.
 	if lhs == nil {
-		return rhs.Mount(parent)
+		lhs = MountNil()
 	}
 
 	// Can we propagate properties rather than mounting a new element?

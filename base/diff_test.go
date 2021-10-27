@@ -126,8 +126,8 @@ func TestDiffChild(t *testing.T) {
 		// Update existing element
 		{&mockElement{kind: &kind1, Prop: 3}, &mock{kind: &kind1, Prop: 13}, &mockElement{kind: &kind1, Prop: 13}, nil, false},
 		// Fail to mount
-		{nil, &mock{kind: &kind1, err: err1}, nil, err1, false},
-		{nil, &mock{kind: &kind1, err: err2}, nil, err2, false},
+		{nil, &mock{kind: &kind1, err: err1}, (*nilElement)(nil), err1, false},
+		{nil, &mock{kind: &kind1, err: err2}, (*nilElement)(nil), err2, false},
 		// Fail to replace
 		{&mockElement{kind: &kind1}, &mock{kind: &kind2, err: err1}, &mockElement{kind: &kind1}, err1, false},
 		{&mockElement{kind: &kind1}, &mock{kind: &kind2, err: err2}, &mockElement{kind: &kind1}, err2, false},
