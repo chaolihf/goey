@@ -8,6 +8,8 @@ import (
 	"bitbucket.org/rj/goey/loop"
 )
 
+// A Proper is an element that can extract it's properties from the underlying
+// GUI control, and recreate the matching base.Widget.
 type Proper interface {
 	Props() base.Widget
 }
@@ -19,11 +21,15 @@ func equal(t *testing.T, normalize func(*testing.T, base.Widget), lhs, rhs base.
 	return reflect.DeepEqual(lhs, rhs)
 }
 
+// CompareElementToWidget returns true if the element and widget are equal.
+// The element must satisfy the Proper interface.
 func CompareElementToWidget(t *testing.T, normalize func(*testing.T, base.Widget), element base.Element, widget base.Widget) bool {
 	return element.Kind() == widget.Kind() &&
 		equal(t, normalize, element.(Proper).Props(), widget)
 }
 
+// CompareElementsToWidgets returns true if all of the the elements in a slice are equal to the correspondings widget.
+// All of the elements must satisfy the Proper interface.
 func CompareElementsToWidgets(t *testing.T, normalize func(*testing.T, base.Widget), elements []base.Element, widgets []base.Widget) {
 	if len(elements) != len(widgets) {
 		t.Errorf("wanted len(elements) == len(widgets), got %d and %d",

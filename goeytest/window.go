@@ -21,6 +21,9 @@ type Window interface {
 	SetChild(base.Widget) error
 }
 
+// WithWindow initializes a window and a GUI event loop that can be used to test
+// widgets.  When testing is complete, callers should use the return callback to
+// close the window and terminate the event loop.
 func WithWindow(t *testing.T, init func() (Window, error)) (window Window, closer func()) {
 	ready := make(chan Window, 1)
 	done := make(chan struct{})

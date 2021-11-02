@@ -144,7 +144,7 @@ test-gtk:
     - go install github.com/client9/misspell/cmd/misspell@latest
     - $GOPATH/bin/misspell -locale US *.go *.md base/*.go loop/*.go dialog/*.go
     - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- v1.42.0
-    - ./bin/golangci-lint run -v --enable=$LINTERS ./base ./loop ./dialog .
+    - ./bin/golangci-lint run -v --enable=$LINTERS ./base ./loop ./dialog ./goeytest .
     - mkdir ./images
     - for elem in $SCREENSHOTS; do go build -v bitbucket.org/rj/goey/example/$elem; done
     - for elem in $SCREENSHOTS; do GOEY_SCREENSHOT=./images/${elem}_linux.png ./$elem; done
