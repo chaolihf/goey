@@ -26,10 +26,11 @@ import (
 	"bitbucket.org/rj/goey"
 	"bitbucket.org/rj/goey/base"
 	"bitbucket.org/rj/goey/loop"
+	"bitbucket.org/rj/goey/windows"
 )
 
 var (
-	mainWindow *goey.Window
+	mainWindow *windows.Window
 
 	feetValue  string
 	meterValue string
@@ -44,7 +45,7 @@ func main() {
 
 func createWindow() error {
 	// Add the controls
-	mw, err := goey.NewWindow("Feet to Meters", render())
+	mw, err := windows.NewWindow("Feet to Meters", render())
 	if err != nil {
 		return err
 	}

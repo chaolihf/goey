@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"bitbucket.org/rj/goey/base"
+	"bitbucket.org/rj/goey/windows"
 	"github.com/lxn/win"
 )
 
@@ -243,10 +244,11 @@ func decorationWindowProc(hwnd win.HWND, msg uint32, wParam uintptr, lParam uint
 		return 0
 
 	case win.WM_COMMAND:
-		return windowprocWmCommand(wParam, lParam)
+		return windows.WindowprocWmCommand(wParam, lParam)
 
 	case win.WM_NOTIFY:
-		return windowprocWmNotify(wParam, lParam)
+		n := (*win.NMHDR)(unsafe.Pointer(lParam))
+		return win.SendMessage(n.HwndFrom, win.WM_NOTIFY, wParam, lParam)
 
 	case win.WM_CTLCOLORSTATIC:
 		win.SetBkMode(win.HDC(wParam), win.TRANSPARENT)

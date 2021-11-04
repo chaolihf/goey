@@ -1,10 +1,12 @@
 package goey
 
 import (
-	"bitbucket.org/rj/goey/base"
-	"github.com/lxn/win"
 	"syscall"
 	"unsafe"
+
+	"bitbucket.org/rj/goey/base"
+	win2 "bitbucket.org/rj/goey/internal/windows"
+	"github.com/lxn/win"
 )
 
 var (
@@ -20,8 +22,8 @@ func (w *SelectInput) mount(parent base.Control) (base.Element, error) {
 	}
 
 	// Set the font for the window
-	if hMessageFont != 0 {
-		win.SendMessage(hwnd, win.WM_SETFONT, uintptr(hMessageFont), 0)
+	if hFont := win2.MessageFont(); hFont != 0 {
+		win.SendMessage(hwnd, win.WM_SETFONT, uintptr(hFont), 0)
 	}
 
 	if w.Disabled {

@@ -1,4 +1,4 @@
-package goey
+package windows
 
 import (
 	"errors"
@@ -97,14 +97,14 @@ func (w *windowImpl) MinSize() base.Size {
 	// dimensions are allowed to scroll.
 	if w.horizontalScroll && w.verticalScroll {
 		return base.Size{
-			Width:  min(w.child.MinIntrinsicWidth(base.Inf), 120*DIP),
-			Height: min(w.child.MinIntrinsicHeight(base.Inf), 120*DIP),
+			Width:  min(w.child.MinIntrinsicWidth(base.Inf), 120*base.DIP),
+			Height: min(w.child.MinIntrinsicHeight(base.Inf), 120*base.DIP),
 		}
 	} else if w.horizontalScroll {
 		height := w.child.MinIntrinsicHeight(base.Inf)
 		size := w.child.Layout(base.TightHeight(height))
 		return base.Size{
-			Width:  min(size.Width, 120*DIP),
+			Width:  min(size.Width, 120*base.DIP),
 			Height: height,
 		}
 	} else if w.verticalScroll {
@@ -112,7 +112,7 @@ func (w *windowImpl) MinSize() base.Size {
 		size := w.child.Layout(base.TightWidth(width))
 		return base.Size{
 			Width:  width,
-			Height: min(size.Height, 120*DIP),
+			Height: min(size.Height, 120*base.DIP),
 		}
 	} else {
 		width := w.child.MinIntrinsicWidth(base.Inf)

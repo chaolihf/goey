@@ -1,4 +1,4 @@
-package goey
+package windows_test
 
 import (
 	"fmt"
@@ -12,6 +12,7 @@ import (
 	"bitbucket.org/rj/goey/base"
 	"bitbucket.org/rj/goey/loop"
 	"bitbucket.org/rj/goey/mock"
+	"bitbucket.org/rj/goey/windows"
 )
 
 func ExampleNewWindow() {
@@ -19,11 +20,7 @@ func ExampleNewWindow() {
 	// This callback will be used to create the top-level window.
 	createWindow := func() error {
 		// Create a top-level window.
-		mw, err := NewWindow("Test", &VBox{
-			Children: []base.Widget{
-				&Button{Text: "Click me!"},
-			},
-		})
+		mw, err := windows.NewWindow("Test", nil /*empty window*/)
 		if err != nil {
 			// This error will be reported back up through the call to
 			// Run below.  No need to print or log it here.
@@ -64,7 +61,7 @@ func ExampleWindow_Message() {
 	// This callback will be used to create the top-level window.
 	createWindow := func() error {
 		// Create a top-level window.
-		mw, err := NewWindow("Test", &Button{Text: "Click me!"})
+		mw, err := windows.NewWindow("Test", nil /*empty window*/)
 		if err != nil {
 			// This error will be reported back up through the call to
 			// Run below.  No need to print or log it here.
@@ -97,11 +94,16 @@ func ExampleWindow_Message() {
 	}
 }
 
-func testingWindow(t *testing.T, action func(*testing.T, *Window)) {
+func TestMain(m *testing.M) {
+	// On Cocoa, the GUI even
+	loop.TestMain(m)
+}
+
+func testingWindow(t *testing.T, action func(*testing.T, *windows.Window)) {
 	createWindow := func() error {
 		// Create the window.  Some of the tests here are not expected in
 		// production code, but we can be a little paranoid here.
-		mw, err := NewWindow(t.Name(), nil)
+		mw, err := windows.NewWindow(t.Name(), nil)
 		if err != nil {
 			t.Fatalf("failed to create window: %s", err)
 		}
@@ -140,10 +142,6 @@ func testingWindow(t *testing.T, action func(*testing.T, *Window)) {
 	}
 }
 
-func TestMain(m *testing.M) {
-	loop.TestMain(m)
-}
-
 func TestWindow_MinSize(t *testing.T) {
 	cases := []struct {
 		child            base.Widget
@@ -166,7 +164,7 @@ func TestWindow_MinSize(t *testing.T) {
 
 	for i, v := range cases {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
-			testingWindow(t, func(t *testing.T, mw *Window) {
+			testingWindow(t, func(t *testing.T, mw *windows.Window) {
 				err := loop.Do(func() error {
 					if err := mw.SetChild(v.child); err != nil {
 						t.Errorf("failed to set child: %s", err)
@@ -188,46 +186,6 @@ func TestWindow_MinSize(t *testing.T) {
 	}
 }
 
-func TestWindow_SetChild(t *testing.T) {
-	testingWindow(t, func(t *testing.T, mw *Window) {
-		widgets := []base.Widget{}
-
-		for i := 1; i < 10; i++ {
-			if testing.Verbose() {
-				time.Sleep(250 * time.Millisecond)
-			} else {
-				time.Sleep(50 * time.Millisecond)
-			}
-			widgets = append(widgets, &Button{Text: "Button " + strconv.Itoa(i)})
-			err := loop.Do(func() error {
-				return mw.SetChild(&VBox{
-					AlignMain:  SpaceBetween,
-					AlignCross: CrossCenter,
-					Children:   widgets,
-				})
-			})
-			if err != nil {
-				t.Logf("Error setting children, %s", err)
-			}
-		}
-		for i := len(widgets); i > 0; i-- {
-			time.Sleep(50 * time.Millisecond)
-			widgets = widgets[:i-1]
-			err := loop.Do(func() error {
-				return mw.SetChild(&VBox{
-					AlignMain:  SpaceBetween,
-					AlignCross: CrossCenter,
-					Children:   widgets,
-				})
-			})
-			if err != nil {
-				t.Logf("Error setting children, %s", err)
-			}
-		}
-		time.Sleep(50 * time.Millisecond)
-	})
-}
-
 func makeImage(t *testing.T, index int) image.Image {
 	colors := [3]color.RGBA{
 		{255, 0, 0, 255},
@@ -243,7 +201,7 @@ func makeImage(t *testing.T, index int) image.Image {
 }
 
 func TestWindow_SetIcon(t *testing.T) {
-	testingWindow(t, func(t *testing.T, mw *Window) {
+	testingWindow(t, func(t *testing.T, mw *windows.Window) {
 		for i := 0; i < 6; i++ {
 			img := makeImage(t, i)
 
@@ -259,7 +217,7 @@ func TestWindow_SetIcon(t *testing.T) {
 }
 
 func TestWindow_SetScroll(t *testing.T) {
-	testingWindow(t, func(t *testing.T, mw *Window) {
+	testingWindow(t, func(t *testing.T, mw *windows.Window) {
 		cases := []struct {
 			horizontal, vertical bool
 		}{
@@ -289,7 +247,7 @@ func TestWindow_SetScroll(t *testing.T) {
 }
 
 func TestNewWindow_SetTitle(t *testing.T) {
-	testingWindow(t, func(t *testing.T, mw *Window) {
+	testingWindow(t, func(t *testing.T, mw *windows.Window) {
 		err := loop.Do(func() error {
 			err := mw.SetTitle("Flash!")
 			if err != nil {

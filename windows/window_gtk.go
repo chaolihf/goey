@@ -1,7 +1,7 @@
 //go:build gtk || (linux && !cocoa) || (freebsd && !cocoa) || (openbsd && !cocoa)
 // +build gtk linux,!cocoa freebsd,!cocoa openbsd,!cocoa
 
-package goey
+package windows
 
 import (
 	"image"
@@ -238,7 +238,7 @@ func (w *windowImpl) setIcon(img image.Image) error {
 		w.iconPix = nil
 	}
 
-	rgba := imageToRGBA(img)
+	rgba := gtk.ImageToRGBA(img)
 	gtk.WindowSetIcon(w.handle, &rgba.Pix[0], rgba.Rect.Dx(), rgba.Rect.Dy(), rgba.Stride)
 	w.iconPix = rgba.Pix
 	return nil

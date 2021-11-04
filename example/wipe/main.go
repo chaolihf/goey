@@ -14,10 +14,11 @@ import (
 	"bitbucket.org/rj/goey/animate"
 	"bitbucket.org/rj/goey/base"
 	"bitbucket.org/rj/goey/loop"
+	"bitbucket.org/rj/goey/windows"
 )
 
 var (
-	mainWindow *goey.Window
+	mainWindow *windows.Window
 	clickCount int
 
 	colors = [3]color.RGBA{
@@ -45,7 +46,7 @@ func main() {
 
 func createWindow() error {
 	// Add the controls
-	mw, err := goey.NewWindow("Wipe", render())
+	mw, err := windows.NewWindow("Wipe", render())
 	if err != nil {
 		return err
 	}

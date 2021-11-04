@@ -41,9 +41,10 @@ type paragraphElement struct {
 func (w *paragraphElement) measureReflowLimits() {
 	hwnd := w.hWnd
 	hdc := win.GetDC(hwnd)
-	if hMessageFont != 0 {
-		win.SelectObject(hdc, win.HGDIOBJ(hMessageFont))
+	if hFont := win2.MessageFont(); hFont != 0 {
+		win.SelectObject(hdc, win.HGDIOBJ(hFont))
 	}
+
 	// Calculate the width of a single 'm' (find the em width)
 	rect := win.RECT{0, 0, 0x7fffffff, 0x7fffffff}
 	caption := [10]uint16{'m', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm', 'm'}
@@ -74,8 +75,8 @@ func (w *paragraphElement) MinIntrinsicHeight(width base.Length) base.Length {
 	}
 
 	hdc := win.GetDC(w.hWnd)
-	if hMessageFont != 0 {
-		win.SelectObject(hdc, win.HGDIOBJ(hMessageFont))
+	if hFont := win2.MessageFont(); hFont != 0 {
+		win.SelectObject(hdc, win.HGDIOBJ(hFont))
 	}
 	rect := win.RECT{0, 0, int32(width.PixelsX()), 0x7fffffff}
 	win.DrawTextEx(hdc, &w.text[0], int32(len(w.text)), &rect, win.DT_CALCRECT|win.DT_WORDBREAK, nil)

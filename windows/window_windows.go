@@ -1,7 +1,6 @@
-package goey
+package windows
 
 import (
-	"fmt"
 	"image"
 	"syscall"
 	"unsafe"
@@ -14,35 +13,9 @@ import (
 )
 
 var (
-	mainWindow struct {
-		className []uint16
-		atom      win.ATOM
-	}
-
-	hMessageFont win.HFONT
+	className = []uint16{'G', 'o', 'e', 'y', 'M', 'a', 'i', 'n', 'W', 'i', 'n', 'd', 'o', 'w', 0}
+	classAtom win.ATOM
 )
-
-const (
-	Scale = 1
-)
-
-func init() {
-	mainWindow.className = []uint16{'G', 'o', 'e', 'y', 'M', 'a', 'i', 'n', 'W', 'i', 'n', 'd', 'o', 'w', 0}
-
-	// Determine the mssage font
-	var ncm win.NONCLIENTMETRICS
-	ncm.CbSize = uint32(unsafe.Sizeof(ncm))
-	if rc := win.SystemParametersInfo(win.SPI_GETNONCLIENTMETRICS, ncm.CbSize, unsafe.Pointer(&ncm), 0); rc {
-		ncm.LfMessageFont.LfHeight = int32(float64(ncm.LfMessageFont.LfHeight) * Scale)
-		ncm.LfMessageFont.LfWidth = int32(float64(ncm.LfMessageFont.LfWidth) * Scale)
-		hMessageFont = win.CreateFontIndirect(&ncm.LfMessageFont)
-		if hMessageFont == 0 {
-			fmt.Println("Error: failed CreateFontIndirect")
-		}
-	} else {
-		fmt.Println("Error: failed SystemParametersInfo")
-	}
-}
 
 type windowImpl struct {
 	hWnd                    win.HWND
@@ -68,7 +41,7 @@ func registerMainWindowClass(hInst win.HINSTANCE, wndproc uintptr) (win.ATOM, er
 	wc.LpfnWndProc = wndproc
 	wc.HCursor = win.LoadCursor(0, (*uint16)(unsafe.Pointer(uintptr(win.IDC_ARROW))))
 	wc.HbrBackground = win.GetSysColorBrush(win.COLOR_3DFACE)
-	wc.LpszClassName = &mainWindow.className[0]
+	wc.LpszClassName = &className[0]
 
 	atom := win.RegisterClassEx(&wc)
 	if atom == 0 {
@@ -151,7 +124,7 @@ func newWindow(title string) (*Window, error) {
 	if win.OleInitialize() != win.S_OK {
 		return nil, syscall.GetLastError()
 	}
-	if mainWindow.atom == 0 {
+	if classAtom == 0 {
 		atom, err := registerMainWindowClass(hInstance, syscall.NewCallback(windowWindowProc))
 		if err != nil {
 			return nil, err
@@ -159,7 +132,7 @@ func newWindow(title string) (*Window, error) {
 		if atom == 0 {
 			panic("internal error:  atom==0 although no error returned")
 		}
-		mainWindow.atom = atom
+		classAtom = atom
 	}
 
 	style := uint32(win.WS_OVERLAPPEDWINDOW)
@@ -189,7 +162,7 @@ func newWindow(title string) (*Window, error) {
 	if err != nil {
 		return nil, err
 	}
-	hwnd := win.CreateWindowEx(win.WS_EX_CONTROLPARENT|win2.WS_EX_COMPOSITED, &mainWindow.className[0], windowName, style,
+	hwnd := win.CreateWindowEx(win.WS_EX_CONTROLPARENT|win2.WS_EX_COMPOSITED, &className[0], windowName, style,
 		rect.Left, rect.Top, rect.Right-rect.Left, rect.Bottom-rect.Top,
 		win.HWND_DESKTOP, 0, hInstance, nil)
 	if hwnd == 0 {
@@ -198,7 +171,7 @@ func newWindow(title string) (*Window, error) {
 	}
 
 	// Set the font for the window
-	if hMessageFont != 0 {
+	if hFont := win2.MessageFont(); hFont != 0 {
 		win.SendMessage(hwnd, win.WM_SETFONT, 0, 0)
 	}
 
@@ -321,8 +294,8 @@ func (w *windowImpl) setChildPost() {
 
 func (w *windowImpl) setDPI() {
 	base.DPI = image.Point{
-		X: int(float32(w.dpi.X) * Scale),
-		Y: int(float32(w.dpi.Y) * Scale),
+		X: int(float32(w.dpi.X) * win2.MessageFontScale),
+		Y: int(float32(w.dpi.Y) * win2.MessageFontScale),
 	}
 }
 
@@ -364,17 +337,17 @@ func (w *windowImpl) setScrollPos(direction int32, wParam uintptr) {
 	// User clicked the top or left arrow.
 	case win.SB_LINEUP:
 		if direction == win.SB_HORZ {
-			si.NPos -= int32((13 * DIP).PixelsX())
+			si.NPos -= int32((13 * base.DIP).PixelsX())
 		} else {
-			si.NPos -= int32((13 * DIP).PixelsY())
+			si.NPos -= int32((13 * base.DIP).PixelsY())
 		}
 
 	// User clicked the bottom or right arrow.
 	case win.SB_LINEDOWN:
 		if direction == win.SB_HORZ {
-			si.NPos += int32((13 * DIP).PixelsX())
+			si.NPos += int32((13 * base.DIP).PixelsX())
 		} else {
-			si.NPos += int32((13 * DIP).PixelsY())
+			si.NPos += int32((13 * base.DIP).PixelsY())
 		}
 
 	// User clicked the scroll bar shaft above or to the left of the scroll box.
@@ -636,17 +609,18 @@ func windowWindowProc(hwnd win.HWND, msg uint32, wParam uintptr, lParam uintptr)
 		return uintptr(win.GetSysColorBrush(win.COLOR_3DFACE))
 
 	case win.WM_COMMAND:
-		return windowprocWmCommand(wParam, lParam)
+		return WindowprocWmCommand(wParam, lParam)
 
 	case win.WM_NOTIFY:
-		return windowprocWmNotify(wParam, lParam)
+		n := (*win.NMHDR)(unsafe.Pointer(lParam))
+		return win.SendMessage(n.HwndFrom, win.WM_NOTIFY, wParam, lParam)
 	}
 
 	// Let the default window proc handle all other messages
 	return win.DefWindowProc(hwnd, msg, wParam, lParam)
 }
 
-func windowprocWmCommand(wParam uintptr, lParam uintptr) uintptr {
+func WindowprocWmCommand(wParam uintptr, lParam uintptr) uintptr {
 	// These are the notifications that the controls needs to receive.
 	if n := win.HIWORD(uint32(wParam)); n == win.BN_CLICKED || n == win.EN_UPDATE || n == win.CBN_SELCHANGE {
 		// For BN_CLICKED, EN_UPDATE, and CBN_SELCHANGE, lParam is the window
@@ -658,11 +632,6 @@ func windowprocWmCommand(wParam uintptr, lParam uintptr) uintptr {
 	// Defer to the default window proc.  However, the default window proc will
 	// return 0 for WM_COMMAND.
 	return 0
-}
-
-func windowprocWmNotify(wParam uintptr, lParam uintptr) uintptr {
-	n := (*win.NMHDR)(unsafe.Pointer(lParam))
-	return win.SendMessage(n.HwndFrom, win.WM_NOTIFY, wParam, lParam)
 }
 
 func windowGetPtr(hwnd win.HWND) *windowImpl {

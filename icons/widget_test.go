@@ -7,6 +7,7 @@ import (
 	"bitbucket.org/rj/goey"
 	"bitbucket.org/rj/goey/base"
 	"bitbucket.org/rj/goey/loop"
+	"bitbucket.org/rj/goey/windows"
 )
 
 const Build = rune(0xe869)
@@ -25,7 +26,7 @@ func ExampleIcon() {
 
 	createWindow := func() error {
 		// Add the controls
-		window, err := goey.NewWindow("Icons", render(Build))
+		window, err := windows.NewWindow("Icons", render(Build))
 		if err != nil {
 			return err
 		}

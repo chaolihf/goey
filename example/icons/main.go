@@ -12,6 +12,7 @@ import (
 	"bitbucket.org/rj/goey/base"
 	"bitbucket.org/rj/goey/icons"
 	"bitbucket.org/rj/goey/loop"
+	"bitbucket.org/rj/goey/windows"
 )
 
 // IconData describes a single icon in the font.
@@ -21,7 +22,7 @@ type IconData struct {
 }
 
 var (
-	mainWindow *goey.Window
+	mainWindow *windows.Window
 	iconIndex  int
 	iconData   []IconData
 )
@@ -35,7 +36,7 @@ func main() {
 
 func createWindow() error {
 	// Add the controls
-	mw, err := goey.NewWindow("Icons", render())
+	mw, err := windows.NewWindow("Icons", render())
 	if err != nil {
 		return err
 	}

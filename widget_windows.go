@@ -44,9 +44,10 @@ func (w Control) Text() string {
 // CalcRect is a wrapper around the WIN32 call DrawTextEx with the option DT_CALCRECT.
 func (w Control) CalcRect(text []uint16) (int32, int32) {
 	hdc := win.GetDC(w.hWnd)
-	if hMessageFont != 0 {
-		win.SelectObject(hdc, win.HGDIOBJ(hMessageFont))
+	if hFont := win2.MessageFont(); hFont != 0 {
+		win.SelectObject(hdc, win.HGDIOBJ(hFont))
 	}
+
 	rect := win.RECT{0, 0, 0x7fffffff, 0x7fffffff}
 	win.DrawTextEx(hdc, &text[0], int32(len(text)), &rect, win.DT_CALCRECT, nil)
 	win.ReleaseDC(w.hWnd, hdc)
@@ -169,8 +170,8 @@ func createControlWindow(exStyle uint32, classname *uint16, text string, style u
 	}
 
 	// Set the font for the window
-	if hMessageFont != 0 {
-		win.SendMessage(hwnd, win.WM_SETFONT, uintptr(hMessageFont), 0)
+	if hFont := win2.MessageFont(); hFont != 0 {
+		win.SendMessage(hwnd, win.WM_SETFONT, uintptr(hFont), 0)
 	}
 
 	return hwnd, utftext, nil

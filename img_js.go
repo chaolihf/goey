@@ -1,17 +1,17 @@
+//go:build go1.12
 // +build go1.12
 
 package goey
 
 import (
-	"bytes"
 	"encoding/base64"
 	"image"
 	"image/png"
-	"io"
 	"strings"
 	"syscall/js"
 
 	"bitbucket.org/rj/goey/base"
+	"bitbucket.org/rj/goey/internal/js"
 )
 
 type imgElement struct {
@@ -56,21 +56,8 @@ func (w *imgElement) propsImage() image.Image {
 }
 
 func (w *imgElement) updateProps(data *Img) error {
-	w.handle.Set("src", imageToAttr(data.Image))
+	w.handle.Set("src", goeyjs.ImageToAttr(data.Image))
 	w.width, w.height = data.Width, data.Height
 
 	return nil
-}
-
-func imageToAttr(i image.Image) string {
-	ws := bytes.NewBuffer(nil)
-	io.WriteString(ws, "data:image/png;base64,")
-
-	// Writing to a memory buffer.  There shouldn't be any errors during the
-	// encoding.
-	wb := base64.NewEncoder(base64.StdEncoding, ws)
-	_ = png.Encode(wb, i)
-	wb.Close()
-
-	return ws.String()
 }

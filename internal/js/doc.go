@@ -6,4 +6,4 @@
 // This package is intended for internal use.
 //
 // This package contains platform-specific details.
-package js
+package goeyjs

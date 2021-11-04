@@ -12,6 +12,7 @@ import (
 	"bitbucket.org/rj/goey/base"
 	"bitbucket.org/rj/goey/goeytest"
 	"bitbucket.org/rj/goey/loop"
+	"bitbucket.org/rj/goey/windows"
 )
 
 type Proper interface {
@@ -29,6 +30,11 @@ type Focusable interface {
 type Typeable interface {
 	TakeFocus() bool
 	TypeKeys(text string) chan error
+}
+
+func TestMain(m *testing.M) {
+	// On Cocoa, the GUI even
+	loop.TestMain(m)
 }
 
 func normalize(t *testing.T, rhs base.Widget) {
@@ -76,9 +82,7 @@ func normalize(t *testing.T, rhs base.Widget) {
 }
 
 func testMountWidgets(t *testing.T, widgets ...base.Widget) {
-	window, closer := goeytest.WithWindow(t, func() (goeytest.Window, error) {
-		return NewWindow(t.Name(), &VBox{Children: widgets})
-	})
+	window, closer := goeytest.WithWindow(t, &VBox{Children: widgets})
 	defer closer()
 
 	elements := window.Child().(*vboxElement).children
@@ -86,9 +90,7 @@ func testMountWidgets(t *testing.T, widgets ...base.Widget) {
 }
 
 func checkMountWidget(t *testing.T, widget base.Widget) (ok bool) {
-	window, closer := goeytest.WithWindow(t, func() (goeytest.Window, error) {
-		return NewWindow(t.Name(), &VBox{Children: []base.Widget{widget}})
-	})
+	window, closer := goeytest.WithWindow(t, &VBox{Children: []base.Widget{widget}})
 	defer closer()
 
 	// Check that the controls that were mounted match with the list
@@ -103,7 +105,7 @@ func checkMountWidget(t *testing.T, widget base.Widget) (ok bool) {
 
 func testMountWidgetsFail(t *testing.T, outError error, widgets ...base.Widget) {
 	init := func() error {
-		window, err := NewWindow(t.Name(), &VBox{Children: widgets})
+		window, err := windows.NewWindow(t.Name(), &VBox{Children: widgets})
 		if window != nil {
 			t.Errorf("unexpected non-nil window")
 		}
@@ -125,9 +127,7 @@ func testMountWidgetsFail(t *testing.T, outError error, widgets ...base.Widget) 
 }
 
 func testCloseWidgets(t *testing.T, widgets ...base.Widget) {
-	window, closer := goeytest.WithWindow(t, func() (goeytest.Window, error) {
-		return NewWindow(t.Name(), &VBox{Children: widgets})
-	})
+	window, closer := goeytest.WithWindow(t, &VBox{Children: widgets})
 	defer closer()
 
 	elements := window.Child().(*vboxElement).children
@@ -156,9 +156,7 @@ func testCheckFocusAndBlur(t *testing.T, widgets ...base.Widget) {
 	}
 
 	func() {
-		window, closer := goeytest.WithWindow(t, func() (goeytest.Window, error) {
-			return NewWindow(t.Name(), &VBox{Children: widgets})
-		})
+		window, closer := goeytest.WithWindow(t, &VBox{Children: widgets})
 		defer closer()
 
 		// Wait for the window to be active.
@@ -202,20 +200,20 @@ func testTypeKeys(t *testing.T, text string, widget base.Widget) {
 	errc := make(chan error, 8)
 
 	init := func() error {
-		window, err := NewWindow(t.Name(), &VBox{Children: []base.Widget{widget}})
+		window, err := windows.NewWindow(t.Name(), &VBox{Children: []base.Widget{widget}})
 		if err != nil {
 			return fmt.Errorf("failed to create window: %s", err)
 		}
 
 		var typingErr chan error
-		go func(window *Window) {
+		go func(window *windows.Window) {
 			defer close(errc)
 
 			// On WIN32, let the window complete any opening animation.
 			time.Sleep(20 * time.Millisecond)
 
 			err := loop.Do(func() error {
-				child := window.child.(*vboxElement).children[0]
+				child := window.Child().(*vboxElement).children[0]
 				if elem, ok := child.(Typeable); ok {
 					if elem.TakeFocus() {
 						typingErr = elem.TypeKeys(text)
@@ -281,9 +279,7 @@ func testCheckClick(t *testing.T, widgets ...base.Widget) {
 		}
 	}
 
-	window, closer := goeytest.WithWindow(t, func() (goeytest.Window, error) {
-		return NewWindow(t.Name(), &VBox{Children: widgets})
-	})
+	window, closer := goeytest.WithWindow(t, &VBox{Children: widgets})
 	defer closer()
 
 	// Run the actions, which are counted.
@@ -311,9 +307,7 @@ func testCheckClick(t *testing.T, widgets ...base.Widget) {
 }
 
 func testUpdateWidgets(t *testing.T, widgets []base.Widget, update []base.Widget) {
-	window, closer := goeytest.WithWindow(t, func() (goeytest.Window, error) {
-		return NewWindow(t.Name(), &VBox{Children: widgets})
-	})
+	window, closer := goeytest.WithWindow(t, &VBox{Children: widgets})
 	defer closer()
 
 	elements := window.Child().(*vboxElement).children
@@ -331,9 +325,7 @@ func testUpdateWidgets(t *testing.T, widgets []base.Widget, update []base.Widget
 }
 
 func checkUpdateWidget(t *testing.T) (updater func(base.Widget) bool, closer func()) {
-	window, closer := goeytest.WithWindow(t, func() (goeytest.Window, error) {
-		return NewWindow(t.Name(), nil)
-	})
+	window, closer := goeytest.WithWindow(t, nil)
 
 	updater = func(w base.Widget) bool {
 		err := loop.Do(func() error {
@@ -351,9 +343,7 @@ func checkUpdateWidget(t *testing.T) (updater func(base.Widget) bool, closer fun
 }
 
 func testLayoutWidget(t *testing.T, widget base.Widget) {
-	window, closer := goeytest.WithWindow(t, func() (goeytest.Window, error) {
-		return NewWindow(t.Name(), widget)
-	})
+	window, closer := goeytest.WithWindow(t, widget)
 	defer closer()
 
 	if !goeytest.CompareElementToWidget(t, normalize, window.Child(), widget) {
@@ -398,9 +388,7 @@ func testLayoutWidget(t *testing.T, widget base.Widget) {
 }
 
 func testMinSizeWidget(t *testing.T, widget base.Widget) {
-	window, closer := goeytest.WithWindow(t, func() (goeytest.Window, error) {
-		return NewWindow(t.Name(), widget)
-	})
+	window, closer := goeytest.WithWindow(t, widget)
 	defer closer()
 
 	child := window.Child()

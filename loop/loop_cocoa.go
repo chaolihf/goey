@@ -44,11 +44,13 @@ func terminateRun() {
 }
 
 func run() {
+	println("run")
 	assert.Assert(cocoaloop.IsMainThread(), "Not main thread")
 	cocoaloop.Run()
 }
 
 func runTesting(action func() error) error {
+	println("runTesting")
 	testingActions <- action
 	return nopanic.Unwrap(<-testingSync)
 }
@@ -62,6 +64,7 @@ func stop() {
 }
 
 func testMain(m *testing.M) int {
+	println("testMain")
 	// Ensure that we are locked to the main thread.
 	runtime.LockOSThread()
 	assert.Assert(cocoaloop.IsMainThread(), "Not main thread")

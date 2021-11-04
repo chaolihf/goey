@@ -15,10 +15,11 @@ import (
 	"bitbucket.org/rj/goey"
 	"bitbucket.org/rj/goey/base"
 	"bitbucket.org/rj/goey/loop"
+	"bitbucket.org/rj/goey/windows"
 )
 
 var (
-	mainWindow *goey.Window
+	mainWindow *windows.Window
 	text       [2]string
 )
 
@@ -34,7 +35,7 @@ func main() {
 }
 
 func createWindow() error {
-	mw, err := goey.NewWindow("Two Fields", render())
+	mw, err := windows.NewWindow("Two Fields", render())
 	if err != nil {
 		return err
 	}

@@ -21,13 +21,14 @@ import (
 	"bitbucket.org/rj/goey"
 	"bitbucket.org/rj/goey/base"
 	"bitbucket.org/rj/goey/loop"
+	"bitbucket.org/rj/goey/windows"
 	"golang.org/x/image/font"
 	"golang.org/x/image/font/basicfont"
 	"golang.org/x/image/math/fixed"
 )
 
 var (
-	mainWindow *goey.Window
+	mainWindow *windows.Window
 	clickCount int
 
 	colors = [3]color.RGBA{
@@ -111,7 +112,7 @@ func main() {
 
 func createWindow() error {
 	// Add the controls
-	mw, err := goey.NewWindow("Colour", render())
+	mw, err := windows.NewWindow("Colour", render())
 	if err != nil {
 		return err
 	}

@@ -23,10 +23,11 @@ import (
 	"bitbucket.org/rj/goey"
 	"bitbucket.org/rj/goey/base"
 	"bitbucket.org/rj/goey/loop"
+	"bitbucket.org/rj/goey/windows"
 )
 
 var (
-	mainWindow *goey.Window
+	mainWindow *windows.Window
 	clickCount int
 	alignMain  = goey.SpaceAround
 	alignCross = goey.Stretch
@@ -50,7 +51,7 @@ func main() {
 }
 
 func createWindow() error {
-	mw, err := goey.NewWindow("Three Buttons", render())
+	mw, err := windows.NewWindow("Three Buttons", render())
 	if err != nil {
 		return err
 	}

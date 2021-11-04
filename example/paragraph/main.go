@@ -15,10 +15,11 @@ import (
 	"bitbucket.org/rj/goey"
 	"bitbucket.org/rj/goey/base"
 	"bitbucket.org/rj/goey/loop"
+	"bitbucket.org/rj/goey/windows"
 )
 
 var (
-	mainWindow *goey.Window
+	mainWindow *windows.Window
 	align      goey.TextAlignment
 )
 
@@ -35,7 +36,7 @@ func main() {
 
 func createWindow() error {
 	// Add the controls
-	mw, err := goey.NewWindow("Paragraph", render())
+	mw, err := windows.NewWindow("Paragraph", render())
 	if err != nil {
 		return err
 	}

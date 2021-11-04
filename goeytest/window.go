@@ -7,6 +7,7 @@ import (
 
 	"bitbucket.org/rj/goey/base"
 	"bitbucket.org/rj/goey/loop"
+	"bitbucket.org/rj/goey/windows"
 )
 
 type fatalError struct{}
@@ -24,14 +25,14 @@ type Window interface {
 // WithWindow initializes a window and a GUI event loop that can be used to test
 // widgets.  When testing is complete, callers should use the return callback to
 // close the window and terminate the event loop.
-func WithWindow(t *testing.T, init func() (Window, error)) (window Window, closer func()) {
-	ready := make(chan Window, 1)
+func WithWindow(t *testing.T, widget base.Widget) (window *windows.Window, closer func()) {
+	ready := make(chan *windows.Window, 1)
 	done := make(chan struct{})
 	quickCheck := strings.HasSuffix(t.Name(), "QuickCheck")
 
 	go func() {
 		winit := func() error {
-			window, err := init()
+			window, err := windows.NewWindow(t.Name(), widget)
 			if err != nil {
 				t.Errorf("failed to create window: %s", err)
 				return (*fatalError)(nil)

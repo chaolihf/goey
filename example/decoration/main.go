@@ -17,10 +17,11 @@ import (
 	"bitbucket.org/rj/goey"
 	"bitbucket.org/rj/goey/base"
 	"bitbucket.org/rj/goey/loop"
+	"bitbucket.org/rj/goey/windows"
 )
 
 var (
-	mainWindow *goey.Window
+	mainWindow *windows.Window
 	clickCount int
 
 	colors = [4]color.RGBA{
@@ -42,7 +43,7 @@ func main() {
 }
 
 func createWindow() error {
-	mw, err := goey.NewWindow("Decoration", render())
+	mw, err := windows.NewWindow("Decoration", render())
 	if err != nil {
 		return err
 	}

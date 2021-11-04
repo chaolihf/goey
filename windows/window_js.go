@@ -1,7 +1,7 @@
 //go:build go1.12
 // +build go1.12
 
-package goey
+package windows
 
 import (
 	"fmt"
@@ -10,6 +10,7 @@ import (
 
 	"bitbucket.org/rj/goey/base"
 	"bitbucket.org/rj/goey/dialog"
+	"bitbucket.org/rj/goey/internal/js"
 	"bitbucket.org/rj/goey/loop"
 	"gitlab.com/stone.code/assert"
 )
@@ -215,7 +216,7 @@ func (w *windowImpl) setIcon(img image.Image) error {
 	}
 
 	// Set image data for the favicon.
-	favicon.Set("href", imageToAttr(img))
+	favicon.Set("href", goeyjs.ImageToAttr(img))
 
 	return nil
 }

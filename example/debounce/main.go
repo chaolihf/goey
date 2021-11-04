@@ -10,10 +10,11 @@ import (
 	"bitbucket.org/rj/goey"
 	"bitbucket.org/rj/goey/base"
 	"bitbucket.org/rj/goey/loop"
+	"bitbucket.org/rj/goey/windows"
 )
 
 var (
-	mainWindow *goey.Window
+	mainWindow *windows.Window
 	username   string
 )
 
@@ -29,7 +30,7 @@ func createWindow() error {
 	// This is the callback used to initialize the GUI state.  For this simple
 	// example, we need to create a new top-level window, and set a child
 	// widget.
-	mw, err := goey.NewWindow("Debounce", render())
+	mw, err := windows.NewWindow("Debounce", render())
 	if err != nil {
 		return err
 	}

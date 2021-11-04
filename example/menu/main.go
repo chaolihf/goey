@@ -13,11 +13,12 @@ import (
 	"bitbucket.org/rj/goey"
 	"bitbucket.org/rj/goey/base"
 	"bitbucket.org/rj/goey/loop"
+	"bitbucket.org/rj/goey/windows"
 )
 
 var (
 	gopher image.Image
-	window *goey.Window
+	window *windows.Window
 )
 
 func loadImage(filename string) (image.Image, error) {
@@ -49,7 +50,7 @@ func main() {
 }
 
 func createWindow() error {
-	w, err := goey.NewWindow("Menu", renderWindow())
+	w, err := windows.NewWindow("Menu", renderWindow())
 	if err != nil {
 		return err
 	}

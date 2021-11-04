@@ -9,10 +9,11 @@ import (
 	"bitbucket.org/rj/goey"
 	"bitbucket.org/rj/goey/base"
 	"bitbucket.org/rj/goey/loop"
+	"bitbucket.org/rj/goey/windows"
 )
 
 var (
-	mainWindow *goey.Window
+	mainWindow *windows.Window
 )
 
 func main() {
@@ -23,7 +24,7 @@ func main() {
 }
 
 func createWindow() error {
-	mw, err := goey.NewWindow("Example", render())
+	mw, err := windows.NewWindow("Example", render())
 	if err != nil {
 		return err
 	}

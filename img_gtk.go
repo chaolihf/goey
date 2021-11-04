@@ -1,10 +1,10 @@
+//go:build gtk || (linux && !cocoa) || (freebsd && !cocoa) || (openbsd && !cocoa)
 // +build gtk linux,!cocoa freebsd,!cocoa openbsd,!cocoa
 
 package goey
 
 import (
 	"image"
-	"image/draw"
 
 	"bitbucket.org/rj/goey/base"
 	"bitbucket.org/rj/goey/internal/gtk"
@@ -18,25 +18,8 @@ type imgElement struct {
 	height base.Length
 }
 
-func imageToRGBA(prop image.Image) *image.RGBA {
-	// Use existing image if possible
-	if img, ok := prop.(*image.RGBA); ok {
-		return &image.RGBA{
-			Pix:    append([]uint8(nil), img.Pix...),
-			Stride: img.Stride,
-			Rect:   img.Rect,
-		}
-	}
-
-	// Create a new image in RGBA format
-	bounds := prop.Bounds()
-	img := image.NewRGBA(bounds)
-	draw.Draw(img, bounds, prop, bounds.Min, draw.Src)
-	return img
-}
-
 func (w *Img) mount(parent base.Control) (base.Element, error) {
-	img := imageToRGBA(w.Image)
+	img := gtk.ImageToRGBA(w.Image)
 
 	handle := gtk.MountImage(parent.Handle, &img.Pix[0], img.Rect.Dx(), img.Rect.Dy(), img.Stride)
 
@@ -105,7 +88,7 @@ func (w *imgElement) updateProps(data *Img) error {
 	w.width, w.height = data.Width, data.Height
 
 	// Create the bitmap
-	img := imageToRGBA(data.Image)
+	img := gtk.ImageToRGBA(data.Image)
 	gtk.ImageUpdate(w.handle, &img.Pix[0], img.Rect.Dx(), img.Rect.Dy(), img.Stride)
 	w.pix = img.Pix
 
