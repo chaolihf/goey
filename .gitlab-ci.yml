@@ -52,6 +52,8 @@ golang-js:
     - ln $GOBIN/wasmbrowsertest $GOBIN/go_js_wasm_exec
     - PATH=$PATH:$GOBIN
     - go build -v . ./example/...
+    - unset $(env | grep CI_ | awk -F= '{print $1}') # See https://github.com/golang/go/issues/49011
+    - unset $(env | grep GITLAB_ | awk -F= '{print $1}') # See https://github.com/golang/go/issues/49011
     - go test -v -run Test ./base ./loop ./windows .
     - for elem in $EXAMPLES; do
     -   mkdir -p ./public/${elem}
