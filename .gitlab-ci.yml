@@ -106,7 +106,8 @@ nix-all:
     - if [ $PLATFORM == "js" ]; then
     -   nix-shell --pure --argstr platform ${PLATFORM} --command "go test -v -short -run=Test ./base ./loop ./windows ."
     - elif [ $PLATFORM == "windows" ]; then
-    -   nix-shell --pure --argstr platform ${PLATFORM} --command "go test -v -short ./base ./loop ./windows ." ./shell-pinned.nix
+    -   timeout 30s nix-shell --keep DISPLAY --argstr platform ${PLATFORM} --command "wineboot --update" || true
+    -   nix-shell --keep DISPLAY --argstr platform ${PLATFORM} --command "go test -v -short ./base ./loop ./windows ."
     - else
     -   nix-shell --pure --keep DISPLAY --argstr platform ${PLATFORM} --command "go test -v -short ./base ./loop ./windows ."
     - fi

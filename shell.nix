@@ -4,7 +4,7 @@ let
   platformInputs = with pkgs; {
     "gtk" = [ gtk3 pkg-config ];
     "js" = [ chromium wasmbrowsertest ];
-    "windows" = [ wine64 ];
+    "windows" = [ wine64 fontconfig ];
   };
   platformEnvironment = {
     "gtk" = { };
