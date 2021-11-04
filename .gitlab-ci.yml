@@ -101,8 +101,8 @@ nix-all:
     - nix-env -iA nixpkgs.xvfb-run nixpkgs.fluxbox
     - xvfb-run -n 99 fluxbox &
     - export DISPLAY=:99
-    - nix-shell --pure --argstr platform ${PLATFORM} --command "go build -v ./base ./loop . ./example/..."
-    - nix-shell --pure --argstr platform ${PLATFORM} --command "go build -v ./base ./loop . ./example/..." ./shell-pinned.nix
+    - nix-shell --pure --argstr platform ${PLATFORM} --command "go build -v ./base ./loop ./windows . ./example/..."
+    - nix-shell --pure --argstr platform ${PLATFORM} --command "go build -v ./base ./loop ./windows . ./example/..." ./shell-pinned.nix
     - if [ $PLATFORM == "js" ]; then
     -   nix-shell --pure --argstr platform ${PLATFORM} --command "go test -v -short -run=Test ./base ./loop ./windows ."
     - elif [ $PLATFORM == "windows" ]; then

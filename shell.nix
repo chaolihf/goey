@@ -17,6 +17,13 @@ let
       WINEDEBUG = "err+all,fixme-all";
     };
   };
+  platformShellHook = {
+    "gtk" = "";
+    "js" = "chromium --version;"
+      # See https://github.com/golang/go/issues/49011
+      + "unset buildInputs HOST_PATH nobuildPhase builder shellHook phases; unset $(env | grep NIX_ | awk -F= '{print $1}');";
+    "windows" = "wine64 --version;";
+  };
   wasmbrowsertest = import ./wasmbrowsertest.nix { inherit pkgs; };
   wine64 = import ./wine64.nix { inherit pkgs; };
 in pkgs.mkShell ({
@@ -28,6 +35,5 @@ in pkgs.mkShell ({
 
   # Make sure we don't pick up the users' GOPATH.
   # Advertise the current version of go when shell starts.
-  shellHook = "unset GOPATH; go version;"
-    + (if platform == "windows" then "wine64 --version;" else "");
+  shellHook = "unset GOPATH; go version;" + platformShellHook.${platform};
 } // platformEnvironment.${platform})
