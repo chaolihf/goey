@@ -19,29 +19,33 @@ func init() {
 	hr.className = []uint16{'G', 'o', 'e', 'y', 'H', 'R', 0}
 }
 
-func registerHRClass(hInst win.HINSTANCE, wndproc uintptr) (win.ATOM, error) {
-	var wc win.WNDCLASSEX
-	wc.CbSize = uint32(unsafe.Sizeof(wc))
-	wc.HInstance = hInst
-	wc.LpfnWndProc = wndproc
-	wc.HCursor = win.LoadCursor(0, (*uint16)(unsafe.Pointer(uintptr(win.IDC_ARROW))))
-	wc.HbrBackground = (win.HBRUSH)(win.GetStockObject(win.NULL_BRUSH))
-	wc.LpszClassName = &hr.className[0]
+func registerHRClass() (win.ATOM, error) {
+	hInstance := win.GetModuleHandle(nil)
+	if hInstance == 0 {
+		return 0, syscall.GetLastError()
+	}
+
+	wc := win.WNDCLASSEX{
+		CbSize:        uint32(unsafe.Sizeof(win.WNDCLASSEX{})),
+		HInstance:     hInstance,
+		LpfnWndProc:   syscall.NewCallback(hrWindowProc),
+		HCursor:       win.LoadCursor(0, (*uint16)(unsafe.Pointer(uintptr(win.IDC_ARROW)))),
+		HbrBackground: (win.HBRUSH)(win.GetStockObject(win.NULL_BRUSH)),
+		LpszClassName: &hr.className[0],
+	}
 
 	atom := win.RegisterClassEx(&wc)
 	if atom == 0 {
 		return 0, syscall.GetLastError()
 	}
+
 	return atom, nil
 }
 
 func (w *HR) mount(parent base.Control) (base.Element, error) {
-	hInstance := win.GetModuleHandle(nil)
-	if hInstance == 0 {
-		return nil, syscall.GetLastError()
-	}
+	// Ensure that our custom window class has been registered.
 	if hr.atom == 0 {
-		atom, err := registerHRClass(hInstance, syscall.NewCallback(hrWindowProc))
+		atom, err := registerHRClass()
 		if err != nil {
 			return nil, err
 		}

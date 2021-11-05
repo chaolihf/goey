@@ -1,12 +1,14 @@
 package windows_test
 
 import (
+	"errors"
 	"fmt"
 	"image"
 	"image/color"
 	"image/draw"
 	"strconv"
 	"testing"
+	"testing/quick"
 	"time"
 
 	"bitbucket.org/rj/goey/base"
@@ -97,6 +99,75 @@ func ExampleWindow_Message() {
 func TestMain(m *testing.M) {
 	// On Cocoa, the GUI even
 	loop.TestMain(m)
+}
+
+func TestNewWindow(t *testing.T) {
+	errSentinel := errors.New("sentinel error")
+
+	cases := []struct {
+		widget base.Widget
+		out    error
+	}{
+		{nil, nil},
+		{&mock.Widget{}, nil},
+		{&mock.Widget{Size: base.Size{base.DIP.Scale(16*1024, 96), base.DIP.Scale(16*1024, 96)}}, nil}, // 16k pixels by 16k pixels
+		{&mock.Widget{Err: errSentinel}, errSentinel},
+	}
+
+	for i, v := range cases {
+		t.Run(strconv.Itoa(i), func(t *testing.T) {
+			createWindow := func() error {
+				// Create the window.  Some of the tests here are not expected in
+				// production code, but we can be a little paranoid here.
+				window, err := windows.NewWindow(t.Name(), v.widget)
+				if err != nil {
+					return err
+				}
+				if window == nil {
+					t.Errorf("unexpected nil for window")
+					return nil
+				}
+
+				window.Close()
+				return nil
+			}
+
+			if err := loop.Run(createWindow); err != v.out {
+				t.Errorf("unexpected return: want %s, got %s", v.out, err)
+			}
+		})
+	}
+
+	t.Run("QuickCheck", func(t *testing.T) {
+		if testing.Short() {
+			t.Skip("skipping test in short mode")
+		}
+
+		f := func(text string, width, height uint16) bool {
+			createWindow := func() error {
+				size := base.Size{
+					Width:  base.DIP.Scale(int(width), 96),
+					Height: base.DIP.Scale(int(height), 96),
+				}
+				window, err := windows.NewWindow(t.Name(), &mock.Widget{Size: size})
+				if err != nil {
+					return err
+				}
+				if window == nil {
+					return errors.New("unexpected nil for window")
+				}
+
+				window.Close()
+				return nil
+			}
+
+			err := loop.Run(createWindow)
+			return err == nil
+		}
+		if err := quick.Check(f, nil); err != nil {
+			t.Errorf("quick: %s", err)
+		}
+	})
 }
 
 func testingWindow(t *testing.T, action func(*testing.T, *windows.Window)) {
@@ -246,7 +317,7 @@ func TestWindow_SetScroll(t *testing.T) {
 	})
 }
 
-func TestNewWindow_SetTitle(t *testing.T) {
+func TestWindow_SetTitle(t *testing.T) {
 	testingWindow(t, func(t *testing.T, mw *windows.Window) {
 		err := loop.Do(func() error {
 			err := mw.SetTitle("Flash!")

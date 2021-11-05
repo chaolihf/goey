@@ -34,14 +34,20 @@ type windowImpl struct {
 	verticalScrollPos       base.Length
 }
 
-func registerMainWindowClass(hInst win.HINSTANCE, wndproc uintptr) (win.ATOM, error) {
-	var wc win.WNDCLASSEX
-	wc.CbSize = uint32(unsafe.Sizeof(wc))
-	wc.HInstance = hInst
-	wc.LpfnWndProc = wndproc
-	wc.HCursor = win.LoadCursor(0, (*uint16)(unsafe.Pointer(uintptr(win.IDC_ARROW))))
-	wc.HbrBackground = win.GetSysColorBrush(win.COLOR_3DFACE)
-	wc.LpszClassName = &className[0]
+func registerMainWindowClass() (win.ATOM, error) {
+	hInstance := win.GetModuleHandle(nil)
+	if hInstance == 0 {
+		return 0, syscall.GetLastError()
+	}
+
+	wc := win.WNDCLASSEX{
+		CbSize:        uint32(unsafe.Sizeof(win.WNDCLASSEX{})),
+		HInstance:     hInstance,
+		LpfnWndProc:   syscall.NewCallback(windowWindowProc),
+		HCursor:       win.LoadCursor(0, (*uint16)(unsafe.Pointer(uintptr(win.IDC_ARROW)))),
+		HbrBackground: win.GetSysColorBrush(win.COLOR_3DFACE),
+		LpszClassName: &className[0],
+	}
 
 	atom := win.RegisterClassEx(&wc)
 	if atom == 0 {
@@ -116,16 +122,14 @@ func (w *windowImpl) onSize(hwnd win.HWND) {
 }
 
 func newWindow(title string) (*Window, error) {
-	hInstance := win.GetModuleHandle(nil)
-	if hInstance == 0 {
-		return nil, syscall.GetLastError()
-	}
 	//GetStartupInfo(&info);
 	if win.OleInitialize() != win.S_OK {
 		return nil, syscall.GetLastError()
 	}
+
+	// Ensure that our custom window class has been registered.
 	if classAtom == 0 {
-		atom, err := registerMainWindowClass(hInstance, syscall.NewCallback(windowWindowProc))
+		atom, err := registerMainWindowClass()
 		if err != nil {
 			return nil, err
 		}
@@ -164,7 +168,7 @@ func newWindow(title string) (*Window, error) {
 	}
 	hwnd := win.CreateWindowEx(win.WS_EX_CONTROLPARENT|win2.WS_EX_COMPOSITED, &className[0], windowName, style,
 		rect.Left, rect.Top, rect.Right-rect.Left, rect.Bottom-rect.Top,
-		win.HWND_DESKTOP, 0, hInstance, nil)
+		win.HWND_DESKTOP, 0, 0, nil)
 	if hwnd == 0 {
 		win.OleUninitialize()
 		return nil, syscall.GetLastError()

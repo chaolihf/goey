@@ -21,19 +21,35 @@ func init() {
 	decoration.className = []uint16{'G', 'o', 'e', 'y', 'D', 'e', 'c', 'o', 'r', 'a', 't', 'i', 'o', 'n', 0}
 }
 
-func (w *Decoration) mount(parent base.Control) (base.Element, error) {
-	if decoration.atom == 0 {
-		var wc win.WNDCLASSEX
-		wc.CbSize = uint32(unsafe.Sizeof(wc))
-		wc.HInstance = win.GetModuleHandle(nil)
-		wc.LpfnWndProc = syscall.NewCallback(decorationWindowProc)
-		wc.HCursor = win.LoadCursor(0, (*uint16)(unsafe.Pointer(uintptr(win.IDC_ARROW))))
-		wc.HbrBackground = win.GetSysColorBrush(win.COLOR_3DFACE)
-		wc.LpszClassName = &decoration.className[0]
+func registerDecorationClass() (win.ATOM, error) {
+	hInstance := win.GetModuleHandle(nil)
+	if hInstance == 0 {
+		return 0, syscall.GetLastError()
+	}
 
-		atom := win.RegisterClassEx(&wc)
-		if atom == 0 {
-			return nil, syscall.GetLastError()
+	wc := win.WNDCLASSEX{
+		CbSize:        uint32(unsafe.Sizeof(win.WNDCLASSEX{})),
+		HInstance:     hInstance,
+		LpfnWndProc:   syscall.NewCallback(decorationWindowProc),
+		HCursor:       win.LoadCursor(0, (*uint16)(unsafe.Pointer(uintptr(win.IDC_ARROW)))),
+		HbrBackground: win.GetSysColorBrush(win.COLOR_3DFACE),
+		LpszClassName: &decoration.className[0],
+	}
+
+	atom := win.RegisterClassEx(&wc)
+	if atom == 0 {
+		return 0, syscall.GetLastError()
+	}
+
+	return atom, nil
+}
+
+func (w *Decoration) mount(parent base.Control) (base.Element, error) {
+	// Ensure that our custom window class has been registered.
+	if decoration.atom == 0 {
+		atom, err := registerDecorationClass()
+		if err != nil {
+			return nil, err
 		}
 		decoration.atom = atom
 	}
