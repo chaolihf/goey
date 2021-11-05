@@ -199,60 +199,41 @@ func testTypeKeys(t *testing.T, text string, widget base.Widget) {
 	// drained until the event loop terminates.  Errors need to be buffered.
 	errc := make(chan error, 8)
 
-	init := func() error {
-		window, err := windows.NewWindow(t.Name(), &VBox{Children: []base.Widget{widget}})
+	window, closer := goeytest.WithWindow(t, &VBox{Children: []base.Widget{widget}})
+	defer closer()
+
+	var typingErr chan error
+	go func(window *windows.Window) {
+		defer close(errc)
+
+		// On WIN32, let the window complete any opening animation.
+		time.Sleep(20 * time.Millisecond)
+
+		err := loop.Do(func() error {
+			child := window.Child().(*vboxElement).children[0]
+			if elem, ok := child.(Typeable); ok {
+				if elem.TakeFocus() {
+					typingErr = elem.TypeKeys(text)
+				} else {
+					return fmt.Errorf("control failed to take focus")
+				}
+			} else {
+				return fmt.Errorf("control does not support method TypeKeys")
+			}
+			return nil
+		})
 		if err != nil {
-			return fmt.Errorf("failed to create window: %s", err)
+			errc <- err
 		}
 
-		var typingErr chan error
-		go func(window *windows.Window) {
-			defer close(errc)
-
-			// On WIN32, let the window complete any opening animation.
-			time.Sleep(20 * time.Millisecond)
-
-			err := loop.Do(func() error {
-				child := window.Child().(*vboxElement).children[0]
-				if elem, ok := child.(Typeable); ok {
-					if elem.TakeFocus() {
-						typingErr = elem.TypeKeys(text)
-					} else {
-						return fmt.Errorf("control failed to take focus")
-					}
-				} else {
-					return fmt.Errorf("control does not support method TypeKeys")
-				}
-				return nil
-			})
-			if err != nil {
-				errc <- err
+		// Wait for typing to complete, and check for errors
+		if typingErr != nil {
+			for v := range typingErr {
+				errc <- fmt.Errorf("failed to type keys: %s", v)
 			}
+		}
+	}(window)
 
-			// Wait for typing to complete, and check for errors
-			if typingErr != nil {
-				for v := range typingErr {
-					errc <- fmt.Errorf("failed to type keys: %s", v)
-				}
-			}
-
-			// Close the window
-			err = loop.Do(func() error {
-				window.Close()
-				return nil
-			})
-			if err != nil {
-				errc <- fmt.Errorf("can't close window: %s", err)
-			}
-		}(window)
-
-		return nil
-	}
-
-	err := loop.Run(init)
-	if err != nil {
-		t.Errorf("Failed to run GUI loop, %s", err)
-	}
 	for err := range errc {
 		t.Skip(err.Error())
 	}
