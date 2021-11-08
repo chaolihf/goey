@@ -52,6 +52,12 @@ func newWindow(title string) (*Window, error) {
 	handle := document.Call("getElementsByTagName", "body").Index(0)
 	assert.Assert(handle.Type() == js.TypeObject, "expected body element to be an object")
 
+	// Clear body, if requested by the data attribute.
+	if handle.Get("dataset").Get("goeyClear").Truthy() {
+		println("clearing contents")
+		handle.Set("innerHTML", "")
+	}
+
 	loop.AddLockCount(1)
 
 	retval := &Window{windowImpl{
