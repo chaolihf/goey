@@ -233,11 +233,6 @@ func (w *windowImpl) showScrollV(height base.Length, clientHeight base.Length) b
 }
 
 func (w *windowImpl) setIcon(img image.Image) error {
-	if img == nil {
-		gtk.WindowSetIcon(w.handle, nil, 0, 0, 0)
-		w.iconPix = nil
-	}
-
 	rgba := gtk.ImageToRGBA(img)
 	gtk.WindowSetIcon(w.handle, &rgba.Pix[0], rgba.Rect.Dx(), rgba.Rect.Dy(), rgba.Stride)
 	w.iconPix = rgba.Pix

@@ -211,6 +211,11 @@ func (w *Window) SetChild(child base.Widget) error {
 // On Cocoa, individual windows do not have icons.  Instead, there is a single
 // icon for the entire application.
 func (w *Window) SetIcon(img image.Image) error {
+	// Check that the image is not nil.  Want to enforce the precondition before
+	// starting platform specific code to maintain uniformity.
+	_ = img.Bounds()
+
+	// Defer to platform specific code.
 	return w.setIcon(img)
 }
 

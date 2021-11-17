@@ -204,13 +204,6 @@ func (w *windowImpl) setIcon(img image.Image) error {
 	document := js.Global().Get("document")
 	favicon := document.Call("getElementById", "goey-favicon")
 
-	// If the image is nil, remove the link element from the HTML head.
-	if img == nil {
-		if favicon.Truthy() {
-			favicon.Call("remove")
-		}
-	}
-
 	// If the link element does not yet exist, create it.
 	if !favicon.Truthy() {
 		favicon = document.Call("createElement", "link")
