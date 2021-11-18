@@ -128,6 +128,15 @@ func TestNewWindow(t *testing.T) {
 					return nil
 				}
 
+				if window.Child() == nil {
+					t.Errorf("unexpected nil for window child")
+				}
+
+				if v.widget != nil && v.widget.Kind() != window.Child().Kind() {
+					t.Errorf("window's child kind does not have correct kind: want %s, got %s",
+						v.widget.Kind(), window.Child().Kind())
+				}
+
 				window.Close()
 				return nil
 			}
