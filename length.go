@@ -15,13 +15,6 @@ const (
 	Inch = base.Inch // Inch from a British imperial system of measurements
 )
 
-func guardInf(a, b base.Length) base.Length {
-	if a == base.Inf {
-		return base.Inf
-	}
-	return b
-}
-
 func max(a, b base.Length) base.Length {
 	if a > b {
 		return a

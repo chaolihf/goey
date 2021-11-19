@@ -193,7 +193,7 @@ func (w *vboxElement) MinIntrinsicWidth(height base.Length) base.Length {
 	}
 
 	if w.alignMain == Homogeneous {
-		height = guardInf(height, height.Scale(1, len(w.children)))
+		height = base.GuardInf(height, height.Scale(1, len(w.children)))
 		size := w.children[0].MinIntrinsicWidth(height)
 		for _, v := range w.children[1:] {
 			size = max(size, v.MinIntrinsicWidth(height))

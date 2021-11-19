@@ -5,13 +5,6 @@ const (
 	Inf Length = 0x7fffffff
 )
 
-func guardInf(a, b Length) Length {
-	if a == Inf {
-		return Inf
-	}
-	return b
-}
-
 func max(a, b Length) Length {
 	if a > b {
 		return a
@@ -167,14 +160,14 @@ func (bc Constraints) HasTightHeight() bool {
 // those new constraints can be increased by width and height and will satisfy
 // the original constrains.
 func (bc Constraints) Inset(width Length, height Length) Constraints {
-	deflatedMinWidth := guardInf(bc.Min.Width, max(0, bc.Min.Width-width))
-	deflatedMinHeight := guardInf(bc.Min.Height, max(0, bc.Min.Height-height))
+	deflatedMinWidth := GuardInf(bc.Min.Width, max(0, bc.Min.Width-width))
+	deflatedMinHeight := GuardInf(bc.Min.Height, max(0, bc.Min.Height-height))
 
 	return Constraints{
 		Size{deflatedMinWidth, deflatedMinHeight},
 		Size{
-			max(deflatedMinWidth, guardInf(bc.Max.Width, bc.Max.Width-width)),
-			max(deflatedMinHeight, guardInf(bc.Max.Height, bc.Max.Height-height)),
+			max(deflatedMinWidth, GuardInf(bc.Max.Width, bc.Max.Width-width)),
+			max(deflatedMinHeight, GuardInf(bc.Max.Height, bc.Max.Height-height)),
 		},
 	}
 }

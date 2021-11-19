@@ -47,6 +47,18 @@ func ExampleLength_String() {
 	// Converting:  1pc is equal to 16.0dip
 }
 
+func ExampleGuardInf() {
+	width1 := base.Inf
+	width2 := 1 * base.Inch
+
+	fmt.Printf("Half of Inf is %s.\n", base.GuardInf(width1, width1/2))
+	fmt.Printf("Half of %s is %s.\n", width2, base.GuardInf(width2, width2/2))
+
+	// Output:
+	// Half of Inf is Inf.
+	// Half of 96:00 is 48:00.
+}
+
 func ExampleRectangle() {
 	r := base.Rectangle{
 		Min: base.Point{10 * base.DIP, 20 * base.DIP},

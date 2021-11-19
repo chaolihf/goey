@@ -42,6 +42,16 @@ func (v Length) Clamp(min, max Length) Length {
 	return v
 }
 
+// GuardInf protects a calculation in case a length is Inf.
+// The return is b only if a is not Inf.
+func GuardInf(a, b Length) Length {
+	if a == Inf {
+		return Inf
+	}
+
+	return b
+}
+
 // DIP returns a float64 with the length measured in device independent pixels.
 func (v Length) DIP() float64 {
 	return float64(v) / (1 << 6)

@@ -164,7 +164,7 @@ func (w *hboxElement) MinIntrinsicHeight(width base.Length) base.Length {
 	}
 
 	if w.alignMain == Homogeneous {
-		width = guardInf(width, width.Scale(1, len(w.children)))
+		width = base.GuardInf(width, width.Scale(1, len(w.children)))
 		size := w.children[0].MinIntrinsicHeight(width)
 		for _, v := range w.children[1:] {
 			size = max(size, v.MinIntrinsicHeight(width))
