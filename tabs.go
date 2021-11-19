@@ -41,17 +41,19 @@ func (*Tabs) Kind() *base.Kind {
 // The newly created widget will be a child of the widget specified by parent.
 func (w *Tabs) Mount(parent base.Control) (base.Element, error) {
 	// Ensure that the Value is a useable index.
-	if w.Value < 0 {
-		w.Value = 0
-	}
 	w.UpdateValue()
 	// Forward to the platform-dependant code
 	return w.mount(parent)
 }
 
-// UpdateValue ensures that the index for the currently selected tab is with
-// the allowed range.
+// UpdateValue ensures that the index for the currently selected tab is with the
+// allowed range.  If the list of tabs is empty, then the index will be
+// negative.
 func (w *Tabs) UpdateValue() {
+	if w.Value < 0 {
+		w.Value = 0
+	} 
+	
 	if w.Value >= len(w.Children) {
 		w.Value = len(w.Children) - 1
 	}

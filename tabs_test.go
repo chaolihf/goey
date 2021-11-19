@@ -71,3 +71,35 @@ func TestTabsMinSize(t *testing.T) {
 		{"Tab C", &Button{Text: "..."}},
 	}})
 }
+
+func TestTabs_UpdateValue(t *testing.T) {
+	someTabs := []TabItem{
+		{"Tab A", nil},
+		{"Tab B", nil},
+		{"Tab C", nil},
+	}
+
+	cases := []struct {
+		value int
+		tabs  []TabItem
+		out   int
+	}{
+		{0, someTabs, 0},
+		{2, someTabs, 2},
+		{-10, someTabs, 0},
+		{10, someTabs, 2},
+		{0, nil, -1},
+	}
+
+	for i, v := range cases {
+		widget := &Tabs{
+			Value:    v.value,
+			Children: v.tabs,
+		}
+
+		widget.UpdateValue()
+		if widget.Value != v.out {
+			t.Errorf("case %d: want %d, got %d", i, v.out, widget.Value)
+		}
+	}
+}
