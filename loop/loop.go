@@ -9,11 +9,11 @@ import (
 )
 
 var (
-	// ErrNotRunning indicates that the main loop is not running.
-	ErrNotRunning = errors.New("main loop is not running")
+	// ErrNotRunning indicates that the GUI event loop is not running.
+	ErrNotRunning = errors.New("GUI event loop is not running")
 
-	// ErrAlreadyRunning indicates that the main loop is already running.
-	ErrAlreadyRunning = errors.New("main loop is already running")
+	// ErrAlreadyRunning indicates that the GUI event loop is already running.
+	ErrAlreadyRunning = errors.New("GUI event loop is already running")
 )
 
 var (

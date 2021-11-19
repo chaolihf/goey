@@ -258,6 +258,23 @@ func TestDo(t *testing.T) {
 	}
 }
 
+func TestAddLockCount(t *testing.T) {
+	// The functionality of AddLockCount is tightly coupled with the behaviour
+	// of Run.  Therefore, AddLockCount is nearly completely tested by testing
+	// Run.  However, there is one additional behaviour to test, which is that
+	// AddLockCount will panic if the GUI event loop is not running.
+
+	defer func() {
+		if r := recover(); r != nil {
+			t.Logf("expected panic: %s", r)
+		}
+	}()
+
+	loop.AddLockCount(0)
+
+	t.Errorf("loop.AddCount failed to panic")
+}
+
 func BenchmarkRunNoInit(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		err := loop.Run(func() error {
