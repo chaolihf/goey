@@ -16,7 +16,7 @@ import (
 
 const (
 	// Flag to control behaviour of UnlockOSThread in Run.
-	unlockThreadAfterRun = false
+	isOSThreadLockedAtInit = true
 )
 
 var (

@@ -21,17 +21,21 @@ let
     "gtk" = "";
     "js" = "chromium --version;"
       # See https://github.com/golang/go/issues/49011
-      + "unset buildInputs HOST_PATH nobuildPhase builder shellHook phases; unset $(env | grep NIX_ | awk -F= '{print $1}');";
+      + "unset buildInputs builder LS_COLORS HOST_PATH nobuildPhase phases shellHook;"
+      + "unset $(env | grep -E ^deps | awk -F= '{print $1}');"
+      + "unset $(env | grep NIX_ | awk -F= '{print $1}');";
     "windows" = "wine64 --version;";
   };
   wasmbrowsertest = import ./wasmbrowsertest.nix { inherit pkgs; };
   wine64 = import ./wine64.nix { inherit pkgs; };
 in pkgs.mkShell ({
   # No dependencies beyond stdlib.
-  buildInputs = [ pkgs.go ] ++ platformInputs.${platform}
+  buildInputs = [ pkgs.go pkgs.cacert ] ++ platformInputs.${platform}
     ++ (if enableLint then [ pkgs.golangci-lint ] else [ ]);
 
   GOROOT = pkgs.go + "/share/go";
+
+  PATH = "${pkgs.coreutils}/bin:${pkgs.go}/bin";
 
   # Make sure we don't pick up the users' GOPATH.
   # Advertise the current version of go when shell starts.

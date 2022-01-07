@@ -1,5 +1,5 @@
 before_script: &before_script_all
-  - cat /etc/*-release
+  - cat /etc/*-release || true
   - if [ -x "$(command -v go)" ]; then go version; fi;
   - if [ -n "$APT_GET" ]; then apt-get update -qq -y; apt-get install -qq -y --no-install-recommends $APT_GET; fi;
   - if [ -n "$DISPLAY" ]; then Xvfb $DISPLAY -screen 0 1024x768x24 & fi;
@@ -101,15 +101,15 @@ nix-all:
     - nix-env -iA nixpkgs.xvfb-run nixpkgs.fluxbox
     - xvfb-run -n 99 fluxbox &
     - export DISPLAY=:99
-    - nix-shell --pure --argstr platform ${PLATFORM} --command "go build -v ./base ./loop ./windows . ./example/..."
-    - nix-shell --pure --argstr platform ${PLATFORM} --command "go build -v ./base ./loop ./windows . ./example/..." ./shell-pinned.nix
+    - nix-shell --pure --argstr platform ${PLATFORM} --command "cd ${CI_PROJECT_DIR}; go build -v ./base ./loop ./windows . ./example/..."
+    - nix-shell --pure --argstr platform ${PLATFORM} --command "cd ${CI_PROJECT_DIR}; go build -v ./base ./loop ./windows . ./example/..." ./shell-pinned.nix
     - if [ $PLATFORM == "js" ]; then
-    -   nix-shell --pure --argstr platform ${PLATFORM} --command "go test -v -short -run=Test ./base ./loop ./windows ."
+    -   nix-shell --pure --argstr platform ${PLATFORM} --command "cd ${CI_PROJECT_DIR}; go test -v -short -run=Test ./base ./loop ./windows ."
     - elif [ $PLATFORM == "windows" ]; then
     -   timeout 30s nix-shell --keep DISPLAY --argstr platform ${PLATFORM} --command "wineboot --update" || true
-    -   nix-shell --keep DISPLAY --argstr platform ${PLATFORM} --command "go test -v -short ./base ./loop ./windows ."
+    -   nix-shell --keep DISPLAY --argstr platform ${PLATFORM} --command "cd ${CI_PROJECT_DIR}; go test -v -short ./base ./loop ./windows ."
     - else
-    -   nix-shell --pure --keep DISPLAY --argstr platform ${PLATFORM} --command "go test -v -short ./base ./loop ./windows ."
+    -   nix-shell --pure --keep DISPLAY --argstr platform ${PLATFORM} --command "cd ${CI_PROJECT_DIR}; go test -v -short ./base ./loop ./windows ."
     - fi
   parallel:
     matrix:

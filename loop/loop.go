@@ -50,18 +50,21 @@ func Run(action func() error) error {
 		atomic.StoreUint32(&isRunning, 0)
 	}()
 
-	// Pin the GUI message loop to a single thread
-	runtime.LockOSThread()
-	// The following deferred call to UnlockOSThread works fine on WIN32 and
-	// on Linux, where it is paired with the above LockOSThread.  It would
-	// also work with GNUstep on Go 1.10, where the behaviour of this pair
-	// was changed.  However, on GNUstep with Go 1.9 or earlier, the following
-	// call will break testing this the calls do not nest, and a call to
-	// LockOSThread is done at the package init.
-	// Refer to https://golang.org/doc/go1.10.
+	// Pin the GUI message loop to a single thread.
+	//
+	// On cocoa, the call to runtime.LockOSThread needs to happen in the init
+	// function.  Otherwise, there is no guarantee that the main goroutine will
+	// still be on the main thread by the time that loop.Run is called.  On the
+	// otherhand, calls to LockOSThread and UnlockOSThread do not nest on older
+	// versions of Go, and we need to avoid unlocking the OS thread, which will
+	// break tests since there are multiple calls to loop.Run.
+	//
 	// Conversely, we need to release the thread on Linux with GTK to prevent
 	// hangs with repeated calls to Run.
-	if unlockThreadAfterRun {
+	//
+	// Refer to https://golang.org/doc/go1.10.
+	if !isOSThreadLockedAtInit {
+		runtime.LockOSThread()
 		defer runtime.UnlockOSThread()
 	}
 
