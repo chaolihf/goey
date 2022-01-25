@@ -10,7 +10,6 @@ import (
 	"sync/atomic"
 
 	"bitbucket.org/rj/goey/base"
-	"bitbucket.org/rj/goey/dialog"
 )
 
 var (
@@ -124,30 +123,6 @@ func (w *windowImpl) MinSize() base.Size {
 			Height: max(height, size1.Height),
 		}
 	}
-}
-
-// Message returns a builder that can be used to construct a message
-// dialog, and then show that dialog.
-func (w *Window) Message(text string) *dialog.Message {
-	ret := dialog.NewMessage(text)
-	w.message(ret)
-	return ret
-}
-
-// OpenFileDialog returns a builder that can be used to construct an open file
-// dialog, and then show that dialog.
-func (w *Window) OpenFileDialog() *dialog.OpenFile {
-	ret := dialog.NewOpenFile()
-	w.openfiledialog(ret)
-	return ret
-}
-
-// SaveFileDialog returns a builder that can be used to construct a save file
-// dialog, and then show that dialog.
-func (w *Window) SaveFileDialog() *dialog.SaveFile {
-	ret := dialog.NewSaveFile()
-	w.savefiledialog(ret)
-	return ret
 }
 
 // Scroll returns the flags that determine whether scrolling is allowed in the

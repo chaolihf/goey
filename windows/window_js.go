@@ -9,7 +9,6 @@ import (
 	"syscall/js"
 
 	"bitbucket.org/rj/goey/base"
-	"bitbucket.org/rj/goey/dialog"
 	"bitbucket.org/rj/goey/internal/js"
 	"bitbucket.org/rj/goey/loop"
 	"gitlab.com/stone.code/assert"
@@ -97,21 +96,6 @@ func (w *windowImpl) close() {
 		w.handle = js.Null()
 		loop.AddLockCount(-1)
 	}
-}
-
-func (w *windowImpl) message(m *dialog.Message) {
-	// m.WithTitle(win2.GetWindowText(w.hWnd))
-	// m.WithOwner(w.hWnd)
-}
-
-func (w *windowImpl) openfiledialog(m *dialog.OpenFile) {
-	// m.WithTitle(win2.GetWindowText(w.hWnd))
-	// m.WithOwner(w.hWnd)
-}
-
-func (w *windowImpl) savefiledialog(m *dialog.SaveFile) {
-	// m.WithTitle(win2.GetWindowText(w.hWnd))
-	// m.WithOwner(w.hWnd)
 }
 
 func (w *windowImpl) onSize() {

@@ -1,3 +1,6 @@
+//go:build !js
+// +build !js
+
 // This package provides an example application built using the goey package
 // that shows the use of message boxes.
 package main
