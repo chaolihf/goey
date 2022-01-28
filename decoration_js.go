@@ -1,3 +1,4 @@
+//go:build go1.12
 // +build go1.12
 
 package goey
@@ -7,9 +8,9 @@ import (
 	"image/color"
 	"strconv"
 	"strings"
-	"syscall/js"
 
 	"bitbucket.org/rj/goey/base"
+	"bitbucket.org/rj/goey/internal/js"
 	"gitlab.com/stone.code/assert"
 )
 
@@ -23,8 +24,7 @@ type decorationElement struct {
 
 func (w *Decoration) mount(parent base.Control) (base.Element, error) {
 	// Create the control
-	handle := js.Global().Get("document").Call("createElement", "div")
-	handle.Set("className", "goey panel panel-default")
+	handle := goeyjs.CreateElement("div", "goey panel panel-default")
 	parent.Handle.Call("appendChild", handle)
 
 	// Create the element

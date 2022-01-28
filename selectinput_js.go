@@ -21,10 +21,8 @@ type selectinputElement struct {
 
 func (w *SelectInput) mount(parent base.Control) (base.Element, error) {
 	// Create the control
-	document := js.Global().Get("document")
-	handle := document.Call("createElement", "select")
-	handle.Set("className", "goey form-control")
-	opt := document.Call("createElement", "option")
+	handle := goeyjs.CreateElement("select", "goey form-control")
+	opt := goeyjs.CreateElement("option", "")
 	opt.Set("text", "XXXXXXXX")
 	handle.Call("appendChild", opt)
 	parent.Handle.Call("appendChild", handle)
@@ -47,21 +45,17 @@ func (w *selectinputElement) Close() {
 }
 
 func (w *selectinputElement) createMeasurementElement() js.Value {
-	document := js.Global().Get("document")
-
-	handle := document.Call("createElement", "select")
-	handle.Set("className", "form-control goey-measure")
+	handle := goeyjs.CreateElement("select", "form-control goey-measure")
 
 	// Add the options
 	n := w.handle.Get("length").Int()
 	for i := 0; i < n; i++ {
-		opt := document.Call("createElement", "option")
+		opt := goeyjs.CreateElement("option", "")
 		opt.Set("text", w.handle.Index(i).Get("text"))
 		handle.Call("add", opt)
 	}
 
-	body := document.Call("getElementsByTagName", "body").Index(0)
-	body.Call("appendChild", handle)
+	goeyjs.AppendChildToBody(handle)
 
 	return handle
 }
@@ -141,7 +135,7 @@ func updateOptionList(handle js.Value, items []string) {
 
 	// Add new options
 	for i := n; i < len(items); i++ {
-		opt := js.Global().Get("document").Call("createElement", "option")
+		opt := goeyjs.CreateElement("option", "")
 		opt.Set("text", items[i])
 		opt.Set("value", strconv.Itoa(i))
 		handle.Call("add", opt)

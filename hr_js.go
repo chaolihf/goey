@@ -1,12 +1,13 @@
+//go:build go1.12
 // +build go1.12
 
 package goey
 
 import (
 	"fmt"
-	"syscall/js"
 
 	"bitbucket.org/rj/goey/base"
+	"bitbucket.org/rj/goey/internal/js"
 )
 
 type hrElement struct {
@@ -15,8 +16,7 @@ type hrElement struct {
 
 func (w *HR) mount(parent base.Control) (base.Element, error) {
 	// Create the control
-	handle := js.Global().Get("document").Call("createElement", "hr")
-	handle.Set("className", "goey")
+	handle := goeyjs.CreateElement("hr", "goey")
 	parent.Handle.Call("appendChild", handle)
 
 	// Create the element

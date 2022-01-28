@@ -1,10 +1,10 @@
+//go:build go1.12
 // +build go1.12
 
 package goey
 
 import (
 	"strconv"
-	"syscall/js"
 
 	"bitbucket.org/rj/goey/base"
 	"bitbucket.org/rj/goey/internal/js"
@@ -20,9 +20,8 @@ type sliderElement struct {
 
 func (w *Slider) mount(parent base.Control) (base.Element, error) {
 	// Create the control
-	handle := js.Global().Get("document").Call("createElement", "input")
+	handle := goeyjs.CreateElement("input", "goey form-range")
 	handle.Set("type", "range")
-	handle.Set("className", "goey form-range")
 	parent.Handle.Call("appendChild", handle)
 
 	// Create the element

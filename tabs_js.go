@@ -8,6 +8,7 @@ import (
 	"syscall/js"
 
 	"bitbucket.org/rj/goey/base"
+	"bitbucket.org/rj/goey/internal/js"
 )
 
 type tabsElement struct {
@@ -28,10 +29,8 @@ type tabsElement struct {
 
 func (w *Tabs) mount(parent base.Control) (base.Element, error) {
 	// Create the control
-	handle := js.Global().Get("document").Call("createElement", "ul")
-	handle.Set("className", "goey nav nav-tabs")
-	innerDiv := js.Global().Get("document").Call("createElement", "div")
-	innerDiv.Set("className", "goey goey-tabs-panel")
+	handle := goeyjs.CreateElement("ul", "goey nav nav-tabs")
+	innerDiv := goeyjs.CreateElement("div", "goey goey-tabs-panel")
 	parent.Handle.Call("appendChild", handle)
 	parent.Handle.Call("appendChild", innerDiv)
 
@@ -200,12 +199,10 @@ func updateTabItems(handle js.Value, clickCB js.Value, items []TabItem) {
 
 	// Add new options
 	for i := n; i < len(items); i++ {
-		li := js.Global().Get("document").Call("createElement", "li")
-		li.Set("className", "nav-item")
+		li := goeyjs.CreateElement("li", "nav-item")
 		li.Get("dataset").Set("value", i)
 		li.Set("onclick", clickCB)
-		a := js.Global().Get("document").Call("createElement", "a")
-		a.Set("className", "nav-link")
+		a := goeyjs.CreateElement("a", "nav-link")
 		a.Set("textContent", items[i].Caption)
 		a.Set("href", "#")
 		li.Call("appendChild", a)

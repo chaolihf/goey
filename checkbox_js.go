@@ -26,18 +26,16 @@ func (w *Checkbox) mount(parent base.Control) (base.Element, error) {
 	id := fmt.Sprintf("goey%x", rand.Uint64())
 
 	// Create the control
-	handle := js.Global().Get("document").Call("createElement", "div")
-	handle.Set("className", "goey form-check")
-	elemInput := js.Global().Get("document").Call("createElement", "input")
+	handle := goeyjs.CreateElement("div", "goey form-check")
+	defer parent.Handle.Call("appendChild", handle)
+
+	elemInput := goeyjs.CreateElement("input", "form-check-input")
 	elemInput.Set("type", "checkbox")
-	elemInput.Set("className", "form-check-input")
 	elemInput.Set("id", id)
 	handle.Call("appendChild", elemInput)
-	elemLabel := js.Global().Get("document").Call("createElement", "label")
-	elemLabel.Set("className", "form-check-label")
+	elemLabel := goeyjs.CreateElement("label", "form-check-label")
 	elemLabel.Set("htmlFor", id)
 	handle.Call("appendChild", elemLabel)
-	parent.Handle.Call("appendChild", handle)
 
 	// Create the element
 	retval := &checkboxElement{
@@ -63,20 +61,14 @@ func (w *checkboxElement) Close() {
 }
 
 func (w *checkboxElement) createMeasurementElement() js.Value {
-	document := js.Global().Get("document")
-
-	handle := document.Call("createElement", "div")
-	handle.Set("className", "form-check goey-measure")
-	elemInput := document.Call("createElement", "input")
+	handle := goeyjs.CreateElement("div", "form-check goey-measure")
+	elemInput := goeyjs.CreateElement("input", "form-check-input")
 	elemInput.Set("type", "checkbox")
-	elemInput.Set("className", "form-check-input")
 	handle.Call("appendChild", elemInput)
-	elemLabel := document.Call("createElement", "label")
-	elemLabel.Set("className", "form-check-label")
+	elemLabel := goeyjs.CreateElement("label", "form-check-label")
 	handle.Call("appendChild", elemLabel)
 
-	body := document.Call("getElementsByTagName", "body").Index(0)
-	body.Call("appendChild", handle)
+	goeyjs.AppendChildToBody(handle)
 
 	return handle
 }

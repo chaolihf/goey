@@ -7,6 +7,7 @@ import (
 	"syscall/js"
 
 	"bitbucket.org/rj/goey/base"
+	"bitbucket.org/rj/goey/internal/js"
 	"gitlab.com/stone.code/assert"
 )
 
@@ -16,9 +17,8 @@ type labelElement struct {
 
 func (w *Label) mount(parent base.Control) (base.Element, error) {
 	// Create the control
-	handle := js.Global().Get("document").Call("createElement", "span")
+	handle := goeyjs.CreateElement("span", "goey")
 	handle.Set("textContent", w.Text)
-	handle.Set("className", "goey")
 	parent.Handle.Call("appendChild", handle)
 
 	// Create the element
@@ -35,14 +35,10 @@ func (w *labelElement) createMeasurementElement() js.Value {
 		text = "X"
 	}
 
-	document := js.Global().Get("document")
-
-	handle := document.Call("createElement", "span")
-	handle.Set("className", "goey-measure")
+	handle := goeyjs.CreateElement("span", "goey-measure")
 	handle.Set("textContent", text)
 
-	body := document.Call("getElementsByTagName", "body").Index(0)
-	body.Call("appendChild", handle)
+	goeyjs.AppendChildToBody(handle)
 
 	return handle
 }

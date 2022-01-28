@@ -21,8 +21,7 @@ type textareaElement struct {
 
 func (w *TextArea) mount(parent base.Control) (base.Element, error) {
 	// Create the control
-	handle := js.Global().Get("document").Call("createElement", "textarea")
-	handle.Set("className", "goey form-control")
+	handle := goeyjs.CreateElement("textarea", "goey form-control")
 	parent.Handle.Call("appendChild", handle)
 
 	// Create the element
@@ -43,14 +42,10 @@ func (w *textareaElement) Close() {
 }
 
 func (w *textareaElement) createMeasurementElement() js.Value {
-	document := js.Global().Get("document")
-
-	handle := document.Call("createElement", "textarea")
-	handle.Set("className", "goey-measure form-control")
+	handle := goeyjs.CreateElement("textarea", "goey-measure form-control")
 	handle.Set("rows", w.minLines)
 
-	body := document.Call("getElementsByTagName", "body").Index(0)
-	body.Call("appendChild", handle)
+	goeyjs.AppendChildToBody(handle)
 
 	return handle
 }

@@ -21,8 +21,7 @@ type dateinputElement struct {
 
 func (w *DateInput) mount(parent base.Control) (base.Element, error) {
 	// Create the control
-	handle := js.Global().Get("document").Call("createElement", "input")
-	handle.Set("className", "goey form-control")
+	handle := goeyjs.CreateElement("input", "goey form-control")
 	handle.Set("type", "date")
 	parent.Handle.Call("appendChild", handle)
 
@@ -44,14 +43,10 @@ func (w *dateinputElement) Close() {
 }
 
 func (w *dateinputElement) createMeasurementElement() js.Value {
-	document := js.Global().Get("document")
-
-	handle := document.Call("createElement", "input")
-	handle.Set("className", "form-control goey-measure")
+	handle := goeyjs.CreateElement("input", "form-control goey-measure")
 	handle.Set("type", "date")
 
-	body := document.Call("getElementsByTagName", "body").Index(0)
-	body.Call("appendChild", handle)
+	goeyjs.AppendChildToBody(handle)
 
 	return handle
 }

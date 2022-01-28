@@ -8,6 +8,7 @@ import (
 	"syscall/js"
 
 	"bitbucket.org/rj/goey/base"
+	"bitbucket.org/rj/goey/internal/js"
 )
 
 type paragraphElement struct {
@@ -16,8 +17,7 @@ type paragraphElement struct {
 
 func (w *P) mount(parent base.Control) (base.Element, error) {
 	// Create the control
-	handle := js.Global().Get("document").Call("createElement", "p")
-	handle.Set("className", "goey")
+	handle := goeyjs.CreateElement("p", "goey")
 	parent.Handle.Call("appendChild", handle)
 
 	// Create the element
@@ -30,14 +30,10 @@ func (w *P) mount(parent base.Control) (base.Element, error) {
 }
 
 func (w *paragraphElement) createMeasurementElement(textContent interface{}) js.Value {
-	document := js.Global().Get("document")
-
-	handle := document.Call("createElement", "p")
-	handle.Set("className", "goey-measure")
+	handle := goeyjs.CreateElement("p", "goey-measure")
 	handle.Set("textContent", textContent)
 
-	body := document.Call("getElementsByTagName", "body").Index(0)
-	body.Call("appendChild", handle)
+	goeyjs.AppendChildToBody(handle)
 
 	return handle
 }

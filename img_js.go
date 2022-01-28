@@ -8,7 +8,6 @@ import (
 	"image"
 	"image/png"
 	"strings"
-	"syscall/js"
 
 	"bitbucket.org/rj/goey/base"
 	"bitbucket.org/rj/goey/internal/js"
@@ -22,8 +21,7 @@ type imgElement struct {
 
 func (w *Img) mount(parent base.Control) (base.Element, error) {
 	// Create the control
-	handle := js.Global().Get("document").Call("createElement", "img")
-	handle.Set("className", "goey")
+	handle := goeyjs.CreateElement("img", "goey")
 	parent.Handle.Call("appendChild", handle)
 
 	// Create the element

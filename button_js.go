@@ -21,7 +21,7 @@ type buttonElement struct {
 
 func (w *Button) mount(parent base.Control) (base.Element, error) {
 	// Create the control
-	handle := js.Global().Get("document").Call("createElement", "button")
+	handle := goeyjs.CreateElement("button", "")
 	defer parent.Handle.Call("appendChild", handle)
 
 	// Create the element
@@ -46,14 +46,10 @@ func (w *buttonElement) Close() {
 }
 
 func (w *buttonElement) createMeasurementElement() js.Value {
-	document := js.Global().Get("document")
-
-	handle := document.Call("createElement", "button")
-	handle.Set("className", "btn btn-primary goey-measure")
+	handle := goeyjs.CreateElement("button", "btn btn-primary goey-measure")
 	handle.Set("textContent", w.handle.Get("textContent"))
 
-	body := document.Call("getElementsByTagName", "body").Index(0)
-	body.Call("appendChild", handle)
+	goeyjs.AppendChildToBody(handle)
 
 	return handle
 }

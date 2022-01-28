@@ -1,3 +1,4 @@
+//go:build go1.12
 // +build go1.12
 
 package goey
@@ -7,6 +8,7 @@ import (
 	"syscall/js"
 
 	"bitbucket.org/rj/goey/base"
+	"bitbucket.org/rj/goey/internal/js"
 )
 
 type progressElement struct {
@@ -17,10 +19,8 @@ type progressElement struct {
 
 func (w *Progress) mount(parent base.Control) (base.Element, error) {
 	// Create the control
-	handle := js.Global().Get("document").Call("createElement", "div")
-	handle.Set("className", "goey progress")
-	handle2 := js.Global().Get("document").Call("createElement", "div")
-	handle2.Set("className", "progress-bar")
+	handle := goeyjs.CreateElement("div", "goey progress")
+	handle2 := goeyjs.CreateElement("div", "progress-bar")
 	handle2.Set("role", "progress-bar")
 	handle.Call("appendChild", handle2)
 	parent.Handle.Call("appendChild", handle)

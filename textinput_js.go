@@ -21,8 +21,7 @@ type textinputElement struct {
 
 func (w *TextInput) mount(parent base.Control) (base.Element, error) {
 	// Create the control
-	handle := js.Global().Get("document").Call("createElement", "input")
-	handle.Set("className", "goey form-control")
+	handle := goeyjs.CreateElement("input", "goey form-control")
 	parent.Handle.Call("appendChild", handle)
 
 	// Create the element
@@ -44,13 +43,9 @@ func (w *textinputElement) Close() {
 }
 
 func (w *textinputElement) createMeasurementElement() js.Value {
-	document := js.Global().Get("document")
+	handle := goeyjs.CreateElement("input", "form-control goey-measure")
 
-	handle := document.Call("createElement", "input")
-	handle.Set("className", "form-control goey-measure")
-
-	body := document.Call("getElementsByTagName", "body").Index(0)
-	body.Call("appendChild", handle)
+	goeyjs.AppendChildToBody(handle)
 
 	return handle
 }
