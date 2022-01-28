@@ -1,3 +1,4 @@
+//go:build go1.12
 // +build go1.12
 
 package goey
@@ -46,9 +47,8 @@ func (w *dateinputElement) createMeasurementElement() js.Value {
 	document := js.Global().Get("document")
 
 	handle := document.Call("createElement", "input")
-	handle.Set("className", "form-control")
+	handle.Set("className", "form-control goey-measure")
 	handle.Set("type", "date")
-	handle.Get("style").Set("visibility", "hidden")
 
 	body := document.Call("getElementsByTagName", "body").Index(0)
 	body.Call("appendChild", handle)
