@@ -6,8 +6,8 @@ package dialog
 import (
 	"time"
 
-	"bitbucket.org/rj/goey/internal/gtk"
-	"bitbucket.org/rj/goey/loop"
+	"github.com/chaolihf/goey/internal/gtk"
+	"github.com/chaolihf/goey/loop"
 )
 
 // Owner holds a pointer to the owning window.

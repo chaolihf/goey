@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 func TestDateInputMount(t *testing.T) {

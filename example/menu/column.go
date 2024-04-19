@@ -1,11 +1,11 @@
 package main
 
 import (
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 var (
-	columnKind = base.NewKind("bitbucket.org/rj/goey/example/menu.Column")
+	columnKind = base.NewKind("github.com/chaolihf/goey/example/menu.Column")
 )
 
 // Column describes a layout widget that arranges its child widgets into a several columns.

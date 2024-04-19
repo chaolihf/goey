@@ -9,8 +9,8 @@ import (
 	"image/png"
 	"strings"
 
-	"bitbucket.org/rj/goey/base"
-	"bitbucket.org/rj/goey/internal/js"
+	"github.com/chaolihf/goey/base"
+	"github.com/chaolihf/goey/internal/js"
 )
 
 type imgElement struct {

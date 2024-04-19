@@ -3,7 +3,7 @@ package goey
 import (
 	"unsafe"
 
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 	"github.com/lxn/win"
 )
 

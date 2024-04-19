@@ -1,11 +1,11 @@
 package goey
 
 import (
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 var (
-	hboxKind = base.NewKind("bitbucket.org/rj/goey.HBox")
+	hboxKind = base.NewKind("github.com/chaolihf/goey.HBox")
 )
 
 // HBox describes a layout widget that arranges its child widgets into a row.

@@ -14,10 +14,10 @@ import (
 	"image/color"
 	"strconv"
 
-	"bitbucket.org/rj/goey"
-	"bitbucket.org/rj/goey/base"
-	"bitbucket.org/rj/goey/loop"
-	"bitbucket.org/rj/goey/windows"
+	"github.com/chaolihf/goey"
+	"github.com/chaolihf/goey/base"
+	"github.com/chaolihf/goey/loop"
+	"github.com/chaolihf/goey/windows"
 )
 
 var (

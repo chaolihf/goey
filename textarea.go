@@ -1,11 +1,11 @@
 package goey
 
 import (
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 var (
-	textareaKind = base.NewKind("bitbucket.org/rj/goey.TextArea")
+	textareaKind = base.NewKind("github.com/chaolihf/goey.TextArea")
 )
 
 // TextArea describes a widget that users input or update a multi-line of text.

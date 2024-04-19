@@ -24,13 +24,13 @@ golang-gtk-gopath:
   stage: build
   variables:
     GOPATH: $CI_BUILDS_DIR
-    GIT_CLONE_PATH: $CI_BUILDS_DIR/src/bitbucket.org/rj/goey
+    GIT_CLONE_PATH: $CI_BUILDS_DIR/src/github.com/chaolihf/goey
     DISPLAY: ":1"
     APT_GET: "libgtk-3-dev xvfb"
   script:
-    - go get -v bitbucket.org/rj/goey/base bitbucket.org/rj/goey/loop
-    - go get -v bitbucket.org/rj/goey/example/...
-    - go build -v bitbucket.org/rj/goey bitbucket.org/rj/goey/example/...
+    - go get -v github.com/chaolihf/goey/base github.com/chaolihf/goey/loop
+    - go get -v github.com/chaolihf/goey/example/...
+    - go build -v github.com/chaolihf/goey github.com/chaolihf/goey/example/...
     - go test ./base ./loop ./dialog ./windows .
   parallel:
     matrix:
@@ -122,7 +122,7 @@ test-gtk:
   needs: []
   variables:
     GOPATH: $CI_BUILDS_DIR
-    GIT_CLONE_PATH: $CI_BUILDS_DIR/src/bitbucket.org/rj/goey
+    GIT_CLONE_PATH: $CI_BUILDS_DIR/src/github.com/chaolihf/goey
     DISPLAY: ":1"
     APT_GET: "libgtk-3-dev xvfb"
     SCREENSHOTS: "onebutton twofields threebuttons decoration colour"
@@ -144,7 +144,7 @@ test-gtk:
     - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- v1.42.0
     - ./bin/golangci-lint run -v --enable=$LINTERS ./base ./loop ./dialog ./goeytest .
     - mkdir ./images
-    - for elem in $SCREENSHOTS; do go build -v bitbucket.org/rj/goey/example/$elem; done
+    - for elem in $SCREENSHOTS; do go build -v github.com/chaolihf/goey/example/$elem; done
     - for elem in $SCREENSHOTS; do GOEY_SCREENSHOT=./images/${elem}_linux.png ./$elem; done
   cache:
     key: test

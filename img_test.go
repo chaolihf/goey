@@ -6,7 +6,7 @@ import (
 	"image/draw"
 	"testing"
 
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 func drawVerticalRGB(img draw.Image) {

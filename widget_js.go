@@ -1,3 +1,4 @@
+//go:build go1.12
 // +build go1.12
 
 package goey
@@ -6,7 +7,7 @@ import (
 	"fmt"
 	"syscall/js"
 
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 	"gitlab.com/stone.code/assert"
 )
 

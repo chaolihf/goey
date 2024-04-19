@@ -6,7 +6,7 @@ import (
 	"testing"
 	"unsafe"
 
-	"bitbucket.org/rj/goey/internal/nopanic"
+	"github.com/chaolihf/goey/internal/nopanic"
 	"github.com/lxn/win"
 )
 

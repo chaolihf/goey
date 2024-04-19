@@ -1,8 +1,8 @@
 package icons
 
 import (
-	"bitbucket.org/rj/goey"
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey"
+	"github.com/chaolihf/goey/base"
 )
 
 type iconElement struct {

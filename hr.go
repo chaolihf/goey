@@ -1,11 +1,11 @@
 package goey
 
 import (
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 var (
-	hrKind = base.NewKind("bitbucket.org/rj/goey.HR")
+	hrKind = base.NewKind("github.com/chaolihf/goey.HR")
 )
 
 // HR describes a widget that is a horizontal separator.

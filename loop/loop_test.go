@@ -7,8 +7,8 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"bitbucket.org/rj/goey/internal/nopanic"
-	"bitbucket.org/rj/goey/loop"
+	"github.com/chaolihf/goey/internal/nopanic"
+	"github.com/chaolihf/goey/loop"
 )
 
 func ExampleRun() {

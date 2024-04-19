@@ -47,14 +47,14 @@ func ExampleMount_nil() {
 
 	// Output:
 	// The value of elem is nil... false
-	// The kind of elem is... bitbucket.org/rj/goey/base.nil
+	// The kind of elem is... github.com/chaolihf/goey/base.nil
 	// The minimum intrinsic height is... 0:00
 	// The minimum intrinsic width is... 0:00
 }
 
 func TestMount(t *testing.T) {
-	kind1 := NewKind("bitbucket.org/rj/goey/base.Mock1")
-	kind2 := NewKind("bitbucket.org/rj/goey/base.Mock2")
+	kind1 := NewKind("github.com/chaolihf/goey/base.Mock1")
+	kind2 := NewKind("github.com/chaolihf/goey/base.Mock2")
 	err1 := errors.New("fake error 1 for mounting widget")
 	err2 := errors.New("fake error 2 for mounting widget")
 

@@ -4,7 +4,7 @@
 package dialog
 
 import (
-	"bitbucket.org/rj/goey/internal/gtk"
+	"github.com/chaolihf/goey/internal/gtk"
 )
 
 func (m *SaveFile) show() (string, error) {

@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"testing"
 
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 func TestTextAreaMount(t *testing.T) {

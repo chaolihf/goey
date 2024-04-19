@@ -4,8 +4,8 @@ import (
 	"errors"
 	"testing"
 
-	"bitbucket.org/rj/goey/base"
-	"bitbucket.org/rj/goey/mock"
+	"github.com/chaolihf/goey/base"
+	"github.com/chaolihf/goey/mock"
 )
 
 func (w *alignElement) Props() base.Widget {

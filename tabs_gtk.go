@@ -6,8 +6,8 @@ package goey
 import (
 	"bytes"
 
-	"bitbucket.org/rj/goey/base"
-	"bitbucket.org/rj/goey/internal/gtk"
+	"github.com/chaolihf/goey/base"
+	"github.com/chaolihf/goey/internal/gtk"
 )
 
 type tabsElement struct {

@@ -1,11 +1,11 @@
 package goey
 
 import (
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 var (
-	emptyKind = base.NewKind("bitbucket.org/rj/goey.Empty")
+	emptyKind = base.NewKind("github.com/chaolihf/goey.Empty")
 )
 
 // Empty describes a widget that is either a horizontal or vertical gap.

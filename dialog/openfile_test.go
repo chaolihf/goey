@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"bitbucket.org/rj/goey/loop"
+	"github.com/chaolihf/goey/loop"
 )
 
 func getwd(t *testing.T) string {

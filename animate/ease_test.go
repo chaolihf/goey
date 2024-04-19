@@ -1,7 +1,7 @@
 package animate
 
 import (
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 	"math/rand"
 	"reflect"
 	"testing"

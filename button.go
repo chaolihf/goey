@@ -1,11 +1,11 @@
 package goey
 
 import (
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 var (
-	buttonKind = base.NewKind("bitbucket.org/rj/goey.Button")
+	buttonKind = base.NewKind("github.com/chaolihf/goey.Button")
 )
 
 // Button describes a widget that users can click to initiate an action.

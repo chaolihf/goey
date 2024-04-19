@@ -5,10 +5,10 @@ import (
 	"syscall"
 	"unsafe"
 
-	"bitbucket.org/rj/goey/base"
-	"bitbucket.org/rj/goey/dialog"
-	win2 "bitbucket.org/rj/goey/internal/windows"
-	"bitbucket.org/rj/goey/loop"
+	"github.com/chaolihf/goey/base"
+	"github.com/chaolihf/goey/dialog"
+	win2 "github.com/chaolihf/goey/internal/windows"
+	"github.com/chaolihf/goey/loop"
 	"github.com/lxn/win"
 )
 

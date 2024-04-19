@@ -1,11 +1,11 @@
 package main
 
 import (
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 var (
-	minsizedboxKind = base.NewKind("bitbucket.org/rj/goey/example/feettometer.MinSizedBox")
+	minsizedboxKind = base.NewKind("github.com/chaolihf/goey/example/feettometer.MinSizedBox")
 )
 
 // MinSizedBox is a custom layout widget that sizes its child widget according

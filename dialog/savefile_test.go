@@ -4,7 +4,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"bitbucket.org/rj/goey/loop"
+	"github.com/chaolihf/goey/loop"
 )
 
 func TestNewSaveFile(t *testing.T) {

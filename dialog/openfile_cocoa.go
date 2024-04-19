@@ -4,7 +4,7 @@
 package dialog
 
 import (
-	"bitbucket.org/rj/goey/internal/cocoa"
+	"github.com/chaolihf/goey/internal/cocoa"
 )
 
 func (m *OpenFile) show() (string, error) {

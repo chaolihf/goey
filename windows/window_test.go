@@ -11,10 +11,10 @@ import (
 	"testing/quick"
 	"time"
 
-	"bitbucket.org/rj/goey/base"
-	"bitbucket.org/rj/goey/loop"
-	"bitbucket.org/rj/goey/mock"
-	"bitbucket.org/rj/goey/windows"
+	"github.com/chaolihf/goey/base"
+	"github.com/chaolihf/goey/loop"
+	"github.com/chaolihf/goey/mock"
+	"github.com/chaolihf/goey/windows"
 )
 
 func ExampleNewWindow() {

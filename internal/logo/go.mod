@@ -1,4 +1,4 @@
-module bitbucket.org/rj/goey/internal/logo
+module github.com/chaolihf/goey/internal/logo
 
 go 1.9
 

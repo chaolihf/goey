@@ -1,11 +1,11 @@
 package goey
 
 import (
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 var (
-	selectKind = base.NewKind("bitbucket.org/rj/goey.SelectInput")
+	selectKind = base.NewKind("github.com/chaolihf/goey.SelectInput")
 )
 
 // SelectInput describes a widget that users can click to select one from a fixed list of choices.

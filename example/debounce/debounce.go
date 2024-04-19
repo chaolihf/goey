@@ -3,7 +3,7 @@ package main
 import (
 	"time"
 
-	"bitbucket.org/rj/goey/loop"
+	"github.com/chaolihf/goey/loop"
 )
 
 // Debounce will return a new function that debounces the callback.

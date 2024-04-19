@@ -1,8 +1,8 @@
 package animate
 
 import (
-	"bitbucket.org/rj/goey/loop"
 	"errors"
+	"github.com/chaolihf/goey/loop"
 	"sync/atomic"
 	"time"
 )

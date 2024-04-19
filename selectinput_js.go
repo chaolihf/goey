@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"syscall/js"
 
-	"bitbucket.org/rj/goey/base"
-	goeyjs "bitbucket.org/rj/goey/internal/js"
+	"github.com/chaolihf/goey/base"
+	goeyjs "github.com/chaolihf/goey/internal/js"
 )
 
 type selectinputElement struct {

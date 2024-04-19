@@ -1,11 +1,11 @@
 package goey
 
 import (
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 var (
-	paddingKind = base.NewKind("bitbucket.org/rj/goey.Padding")
+	paddingKind = base.NewKind("github.com/chaolihf/goey.Padding")
 )
 
 // Insets describe padding that should be added around a widget.

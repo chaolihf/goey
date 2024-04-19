@@ -5,7 +5,7 @@ import (
 	"time"
 	"unsafe"
 
-	"bitbucket.org/rj/goey/loop"
+	"github.com/chaolihf/goey/loop"
 	"github.com/lxn/win"
 )
 

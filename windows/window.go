@@ -9,7 +9,7 @@ import (
 	"strings"
 	"sync/atomic"
 
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 var (

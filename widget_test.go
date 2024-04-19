@@ -9,10 +9,10 @@ import (
 	"testing"
 	"time"
 
-	"bitbucket.org/rj/goey/base"
-	"bitbucket.org/rj/goey/goeytest"
-	"bitbucket.org/rj/goey/loop"
-	"bitbucket.org/rj/goey/windows"
+	"github.com/chaolihf/goey/base"
+	"github.com/chaolihf/goey/goeytest"
+	"github.com/chaolihf/goey/loop"
+	"github.com/chaolihf/goey/windows"
 )
 
 type Proper interface {

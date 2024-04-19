@@ -3,7 +3,7 @@ package goey
 import (
 	"testing"
 
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 func TestTabsMount(t *testing.T) {

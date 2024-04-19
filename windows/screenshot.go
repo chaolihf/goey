@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	"bitbucket.org/rj/goey/loop"
+	"github.com/chaolihf/goey/loop"
 )
 
 type screenshoter interface {

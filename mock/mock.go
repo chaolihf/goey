@@ -1,11 +1,11 @@
 package mock
 
 import (
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 var (
-	mockKind = base.NewKind("bitbucket.org/rj/goey/mock.Widget")
+	mockKind = base.NewKind("github.com/chaolihf/goey/mock.Widget")
 )
 
 // New returns a new mock element.

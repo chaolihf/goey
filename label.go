@@ -1,11 +1,11 @@
 package goey
 
 import (
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 var (
-	labelKind = base.NewKind("bitbucket.org/rj/goey.Label")
+	labelKind = base.NewKind("github.com/chaolihf/goey.Label")
 )
 
 // Label describes a widget that provides a descriptive label for other fields.

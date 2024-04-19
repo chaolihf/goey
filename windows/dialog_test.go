@@ -6,8 +6,8 @@ package windows_test
 import (
 	"fmt"
 
-	"bitbucket.org/rj/goey/loop"
-	"bitbucket.org/rj/goey/windows"
+	"github.com/chaolihf/goey/loop"
+	"github.com/chaolihf/goey/windows"
 )
 
 func ExampleWindow_Message() {

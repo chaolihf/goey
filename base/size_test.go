@@ -5,7 +5,7 @@ import (
 	"image"
 	"testing"
 
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 func ExampleFromPixels() {

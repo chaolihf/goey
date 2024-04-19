@@ -3,11 +3,11 @@ package goey
 import (
 	"image/color"
 
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 var (
-	decorationKind = base.NewKind("bitbucket.org/rj/goey.Decoration")
+	decorationKind = base.NewKind("github.com/chaolihf/goey.Decoration")
 )
 
 // Decoration describes a widget that provides a border and background, and

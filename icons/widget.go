@@ -1,8 +1,8 @@
 package icons
 
 import (
-	"bitbucket.org/rj/goey"
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey"
+	"github.com/chaolihf/goey/base"
 	"github.com/golang/freetype/truetype"
 	"golang.org/x/image/font"
 )
@@ -11,7 +11,7 @@ import (
 type Icon rune
 
 var (
-	kind   = base.NewKind("bitbucket.org/rj/goey/icons.Icon")
+	kind   = base.NewKind("github.com/chaolihf/goey/icons.Icon")
 	assets struct {
 		font *truetype.Font
 		face font.Face

@@ -6,10 +6,10 @@ package windows
 import (
 	"image"
 
-	"bitbucket.org/rj/goey/base"
-	"bitbucket.org/rj/goey/dialog"
-	"bitbucket.org/rj/goey/internal/gtk"
-	"bitbucket.org/rj/goey/loop"
+	"github.com/chaolihf/goey/base"
+	"github.com/chaolihf/goey/dialog"
+	"github.com/chaolihf/goey/internal/gtk"
+	"github.com/chaolihf/goey/loop"
 )
 
 type windowImpl struct {

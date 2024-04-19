@@ -4,7 +4,7 @@
 package base
 
 import (
-	"bitbucket.org/rj/goey/internal/cocoa"
+	"github.com/chaolihf/goey/internal/cocoa"
 )
 
 const (

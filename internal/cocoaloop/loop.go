@@ -9,7 +9,7 @@ import "C"
 import (
 	"sync"
 
-	"bitbucket.org/rj/goey/internal/nopanic"
+	"github.com/chaolihf/goey/internal/nopanic"
 )
 
 func Init() {

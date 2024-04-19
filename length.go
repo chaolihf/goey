@@ -1,7 +1,7 @@
 package goey
 
 import (
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 // Common lengths used when describing GUIs.

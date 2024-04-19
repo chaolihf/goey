@@ -1,12 +1,12 @@
 package goey
 
 import (
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 	"time"
 )
 
 var (
-	dateInputKind = base.NewKind("bitbucket.org/rj/goey.DateInput")
+	dateInputKind = base.NewKind("github.com/chaolihf/goey.DateInput")
 )
 
 // DateInput describes a widget that users input or update a single date.

@@ -1,7 +1,7 @@
 package windows
 
 import (
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 func max(a, b base.Length) base.Length {

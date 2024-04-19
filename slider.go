@@ -1,11 +1,11 @@
 package goey
 
 import (
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 var (
-	sliderKind = base.NewKind("bitbucket.org/rj/goey.Slider")
+	sliderKind = base.NewKind("github.com/chaolihf/goey.Slider")
 )
 
 // Slider describes a widget that users input or update a single real value.

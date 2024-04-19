@@ -4,8 +4,8 @@ import (
 	"reflect"
 	"testing"
 
-	"bitbucket.org/rj/goey/base"
-	"bitbucket.org/rj/goey/loop"
+	"github.com/chaolihf/goey/base"
+	"github.com/chaolihf/goey/loop"
 )
 
 // A Proper is an element that can extract it's properties from the underlying

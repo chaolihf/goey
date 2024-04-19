@@ -4,13 +4,13 @@
 // limited to support portability.  Additionally, styling of the controls
 // will be limited, with the look of controls matching the native platform.
 //
-// The minimal GUI example application is bitbucket.org/rj/goey/example/onebutton,
+// The minimal GUI example application is github.com/chaolihf/goey/example/onebutton,
 // and additional example applications are in the example folder.
 //
 // Screenshots
 //
 // There are screenshots of some of the example applications linked in the
-// README, located at https://bitbucket.org/rj/goey/src/default/README.md.
+// README, located at https://github.com/chaolihf/goey/src/default/README.md.
 //
 // Windows
 //

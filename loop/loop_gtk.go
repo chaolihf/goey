@@ -1,3 +1,4 @@
+//go:build gtk || (linux && !cocoa) || (freebsd && !cocoa) || (openbsd && !cocoa)
 // +build gtk linux,!cocoa freebsd,!cocoa openbsd,!cocoa
 
 package loop
@@ -6,8 +7,8 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"bitbucket.org/rj/goey/internal/gtkloop"
-	"bitbucket.org/rj/goey/internal/nopanic"
+	"github.com/chaolihf/goey/internal/gtkloop"
+	"github.com/chaolihf/goey/internal/nopanic"
 )
 
 const (

@@ -1,11 +1,11 @@
 package goey
 
 import (
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 var (
-	vboxKind = base.NewKind("bitbucket.org/rj/goey.VBox")
+	vboxKind = base.NewKind("github.com/chaolihf/goey.VBox")
 )
 
 // MainAxisAlign identifies the different types of alignment that are possible

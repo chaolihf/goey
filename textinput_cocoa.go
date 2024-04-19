@@ -1,3 +1,4 @@
+//go:build cocoa || (darwin && !gtk)
 // +build cocoa darwin,!gtk
 
 package goey
@@ -5,9 +6,9 @@ package goey
 import (
 	"time"
 
-	"bitbucket.org/rj/goey/base"
-	"bitbucket.org/rj/goey/internal/cocoa"
-	"bitbucket.org/rj/goey/loop"
+	"github.com/chaolihf/goey/base"
+	"github.com/chaolihf/goey/internal/cocoa"
+	"github.com/chaolihf/goey/loop"
 )
 
 type textinputElement struct {

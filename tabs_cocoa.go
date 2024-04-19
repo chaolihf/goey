@@ -4,8 +4,8 @@
 package goey
 
 import (
-	"bitbucket.org/rj/goey/base"
-	"bitbucket.org/rj/goey/internal/cocoa"
+	"github.com/chaolihf/goey/base"
+	"github.com/chaolihf/goey/internal/cocoa"
 )
 
 type tabsElement struct {

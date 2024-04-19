@@ -19,7 +19,7 @@ analysis: cgotmp
 
 cgotmp: $(filter-out doc.go,$(wildcard *.go))
 	mkdir -p cgotmp
-	go tool cgo -objdir ./cgotmp/ -importpath bitbucket.org/rj/goey/internal/gtkloop -- -I ./cgotmp/ -g -O2 $(CFLAGS_GTK) $^
+	go tool cgo -objdir ./cgotmp/ -importpath github.com/chaolihf/goey/internal/gtkloop -- -I ./cgotmp/ -g -O2 $(CFLAGS_GTK) $^
 
 clean:
 	rm -rf cgotmp

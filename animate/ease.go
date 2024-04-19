@@ -1,7 +1,7 @@
 package animate
 
 import (
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 // EaseLength encapsulates the calculations needs to smoothly vary a length.

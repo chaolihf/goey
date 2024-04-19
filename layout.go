@@ -1,7 +1,7 @@
 package goey
 
 import (
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 func calculateHGap(previous base.Element, current base.Element) base.Length {

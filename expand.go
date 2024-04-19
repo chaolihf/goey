@@ -1,11 +1,11 @@
 package goey
 
 import (
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 var (
-	expandKind = base.NewKind("bitbucket.org/rj/goey.Expand")
+	expandKind = base.NewKind("github.com/chaolihf/goey.Expand")
 )
 
 // Expand wraps another widget to indicate that the widget should expand to

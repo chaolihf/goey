@@ -6,7 +6,7 @@ package windows
 // Dialogs are currently not supported on the JS platform.
 
 import (
-	"bitbucket.org/rj/goey/dialog"
+	"github.com/chaolihf/goey/dialog"
 )
 
 // Message returns a builder that can be used to construct a message

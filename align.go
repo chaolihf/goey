@@ -1,11 +1,11 @@
 package goey
 
 import (
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 var (
-	alignKind = base.NewKind("bitbucket.org/rj/goey.Align")
+	alignKind = base.NewKind("github.com/chaolihf/goey.Align")
 )
 
 // Alignment represents the position of a child widget along one dimension.
@@ -120,8 +120,8 @@ func (w *alignElement) SetBounds(bounds base.Rectangle) {
 	y := bounds.Min.Y.Scale(int(w.vAlign)-int(AlignEnd), int(AlignStart)-int(AlignEnd)) +
 		(bounds.Max.Y-w.childSize.Height).Scale(int(w.vAlign)-int(AlignStart), int(AlignEnd)-int(AlignStart))
 	w.child.SetBounds(base.Rectangle{
-		Min:base.Point{x, y},
-		Max:base.Point{x + w.childSize.Width, y + w.childSize.Height},
+		Min: base.Point{x, y},
+		Max: base.Point{x + w.childSize.Width, y + w.childSize.Height},
 	})
 }
 

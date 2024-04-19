@@ -1,11 +1,11 @@
 package goey
 
 import (
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 var (
-	tabsKind = base.NewKind("bitbucket.org/rj/goey.Tabs")
+	tabsKind = base.NewKind("github.com/chaolihf/goey.Tabs")
 )
 
 // Tabs describes a widget that shows a tabs.
@@ -52,8 +52,8 @@ func (w *Tabs) Mount(parent base.Control) (base.Element, error) {
 func (w *Tabs) UpdateValue() {
 	if w.Value < 0 {
 		w.Value = 0
-	} 
-	
+	}
+
 	if w.Value >= len(w.Children) {
 		w.Value = len(w.Children) - 1
 	}

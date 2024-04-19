@@ -10,11 +10,11 @@ import (
 	"image/color"
 	"image/draw"
 
-	"bitbucket.org/rj/goey"
-	"bitbucket.org/rj/goey/animate"
-	"bitbucket.org/rj/goey/base"
-	"bitbucket.org/rj/goey/loop"
-	"bitbucket.org/rj/goey/windows"
+	"github.com/chaolihf/goey"
+	"github.com/chaolihf/goey/animate"
+	"github.com/chaolihf/goey/base"
+	"github.com/chaolihf/goey/loop"
+	"github.com/chaolihf/goey/windows"
 )
 
 var (

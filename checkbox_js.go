@@ -8,8 +8,8 @@ import (
 	"math/rand"
 	"syscall/js"
 
-	"bitbucket.org/rj/goey/base"
-	"bitbucket.org/rj/goey/internal/js"
+	"github.com/chaolihf/goey/base"
+	"github.com/chaolihf/goey/internal/js"
 )
 
 type checkboxElement struct {

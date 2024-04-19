@@ -1,11 +1,11 @@
 package goey
 
 import (
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 var (
-	textInputKind = base.NewKind("bitbucket.org/rj/goey.TextInput")
+	textInputKind = base.NewKind("github.com/chaolihf/goey.TextInput")
 )
 
 // TextInput describes a widget that users input or update a single line of text.

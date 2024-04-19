@@ -6,7 +6,7 @@ import (
 	"testing"
 	"testing/quick"
 
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 func paragraphValues(values []reflect.Value, rand *rand.Rand) {

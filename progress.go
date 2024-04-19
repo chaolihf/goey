@@ -1,11 +1,11 @@
 package goey
 
 import (
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 var (
-	progressKind = base.NewKind("bitbucket.org/rj/goey.Progress")
+	progressKind = base.NewKind("github.com/chaolihf/goey.Progress")
 )
 
 // Progress describes a widget that shows a progress bar.

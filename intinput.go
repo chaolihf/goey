@@ -1,11 +1,11 @@
 package goey
 
 import (
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 var (
-	intInputKind = base.NewKind("bitbucket.org/rj/goey.IntInput")
+	intInputKind = base.NewKind("github.com/chaolihf/goey.IntInput")
 )
 
 // IntInput describes a widget that users input or update a single integer value.

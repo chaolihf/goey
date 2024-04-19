@@ -1,11 +1,11 @@
 package goey
 
 import (
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 var (
-	paragraphKind     = base.NewKind("bitbucket.org/rj/goey.Paragraph")
+	paragraphKind     = base.NewKind("github.com/chaolihf/goey.Paragraph")
 	paragraphMaxWidth base.Length
 )
 

@@ -3,11 +3,11 @@ package goey
 import (
 	"image"
 
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 var (
-	imgKind = base.NewKind("bitbucket.org/rj/goey.Img")
+	imgKind = base.NewKind("github.com/chaolihf/goey.Img")
 )
 
 // Img describes a widget that contains a bitmap image.

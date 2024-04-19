@@ -1,4 +1,4 @@
-module bitbucket.org/rj/goey
+module github.com/chaolihf/goey
 
 go 1.9
 

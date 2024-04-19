@@ -1,11 +1,11 @@
 package animate
 
 import (
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 var (
-	wipeKind = base.NewKind("bitbucket.org/rj/goey/animate.Wipe")
+	wipeKind = base.NewKind("github.com/chaolihf/goey/animate.Wipe")
 )
 
 // Wipe provides an animation when changing its child widget.

@@ -1,3 +1,4 @@
+//go:build go1.12
 // +build go1.12
 
 package loop
@@ -5,7 +6,7 @@ package loop
 import (
 	"testing"
 
-	"bitbucket.org/rj/goey/internal/nopanic"
+	"github.com/chaolihf/goey/internal/nopanic"
 )
 
 const (

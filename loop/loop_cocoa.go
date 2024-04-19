@@ -9,8 +9,8 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"bitbucket.org/rj/goey/internal/cocoaloop"
-	"bitbucket.org/rj/goey/internal/nopanic"
+	"github.com/chaolihf/goey/internal/cocoaloop"
+	"github.com/chaolihf/goey/internal/nopanic"
 	"gitlab.com/stone.code/assert"
 )
 

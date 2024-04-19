@@ -3,8 +3,8 @@ package goey
 import (
 	"unsafe"
 
-	"bitbucket.org/rj/goey/base"
-	win2 "bitbucket.org/rj/goey/internal/windows"
+	"github.com/chaolihf/goey/base"
+	win2 "github.com/chaolihf/goey/internal/windows"
 	"github.com/lxn/win"
 )
 

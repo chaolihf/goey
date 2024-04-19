@@ -8,9 +8,9 @@ import (
 	"image"
 	"syscall/js"
 
-	"bitbucket.org/rj/goey/base"
-	"bitbucket.org/rj/goey/internal/js"
-	"bitbucket.org/rj/goey/loop"
+	"github.com/chaolihf/goey/base"
+	"github.com/chaolihf/goey/internal/js"
+	"github.com/chaolihf/goey/loop"
 	"gitlab.com/stone.code/assert"
 )
 

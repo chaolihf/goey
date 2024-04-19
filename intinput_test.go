@@ -5,7 +5,7 @@ import (
 	"runtime"
 	"testing"
 
-	"bitbucket.org/rj/goey/base"
+	"github.com/chaolihf/goey/base"
 )
 
 func TestIntInputMount(t *testing.T) {
