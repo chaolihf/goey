@@ -89,13 +89,13 @@ func (w *sliderElement) MinIntrinsicWidth(base.Length) base.Length {
 }
 
 func (w *sliderElement) Props() base.Widget {
-	currentValue := win.SendMessage(w.hWnd, win.TBM_GETPOS, 0, 0)
+	currentValue := win.SendMessage(w.Hwnd, win.TBM_GETPOS, 0, 0)
 	// We will get errors in testing because of rounding errors in conversion
 	// of float to int and back.
 
 	return &Slider{
 		Value:    sliderFromQuantized(currentValue, w.min, w.max),
-		Disabled: !win.IsWindowEnabled(w.hWnd),
+		Disabled: !win.IsWindowEnabled(w.Hwnd),
 		Min:      w.min,
 		Max:      w.max,
 		OnChange: w.onChange,
@@ -109,9 +109,9 @@ func (w *sliderElement) updateProps(data *Slider) error {
 	w.max = data.Max
 	if newValue := sliderToQuantized(data.Value, w.min, w.max); newValue != w.currentValue {
 		w.currentValue = newValue
-		win.SendMessage(w.hWnd, win.TBM_SETPOS, win.TRUE, newValue)
+		win.SendMessage(w.Hwnd, win.TBM_SETPOS, win.TRUE, newValue)
 	}
-	win.EnableWindow(w.hWnd, !data.Disabled)
+	win.EnableWindow(w.Hwnd, !data.Disabled)
 	w.onChange = data.OnChange
 	w.onFocus = data.OnFocus
 	w.onBlur = data.OnBlur
@@ -140,7 +140,7 @@ func sliderWindowProc(hwnd win.HWND, msg uint32, wParam uintptr, lParam uintptr)
 	case win.WM_DESTROY:
 		// Make sure that the data structure on the Go-side does not point to a non-existent
 		// window.
-		sliderGetPtr(hwnd).hWnd = 0
+		sliderGetPtr(hwnd).Hwnd = 0
 		// Defer to the old window proc
 
 	case win.WM_SETFOCUS:
@@ -193,7 +193,7 @@ func sliderGetPtr(hwnd win.HWND) *sliderElement {
 	}
 
 	ptr := (*sliderElement)(unsafe.Pointer(gwl))
-	if ptr.hWnd != hwnd && ptr.hWnd != 0 {
+	if ptr.Hwnd != hwnd && ptr.Hwnd != 0 {
 		panic("Internal error.")
 	}
 

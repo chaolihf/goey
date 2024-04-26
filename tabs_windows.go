@@ -98,7 +98,7 @@ func (w *tabsElement) contentInsets() base.Point {
 	if w.cachedInsets.Y == 0 {
 		rect := win.RECT{}
 
-		win.SendMessage(w.hWnd, win.TCM_ADJUSTRECT, win.TRUE, uintptr(unsafe.Pointer(&rect)))
+		win.SendMessage(w.Hwnd, win.TCM_ADJUSTRECT, win.TRUE, uintptr(unsafe.Pointer(&rect)))
 		w.cachedInsets = base.Point{
 			X: base.FromPixelsX(int(rect.Right - rect.Left)),
 			Y: base.FromPixelsY(int(rect.Bottom - rect.Top)),
@@ -114,7 +114,7 @@ func (w *tabsElement) controlTabsMinWidth() base.Length {
 }
 
 func (w *tabsElement) Props() base.Widget {
-	count := win.SendMessage(w.hWnd, win.TCM_GETITEMCOUNT, 0, 0)
+	count := win.SendMessage(w.Hwnd, win.TCM_GETITEMCOUNT, 0, 0)
 	children := make([]TabItem, count)
 	for i := uintptr(0); i < count; i++ {
 		text := [128]uint16{}
@@ -124,13 +124,13 @@ func (w *tabsElement) Props() base.Widget {
 			CchTextMax: 128,
 		}
 
-		win.SendMessage(w.hWnd, win.TCM_GETITEM, i, uintptr(unsafe.Pointer(&item)))
+		win.SendMessage(w.Hwnd, win.TCM_GETITEM, i, uintptr(unsafe.Pointer(&item)))
 		children[i].Caption = syscall.UTF16ToString(text[:])
 		children[i].Child = w.widgets[i].Child
 	}
 
 	return &Tabs{
-		Value:    int(win.SendMessage(w.hWnd, win.TCM_GETCURSEL, 0, 0)),
+		Value:    int(win.SendMessage(w.Hwnd, win.TCM_GETCURSEL, 0, 0)),
 		Children: children,
 		OnChange: w.onChange,
 	}
@@ -154,7 +154,7 @@ func (w *tabsElement) SetBounds(bounds base.Rectangle) {
 	if w.child != nil {
 		// Determine the bounds for the child widget
 		rect := win.RECT{}
-		win.SendMessage(w.hWnd, win.TCM_ADJUSTRECT, win.FALSE, uintptr(unsafe.Pointer(&rect)))
+		win.SendMessage(w.Hwnd, win.TCM_ADJUSTRECT, win.FALSE, uintptr(unsafe.Pointer(&rect)))
 		w.cachedBounds = base.Rectangle{
 			Min: bounds.Min.Add(base.Point{base.FromPixelsX(int(rect.Left)), base.FromPixelsY(int(rect.Top))}),
 			Max: bounds.Max.Add(base.Point{base.FromPixelsX(int(rect.Right)), base.FromPixelsY(int(rect.Bottom))}),
@@ -186,7 +186,7 @@ func (w *tabsElement) updateChildren(children []TabItem) error {
 				Mask:    win.TCIF_TEXT,
 				PszText: text,
 			}
-			win.SendMessage(w.hWnd, win.TCM_SETITEM, uintptr(i), uintptr(unsafe.Pointer(&item)))
+			win.SendMessage(w.Hwnd, win.TCM_SETITEM, uintptr(i), uintptr(unsafe.Pointer(&item)))
 		}
 
 		// Add new tabs to extend the list
@@ -200,7 +200,7 @@ func (w *tabsElement) updateChildren(children []TabItem) error {
 				Mask:    win.TCIF_TEXT,
 				PszText: text,
 			}
-			win.SendMessage(w.hWnd, win.TCM_INSERTITEM, uintptr(i+len1), uintptr(unsafe.Pointer(&item)))
+			win.SendMessage(w.Hwnd, win.TCM_INSERTITEM, uintptr(i+len1), uintptr(unsafe.Pointer(&item)))
 		}
 	} else {
 		// Change caption for tabs that already exist
@@ -214,12 +214,12 @@ func (w *tabsElement) updateChildren(children []TabItem) error {
 				Mask:    win.TCIF_TEXT,
 				PszText: text,
 			}
-			win.SendMessage(w.hWnd, win.TCM_SETITEM, uintptr(i), uintptr(unsafe.Pointer(&item)))
+			win.SendMessage(w.Hwnd, win.TCM_SETITEM, uintptr(i), uintptr(unsafe.Pointer(&item)))
 		}
 
 		// Delete excess tabs.
 		for i := len2; i < len1; i++ {
-			win.SendMessage(w.hWnd, win.TCM_DELETEITEM, uintptr(i), 0)
+			win.SendMessage(w.Hwnd, win.TCM_DELETEITEM, uintptr(i), 0)
 		}
 	}
 
@@ -236,7 +236,7 @@ func (w *tabsElement) updateProps(data *Tabs) error {
 
 	// Update which tab is currently selected
 	if data.Value >= 0 && w.value != data.Value {
-		win.SendMessage(w.hWnd, win.TCM_SETCURSEL, uintptr(data.Value), 0)
+		win.SendMessage(w.Hwnd, win.TCM_SETCURSEL, uintptr(data.Value), 0)
 		w.value = data.Value
 	}
 
@@ -320,7 +320,7 @@ func tabsWindowProc(hwnd win.HWND, msg uint32, wParam uintptr, lParam uintptr) (
 			win.DeleteObject(win.HGDIOBJ(brush))
 
 		}
-		tabsGetPtr(hwnd).hWnd = 0
+		tabsGetPtr(hwnd).Hwnd = 0
 		// Defer to the old window proc
 
 	case win.WM_CTLCOLORSTATIC:
@@ -370,13 +370,13 @@ func tabsWindowProc(hwnd win.HWND, msg uint32, wParam uintptr, lParam uintptr) (
 								panic("Unhandled error!")
 							}
 							if child != nil {
-								child.SetOrder(w.hWnd)
+								child.SetOrder(w.Hwnd)
 								child.Layout(base.Tight(base.Size{
 									Width:  w.cachedBounds.Dx(),
 									Height: w.cachedBounds.Dy(),
 								}))
 								child.SetBounds(w.cachedBounds)
-								win.InvalidateRect(win.GetParent(w.hWnd), nil, false)
+								win.InvalidateRect(win.GetParent(w.Hwnd), nil, false)
 							}
 							w.child = child
 							w.value = cursel
@@ -400,7 +400,7 @@ func tabsGetPtr(hwnd win.HWND) *tabsElement {
 	}
 
 	ptr := (*tabsElement)(unsafe.Pointer(gwl))
-	if ptr.hWnd != hwnd && ptr.hWnd != 0 {
+	if ptr.Hwnd != hwnd && ptr.Hwnd != 0 {
 		panic("Internal error.")
 	}
 

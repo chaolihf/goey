@@ -44,7 +44,7 @@ type imgElement struct {
 
 func (w *imgElement) Props() base.Widget {
 	// Need to recreate the image from the HBITMAP
-	hbitmap := win.HBITMAP(win.SendMessage(w.hWnd, win2.STM_GETIMAGE, win.IMAGE_BITMAP, 0))
+	hbitmap := win.HBITMAP(win.SendMessage(w.Hwnd, win2.STM_GETIMAGE, win.IMAGE_BITMAP, 0))
 	if hbitmap == 0 {
 		return &Img{
 			Width:  w.width,
@@ -52,9 +52,9 @@ func (w *imgElement) Props() base.Widget {
 		}
 	}
 
-	hdc := win.GetDC(w.hWnd)
+	hdc := win.GetDC(w.Hwnd)
 	img := win2.BitmapToImage(hdc, hbitmap)
-	win.ReleaseDC(w.hWnd, hdc)
+	win.ReleaseDC(w.Hwnd, hdc)
 
 	return &Img{
 		Image:  img,
@@ -68,7 +68,7 @@ func (w *imgElement) SetBounds(bounds base.Rectangle) {
 
 	// Not certain why this is required.  However, static controls don't
 	// repaint when resized.  This forces a repaint.
-	win.InvalidateRect(w.hWnd, nil, true)
+	win.InvalidateRect(w.Hwnd, nil, true)
 }
 
 func (w *imgElement) updateImage(img image.Image) error {
@@ -85,7 +85,7 @@ func (w *imgElement) updateImage(img image.Image) error {
 
 	// Update the control with the new bitmap
 	w.hbitmap = hbitmap
-	win.SendMessage(w.hWnd, win2.STM_SETIMAGE, win.IMAGE_BITMAP, uintptr(hbitmap))
+	win.SendMessage(w.Hwnd, win2.STM_SETIMAGE, win.IMAGE_BITMAP, uintptr(hbitmap))
 
 	return nil
 }

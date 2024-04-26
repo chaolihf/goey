@@ -80,7 +80,7 @@ func hrWindowProc(hwnd win.HWND, msg uint32, wParam uintptr, lParam uintptr) (re
 		// window.
 		if w := win.GetWindowLongPtr(hwnd, win.GWLP_USERDATA); w != 0 {
 			ptr := (*hrElement)(unsafe.Pointer(w))
-			ptr.hWnd = 0
+			ptr.Hwnd = 0
 		}
 		// Defer to the old window proc
 

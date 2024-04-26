@@ -33,47 +33,47 @@ func init() {
 //
 // Any method's on this type will be platform specific.
 type Control struct {
-	hWnd win.HWND
+	Hwnd win.HWND
 }
 
 // Text copies text of the underlying window.
 func (w Control) Text() string {
-	return win2.GetWindowText(w.hWnd)
+	return win2.GetWindowText(w.Hwnd)
 }
 
 // CalcRect is a wrapper around the WIN32 call DrawTextEx with the option DT_CALCRECT.
 func (w Control) CalcRect(text []uint16) (int32, int32) {
-	hdc := win.GetDC(w.hWnd)
+	hdc := win.GetDC(w.Hwnd)
 	if hFont := win2.MessageFont(); hFont != 0 {
 		win.SelectObject(hdc, win.HGDIOBJ(hFont))
 	}
 
 	rect := win.RECT{0, 0, 0x7fffffff, 0x7fffffff}
 	win.DrawTextEx(hdc, &text[0], int32(len(text)), &rect, win.DT_CALCRECT, nil)
-	win.ReleaseDC(w.hWnd, hdc)
+	win.ReleaseDC(w.Hwnd, hdc)
 
 	return rect.Right, rect.Bottom
 }
 
 // SetDisabled is a wrapper around the WIN32 call to EnableWindow.
 func (w Control) SetDisabled(value bool) {
-	win.EnableWindow(w.hWnd, !value)
+	win.EnableWindow(w.Hwnd, !value)
 }
 
 // SetBounds is a wrapper around the WIN32 call to MoveWindow.
 func (w *Control) SetBounds(bounds base.Rectangle) {
-	win.MoveWindow(w.hWnd, int32(bounds.Min.X.PixelsX()), int32(bounds.Min.Y.PixelsY()), int32(bounds.Dx().PixelsX()), int32(bounds.Dy().PixelsY()), false)
+	win.MoveWindow(w.Hwnd, int32(bounds.Min.X.PixelsX()), int32(bounds.Min.Y.PixelsY()), int32(bounds.Dx().PixelsX()), int32(bounds.Dy().PixelsY()), false)
 }
 
 // TakeFocus is a wrapper around SetFocus.
 func (w *Control) TakeFocus() bool {
 	// If the control already has focus, we avoid the call to SetFocus.  This
 	// is to debounce the event callbacks.
-	if win.GetFocus() == w.hWnd {
+	if win.GetFocus() == w.Hwnd {
 		return true
 	}
 
-	return win.SetFocus(w.hWnd) != 0
+	return win.SetFocus(w.Hwnd) != 0
 }
 
 // TypeKeys sends events to the control as if the string was typed by a user.
@@ -137,15 +137,15 @@ func (w *Control) SetOrder(previous win.HWND) win.HWND {
 	// Note, the argument previous may be 0 when setting the first child.
 	// Fortunately, this corresponds to HWND_TOP, which sets the window
 	// to top of the z-order.
-	win.SetWindowPos(w.hWnd, previous, 0, 0, 0, 0, win.SWP_NOMOVE|win.SWP_NOSIZE|win.SWP_NOREDRAW|0x400)
-	return w.hWnd
+	win.SetWindowPos(w.Hwnd, previous, 0, 0, 0, 0, win.SWP_NOMOVE|win.SWP_NOSIZE|win.SWP_NOREDRAW|0x400)
+	return w.Hwnd
 }
 
 // Close is a wrapper around the WIN32 call to DestroyWindow.
 func (w *Control) Close() {
-	if w.hWnd != 0 {
-		win.DestroyWindow(w.hWnd)
-		w.hWnd = 0
+	if w.Hwnd != 0 {
+		win.DestroyWindow(w.Hwnd)
+		w.Hwnd = 0
 	}
 }
 

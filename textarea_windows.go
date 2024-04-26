@@ -74,7 +74,7 @@ func (w *textareaElement) MinIntrinsicHeight(base.Length) base.Length {
 
 func (w *textareaElement) Props() base.Widget {
 	var buffer [80]uint16
-	win.SendMessage(w.hWnd, win.EM_GETCUEBANNER, uintptr(unsafe.Pointer(&buffer[0])), 80)
+	win.SendMessage(w.Hwnd, win.EM_GETCUEBANNER, uintptr(unsafe.Pointer(&buffer[0])), 80)
 	ndx := 0
 	for i, v := range buffer {
 		if v == 0 {
@@ -87,8 +87,8 @@ func (w *textareaElement) Props() base.Widget {
 	return &TextArea{
 		Value:       w.Control.Text(),
 		Placeholder: placeholder,
-		Disabled:    !win.IsWindowEnabled(w.hWnd),
-		ReadOnly:    (win.GetWindowLong(w.hWnd, win.GWL_STYLE) & win.ES_READONLY) != 0,
+		Disabled:    !win.IsWindowEnabled(w.Hwnd),
+		ReadOnly:    (win.GetWindowLong(w.Hwnd, win.GWL_STYLE) & win.ES_READONLY) != 0,
 		MinLines:    w.minLines,
 		OnChange:    w.onChange,
 		OnFocus:     w.onFocus,
@@ -98,19 +98,19 @@ func (w *textareaElement) Props() base.Widget {
 
 func (w *textareaElement) updateProps(data *TextArea) error {
 	if data.Value != w.Text() {
-		_, err := win2.SetWindowText(w.hWnd, data.Value)
+		_, err := win2.SetWindowText(w.Hwnd, data.Value)
 		if err != nil {
 			return err
 		}
 	}
 
-	err := updatePlaceholder(w.hWnd, data.Placeholder)
+	err := updatePlaceholder(w.Hwnd, data.Placeholder)
 	if err != nil {
 		return err
 	}
 
 	w.SetDisabled(data.Disabled)
-	win.SendMessage(w.hWnd, win.EM_SETREADONLY, uintptr(win.BoolToBOOL(data.ReadOnly)), 0)
+	win.SendMessage(w.Hwnd, win.EM_SETREADONLY, uintptr(win.BoolToBOOL(data.ReadOnly)), 0)
 
 	w.minLines = minlinesDefault(data.MinLines)
 	w.onChange = data.OnChange

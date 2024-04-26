@@ -18,7 +18,7 @@ var (
 )
 
 type windowImpl struct {
-	hWnd                    win.HWND
+	Hwnd                    win.HWND
 	dpi                     image.Point
 	windowRectDelta         image.Point
 	windowMinSize           image.Point
@@ -179,7 +179,7 @@ func newWindow(title string) (*Window, error) {
 		win.SendMessage(hwnd, win.WM_SETFONT, 0, 0)
 	}
 
-	retval := &Window{windowImpl{hWnd: hwnd}}
+	retval := &Window{windowImpl{Hwnd: hwnd}}
 	win.SetWindowLongPtr(hwnd, win.GWLP_USERDATA, uintptr(unsafe.Pointer(&retval.windowImpl)))
 
 	// Determine the DPI for this window
@@ -199,27 +199,27 @@ func newWindow(title string) (*Window, error) {
 }
 
 func (w *windowImpl) control() base.Control {
-	return base.Control{w.hWnd}
+	return base.Control{w.Hwnd}
 }
 
 func (w *windowImpl) close() {
 	// Want to be able to close windows in Go, even if they have already been
 	// destroyed in the Win32 system
-	if w.hWnd != 0 {
+	if w.Hwnd != 0 {
 		// There is a heseinbug with the kill focus message when destroying
 		// windows.  To get consistent behavior, we can remove focus before
 		// destroying the window.
 		focus := win.GetFocus()
 		if focus != 0 {
 			parent := win.GetAncestor(focus, win.GA_ROOT)
-			if parent == w.hWnd {
+			if parent == w.Hwnd {
 				win.SetFocus(0)
 			}
 		}
 
 		// Actually destroy the window.
-		win.DestroyWindow(w.hWnd)
-		w.hWnd = 0
+		win.DestroyWindow(w.Hwnd)
+		w.Hwnd = 0
 	}
 
 	// This call to uninitalize OLE is paired with a call in newWindow.
@@ -229,29 +229,29 @@ func (w *windowImpl) close() {
 // NativeHandle returns the handle to the platform-specific window handle
 // (i.e. a HWND on WIN32).
 func (w *windowImpl) NativeHandle() win.HWND {
-	return w.hWnd
+	return w.Hwnd
 }
 
 func (w *windowImpl) message(m *dialog.Message) {
-	m.WithTitle(win2.GetWindowText(w.hWnd))
-	m.WithOwner(dialog.Owner{HWnd: w.hWnd})
+	m.WithTitle(win2.GetWindowText(w.Hwnd))
+	m.WithOwner(dialog.Owner{HWnd: w.Hwnd})
 }
 
 func (w *windowImpl) openfiledialog(m *dialog.OpenFile) {
-	m.WithTitle(win2.GetWindowText(w.hWnd))
-	m.WithOwner(dialog.Owner{HWnd: w.hWnd})
+	m.WithTitle(win2.GetWindowText(w.Hwnd))
+	m.WithOwner(dialog.Owner{HWnd: w.Hwnd})
 }
 
 func (w *windowImpl) savefiledialog(m *dialog.SaveFile) {
-	m.WithTitle(win2.GetWindowText(w.hWnd))
-	m.WithOwner(dialog.Owner{HWnd: w.hWnd})
+	m.WithTitle(win2.GetWindowText(w.Hwnd))
+	m.WithOwner(dialog.Owner{HWnd: w.Hwnd})
 }
 
 // Screenshot returns an image of the window, as displayed on screen.
 func (w *windowImpl) Screenshot() (image.Image, error) {
 	// Need the client rect for the window.
 	region := win.RECT{}
-	win.GetWindowRect(w.hWnd, &region)
+	win.GetWindowRect(w.Hwnd, &region)
 
 	// Create the device context and bitmap for the image
 	hdcScreen := win.GetDC(0)
@@ -293,7 +293,7 @@ func (w *windowImpl) setChildPost() {
 	// Ensure that tab-order is correct
 	w.child.SetOrder(win.HWND_TOP)
 	// Perform layout
-	w.onSize(w.hWnd)
+	w.onSize(w.Hwnd)
 }
 
 func (w *windowImpl) setDPI() {
@@ -308,24 +308,24 @@ func (w *windowImpl) setScroll(hscroll, vscroll bool) {
 	if !hscroll {
 		w.horizontalScrollPos = 0
 		w.horizontalScrollVisible = false
-		win2.ShowScrollBar(w.hWnd, win.SB_HORZ, win.FALSE)
+		win2.ShowScrollBar(w.Hwnd, win.SB_HORZ, win.FALSE)
 	}
 	if !vscroll {
 		w.verticalScrollPos = 0
 		w.verticalScrollVisible = false
-		win2.ShowScrollBar(w.hWnd, win.SB_VERT, win.FALSE)
+		win2.ShowScrollBar(w.Hwnd, win.SB_VERT, win.FALSE)
 	}
 
 	// Changing the existence of scrollbar also changes the layout constraints.
 	// Need to relayout the child.  If necessary, this will show the scrollbars.
-	w.onSize(w.hWnd)
+	w.onSize(w.Hwnd)
 }
 
 func (w *windowImpl) setScrollPos(direction int32, wParam uintptr) {
 	// Get all of the scroll bar information.
 	si := win.SCROLLINFO{FMask: win.SIF_ALL}
 	si.CbSize = uint32(unsafe.Sizeof(si))
-	win.GetScrollInfo(w.hWnd, direction, &si)
+	win.GetScrollInfo(w.Hwnd, direction, &si)
 
 	// Save the position for comparison later on.
 	currentPos := si.NPos
@@ -371,8 +371,8 @@ func (w *windowImpl) setScrollPos(direction int32, wParam uintptr) {
 	// Set the position and then retrieve it.  Due to adjustments
 	// by Windows it may not be the same as the value set.
 	si.FMask = win.SIF_POS
-	win.SetScrollInfo(w.hWnd, direction, &si, true)
-	win.GetScrollInfo(w.hWnd, direction, &si)
+	win.SetScrollInfo(w.Hwnd, direction, &si, true)
+	win.GetScrollInfo(w.Hwnd, direction, &si)
 
 	// If the position has changed, scroll window and update it.
 	if si.NPos != currentPos {
@@ -388,14 +388,14 @@ func (w *windowImpl) setScrollPos(direction int32, wParam uintptr) {
 
 		// TODO:  Use ScrollWindow function to reduce flicker during scrolling
 		rect := win.RECT{}
-		win.GetClientRect(w.hWnd, &rect)
-		win.InvalidateRect(w.hWnd, &rect, true)
+		win.GetClientRect(w.Hwnd, &rect)
+		win.InvalidateRect(w.Hwnd, &rect, true)
 	}
 }
 
 func (w *windowImpl) show() {
-	win.ShowWindow(w.hWnd, win.SW_SHOW)
-	win.UpdateWindow(w.hWnd)
+	win.ShowWindow(w.Hwnd, win.SW_SHOW)
+	win.UpdateWindow(w.Hwnd)
 }
 
 func (w *windowImpl) showScrollH(width base.Length, clientWidth base.Length) (flag bool) {
@@ -406,7 +406,7 @@ func (w *windowImpl) showScrollH(width base.Length, clientWidth base.Length) (fl
 			// if the size of the client area changes.
 			w.horizontalScrollVisible = true
 			flag = true
-			win2.ShowScrollBar(w.hWnd, win.SB_HORZ, win.TRUE)
+			win2.ShowScrollBar(w.Hwnd, win.SB_HORZ, win.TRUE)
 		}
 		si := win.SCROLLINFO{
 			FMask: win.SIF_PAGE | win.SIF_RANGE,
@@ -415,16 +415,16 @@ func (w *windowImpl) showScrollH(width base.Length, clientWidth base.Length) (fl
 			NPage: uint32(clientWidth.PixelsX()),
 		}
 		si.CbSize = uint32(unsafe.Sizeof(si))
-		win.SetScrollInfo(w.hWnd, win.SB_HORZ, &si, true)
+		win.SetScrollInfo(w.Hwnd, win.SB_HORZ, &si, true)
 		si.FMask = win.SIF_POS
-		win.GetScrollInfo(w.hWnd, win.SB_HORZ, &si)
+		win.GetScrollInfo(w.Hwnd, win.SB_HORZ, &si)
 		w.horizontalScrollPos = base.FromPixelsX(int(si.NPos))
 		return flag
 	} else if w.horizontalScrollVisible {
 		// Remove the scroll bar.
 		w.horizontalScrollPos = 0
 		w.horizontalScrollVisible = false
-		win2.ShowScrollBar(w.hWnd, win.SB_HORZ, win.FALSE)
+		win2.ShowScrollBar(w.Hwnd, win.SB_HORZ, win.FALSE)
 		return true
 	}
 
@@ -437,7 +437,7 @@ func (w *windowImpl) showScrollV(height base.Length, clientHeight base.Length) (
 			// Create the scroll bar.
 			w.verticalScrollVisible = true
 			flag = true
-			win2.ShowScrollBar(w.hWnd, win.SB_VERT, win.TRUE)
+			win2.ShowScrollBar(w.Hwnd, win.SB_VERT, win.TRUE)
 		}
 		si := win.SCROLLINFO{
 			FMask: win.SIF_PAGE | win.SIF_RANGE,
@@ -446,16 +446,16 @@ func (w *windowImpl) showScrollV(height base.Length, clientHeight base.Length) (
 			NPage: uint32(clientHeight.PixelsY()),
 		}
 		si.CbSize = uint32(unsafe.Sizeof(si))
-		win.SetScrollInfo(w.hWnd, win.SB_VERT, &si, true)
+		win.SetScrollInfo(w.Hwnd, win.SB_VERT, &si, true)
 		si.FMask = win.SIF_POS
-		win.GetScrollInfo(w.hWnd, win.SB_VERT, &si)
+		win.GetScrollInfo(w.Hwnd, win.SB_VERT, &si)
 		w.verticalScrollPos = base.FromPixelsY(int(si.NPos))
 		return flag
 	} else if w.verticalScrollVisible {
 		// Remove the scroll bar.
 		w.verticalScrollPos = 0
 		w.verticalScrollVisible = false
-		win2.ShowScrollBar(w.hWnd, win.SB_VERT, win.FALSE)
+		win2.ShowScrollBar(w.Hwnd, win.SB_VERT, win.FALSE)
 		return true
 	}
 
@@ -476,7 +476,7 @@ func (w *windowImpl) setIcon(img image.Image) error {
 	w.hicon = hicon
 
 	// Update the window with the new icon.
-	win2.SetClassLongPtr(w.hWnd, win2.GCLP_HICON, uintptr(hicon))
+	win2.SetClassLongPtr(w.Hwnd, win2.GCLP_HICON, uintptr(hicon))
 
 	return nil
 }
@@ -486,12 +486,12 @@ func (w *windowImpl) setOnClosing(callback func() bool) {
 }
 
 func (w *windowImpl) setTitle(value string) error {
-	_, err := win2.SetWindowText(w.hWnd, value)
+	_, err := win2.SetWindowText(w.Hwnd, value)
 	return err
 }
 
 func (w *windowImpl) title() string {
-	return win2.GetWindowText(w.hWnd)
+	return win2.GetWindowText(w.Hwnd)
 }
 
 func (w *windowImpl) updateWindowMinSize() {
@@ -533,7 +533,7 @@ func windowWindowProc(hwnd win.HWND, msg uint32, wParam uintptr, lParam uintptr)
 		// Make sure that the data structure on the Go-side does not point to a non-existent
 		// window.
 		if w := windowGetPtr(hwnd); w != nil {
-			w.hWnd = 0
+			w.Hwnd = 0
 		}
 		// Make sure we are no longer linked to as the active window
 		loop.SetActiveWindow(0)
@@ -645,7 +645,7 @@ func windowGetPtr(hwnd win.HWND) *windowImpl {
 	}
 
 	ptr := (*windowImpl)(unsafe.Pointer(gwl))
-	if ptr.hWnd != hwnd && ptr.hWnd != 0 {
+	if ptr.Hwnd != hwnd && ptr.Hwnd != 0 {
 		panic("Internal error.")
 	}
 

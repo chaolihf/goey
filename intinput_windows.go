@@ -124,15 +124,15 @@ func (w *intinputElement) Close() {
 		win.DestroyWindow(w.hwndUpDown)
 		w.hwndUpDown = 0
 	}
-	if w.hWnd != 0 {
-		win.DestroyWindow(w.hWnd)
-		w.hWnd = 0
+	if w.Hwnd != 0 {
+		win.DestroyWindow(w.Hwnd)
+		w.Hwnd = 0
 	}
 }
 
 func (w *intinputElement) getClampedValue() (int64, error) {
 	// Get the text from the control, and convert text to an integer
-	i, err := strconv.ParseInt(win2.GetWindowText(w.hWnd), 10, 64)
+	i, err := strconv.ParseInt(win2.GetWindowText(w.Hwnd), 10, 64)
 	if err != nil {
 		return 0, err
 	}
@@ -141,13 +141,13 @@ func (w *intinputElement) getClampedValue() (int64, error) {
 		i = w.min
 		if w.hwndUpDown != 0 {
 			win.SendMessage(w.hwndUpDown, win.UDM_SETPOS32, 0, uintptr(i))
-			win.SendMessage(w.hWnd, win.EM_SETSEL, 0, 0x7fff)
+			win.SendMessage(w.Hwnd, win.EM_SETSEL, 0, 0x7fff)
 		}
 	} else if i > w.max {
 		i = w.max
 		if w.hwndUpDown != 0 {
 			win.SendMessage(w.hwndUpDown, win.UDM_SETPOS32, 0, uintptr(i))
-			win.SendMessage(w.hWnd, win.EM_SETSEL, 0, 0x7fff)
+			win.SendMessage(w.Hwnd, win.EM_SETSEL, 0, 0x7fff)
 		}
 	}
 
@@ -208,8 +208,8 @@ func (w *intinputElement) PropsValue() int64 {
 func (w *intinputElement) Props() base.Widget {
 	return &IntInput{
 		Value:       w.PropsValue(),
-		Placeholder: propsPlaceholder(w.hWnd),
-		Disabled:    !win.IsWindowEnabled(w.hWnd),
+		Placeholder: propsPlaceholder(w.Hwnd),
+		Disabled:    !win.IsWindowEnabled(w.Hwnd),
 		Min:         w.min,
 		Max:         w.max,
 		OnChange:    w.onChange,
@@ -223,16 +223,16 @@ func (w *intinputElement) SetBounds(bounds base.Rectangle) {
 	buddyWidth := (23 * DIP) * 2 / 3
 
 	if w.hwndUpDown == 0 {
-		win.MoveWindow(w.hWnd, int32(bounds.Min.X.PixelsX()), int32(bounds.Min.Y.PixelsY()), int32(bounds.Dx().PixelsX()), int32(bounds.Dy().PixelsY()), false)
+		win.MoveWindow(w.Hwnd, int32(bounds.Min.X.PixelsX()), int32(bounds.Min.Y.PixelsY()), int32(bounds.Dx().PixelsX()), int32(bounds.Dy().PixelsY()), false)
 		return
 	}
 
 	if bounds.Dx() >= 4*buddyWidth {
-		win.MoveWindow(w.hWnd, int32(bounds.Min.X.PixelsX()), int32(bounds.Min.Y.PixelsY()), int32((bounds.Dx() - buddyWidth).PixelsX()), int32(bounds.Dy().PixelsY()), false)
+		win.MoveWindow(w.Hwnd, int32(bounds.Min.X.PixelsX()), int32(bounds.Min.Y.PixelsY()), int32((bounds.Dx() - buddyWidth).PixelsX()), int32(bounds.Dy().PixelsY()), false)
 		win.MoveWindow(w.hwndUpDown, int32((bounds.Max.X - buddyWidth).PixelsX()), int32(bounds.Min.Y.PixelsY()), int32(buddyWidth.PixelsX()), int32(bounds.Dy().PixelsY()), false)
 		win.ShowWindow(w.hwndUpDown, win.SW_SHOW)
 	} else {
-		win.MoveWindow(w.hWnd, int32(bounds.Min.X.PixelsX()), int32(bounds.Min.Y.PixelsY()), int32(bounds.Dx().PixelsX()), int32(bounds.Dy().PixelsY()), false)
+		win.MoveWindow(w.Hwnd, int32(bounds.Min.X.PixelsX()), int32(bounds.Min.Y.PixelsY()), int32(bounds.Dx().PixelsX()), int32(bounds.Dy().PixelsY()), false)
 		win.ShowWindow(w.hwndUpDown, win.SW_HIDE)
 	}
 }
@@ -242,14 +242,14 @@ func (w *intinputElement) SetOrder(previous win.HWND) win.HWND {
 		win.SetWindowPos(w.hwndUpDown, previous, 0, 0, 0, 0, win.SWP_NOMOVE|win.SWP_NOSIZE|win.SWP_NOREDRAW|0x400)
 		previous = w.hwndUpDown
 	}
-	win.SetWindowPos(w.hWnd, previous, 0, 0, 0, 0, win.SWP_NOMOVE|win.SWP_NOSIZE|win.SWP_NOREDRAW|0x400)
-	return w.hWnd
+	win.SetWindowPos(w.Hwnd, previous, 0, 0, 0, 0, win.SWP_NOMOVE|win.SWP_NOSIZE|win.SWP_NOREDRAW|0x400)
+	return w.Hwnd
 }
 
 func (w *intinputElement) TakeFocus() bool {
 	ok := w.Control.TakeFocus()
 	if ok {
-		win.SendMessage(w.hWnd, win.EM_SETSEL, 0, 0x7fff)
+		win.SendMessage(w.Hwnd, win.EM_SETSEL, 0, 0x7fff)
 	}
 	return ok
 }
@@ -263,7 +263,7 @@ func (w *intinputElement) updateProps(data *IntInput) error {
 
 	text := strconv.FormatInt(data.Value, 10)
 	if text != w.Text() {
-		_, err := win2.SetWindowText(w.hWnd, text)
+		_, err := win2.SetWindowText(w.Hwnd, text)
 		if err != nil {
 			return err
 		}
@@ -272,7 +272,7 @@ func (w *intinputElement) updateProps(data *IntInput) error {
 		win.SendMessage(w.hwndUpDown, win.UDM_SETRANGE32, uintptr(data.Min), uintptr(data.Max))
 		win.SendMessage(w.hwndUpDown, win.UDM_SETPOS32, 0, uintptr(data.Value))
 	}
-	err := updatePlaceholder(w.hWnd, data.Placeholder)
+	err := updatePlaceholder(w.Hwnd, data.Placeholder)
 	if err != nil {
 		return err
 	}
@@ -291,7 +291,7 @@ func intinputWindowProc(hwnd win.HWND, msg uint32, wParam uintptr, lParam uintpt
 	case win.WM_DESTROY:
 		// Make sure that the data structure on the Go-side does not point to a non-existent
 		// window.
-		intinputGetPtr(hwnd).hWnd = 0
+		intinputGetPtr(hwnd).Hwnd = 0
 		// Defer to the old window proc
 
 	case win.WM_SETFOCUS:
@@ -342,7 +342,7 @@ func intinputGetPtr(hwnd win.HWND) *intinputElement {
 	}
 
 	ptr := (*intinputElement)(unsafe.Pointer(gwl))
-	if ptr.hWnd != hwnd && ptr.hWnd != 0 {
+	if ptr.Hwnd != hwnd && ptr.Hwnd != 0 {
 		panic("Internal error.")
 	}
 

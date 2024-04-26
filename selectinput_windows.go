@@ -107,19 +107,19 @@ func (w *selectinputElement) MinIntrinsicWidth(height base.Length) base.Length {
 }
 
 func (w *selectinputElement) Props() base.Widget {
-	length := win.SendMessage(w.hWnd, win.CB_GETCOUNT, 0, 0)
+	length := win.SendMessage(w.Hwnd, win.CB_GETCOUNT, 0, 0)
 	items := make([]string, int(length))
 	for i := range items {
 		buffer := [80]uint16{}
-		length := win.SendMessage(w.hWnd, win.CB_GETLBTEXTLEN, uintptr(i), 0)
+		length := win.SendMessage(w.Hwnd, win.CB_GETLBTEXTLEN, uintptr(i), 0)
 		if length > 79 {
 			panic("not enough room")
 		}
-		win.SendMessage(w.hWnd, win.CB_GETLBTEXT, uintptr(i),
+		win.SendMessage(w.Hwnd, win.CB_GETLBTEXT, uintptr(i),
 			uintptr(unsafe.Pointer(&buffer)))
 		items[i] = syscall.UTF16ToString(buffer[:length])
 	}
-	value := win.SendMessage(w.hWnd, win.CB_GETCURSEL, 0, 0)
+	value := win.SendMessage(w.Hwnd, win.CB_GETCURSEL, 0, 0)
 	unset := false
 	// Depending on platform, the value may be either a 32-bit or a 64-bit
 	// value, which somewhat complicates detecting CB_ERR.  The following
@@ -131,7 +131,7 @@ func (w *selectinputElement) Props() base.Widget {
 		Items:    items,
 		Value:    int(value),
 		Unset:    unset,
-		Disabled: !win.IsWindowEnabled(w.hWnd),
+		Disabled: !win.IsWindowEnabled(w.Hwnd),
 		OnChange: w.onChange,
 		OnFocus:  w.onFocus,
 		OnBlur:   w.onBlur,
@@ -141,13 +141,13 @@ func (w *selectinputElement) Props() base.Widget {
 func (w *selectinputElement) updateProps(data *SelectInput) error {
 	// This is a brute force approach.  The list of items is probably unchanged
 	// most of the time.
-	win.SendMessage(w.hWnd, win.CB_RESETCONTENT, 0, 0)
-	longestString, err := selectinputAddItems(w.hWnd, data.Items)
+	win.SendMessage(w.Hwnd, win.CB_RESETCONTENT, 0, 0)
+	longestString, err := selectinputAddItems(w.Hwnd, data.Items)
 	if err != nil {
 		return err
 	}
 	if !data.Unset {
-		win.SendMessage(w.hWnd, win.CB_SETCURSEL, uintptr(data.Value), 0)
+		win.SendMessage(w.Hwnd, win.CB_SETCURSEL, uintptr(data.Value), 0)
 	}
 
 	w.SetDisabled(data.Disabled)
@@ -166,7 +166,7 @@ func comboboxWindowProc(hwnd win.HWND, msg uint32, wParam uintptr, lParam uintpt
 	case win.WM_DESTROY:
 		// Make sure that the data structure on the Go-side does not point to a non-existent
 		// window.
-		selectinputGetPtr(hwnd).hWnd = 0
+		selectinputGetPtr(hwnd).Hwnd = 0
 		// Defer to the old window proc
 
 	case win.WM_SETFOCUS:
@@ -205,7 +205,7 @@ func selectinputGetPtr(hwnd win.HWND) *selectinputElement {
 	}
 
 	ptr := (*selectinputElement)(unsafe.Pointer(gwl))
-	if ptr.hWnd != hwnd && ptr.hWnd != 0 {
+	if ptr.Hwnd != hwnd && ptr.Hwnd != 0 {
 		panic("Internal error.")
 	}
 

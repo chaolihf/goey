@@ -82,12 +82,12 @@ func (w *dateinputElement) MinIntrinsicWidth(base.Length) base.Length {
 
 func (w *dateinputElement) Props() base.Widget {
 	st := win.SYSTEMTIME{}
-	win.SendMessage(w.hWnd, win.DTM_GETSYSTEMTIME, 0, uintptr(unsafe.Pointer(&st)))
+	win.SendMessage(w.Hwnd, win.DTM_GETSYSTEMTIME, 0, uintptr(unsafe.Pointer(&st)))
 
 	return &DateInput{
 		Value: time.Date(int(st.WYear), time.Month(st.WMonth), int(st.WDay),
 			int(st.WHour), int(st.WMinute), int(st.WSecond), 0, time.Local),
-		Disabled: !win.IsWindowEnabled(w.hWnd),
+		Disabled: !win.IsWindowEnabled(w.Hwnd),
 		OnChange: w.onChange,
 		OnFocus:  w.onFocus,
 		OnBlur:   w.onBlur,
@@ -96,7 +96,7 @@ func (w *dateinputElement) Props() base.Widget {
 
 func (w *dateinputElement) updateProps(data *DateInput) error {
 	st := data.systemTime()
-	win.SendMessage(w.hWnd, win.DTM_SETSYSTEMTIME, win.GDT_VALID, uintptr(unsafe.Pointer(&st)))
+	win.SendMessage(w.Hwnd, win.DTM_SETSYSTEMTIME, win.GDT_VALID, uintptr(unsafe.Pointer(&st)))
 
 	w.SetDisabled(data.Disabled)
 	w.onChange = data.OnChange
@@ -110,7 +110,7 @@ func dateinputWindowProc(hwnd win.HWND, msg uint32, wParam uintptr, lParam uintp
 	case win.WM_DESTROY:
 		// Make sure that the data structure on the Go-side does not point to a non-existent
 		// window.
-		dateinputGetPtr(hwnd).hWnd = 0
+		dateinputGetPtr(hwnd).Hwnd = 0
 		// Defer to the old window proc
 
 	case win.WM_SETFOCUS:
@@ -153,7 +153,7 @@ func dateinputGetPtr(hwnd win.HWND) *dateinputElement {
 	}
 
 	ptr := (*dateinputElement)(unsafe.Pointer(gwl))
-	if ptr.hWnd != hwnd && ptr.hWnd != 0 {
+	if ptr.Hwnd != hwnd && ptr.Hwnd != 0 {
 		panic("Internal error.")
 	}
 

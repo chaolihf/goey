@@ -69,11 +69,11 @@ func (w *labelElement) SetBounds(bounds base.Rectangle) {
 
 	// Not certain why this is required.  However, static controls don't
 	// repaint when resized.  This forces a repaint.
-	win.InvalidateRect(w.hWnd, nil, true)
+	win.InvalidateRect(w.Hwnd, nil, true)
 }
 
 func (w *labelElement) updateProps(data *Label) error {
-	text, err := win2.SetWindowText(w.hWnd, data.Text)
+	text, err := win2.SetWindowText(w.Hwnd, data.Text)
 	if err != nil {
 		return err
 	}

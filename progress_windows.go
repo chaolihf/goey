@@ -61,9 +61,9 @@ func (w *progressElement) MinIntrinsicWidth(base.Length) base.Length {
 }
 
 func (w *progressElement) Props() base.Widget {
-	min := win.SendMessage(w.hWnd, win.PBM_GETRANGE, win.TRUE, 0)
-	max := win.SendMessage(w.hWnd, win.PBM_GETRANGE, win.FALSE, 0)
-	value := win.SendMessage(w.hWnd, win.PBM_GETPOS, 0, 0)
+	min := win.SendMessage(w.Hwnd, win.PBM_GETRANGE, win.TRUE, 0)
+	max := win.SendMessage(w.Hwnd, win.PBM_GETRANGE, win.FALSE, 0)
+	value := win.SendMessage(w.Hwnd, win.PBM_GETPOS, 0, 0)
 
 	return &Progress{
 		Value: int(value),
@@ -73,7 +73,7 @@ func (w *progressElement) Props() base.Widget {
 }
 
 func (w *progressElement) updateProps(data *Progress) error {
-	win.SendMessage(w.hWnd, win.PBM_SETRANGE32, uintptr(data.Min), uintptr(data.Max))
-	win.SendMessage(w.hWnd, win.PBM_SETPOS, uintptr(data.Value), 0)
+	win.SendMessage(w.Hwnd, win.PBM_SETRANGE32, uintptr(data.Min), uintptr(data.Max))
+	win.SendMessage(w.Hwnd, win.PBM_SETPOS, uintptr(data.Value), 0)
 	return nil
 }

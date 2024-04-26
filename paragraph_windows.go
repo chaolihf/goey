@@ -39,7 +39,7 @@ type paragraphElement struct {
 }
 
 func (w *paragraphElement) measureReflowLimits() {
-	hwnd := w.hWnd
+	hwnd := w.Hwnd
 	hdc := win.GetDC(hwnd)
 	if hFont := win2.MessageFont(); hFont != 0 {
 		win.SelectObject(hdc, win.HGDIOBJ(hFont))
@@ -55,7 +55,7 @@ func (w *paragraphElement) measureReflowLimits() {
 
 func (w *paragraphElement) Props() base.Widget {
 	align := JustifyLeft
-	if style := win.GetWindowLong(w.hWnd, win.GWL_STYLE); style&win.SS_CENTER == win.SS_CENTER {
+	if style := win.GetWindowLong(w.Hwnd, win.GWL_STYLE); style&win.SS_CENTER == win.SS_CENTER {
 		align = JustifyCenter
 	} else if style&win.SS_RIGHT == win.SS_RIGHT {
 		align = JustifyRight
@@ -74,13 +74,13 @@ func (w *paragraphElement) MinIntrinsicHeight(width base.Length) base.Length {
 		width = w.maxReflowWidth()
 	}
 
-	hdc := win.GetDC(w.hWnd)
+	hdc := win.GetDC(w.Hwnd)
 	if hFont := win2.MessageFont(); hFont != 0 {
 		win.SelectObject(hdc, win.HGDIOBJ(hFont))
 	}
 	rect := win.RECT{0, 0, int32(width.PixelsX()), 0x7fffffff}
 	win.DrawTextEx(hdc, &w.text[0], int32(len(w.text)), &rect, win.DT_CALCRECT|win.DT_WORDBREAK, nil)
-	win.ReleaseDC(w.hWnd, hdc)
+	win.ReleaseDC(w.Hwnd, hdc)
 
 	return base.FromPixelsY(int(rect.Bottom))
 }
@@ -102,17 +102,17 @@ func (w *paragraphElement) SetBounds(bounds base.Rectangle) {
 
 	// Not certain why this is required.  However, static controls don't
 	// repaint when resized.  This forces a repaint.
-	win.InvalidateRect(w.hWnd, nil, true)
+	win.InvalidateRect(w.Hwnd, nil, true)
 }
 
 func (w *paragraphElement) updateProps(data *P) error {
-	text, err := win2.SetWindowText(w.hWnd, data.Text)
+	text, err := win2.SetWindowText(w.Hwnd, data.Text)
 	if err != nil {
 		return err
 	}
 	w.text = text
 
-	win.SetWindowLongPtr(w.hWnd, win.GWL_STYLE, uintptr(data.calcStyle()))
+	win.SetWindowLongPtr(w.Hwnd, win.GWL_STYLE, uintptr(data.calcStyle()))
 
 	return nil
 }

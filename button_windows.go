@@ -62,14 +62,14 @@ type buttonElement struct {
 }
 
 func (w *buttonElement) Click() {
-	win.SendMessage(w.hWnd, win.BM_CLICK, 0, 0)
+	win.SendMessage(w.Hwnd, win.BM_CLICK, 0, 0)
 }
 
 func (w *buttonElement) Props() base.Widget {
 	return &Button{
 		Text:     w.Control.Text(),
-		Disabled: !win.IsWindowEnabled(w.hWnd),
-		Default:  (win.GetWindowLong(w.hWnd, win.GWL_STYLE) & win.BS_DEFPUSHBUTTON) != 0,
+		Disabled: !win.IsWindowEnabled(w.Hwnd),
+		Default:  (win.GetWindowLong(w.Hwnd, win.GWL_STYLE) & win.BS_DEFPUSHBUTTON) != 0,
 		OnClick:  w.onClick,
 		OnFocus:  w.onFocus,
 		OnBlur:   w.onBlur,
@@ -97,14 +97,14 @@ func (w *buttonElement) MinIntrinsicWidth(base.Length) base.Length {
 }
 
 func (w *buttonElement) updateProps(data *Button) error {
-	text, err := win2.SetWindowText(w.hWnd, data.Text)
+	text, err := win2.SetWindowText(w.Hwnd, data.Text)
 	if err != nil {
 		return err
 	}
 
 	w.text = text
 	w.SetDisabled(data.Disabled)
-	win.SendMessage(w.hWnd, win.BM_SETSTYLE, uintptr(buttonStyle(data.Default)), win.TRUE)
+	win.SendMessage(w.Hwnd, win.BM_SETSTYLE, uintptr(buttonStyle(data.Default)), win.TRUE)
 	w.onClick = data.OnClick
 	w.onFocus = data.OnFocus
 	w.onBlur = data.OnBlur
@@ -117,7 +117,7 @@ func buttonWindowProc(hwnd win.HWND, msg uint32, wParam uintptr, lParam uintptr)
 	case win.WM_DESTROY:
 		// Make sure that the data structure on the Go-side does not point to a non-existent
 		// window.
-		buttonGetPtr(hwnd).hWnd = 0
+		buttonGetPtr(hwnd).Hwnd = 0
 		// Defer to the old window proc
 
 	case win.WM_SETFOCUS:
@@ -155,7 +155,7 @@ func buttonGetPtr(hwnd win.HWND) *buttonElement {
 	}
 
 	ptr := (*buttonElement)(unsafe.Pointer(gwl))
-	if ptr.hWnd != hwnd && ptr.hWnd != 0 {
+	if ptr.Hwnd != hwnd && ptr.Hwnd != 0 {
 		panic("Internal error.")
 	}
 

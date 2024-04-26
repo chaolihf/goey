@@ -87,10 +87,10 @@ type textinputElement struct {
 func (w *textinputElement) Props() base.Widget {
 	return &TextInput{
 		Value:       w.Control.Text(),
-		Placeholder: propsPlaceholder(w.hWnd),
-		Disabled:    !win.IsWindowEnabled(w.hWnd),
-		Password:    win.SendMessage(w.hWnd, win.EM_GETPASSWORDCHAR, 0, 0) != 0,
-		ReadOnly:    (win.GetWindowLong(w.hWnd, win.GWL_STYLE) & win.ES_READONLY) != 0,
+		Placeholder: propsPlaceholder(w.Hwnd),
+		Disabled:    !win.IsWindowEnabled(w.Hwnd),
+		Password:    win.SendMessage(w.Hwnd, win.EM_GETPASSWORDCHAR, 0, 0) != 0,
+		ReadOnly:    (win.GetWindowLong(w.Hwnd, win.GWL_STYLE) & win.ES_READONLY) != 0,
 		OnChange:    w.onChange,
 		OnFocus:     w.onFocus,
 		OnBlur:      w.onBlur,
@@ -130,7 +130,7 @@ func (w *textinputElementBase) MinIntrinsicWidth(base.Length) base.Length {
 func (w *textinputElementBase) TakeFocus() bool {
 	ok := w.Control.TakeFocus()
 	if ok {
-		win.SendMessage(w.hWnd, win.EM_SETSEL, 0, 0x7fff)
+		win.SendMessage(w.Hwnd, win.EM_SETSEL, 0, 0x7fff)
 	}
 	return ok
 }
@@ -153,25 +153,25 @@ func updatePlaceholder(hWnd win.HWND, text string) error {
 
 func (w *textinputElementBase) updateProps(data *TextInput) error {
 	if data.Value != w.Text() {
-		_, err := win2.SetWindowText(w.hWnd, data.Value)
+		_, err := win2.SetWindowText(w.Hwnd, data.Value)
 		if err != nil {
 			return err
 		}
 	}
 
-	err := updatePlaceholder(w.hWnd, data.Placeholder)
+	err := updatePlaceholder(w.Hwnd, data.Placeholder)
 	if err != nil {
 		return err
 	}
 
 	w.SetDisabled(data.Disabled)
 	if data.Password {
-		win.SendMessage(w.hWnd, win.EM_SETPASSWORDCHAR, '*', 0)
+		win.SendMessage(w.Hwnd, win.EM_SETPASSWORDCHAR, '*', 0)
 	} else {
-		win.SendMessage(w.hWnd, win.EM_SETPASSWORDCHAR, 0, 0)
+		win.SendMessage(w.Hwnd, win.EM_SETPASSWORDCHAR, 0, 0)
 	}
 
-	win.SendMessage(w.hWnd, win.EM_SETREADONLY, uintptr(win.BoolToBOOL(data.ReadOnly)), 0)
+	win.SendMessage(w.Hwnd, win.EM_SETREADONLY, uintptr(win.BoolToBOOL(data.ReadOnly)), 0)
 
 	w.onChange = data.OnChange
 	w.onFocus = data.OnFocus
@@ -186,7 +186,7 @@ func textinputWindowProc(hwnd win.HWND, msg uint32, wParam uintptr, lParam uintp
 	case win.WM_DESTROY:
 		// Make sure that the data structure on the Go-side does not point to a non-existent
 		// window.
-		textinputGetPtr(hwnd).hWnd = 0
+		textinputGetPtr(hwnd).Hwnd = 0
 		// Defer to the old window proc
 
 	case win.WM_SETFOCUS:
@@ -234,7 +234,7 @@ func textinputGetPtr(hwnd win.HWND) *textinputElementBase {
 	}
 
 	ptr := (*textinputElementBase)(unsafe.Pointer(gwl))
-	if ptr.hWnd != hwnd && ptr.hWnd != 0 {
+	if ptr.Hwnd != hwnd && ptr.Hwnd != 0 {
 		panic("Internal error.")
 	}
 

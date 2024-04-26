@@ -222,7 +222,7 @@ func (w *decorationElement) updateProps(data *Decoration) error {
 	w.insets = data.Insets
 	w.radius = data.Radius
 
-	child, err := base.DiffChild(base.Control{w.hWnd}, w.child, data.Child)
+	child, err := base.DiffChild(base.Control{w.Hwnd}, w.child, data.Child)
 	if err != nil {
 		return err
 	}
@@ -236,7 +236,7 @@ func decorationWindowProc(hwnd win.HWND, msg uint32, wParam uintptr, lParam uint
 	case win.WM_DESTROY:
 		// Make sure that the data structure on the Go-side does not point to a non-existent
 		// window.
-		decorationGetPtr(hwnd).hWnd = 0
+		decorationGetPtr(hwnd).Hwnd = 0
 		// Defer to the old window proc
 
 	case win.WM_PAINT:
@@ -286,7 +286,7 @@ func decorationGetPtr(hwnd win.HWND) *decorationElement {
 	}
 
 	ptr := (*decorationElement)(unsafe.Pointer(gwl))
-	if ptr.hWnd != hwnd && ptr.hWnd != 0 {
+	if ptr.Hwnd != hwnd && ptr.Hwnd != 0 {
 		panic("Internal error.")
 	}
 
