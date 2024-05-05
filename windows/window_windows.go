@@ -139,7 +139,7 @@ func newWindow(title string) (*Window, error) {
 		classAtom = atom
 	}
 
-	style := uint32(win.WS_OVERLAPPEDWINDOW)
+	style := uint32(win.WS_OVERLAPPEDWINDOW | win.WS_CLIPCHILDREN)
 	//if !settings.Resizable {
 	//	style = win.WS_OVERLAPPED | win.WS_CAPTION | win.WS_MINIMIZEBOX | win.WS_SYSMENU
 	//}
