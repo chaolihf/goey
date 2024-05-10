@@ -40,7 +40,10 @@ func createWindow() error {
 	// We store a copy of the pointer to the window so that we can update the
 	// GUI at a later time.
 	mainWindow = mw
-
+	mw.SetOnResize(func(width, height int) bool {
+		fmt.Printf("resize window width %d,height %d\n", width, height)
+		return true
+	})
 	return nil
 }
 
@@ -71,7 +74,14 @@ func render() base.Widget {
 				clickCount++
 				// Update the contents of the top-level window.
 				updateWindow()
+				showWindowSize()
+
 			}},
 		},
 	}
+}
+
+func showWindowSize() {
+	width, height := mainWindow.GetRect()
+	fmt.Printf("resize window width %d,height %d\n", width, height)
 }

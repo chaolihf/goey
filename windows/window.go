@@ -248,3 +248,13 @@ func sizeDefaults() (uint, uint) {
 
 	return uint(width), uint(height)
 }
+
+// set callback for windows resize
+func (w *Window) SetOnResize(callback func(int, int) bool) {
+	w.setOnResize(callback)
+}
+
+// get windows client Size
+func (w *Window) GetSize() (int, int) {
+	return w.getSize()
+}
