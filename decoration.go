@@ -70,3 +70,7 @@ func (w *DecorationElement) UpdateProps(data base.Widget) error {
 	// Forward to the platform-dependant code
 	return w.updateProps(data.(*Decoration))
 }
+
+func (w *DecorationElement) Children() base.Element {
+	return w.child
+}

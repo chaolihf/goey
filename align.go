@@ -137,3 +137,7 @@ func (w *AlignElement) updateProps(data *Align) (err error) {
 func (w *AlignElement) UpdateProps(data base.Widget) error {
 	return w.updateProps(data.(*Align))
 }
+
+func (w *AlignElement) Children() base.Element {
+	return w.child
+}

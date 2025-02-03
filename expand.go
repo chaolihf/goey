@@ -86,3 +86,7 @@ func (w *ExpandElement) updateProps(data *Expand) (err error) {
 func (w *ExpandElement) UpdateProps(data base.Widget) error {
 	return w.updateProps(data.(*Expand))
 }
+
+func (w *ExpandElement) Children() base.Element {
+	return w.child
+}

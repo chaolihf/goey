@@ -353,3 +353,7 @@ func (w *VboxElement) updateProps(data *VBox) (err error) {
 func (w *VboxElement) UpdateProps(data base.Widget) error {
 	return w.updateProps(data.(*VBox))
 }
+
+func (w *VboxElement) Children() []base.Element {
+	return w.children
+}

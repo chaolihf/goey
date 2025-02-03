@@ -344,3 +344,7 @@ func (w *HboxElement) updateProps(data *HBox) (err error) {
 func (w *HboxElement) UpdateProps(data base.Widget) error {
 	return w.updateProps(data.(*HBox))
 }
+
+func (w *HboxElement) Children() []base.Element {
+	return w.children
+}
