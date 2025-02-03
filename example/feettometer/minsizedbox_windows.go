@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/lxn/win"
+	"github.com/chaolihf/win"
 )
 
 func (w *minsizedboxElement) SetOrder(previous win.HWND) win.HWND {

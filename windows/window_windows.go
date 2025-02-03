@@ -9,7 +9,7 @@ import (
 	"github.com/chaolihf/goey/dialog"
 	win2 "github.com/chaolihf/goey/internal/windows"
 	"github.com/chaolihf/goey/loop"
-	"github.com/lxn/win"
+	"github.com/chaolihf/win"
 )
 
 var (

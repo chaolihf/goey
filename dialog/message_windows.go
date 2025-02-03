@@ -3,7 +3,7 @@ package dialog
 import (
 	"syscall"
 
-	"github.com/lxn/win"
+	"github.com/chaolihf/win"
 )
 
 func (m *Message) show() error {

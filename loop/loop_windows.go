@@ -7,7 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/chaolihf/goey/internal/nopanic"
-	"github.com/lxn/win"
+	"github.com/chaolihf/win"
 )
 
 const (

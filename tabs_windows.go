@@ -7,9 +7,11 @@ import (
 
 	"github.com/chaolihf/goey/base"
 	"github.com/chaolihf/goey/windows"
-	"github.com/lxn/win"
+	"github.com/chaolihf/win"
 )
 
+// https://learn.microsoft.com/en-us/windows/win32/controls/tab-controls#owner-drawn-tabs
+// https://stackoverflow.com/questions/72928160/wm-paint-manage-hovering-on-an-item-of-a-tab-control
 var (
 	tabs struct {
 		className     []uint16
@@ -181,6 +183,13 @@ func (w *TabsElement) UpdateTabItems(items []TabItem) error {
 	return err
 }
 
+func (w *TabsElement) SelectItem(index int) {
+	if w.value != index && index >= 0 && index < len(w.widgets) {
+		win.SendMessage(w.Hwnd, win.TCM_SETCURSEL, uintptr(index), 0)
+		w.value = index
+	}
+}
+
 func (w *TabsElement) updateChildren(children []TabItem) error {
 	len1 := len(w.widgets)
 	len2 := len(children)
@@ -322,8 +331,46 @@ func tabsBackgroundBrush(hwnd win.HWND, hdc win.HDC) (win.HBRUSH, bool, error) {
 	return brush, false, nil
 }
 
+func paintTabs(hwnd win.HWND) {
+	// var ps win.PAINTSTRUCT
+	// hdc := win.BeginPaint(hwnd, &ps)
+	// defer win.EndPaint(hwnd, &ps)
+	// // Total Size
+	// var rc win.RECT
+	// win.GetClientRect(hwnd, &rc)
+	// // Paint the background
+	// bkgnd := win.GetSysColorBrush(win.COLOR_BTNFACE)
+	// win.FillRect(hdc, &rc, bkgnd)
+	// // Get some infos about tabs
+	// tabsCount := win.TabCtrl_GetItemCount(hwnd)
+	// tabsSelect := win.TabCtrl_GetCurSel(hwnd)
+	// ctl_identifier := win.GetDlgCtrlID(hwnd)
+	// for i := 0; i < tabsCount; i++ {
+	// 	var rcItem win.RECT
+	// 	win.SendMessage(hwnd, win.TCM_GETITEMRECT, uintptr(i), uintptr(unsafe.Pointer(&rcItem)))
+	// 	//DRAWITEMSTRUCT dis{ ODT_TAB, ctl_identifier, static_cast<UINT>(i), ODA_DRAWENTIRE, 0, hwnd, hdc, RECT{}, 0 }
+	// 	var intersect win.RECT // Draw the relevant items that needs to be redrawn
+	// 	if win.IntersectRect(&intersect, &ps.rcPaint, &rcItem) {
+	// 		var solidBrush win.COLORREF
+	// 		if i == tabsSelect {
+	// 			solidBrush = win.RGB(255, 0, 255)
+	// 		} else if i == _hoverTabIndex {
+	// 			solidBrush = win.RGB(0, 0, 255)
+	// 		} else {
+	// 			solidBrush = win.RGB(0, 255, 255)
+	// 		}
+	// 		hBrush := win.CreateSolidBrush(solidBrush)
+	// 		win.FillRect(hdc, &rcItem, hBrush)
+	// 		win.DeleteObject(win.HGDIOBJ(uintptr(hBrush)))
+	// 	}
+	// }
+
+}
+
 func tabsWindowProc(hwnd win.HWND, msg uint32, wParam uintptr, lParam uintptr) (result uintptr) {
 	switch msg {
+	case win.WM_PAINT + 99999999:
+		paintTabs(hwnd)
 	case win.WM_DESTROY:
 		// Make sure that the data structure on the Go-side does not point to a non-existent
 		// window.

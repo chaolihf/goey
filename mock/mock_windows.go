@@ -1,7 +1,7 @@
 package mock
 
 import (
-	"github.com/lxn/win"
+	"github.com/chaolihf/win"
 )
 
 // SetOrder is called to ensure that windows appears in the correct order.

@@ -37,6 +37,12 @@ func updateWindow() {
 	window.SetChild(renderWindow())
 }
 
+func selectTab() {
+	paddingElement := window.Child().(*goey.PaddingElement)
+	tabsElement := paddingElement.Children().(*goey.TabsElement)
+	tabsElement.SelectItem(0)
+}
+
 func addTab() {
 	paddingElement := window.Child().(*goey.PaddingElement)
 	tabsElement := paddingElement.Children().(*goey.TabsElement)
@@ -111,7 +117,7 @@ func renderWindow() base.Widget {
 					Children: []base.Widget{
 						&goey.HBox{Children: []base.Widget{
 							&goey.Button{Text: "Left 1", Default: true, OnClick: addTab},
-							&goey.Button{Text: "Left 2"},
+							&goey.Button{Text: "Left 2", OnClick: selectTab},
 						}},
 						&goey.HBox{
 							Children: []base.Widget{

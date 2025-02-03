@@ -1,7 +1,7 @@
 package base
 
 import (
-	"github.com/lxn/win"
+	"github.com/chaolihf/win"
 )
 
 func (m *mockElement) SetOrder(win.HWND) win.HWND {

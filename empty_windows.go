@@ -1,7 +1,7 @@
 package goey
 
 import (
-	"github.com/lxn/win"
+	"github.com/chaolihf/win"
 )
 
 func (w *emptyElement) SetOrder(hwnd win.HWND) win.HWND {

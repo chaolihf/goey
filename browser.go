@@ -2,7 +2,7 @@ package goey
 
 import (
 	"github.com/chaolihf/goey/base"
-	"github.com/lxn/win"
+	"github.com/chaolihf/win"
 )
 
 var (

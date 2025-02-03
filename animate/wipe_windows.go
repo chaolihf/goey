@@ -1,7 +1,7 @@
 package animate
 
 import (
-	"github.com/lxn/win"
+	"github.com/chaolihf/win"
 )
 
 func (w *wipeElement) SetOrder(previous win.HWND) win.HWND {

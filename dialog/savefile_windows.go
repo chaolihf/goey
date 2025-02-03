@@ -5,7 +5,7 @@ import (
 	"syscall"
 	"unsafe"
 
-	"github.com/lxn/win"
+	"github.com/chaolihf/win"
 )
 
 func (m *SaveFile) show() (string, error) {

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"unsafe"
 
-	"github.com/lxn/win"
+	"github.com/chaolihf/win"
 )
 
 const (

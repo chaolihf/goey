@@ -6,7 +6,7 @@ import (
 
 	"github.com/chaolihf/goey/base"
 	win2 "github.com/chaolihf/goey/internal/windows"
-	"github.com/lxn/win"
+	"github.com/chaolihf/win"
 )
 
 var (

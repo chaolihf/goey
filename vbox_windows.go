@@ -1,7 +1,7 @@
 package goey
 
 import (
-	"github.com/lxn/win"
+	"github.com/chaolihf/win"
 )
 
 func (w *VboxElement) SetOrder(previous win.HWND) win.HWND {

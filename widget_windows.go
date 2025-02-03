@@ -9,7 +9,7 @@ import (
 	"github.com/chaolihf/goey/base"
 	win2 "github.com/chaolihf/goey/internal/windows"
 	"github.com/chaolihf/goey/loop"
-	"github.com/lxn/win"
+	"github.com/chaolihf/win"
 )
 
 func init() {
@@ -17,7 +17,7 @@ func init() {
 	// false, which according to the documentation indicates that it failed.
 	// However, there is no error with syscall.GetLastError().
 	//
-	// Note:  The init function for github.com/lxn/win also calls this
+	// Note:  The init function for github.com/chaolihf/win also calls this
 	// function, but does not include ICC_STANDARD_CLASSES.
 	initCtrls := win.INITCOMMONCONTROLSEX{}
 	initCtrls.DwSize = uint32(unsafe.Sizeof(initCtrls))

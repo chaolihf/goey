@@ -6,7 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/chaolihf/goey/loop"
-	"github.com/lxn/win"
+	"github.com/chaolihf/win"
 )
 
 // Owner holds a pointer to the owning window.

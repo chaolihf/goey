@@ -1,7 +1,7 @@
 package base
 
 import (
-	"github.com/lxn/win"
+	"github.com/chaolihf/win"
 )
 
 const (

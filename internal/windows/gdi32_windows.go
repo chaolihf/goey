@@ -6,7 +6,7 @@ import (
 	"image/draw"
 	"unsafe"
 
-	"github.com/lxn/win"
+	"github.com/chaolihf/win"
 )
 
 func CreateIconFromImage(prop image.Image) (win.HICON, error) {
