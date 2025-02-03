@@ -26,6 +26,7 @@ type windowImpl struct {
 	child                   base.Element
 	childSize               base.Size
 	onClosing               func() bool
+	onResize                func(int, int) bool
 	horizontalScroll        bool
 	horizontalScrollVisible bool
 	horizontalScrollPos     base.Length
@@ -119,6 +120,10 @@ func (w *windowImpl) onSize(hwnd win.HWND) {
 
 	// Update the position of all of the children
 	win.InvalidateRect(hwnd, &rect, true)
+
+	if w.onResize != nil {
+		w.onResize(int(rect.Right-rect.Left), int(rect.Bottom-rect.Top))
+	}
 }
 
 func newWindow(title string) (*Window, error) {
@@ -572,6 +577,7 @@ func windowWindowProc(hwnd win.HWND, msg uint32, wParam uintptr, lParam uintptr)
 
 	case win.WM_SIZE:
 		windowGetPtr(hwnd).onSize(hwnd)
+
 		// Defer to the default window proc
 
 	case win.WM_GETMINMAXINFO:
@@ -650,4 +656,14 @@ func windowGetPtr(hwnd win.HWND) *windowImpl {
 	}
 
 	return ptr
+}
+
+func (w *windowImpl) setOnResize(callback func(int, int) bool) {
+	w.onResize = callback
+}
+
+func (w *windowImpl) getSize() (int, int) {
+	rect := win.RECT{}
+	win.GetClientRect(w.Hwnd, &rect)
+	return int(rect.Right - rect.Left), int(rect.Bottom - rect.Top)
 }
