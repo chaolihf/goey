@@ -1,0 +1,28 @@
+myMeasurement,tag\ Key1=tag\ Value1,tag\ Key2=tag\ Value2 fieldKey=100
+myMeasurementName fieldKey="fieldValue" 1556813561098000000
+输出为
+[
+{
+"name":"myMeasurement",
+"tags":[
+{
+    "name":"tag Key1",
+    "value":"tag Value1"
+},
+{
+    "name":"tag Key2",
+    "value":"tag Value2"
+}
+],
+"fields":[
+    {"name":"fieldKey",
+    "value":100
+    }
+]
+
+
+},
+{
+"name":"myMeasurementName",
+}
+]

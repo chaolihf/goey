@@ -8,7 +8,7 @@ import (
 	"github.com/chaolihf/goey/mock"
 )
 
-func (w *alignElement) Props() base.Widget {
+func (w *AlignElement) Props() base.Widget {
 	child := base.Widget(nil)
 	if w.child != nil {
 		child = w.child.(Proper).Props()
@@ -99,7 +99,7 @@ func TestAlignLayout(t *testing.T) {
 	}
 
 	for i, v := range cases {
-		elem := alignElement{
+		elem := AlignElement{
 			child:        mock.NewIfNotZero(v.in),
 			widthFactor:  v.widthFactor,
 			heightFactor: v.heightFactor,
@@ -132,7 +132,7 @@ func TestAlignMinIntrinsicSize(t *testing.T) {
 	}
 
 	for i, v := range cases {
-		elem := alignElement{
+		elem := AlignElement{
 			child:        mock.NewIfNotZero(v.in),
 			widthFactor:  v.widthFactor,
 			heightFactor: v.heightFactor,

@@ -12,11 +12,11 @@ type Boundser interface {
 	Bounds() base.Rectangle
 }
 
-func (w *expandElement) Bounds() base.Rectangle {
+func (w *ExpandElement) Bounds() base.Rectangle {
 	return w.child.(Boundser).Bounds()
 }
 
-func (w *expandElement) Props() base.Widget {
+func (w *ExpandElement) Props() base.Widget {
 	child := base.Widget(nil)
 	if w.child != nil {
 		child = w.child.(Proper).Props()
@@ -65,7 +65,7 @@ func TestExpandUpdateProps(t *testing.T) {
 func TestExpandLayout(t *testing.T) {
 	children := []base.Element{
 		mock.New(base.Size{10 * DIP, 10 * DIP}),
-		&expandElement{child: mock.New(base.Size{10 * DIP, 10 * DIP})},
+		&ExpandElement{child: mock.New(base.Size{10 * DIP, 10 * DIP})},
 		mock.New(base.Size{20 * DIP, 20 * DIP}),
 	}
 
@@ -110,7 +110,7 @@ func TestExpandLayout(t *testing.T) {
 	}
 
 	for i, v := range cases {
-		in := vboxElement{
+		in := VboxElement{
 			children:     v.children,
 			alignMain:    v.alignMain,
 			alignCross:   v.alignCross,

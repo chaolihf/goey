@@ -60,7 +60,7 @@ func (w *Decoration) mount(parent base.Control) (base.Element, error) {
 		return nil, err
 	}
 
-	retval := &decorationElement{
+	retval := &DecorationElement{
 		Control: Control{hwnd},
 		fill:    w.Fill,
 		stroke:  w.Stroke,
@@ -80,7 +80,7 @@ func (w *Decoration) mount(parent base.Control) (base.Element, error) {
 	return retval, nil
 }
 
-type decorationElement struct {
+type DecorationElement struct {
 	Control
 	fill   color.RGBA
 	stroke color.RGBA
@@ -150,7 +150,7 @@ func createPen(clr color.RGBA) win.HPEN {
 	return win.ExtCreatePen(win.PS_COSMETIC|win.PS_SOLID, 1, &lb, 0, nil)
 }
 
-func (w *decorationElement) Close() {
+func (w *DecorationElement) Close() {
 	if w.child != nil {
 		w.child.Close()
 		w.child = nil
@@ -158,7 +158,7 @@ func (w *decorationElement) Close() {
 	w.Control.Close()
 }
 
-func (w *decorationElement) props() *Decoration {
+func (w *DecorationElement) props() *Decoration {
 	// TODO:  Can we determine the color of the brush or pen?  That would allow
 	// to verify that the change has propagated right down to the WIN32
 	// API.  This code won't detect if their is skew between the colors stored
@@ -172,7 +172,7 @@ func (w *decorationElement) props() *Decoration {
 	}
 }
 
-func (w *decorationElement) SetBounds(bounds base.Rectangle) {
+func (w *DecorationElement) SetBounds(bounds base.Rectangle) {
 	// Update background control position
 	w.Control.SetBounds(bounds)
 
@@ -186,13 +186,13 @@ func (w *decorationElement) SetBounds(bounds base.Rectangle) {
 	w.child.SetBounds(bounds)
 }
 
-func (w *decorationElement) SetOrder(previous win.HWND) win.HWND {
+func (w *DecorationElement) SetOrder(previous win.HWND) win.HWND {
 	previous = w.Control.SetOrder(previous)
 	w.child.SetOrder(0)
 	return previous
 }
 
-func (w *decorationElement) updateProps(data *Decoration) error {
+func (w *DecorationElement) updateProps(data *Decoration) error {
 	if w.fill != data.Fill {
 		// Free the old brush
 		if w.hBrush != 0 {
@@ -279,13 +279,13 @@ func decorationWindowProc(hwnd win.HWND, msg uint32, wParam uintptr, lParam uint
 	return win.DefWindowProc(hwnd, msg, wParam, lParam)
 }
 
-func decorationGetPtr(hwnd win.HWND) *decorationElement {
+func decorationGetPtr(hwnd win.HWND) *DecorationElement {
 	gwl := win.GetWindowLongPtr(hwnd, win.GWLP_USERDATA)
 	if gwl == 0 {
 		panic("Internal error.")
 	}
 
-	ptr := (*decorationElement)(unsafe.Pointer(gwl))
+	ptr := (*DecorationElement)(unsafe.Pointer(gwl))
 	if ptr.Hwnd != hwnd && ptr.Hwnd != 0 {
 		panic("Internal error.")
 	}

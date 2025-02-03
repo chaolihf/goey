@@ -15,7 +15,7 @@ var (
 	red   = color.RGBA{0xcc, 0xaa, 0x88, 0xff}
 )
 
-func (w *decorationElement) Props() base.Widget {
+func (w *DecorationElement) Props() base.Widget {
 	widget := w.props()
 	if w.child != nil {
 		widget.Child = w.child.(Proper).Props()

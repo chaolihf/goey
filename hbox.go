@@ -46,7 +46,7 @@ func (w *HBox) Mount(parent base.Control) (base.Element, error) {
 	// Record the flex factor for all children
 	ci, totalFlex := updateFlex(c, w.AlignMain, nil)
 
-	return &hboxElement{
+	return &HboxElement{
 		parent:       parent,
 		children:     c,
 		alignMain:    w.AlignMain,
@@ -56,7 +56,7 @@ func (w *HBox) Mount(parent base.Control) (base.Element, error) {
 	}, nil
 }
 
-type hboxElement struct {
+type HboxElement struct {
 	parent     base.Control
 	children   []base.Element
 	alignMain  MainAxisAlign
@@ -72,17 +72,17 @@ type boxElementInfo struct {
 	flex int
 }
 
-func (w *hboxElement) Close() {
+func (w *HboxElement) Close() {
 	base.CloseElements(w.children)
 	w.children = nil
 	w.childrenInfo = nil
 }
 
-func (*hboxElement) Kind() *base.Kind {
+func (*HboxElement) Kind() *base.Kind {
 	return &hboxKind
 }
 
-func (w *hboxElement) Layout(bc base.Constraints) base.Size {
+func (w *HboxElement) Layout(bc base.Constraints) base.Size {
 	if len(w.children) == 0 {
 		w.totalWidth = 0
 		return bc.Constrain(base.Size{})
@@ -158,7 +158,7 @@ func (w *hboxElement) Layout(bc base.Constraints) base.Size {
 	return bc.Constrain(base.Size{width, height})
 }
 
-func (w *hboxElement) MinIntrinsicHeight(width base.Length) base.Length {
+func (w *HboxElement) MinIntrinsicHeight(width base.Length) base.Length {
 	if len(w.children) == 0 {
 		return 0
 	}
@@ -179,7 +179,7 @@ func (w *hboxElement) MinIntrinsicHeight(width base.Length) base.Length {
 	return size
 }
 
-func (w *hboxElement) MinIntrinsicWidth(height base.Length) base.Length {
+func (w *HboxElement) MinIntrinsicWidth(height base.Length) base.Length {
 	if len(w.children) == 0 {
 		return 0
 	}
@@ -221,7 +221,7 @@ func (w *hboxElement) MinIntrinsicWidth(height base.Length) base.Length {
 	return size
 }
 
-func (w *hboxElement) SetBounds(bounds base.Rectangle) {
+func (w *HboxElement) SetBounds(bounds base.Rectangle) {
 	if len(w.children) == 0 {
 		return
 	}
@@ -284,7 +284,7 @@ func (w *hboxElement) SetBounds(bounds base.Rectangle) {
 	}
 }
 
-func (w *hboxElement) setBoundsForChild(i int, v base.Element, posX, posY, posX2, posY2 base.Length) {
+func (w *HboxElement) setBoundsForChild(i int, v base.Element, posX, posY, posX2, posY2 base.Length) {
 	dy := w.childrenInfo[i].size.Height
 	switch w.alignCross {
 	case CrossStart:
@@ -330,7 +330,7 @@ func updateFlex(c []base.Element, alignMain MainAxisAlign, clientInfo []boxEleme
 	return clientInfo, totalFlex
 }
 
-func (w *hboxElement) updateProps(data *HBox) (err error) {
+func (w *HboxElement) updateProps(data *HBox) (err error) {
 	// Update properties
 	w.alignMain = data.AlignMain
 	w.alignCross = data.AlignCross
@@ -341,6 +341,6 @@ func (w *hboxElement) updateProps(data *HBox) (err error) {
 	return err
 }
 
-func (w *hboxElement) UpdateProps(data base.Widget) error {
+func (w *HboxElement) UpdateProps(data base.Widget) error {
 	return w.updateProps(data.(*HBox))
 }

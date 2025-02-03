@@ -37,9 +37,30 @@ func updateWindow() {
 	window.SetChild(renderWindow())
 }
 
+func addTab() {
+	paddingElement := window.Child().(*goey.PaddingElement)
+	tabsElement := paddingElement.Children().(*goey.TabsElement)
+	tabItems := tabsElement.GetTabItems()
+	tabItems = append(tabItems, goey.TabItem{
+		Caption: "New Tab",
+	})
+	tabsElement.UpdateTabItems(tabItems)
+	// tabsElement.UpdateProps(&goey.Tabs{
+	// 	Children: []goey.TabItem{
+	// 		{
+	// 			Caption: "Sina",
+	// 		},
+	// 		{
+	// 			Caption: "Baidu",
+	// 		},
+	// 	},
+	// })
+}
+
 func renderWindow() base.Widget {
 	widget := &goey.Tabs{
-		Insets: goey.DefaultInsets(),
+		Insets:   goey.DefaultInsets(),
+		OnChange: func(v int) { println("tabs ", v) },
 		Children: []goey.TabItem{
 			{
 				Caption: "Input",
@@ -89,7 +110,7 @@ func renderWindow() base.Widget {
 				Child: &goey.VBox{
 					Children: []base.Widget{
 						&goey.HBox{Children: []base.Widget{
-							&goey.Button{Text: "Left 1", Default: true},
+							&goey.Button{Text: "Left 1", Default: true, OnClick: addTab},
 							&goey.Button{Text: "Left 2"},
 						}},
 						&goey.HBox{

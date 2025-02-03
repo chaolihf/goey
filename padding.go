@@ -63,32 +63,32 @@ func (w *Padding) Mount(parent base.Control) (base.Element, error) {
 		return nil, err
 	}
 
-	return &paddingElement{
+	return &PaddingElement{
 		parent: parent,
 		child:  child,
 		insets: w.Insets,
 	}, nil
 }
 
-type paddingElement struct {
+type PaddingElement struct {
 	parent    base.Control
 	child     base.Element
 	childSize base.Size
 	insets    Insets
 }
 
-func (w *paddingElement) Close() {
+func (w *PaddingElement) Close() {
 	if w.child != nil {
 		w.child.Close()
 		w.child = nil
 	}
 }
 
-func (*paddingElement) Kind() *base.Kind {
+func (*PaddingElement) Kind() *base.Kind {
 	return &paddingKind
 }
 
-func (w *paddingElement) Layout(bc base.Constraints) base.Size {
+func (w *PaddingElement) Layout(bc base.Constraints) base.Size {
 	hinset := w.insets.Left + w.insets.Right
 	vinset := w.insets.Top + w.insets.Bottom
 
@@ -100,17 +100,17 @@ func (w *paddingElement) Layout(bc base.Constraints) base.Size {
 	}
 }
 
-func (w *paddingElement) MinIntrinsicHeight(width base.Length) base.Length {
+func (w *PaddingElement) MinIntrinsicHeight(width base.Length) base.Length {
 	vinset := w.insets.Top + w.insets.Bottom
 	return w.child.MinIntrinsicHeight(width) + vinset
 }
 
-func (w *paddingElement) MinIntrinsicWidth(height base.Length) base.Length {
+func (w *PaddingElement) MinIntrinsicWidth(height base.Length) base.Length {
 	hinset := w.insets.Left + w.insets.Right
 	return w.child.MinIntrinsicWidth(height) + hinset
 }
 
-func (w *paddingElement) SetBounds(bounds base.Rectangle) {
+func (w *PaddingElement) SetBounds(bounds base.Rectangle) {
 	bounds.Min.X += w.insets.Left
 	bounds.Min.Y += w.insets.Top
 	bounds.Max.X -= w.insets.Right
@@ -118,12 +118,16 @@ func (w *paddingElement) SetBounds(bounds base.Rectangle) {
 	w.child.SetBounds(bounds)
 }
 
-func (w *paddingElement) updateProps(data *Padding) (err error) {
+func (w *PaddingElement) updateProps(data *Padding) (err error) {
 	w.child, err = base.DiffChild(w.parent, w.child, data.Child)
 	w.insets = data.Insets
 	return err
 }
 
-func (w *paddingElement) UpdateProps(data base.Widget) error {
+func (w *PaddingElement) UpdateProps(data base.Widget) error {
 	return w.updateProps(data.(*Padding))
+}
+
+func (w *PaddingElement) Children() base.Element {
+	return w.child
 }

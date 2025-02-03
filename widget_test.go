@@ -85,7 +85,7 @@ func testMountWidgets(t *testing.T, widgets ...base.Widget) {
 	window, closer := goeytest.WithWindow(t, &VBox{Children: widgets})
 	defer closer()
 
-	elements := window.Child().(*vboxElement).children
+	elements := window.Child().(*VboxElement).children
 	goeytest.CompareElementsToWidgets(t, normalize, elements, widgets)
 }
 
@@ -94,7 +94,7 @@ func checkMountWidget(t *testing.T, widget base.Widget) (ok bool) {
 	defer closer()
 
 	// Check that the controls that were mounted match with the list
-	children := window.Child().(*vboxElement).children
+	children := window.Child().(*VboxElement).children
 	if len(children) != 1 {
 		t.Errorf("Wanted len(children) == 1, got %d", len(children))
 		return false
@@ -130,7 +130,7 @@ func testCloseWidgets(t *testing.T, widgets ...base.Widget) {
 	window, closer := goeytest.WithWindow(t, &VBox{Children: widgets})
 	defer closer()
 
-	elements := window.Child().(*vboxElement).children
+	elements := window.Child().(*VboxElement).children
 	goeytest.CompareElementsToWidgets(t, normalize, elements, widgets)
 
 	err := loop.Do(func() error {
@@ -167,7 +167,7 @@ func testCheckFocusAndBlur(t *testing.T, widgets ...base.Widget) {
 
 		// Run the actions, which are counted.
 		for i := 0; i < 3; i++ {
-			child := window.Child().(*vboxElement).children[i]
+			child := window.Child().(*VboxElement).children[i]
 			// Find the child element to be focused
 			if elem, ok := child.(Focusable); ok {
 				err := loop.Do(func() error {
@@ -210,7 +210,7 @@ func testTypeKeys(t *testing.T, text string, widget base.Widget) {
 		time.Sleep(20 * time.Millisecond)
 
 		err := loop.Do(func() error {
-			child := window.Child().(*vboxElement).children[0]
+			child := window.Child().(*VboxElement).children[0]
 			if elem, ok := child.(Typeable); ok {
 				if elem.TakeFocus() {
 					typingErr = elem.TypeKeys(text)
@@ -266,7 +266,7 @@ func testCheckClick(t *testing.T, widgets ...base.Widget) {
 	// Run the actions, which are counted.
 	for i := 0; i < 3; i++ {
 		// Find the child element to be clicked
-		child := window.Child().(*vboxElement).children[i]
+		child := window.Child().(*VboxElement).children[i]
 
 		if elem, ok := child.(Clickable); ok {
 			err := loop.Do(func() error {
@@ -291,7 +291,7 @@ func testUpdateWidgets(t *testing.T, widgets []base.Widget, update []base.Widget
 	window, closer := goeytest.WithWindow(t, &VBox{Children: widgets})
 	defer closer()
 
-	elements := window.Child().(*vboxElement).children
+	elements := window.Child().(*VboxElement).children
 	goeytest.CompareElementsToWidgets(t, normalize, elements, widgets)
 
 	err := loop.Do(func() error {
@@ -301,7 +301,7 @@ func testUpdateWidgets(t *testing.T, widgets []base.Widget, update []base.Widget
 		t.Fatalf("error in loop.Do: %s", err)
 	}
 
-	elements = window.Child().(*vboxElement).children
+	elements = window.Child().(*VboxElement).children
 	goeytest.CompareElementsToWidgets(t, normalize, elements, update)
 }
 

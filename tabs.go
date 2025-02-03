@@ -59,11 +59,11 @@ func (w *Tabs) UpdateValue() {
 	}
 }
 
-func (*tabsElement) Kind() *base.Kind {
+func (*TabsElement) Kind() *base.Kind {
 	return &tabsKind
 }
 
-func (w *tabsElement) Layout(bc base.Constraints) base.Size {
+func (w *TabsElement) Layout(bc base.Constraints) base.Size {
 	insets := w.contentInsets()
 	insets.X += w.insets.Left + w.insets.Right
 	insets.Y += w.insets.Top + w.insets.Bottom
@@ -82,7 +82,7 @@ func (w *tabsElement) Layout(bc base.Constraints) base.Size {
 	})
 }
 
-func (w *tabsElement) MinIntrinsicHeight(width base.Length) base.Length {
+func (w *TabsElement) MinIntrinsicHeight(width base.Length) base.Length {
 	insets := w.contentInsets()
 	insets.X += w.insets.Dx()
 	insets.Y += w.insets.Dy()
@@ -98,7 +98,7 @@ func (w *tabsElement) MinIntrinsicHeight(width base.Length) base.Length {
 	return w.child.MinIntrinsicHeight(width-insets.X) + insets.Y
 }
 
-func (w *tabsElement) MinIntrinsicWidth(height base.Length) base.Length {
+func (w *TabsElement) MinIntrinsicWidth(height base.Length) base.Length {
 	insets := w.contentInsets()
 	insets.X += w.insets.Dx()
 	insets.Y += w.insets.Dy()
@@ -120,7 +120,7 @@ func (w *tabsElement) MinIntrinsicWidth(height base.Length) base.Length {
 	)
 }
 
-func (w *tabsElement) UpdateProps(data base.Widget) error {
+func (w *TabsElement) UpdateProps(data base.Widget) error {
 	// Cast to correct type.
 	tabs := data.(*Tabs)
 	// Ensure that the Value is a useable index.

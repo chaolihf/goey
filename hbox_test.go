@@ -7,7 +7,7 @@ import (
 	"github.com/chaolihf/goey/mock"
 )
 
-func (w *hboxElement) Props() base.Widget {
+func (w *HboxElement) Props() base.Widget {
 	children := []base.Widget(nil)
 	if len(w.children) != 0 {
 		children = make([]base.Widget, 0, len(w.children))
@@ -114,7 +114,7 @@ func TestHBoxLayout(t *testing.T) {
 	}
 
 	for i, v := range cases {
-		in := hboxElement{
+		in := HboxElement{
 			children:     v.children,
 			alignMain:    v.alignMain,
 			alignCross:   v.alignCross,
@@ -158,7 +158,7 @@ func TestHBoxMinIntrinsic(t *testing.T) {
 	}
 
 	for i, v := range cases {
-		in := hboxElement{
+		in := HboxElement{
 			children:   v.children,
 			alignMain:  v.alignMain,
 			alignCross: v.alignCross,

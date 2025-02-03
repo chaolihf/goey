@@ -80,7 +80,7 @@ func (w *VBox) Mount(parent base.Control) (base.Element, error) {
 	// Record the flex factor for all children
 	ci, totalFlex := updateFlex(c, w.AlignMain, nil)
 
-	return &vboxElement{
+	return &VboxElement{
 		parent:       parent,
 		children:     c,
 		alignMain:    w.AlignMain,
@@ -90,7 +90,7 @@ func (w *VBox) Mount(parent base.Control) (base.Element, error) {
 	}, nil
 }
 
-type vboxElement struct {
+type VboxElement struct {
 	parent     base.Control
 	children   []base.Element
 	alignMain  MainAxisAlign
@@ -101,17 +101,17 @@ type vboxElement struct {
 	totalFlex    int
 }
 
-func (w *vboxElement) Close() {
+func (w *VboxElement) Close() {
 	base.CloseElements(w.children)
 	w.children = nil
 	w.childrenInfo = nil
 }
 
-func (*vboxElement) Kind() *base.Kind {
+func (*VboxElement) Kind() *base.Kind {
 	return &vboxKind
 }
 
-func (w *vboxElement) Layout(bc base.Constraints) base.Size {
+func (w *VboxElement) Layout(bc base.Constraints) base.Size {
 	if len(w.children) == 0 {
 		w.totalHeight = 0
 		return bc.Constrain(base.Size{})
@@ -187,7 +187,7 @@ func (w *vboxElement) Layout(bc base.Constraints) base.Size {
 	return bc.Constrain(base.Size{width, height})
 }
 
-func (w *vboxElement) MinIntrinsicWidth(height base.Length) base.Length {
+func (w *VboxElement) MinIntrinsicWidth(height base.Length) base.Length {
 	if len(w.children) == 0 {
 		return 0
 	}
@@ -208,7 +208,7 @@ func (w *vboxElement) MinIntrinsicWidth(height base.Length) base.Length {
 	return size
 }
 
-func (w *vboxElement) MinIntrinsicHeight(width base.Length) base.Length {
+func (w *VboxElement) MinIntrinsicHeight(width base.Length) base.Length {
 	if len(w.children) == 0 {
 		return 0
 	}
@@ -250,7 +250,7 @@ func (w *vboxElement) MinIntrinsicHeight(width base.Length) base.Length {
 	return size
 }
 
-func (w *vboxElement) SetBounds(bounds base.Rectangle) {
+func (w *VboxElement) SetBounds(bounds base.Rectangle) {
 	if len(w.children) == 0 {
 		return
 	}
@@ -313,7 +313,7 @@ func (w *vboxElement) SetBounds(bounds base.Rectangle) {
 	}
 }
 
-func (w *vboxElement) setBoundsForChild(i int, v base.Element, posX, posY, posX2, posY2 base.Length) {
+func (w *VboxElement) setBoundsForChild(i int, v base.Element, posX, posY, posX2, posY2 base.Length) {
 	dx := w.childrenInfo[i].size.Width
 	switch w.alignCross {
 	case CrossStart:
@@ -339,7 +339,7 @@ func (w *vboxElement) setBoundsForChild(i int, v base.Element, posX, posY, posX2
 	}
 }
 
-func (w *vboxElement) updateProps(data *VBox) (err error) {
+func (w *VboxElement) updateProps(data *VBox) (err error) {
 	// Update properties
 	w.alignMain = data.AlignMain
 	w.alignCross = data.AlignCross
@@ -350,6 +350,6 @@ func (w *vboxElement) updateProps(data *VBox) (err error) {
 	return err
 }
 
-func (w *vboxElement) UpdateProps(data base.Widget) error {
+func (w *VboxElement) UpdateProps(data base.Widget) error {
 	return w.updateProps(data.(*VBox))
 }

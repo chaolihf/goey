@@ -37,11 +37,11 @@ func (w *Decoration) Mount(parent base.Control) (base.Element, error) {
 	return w.mount(parent)
 }
 
-func (*decorationElement) Kind() *base.Kind {
+func (*DecorationElement) Kind() *base.Kind {
 	return &decorationKind
 }
 
-func (w *decorationElement) Layout(bc base.Constraints) base.Size {
+func (w *DecorationElement) Layout(bc base.Constraints) base.Size {
 	hinset := w.insets.Left + w.insets.Right + base.FromPixelsX(2)
 	vinset := w.insets.Top + w.insets.Bottom + base.FromPixelsY(2)
 
@@ -53,20 +53,20 @@ func (w *decorationElement) Layout(bc base.Constraints) base.Size {
 	}
 }
 
-func (w *decorationElement) MinIntrinsicHeight(width base.Length) base.Length {
+func (w *DecorationElement) MinIntrinsicHeight(width base.Length) base.Length {
 	vinset := w.insets.Top + w.insets.Bottom
 	return max(w.child.MinIntrinsicHeight(width)+vinset,
 		base.FromPixelsX(2))
 }
 
-func (w *decorationElement) MinIntrinsicWidth(height base.Length) base.Length {
+func (w *DecorationElement) MinIntrinsicWidth(height base.Length) base.Length {
 	hinset := w.insets.Left + w.insets.Right
 	return max(w.child.MinIntrinsicWidth(height)+hinset,
 		base.FromPixelsY(2))
 
 }
 
-func (w *decorationElement) UpdateProps(data base.Widget) error {
+func (w *DecorationElement) UpdateProps(data base.Widget) error {
 	// Forward to the platform-dependant code
 	return w.updateProps(data.(*Decoration))
 }

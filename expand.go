@@ -37,52 +37,52 @@ func (w *Expand) Mount(parent base.Control) (base.Element, error) {
 		return nil, err
 	}
 
-	return &expandElement{
+	return &ExpandElement{
 		parent: parent,
 		child:  child,
 		factor: w.Factor,
 	}, nil
 }
 
-type expandElement struct {
+type ExpandElement struct {
 	parent base.Control
 	child  base.Element
 	factor int
 }
 
-func (w *expandElement) Close() {
+func (w *ExpandElement) Close() {
 	if w.child != nil {
 		w.child.Close()
 		w.child = nil
 	}
 }
 
-func (*expandElement) Kind() *base.Kind {
+func (*ExpandElement) Kind() *base.Kind {
 	return &expandKind
 }
 
-func (w *expandElement) Layout(bc base.Constraints) base.Size {
+func (w *ExpandElement) Layout(bc base.Constraints) base.Size {
 	return w.child.Layout(bc)
 }
 
-func (w *expandElement) MinIntrinsicHeight(width base.Length) base.Length {
+func (w *ExpandElement) MinIntrinsicHeight(width base.Length) base.Length {
 	return w.child.MinIntrinsicHeight(width)
 }
 
-func (w *expandElement) MinIntrinsicWidth(height base.Length) base.Length {
+func (w *ExpandElement) MinIntrinsicWidth(height base.Length) base.Length {
 	return w.child.MinIntrinsicWidth(height)
 }
 
-func (w *expandElement) SetBounds(bounds base.Rectangle) {
+func (w *ExpandElement) SetBounds(bounds base.Rectangle) {
 	w.child.SetBounds(bounds)
 }
 
-func (w *expandElement) updateProps(data *Expand) (err error) {
+func (w *ExpandElement) updateProps(data *Expand) (err error) {
 	w.child, err = base.DiffChild(w.parent, w.child, data.Child)
 	w.factor = data.Factor
 	return err
 }
 
-func (w *expandElement) UpdateProps(data base.Widget) error {
+func (w *ExpandElement) UpdateProps(data base.Widget) error {
 	return w.updateProps(data.(*Expand))
 }

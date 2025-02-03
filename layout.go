@@ -34,10 +34,10 @@ func calculateVGap(previous base.Element, current base.Element) base.Length {
 	// https://msdn.microsoft.com/en-us/library/windows/desktop/dn742486.aspx#sizingandspacing
 
 	// Unwrap and Expand widgets.
-	if expand, ok := previous.(*expandElement); ok {
+	if expand, ok := previous.(*ExpandElement); ok {
 		previous = expand.child
 	}
-	if expand, ok := current.(*expandElement); ok {
+	if expand, ok := current.(*ExpandElement); ok {
 		current = expand.child
 	}
 

@@ -63,7 +63,7 @@ func (w *Tabs) mount(parent base.Control) (base.Element, error) {
 		}
 	}
 
-	retval := &tabsElement{
+	retval := &TabsElement{
 		Control:  Control{hwnd},
 		child:    child,
 		parent:   parent,
@@ -80,7 +80,7 @@ func (w *Tabs) mount(parent base.Control) (base.Element, error) {
 	return retval, nil
 }
 
-type tabsElement struct {
+type TabsElement struct {
 	Control
 	child    base.Element
 	parent   base.Control
@@ -94,7 +94,7 @@ type tabsElement struct {
 	hbrush       win.HBRUSH
 }
 
-func (w *tabsElement) contentInsets() base.Point {
+func (w *TabsElement) contentInsets() base.Point {
 	if w.cachedInsets.Y == 0 {
 		rect := win.RECT{}
 
@@ -108,12 +108,12 @@ func (w *tabsElement) contentInsets() base.Point {
 	return w.cachedInsets
 }
 
-func (w *tabsElement) controlTabsMinWidth() base.Length {
+func (w *TabsElement) controlTabsMinWidth() base.Length {
 	// No API to get this information has been found.
 	return 75 * DIP
 }
 
-func (w *tabsElement) Props() base.Widget {
+func (w *TabsElement) Props() base.Widget {
 	count := win.SendMessage(w.Hwnd, win.TCM_GETITEMCOUNT, 0, 0)
 	children := make([]TabItem, count)
 	for i := uintptr(0); i < count; i++ {
@@ -136,7 +136,7 @@ func (w *tabsElement) Props() base.Widget {
 	}
 }
 
-func (w *tabsElement) SetOrder(previous win.HWND) win.HWND {
+func (w *TabsElement) SetOrder(previous win.HWND) win.HWND {
 	previous = w.Control.SetOrder(previous)
 	if w.child != nil {
 		previous = w.child.SetOrder(previous)
@@ -144,7 +144,7 @@ func (w *tabsElement) SetOrder(previous win.HWND) win.HWND {
 	return previous
 }
 
-func (w *tabsElement) SetBounds(bounds base.Rectangle) {
+func (w *TabsElement) SetBounds(bounds base.Rectangle) {
 	w.Control.SetBounds(bounds)
 	if w.hbrush != 0 {
 		win.DeleteObject(win.HGDIOBJ(w.hbrush))
@@ -170,7 +170,18 @@ func (w *tabsElement) SetBounds(bounds base.Rectangle) {
 	}
 }
 
-func (w *tabsElement) updateChildren(children []TabItem) error {
+func (w *TabsElement) GetTabItems() []TabItem {
+	return w.widgets
+}
+
+func (w *TabsElement) UpdateTabItems(items []TabItem) error {
+	err := w.updateChildren(items)
+	win.InvalidateRect(w.Hwnd, nil, true)
+	win.UpdateWindow(w.Hwnd)
+	return err
+}
+
+func (w *TabsElement) updateChildren(children []TabItem) error {
 	len1 := len(w.widgets)
 	len2 := len(children)
 
@@ -227,7 +238,7 @@ func (w *tabsElement) updateChildren(children []TabItem) error {
 	return nil
 }
 
-func (w *tabsElement) updateProps(data *Tabs) error {
+func (w *TabsElement) updateProps(data *Tabs) error {
 	// Update the tabs
 	err := w.updateChildren(data.Children)
 	if err != nil {
@@ -393,13 +404,13 @@ func tabsWindowProc(hwnd win.HWND, msg uint32, wParam uintptr, lParam uintptr) (
 	return win.CallWindowProc(tabs.oldWindowProc, hwnd, msg, wParam, lParam)
 }
 
-func tabsGetPtr(hwnd win.HWND) *tabsElement {
+func tabsGetPtr(hwnd win.HWND) *TabsElement {
 	gwl := win.GetWindowLongPtr(hwnd, win.GWLP_USERDATA)
 	if gwl == 0 {
 		panic("Internal error.")
 	}
 
-	ptr := (*tabsElement)(unsafe.Pointer(gwl))
+	ptr := (*TabsElement)(unsafe.Pointer(gwl))
 	if ptr.Hwnd != hwnd && ptr.Hwnd != 0 {
 		panic("Internal error.")
 	}

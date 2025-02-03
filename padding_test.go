@@ -8,7 +8,7 @@ import (
 	"github.com/chaolihf/goey/mock"
 )
 
-func (w *paddingElement) Props() base.Widget {
+func (w *PaddingElement) Props() base.Widget {
 	child := base.Widget(nil)
 	if w.child != nil {
 		child = w.child.(Proper).Props()
@@ -82,7 +82,7 @@ func TestPaddingMinIntrinsicSize(t *testing.T) {
 	}
 
 	for i, v := range cases {
-		elem := paddingElement{
+		elem := PaddingElement{
 			child:  mock.NewIfNotZero(v.mockSize),
 			insets: v.insets,
 		}

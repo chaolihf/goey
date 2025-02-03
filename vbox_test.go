@@ -7,7 +7,7 @@ import (
 	"github.com/chaolihf/goey/mock"
 )
 
-func (w *vboxElement) Props() base.Widget {
+func (w *VboxElement) Props() base.Widget {
 	children := []base.Widget(nil)
 	if len(w.children) != 0 {
 		children = make([]base.Widget, 0, len(w.children))
@@ -118,7 +118,7 @@ func TestVBoxLayout(t *testing.T) {
 	}
 
 	for i, v := range cases {
-		in := vboxElement{
+		in := VboxElement{
 			children:     v.children,
 			alignMain:    v.alignMain,
 			alignCross:   v.alignCross,
@@ -162,7 +162,7 @@ func TestVBoxMinIntrinsic(t *testing.T) {
 	}
 
 	for i, v := range cases {
-		in := vboxElement{
+		in := VboxElement{
 			children:   v.children,
 			alignMain:  v.alignMain,
 			alignCross: v.alignCross,
