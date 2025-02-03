@@ -82,6 +82,6 @@ func render() base.Widget {
 }
 
 func showWindowSize() {
-	width, height := mainWindow.GetRect()
+	width, height := mainWindow.GetSize()
 	fmt.Printf("resize window width %d,height %d\n", width, height)
 }

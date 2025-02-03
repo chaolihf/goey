@@ -98,7 +98,7 @@ func TestDecorationMinIntrinsicSize(t *testing.T) {
 	}
 
 	for i, v := range cases {
-		elem := decorationElement{
+		elem := DecorationElement{
 			child:  mock.NewIfNotZero(v.mockSize),
 			insets: v.insets,
 		}

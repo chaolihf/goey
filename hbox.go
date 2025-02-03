@@ -319,7 +319,7 @@ func updateFlex(c []base.Element, alignMain MainAxisAlign, clientInfo []boxEleme
 
 	totalFlex := 0
 	for i, v := range c {
-		if elem, ok := v.(*expandElement); ok {
+		if elem, ok := v.(*ExpandElement); ok {
 			clientInfo[i].flex = elem.factor + 1
 			totalFlex += elem.factor + 1
 		}
