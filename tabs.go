@@ -18,11 +18,11 @@ var (
 // When calling UpdateProps, setting Value to an integer less than zero will
 // leave the currently selected tab unchanged.
 type Tabs struct {
-	Value    int       // Index of the selected tab
-	Children []TabItem // Description of the tabs
-	Insets   Insets    // Space between edge of element and the child element.
-
-	OnChange func(int) // OnChange will be called whenever the user selects a different tab
+	Value           int       // Index of the selected tab
+	Children        []TabItem // Description of the tabs
+	Insets          Insets    // Space between edge of element and the child element.
+	WithCloseButton bool      // Whether to show close button on the tab
+	OnChange        func(int) // OnChange will be called whenever the user selects a different tab
 }
 
 // TabItem describes a tab for a Tab widget.

@@ -66,13 +66,14 @@ func (w *Tabs) mount(parent base.Control) (base.Element, error) {
 	}
 
 	retval := &TabsElement{
-		Control:  Control{hwnd},
-		child:    child,
-		parent:   parent,
-		value:    w.Value,
-		insets:   w.Insets,
-		widgets:  w.Children,
-		onChange: w.OnChange,
+		Control:         Control{hwnd},
+		child:           child,
+		parent:          parent,
+		value:           w.Value,
+		insets:          w.Insets,
+		widgets:         w.Children,
+		onChange:        w.OnChange,
+		withCloseButton: w.WithCloseButton,
 	}
 
 	// Subclass the window procedure
@@ -84,16 +85,16 @@ func (w *Tabs) mount(parent base.Control) (base.Element, error) {
 
 type TabsElement struct {
 	Control
-	child    base.Element
-	parent   base.Control
-	value    int
-	insets   Insets
-	widgets  []TabItem
-	onChange func(int)
-
-	cachedInsets base.Point
-	cachedBounds base.Rectangle
-	hbrush       win.HBRUSH
+	child           base.Element
+	parent          base.Control
+	value           int
+	insets          Insets
+	widgets         []TabItem
+	onChange        func(int)
+	withCloseButton bool
+	cachedInsets    base.Point
+	cachedBounds    base.Rectangle
+	hbrush          win.HBRUSH
 }
 
 func (w *TabsElement) contentInsets() base.Point {
@@ -188,6 +189,14 @@ func (w *TabsElement) SelectItem(index int) {
 		win.SendMessage(w.Hwnd, win.TCM_SETCURSEL, uintptr(index), 0)
 		w.value = index
 	}
+}
+
+func (w *TabsElement) GetItemCountDirect() int {
+	return int(win.SendMessage(w.Hwnd, win.TCM_GETITEMCOUNT, 0, 0))
+}
+
+func (w *TabsElement) GetSelectItemDirect() int {
+	return int(win.SendMessage(w.Hwnd, win.TCM_GETCURSEL, 0, 0))
 }
 
 func (w *TabsElement) updateChildren(children []TabItem) error {
@@ -332,44 +341,57 @@ func tabsBackgroundBrush(hwnd win.HWND, hdc win.HDC) (win.HBRUSH, bool, error) {
 }
 
 func paintTabs(hwnd win.HWND) {
-	// var ps win.PAINTSTRUCT
-	// hdc := win.BeginPaint(hwnd, &ps)
-	// defer win.EndPaint(hwnd, &ps)
-	// // Total Size
-	// var rc win.RECT
-	// win.GetClientRect(hwnd, &rc)
-	// // Paint the background
-	// bkgnd := win.GetSysColorBrush(win.COLOR_BTNFACE)
-	// win.FillRect(hdc, &rc, bkgnd)
-	// // Get some infos about tabs
-	// tabsCount := win.TabCtrl_GetItemCount(hwnd)
-	// tabsSelect := win.TabCtrl_GetCurSel(hwnd)
-	// ctl_identifier := win.GetDlgCtrlID(hwnd)
-	// for i := 0; i < tabsCount; i++ {
-	// 	var rcItem win.RECT
-	// 	win.SendMessage(hwnd, win.TCM_GETITEMRECT, uintptr(i), uintptr(unsafe.Pointer(&rcItem)))
-	// 	//DRAWITEMSTRUCT dis{ ODT_TAB, ctl_identifier, static_cast<UINT>(i), ODA_DRAWENTIRE, 0, hwnd, hdc, RECT{}, 0 }
-	// 	var intersect win.RECT // Draw the relevant items that needs to be redrawn
-	// 	if win.IntersectRect(&intersect, &ps.rcPaint, &rcItem) {
-	// 		var solidBrush win.COLORREF
-	// 		if i == tabsSelect {
-	// 			solidBrush = win.RGB(255, 0, 255)
-	// 		} else if i == _hoverTabIndex {
-	// 			solidBrush = win.RGB(0, 0, 255)
-	// 		} else {
-	// 			solidBrush = win.RGB(0, 255, 255)
-	// 		}
-	// 		hBrush := win.CreateSolidBrush(solidBrush)
-	// 		win.FillRect(hdc, &rcItem, hBrush)
-	// 		win.DeleteObject(win.HGDIOBJ(uintptr(hBrush)))
-	// 	}
-	// }
+	w := tabsGetPtr(hwnd)
+	if !w.withCloseButton {
+		return
+	}
+	var ps win.PAINTSTRUCT
+	hdc := win.BeginPaint(hwnd, &ps)
+	defer win.EndPaint(hwnd, &ps)
+	// Total Size
+	var rc win.RECT
+	win.GetClientRect(hwnd, &rc)
+	// Paint the background
+	bkgnd := win.GetSysColorBrush(win.COLOR_BTNFACE)
+	win.FillRect(hdc, &rc, bkgnd)
+	// Get some infos about tabs
+	tabsCount := w.GetItemCountDirect()
+	tabsSelect := w.GetSelectItemDirect()
+	_hoverTabIndex := -1
+	tabItems := w.GetTabItems()
+	for i := 0; i < tabsCount; i++ {
+		var rcItem win.RECT
+		win.SendMessage(hwnd, win.TCM_GETITEMRECT, uintptr(i), uintptr(unsafe.Pointer(&rcItem)))
+		var intersect win.RECT // Draw the relevant items that needs to be redrawn
+		if win.IntersectRect(&intersect, &ps.RcPaint, &rcItem) {
+			//var solidBrush win.COLORREF
+			var hBrush win.HBRUSH
+			if i == tabsSelect {
+				//solidBrush = win.RGB(255, 0, 255)
+				hBrush = win.GetSysColorBrush(win.COLOR_BTNHIGHLIGHT)
+			} else if i == _hoverTabIndex {
+				//solidBrush = win.RGB(0, 0, 255)
+			} else {
+				//solidBrush = win.RGB(0, 255, 255)
+				hBrush = win.GetSysColorBrush(win.COLOR_BTNSHADOW)
+			}
+			//hBrush := win.CreateSolidBrush(solidBrush)
+			win.FillRect(hdc, &rcItem, hBrush)
+			//win.DeleteObject(win.HGDIOBJ(uintptr(hBrush)))
+
+		}
+		title, _ := syscall.UTF16FromString(tabItems[i].Caption)
+		oldBkMode := win.SetBkMode(hdc, win.TRANSPARENT)
+		win.DrawTextEx(hdc, &title[0], int32(len(title)), &rcItem, win.DT_CENTER|win.DT_VCENTER, nil)
+		win.SetBkMode(hdc, oldBkMode)
+
+	}
 
 }
 
 func tabsWindowProc(hwnd win.HWND, msg uint32, wParam uintptr, lParam uintptr) (result uintptr) {
 	switch msg {
-	case win.WM_PAINT + 99999999:
+	case win.WM_PAINT:
 		paintTabs(hwnd)
 	case win.WM_DESTROY:
 		// Make sure that the data structure on the Go-side does not point to a non-existent
